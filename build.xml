@@ -1,0 +1,206 @@
+
+<project name="LEMS" default="jar" basedir=".">
+
+    <description>LEMS Interpreter</description>
+	  
+    <property file="${basedir}/VERSION"/>
+
+    <property name="main.jar" value="${basedir}/lems-${version.number}.jar"/>
+    <property name="src.dir" value="${basedir}/src"/>
+    <property name="test.dir" value="${basedir}/test"/>
+    <property name="build.dir" value="${basedir}/build"/>
+    <property name="examples.dir" value="${basedir}/examples"/>
+      
+    <property name="test.build.dir" value="${basedir}/build"/>
+    	
+    <property name="temp.dir" value="${basedir}/temp/"/>
+    <property name="temp.dir.ver" value="${temp.dir}/lems-${version.number}"/>
+	
+    <property name="test.results.dir" value="${basedir}/testResults"/>
+
+	
+    <path id="testlib.classpath">
+        <pathelement location="${basedir}/lib/junit-4.8.1.jar"/>
+    </path>
+	
+    <path id="testrun.classpath">
+        <pathelement location="${basedir}/lib/junit-4.8.1.jar"/>
+        <pathelement location="${basedir}/build"/>
+    </path>
+	
+    <path id="jarrun.classpath">
+        <pathelement location="${main.jar}"/>
+    </path>
+
+
+	
+    <target name="initdirs">
+        <echo>Base dir for LEMS: ${basedir}</echo>
+        <mkdir dir="${build.dir}"/>
+    </target>
+
+
+
+    <target name="compile" depends="initdirs"
+            description="Compiles the source code">
+
+        <echo>Compiling to dir: ${build.dir}</echo>
+        
+        <javac srcdir="${src.dir}"
+               destdir="${build.dir}"
+               debug="true"
+               optimize="${optimize}"
+               compiler="modern"
+               source="1.5"
+               target="1.5"
+               includeantruntime="false">
+            <include name="**/*.java"/>
+        </javac>
+        	
+        <copy todir="${build.dir}">
+            <fileset dir="${basedir}" includes="examples/*.xml"/>
+        </copy>
+    </target>
+
+
+    <target name="compiletests" depends="compile"
+          description="Compiles the test code">
+
+        <javac srcdir="${test.dir}"
+               destdir="${build.dir}"
+               debug="true"
+               optimize="${optimize}"
+               compiler="modern"
+               source="1.5"
+               target="1.5"
+               includeantruntime="false"
+      		   classpathref="testlib.classpath">
+            <include name="**/*.java"/>
+        </javac>
+    </target>
+
+
+
+    <target name="jar" depends="compile" description="Creates main Jar file">
+		
+        <jar destfile="${main.jar}">
+            <fileset dir="${build.dir}"/>
+            <fileset dir="${src.dir}"/>
+            <manifest>
+                <attribute name="Main-Class" value="org.lemsml.Main"/>
+            </manifest>
+        </jar>
+    </target>
+   
+    
+	
+
+    <target name="jar-with-tests" depends="compiletests"
+            description="Creates main Jar file including test classes">
+
+        <jar destfile="${main.jar}">
+            <fileset dir="${build.dir}"/>
+            <manifest>
+                <attribute name="Main-Class" value="org.lemsml.Main"/>
+            </manifest>
+        </jar>
+    </target>
+
+ 
+
+    <target name="zip" depends="clean, jar" description="Creates a zip file with source files, classes and jar file">
+
+
+        <delete dir="${temp.dir}"/>
+        <mkdir dir="${temp.dir}"/>
+        <mkdir dir="${temp.dir.ver}"/>
+
+        <copy todir="${temp.dir.ver}">
+            <fileset dir="${basedir}" includes="src/**/*"/>
+            <fileset dir="${basedir}" includes="build/**/*"/>
+            <fileset dir="${basedir}" includes="examples/**/*"/>
+        </copy>
+
+        <zip destfile="${basedir}/lems-${version.number}.zip"
+            basedir="${temp.dir}"
+            whenempty="create"/>
+
+        <delete dir="${temp.dir}"/>
+    </target>
+
+    <target name="test" depends="tests"
+		            description="Tests the main LEMS code from build directory"/>
+
+    <target name="tests" depends="clean, jar-with-tests"
+		            description="Tests the main LEMS code from build directory">
+
+        <mkdir dir="${test.results.dir}"/>
+        <java classname="org.lemsml.test.MainTest"
+        	fork="true"
+        	classpathref="testrun.classpath">
+            <jvmarg value="-Xmx100M" />
+        </java>
+    </target>
+
+    <target name="testParse" depends="jar-with-tests"
+            description="Tests the LEMS expression parser">
+
+        <java classname="org.lemsml.expression.Parser" fork="true">
+            <jvmarg value="-Xmx100M" />
+
+            <classpath refid="testrun.classpath"/>
+        </java>
+
+    </target>
+
+    <target name="tests-from-jar" depends="clean, jar-with-tests"
+            description="Tests the main LEMS code from the tests jar file">
+
+        <mkdir dir="${test.results.dir}"/>
+
+        <java classname="org.neuroml.lems.test.MainTest" fork="true">
+            <jvmarg value="-Xmx100M" />
+            <classpath refid="test.classpath"/>
+        </java>
+    </target>
+
+    <target name="ex1" depends="jar"
+            description="Tests the LEMS example: example1.xml">
+
+        <java classname="org.lemsml.Main" fork="true">
+            <jvmarg value="-Xmx100M" />
+
+            <arg value="${examples.dir}/example1.xml"/>
+
+            <classpath refid="jarrun.classpath"/>
+        </java>
+
+    </target>
+
+    <target name="exnet" depends="jar"
+            description="Tests the LEMS example example3weight.xml">
+
+        <java classname="org.lemsml.Main" fork="true">
+            <jvmarg value="-Xmx100M" />
+
+            <arg value="${examples.dir}/example3weight.xml"/>
+
+            <classpath refid="jarrun.classpath"/>
+        </java>
+
+    </target>
+ 
+    <target name="clean" description="Removes the built files" depends="initdirs">
+        <delete dir="${build.dir}"/>
+        <delete dir="${test.results.dir}"/>
+        <mkdir dir="${build.dir}"/>
+        <delete>
+            <fileset dir="${basedir}" includes="*.jar"/>
+            <fileset dir="${basedir}" includes="lems-*.zip"/>
+        </delete>
+    </target>
+
+   
+     
+
+</project>

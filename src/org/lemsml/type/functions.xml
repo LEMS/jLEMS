@@ -1,0 +1,61 @@
+
+<neuroml2>
+
+<Function name="Gaussian">
+    <GenParam name="mu"/>
+    <GenParam name="sigma"/>
+    <GenArg name="x"/>
+    <ParamDims left="mu" right="sigma" constraint="same"/>
+    <ParamDims left="mu" right="x" constraint="same"/>
+    
+    <ReturnValue dimension="none" expression="exp((x-mu)^2 / sigma^2)" />
+</Function>
+
+
+<Function name="mygaussian" extends="Gaussian">
+	<SetParam param="mu" value="3 m"/>
+	<SetParam param="sigma" value="1m"/>
+	<DimArg name="myx" dimension="length" provides="x"/>
+
+</Function>
+
+
+
+
+
+
+<ConnectionProbability>
+	<Call function="Gaussian">
+		<WithParameter name="mu" select="3"/>
+		<WithParameter name="sigma" select="2"/>
+		<WithArgument name="x" select="$xpos - $xcen"/>
+	</Call>	
+</ConnectionProbability>
+
+
+
+
+<Function id="kernel">
+	<Argument name="distance" dimension="length"/>
+	<ReturnValue dimension="none">
+		<Call function="Gaussian">
+			<WithParameter name="mu" dimension="length" value="2m"/>
+			<WithParameter name="sigma" dimension="length" value="3m"/>
+			<WithArgument name="x" dimension="length" select="distance"/>
+		</Call>
+	</ReturnValue>
+
+</Function>
+
+<ConnectionProbability>
+	<Call function="kernel">
+		<WithArgument name="distance" select="$d"/>
+	</Call>
+</ConnectionProbability>
+
+
+
+
+</neuroml2>
+
+ 
