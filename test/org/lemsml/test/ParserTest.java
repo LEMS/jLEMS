@@ -104,6 +104,22 @@ public class ParserTest {
         res = Math.log(c);
         assertEquals(res, eval, 0);
 
+        
+        src= "5e24";
+        root = p.parseExpression(src);
+
+        E.info("parsing " + src);
+        E.info("Parsed to: " + root.toString()+", ("+root.getClass()+")");
+
+        eval = root.evalD(valHM);
+        E.info("evaluates to " + eval);
+
+        res = 5e24;
+        assertEquals(res, eval, 0);
+
+        
+        
+        
         String[] tests = new String[]{"(v/VOLT)",
                       "rate * exp((v - midpoint)/scale)",
                       "(exp(73 * X))",

@@ -20,6 +20,7 @@ import org.lemsml.run.ComponentRegime;
 import org.lemsml.run.ConditionAction;
 import org.lemsml.run.EventAction;
 import org.lemsml.run.KScheme;
+import org.lemsml.run.PathDerivedVariable;
 import org.lemsml.run.RunDisplay;
 import org.lemsml.run.StateRunnable;
 import org.lemsml.type.Component;
@@ -386,7 +387,7 @@ public class Behavior  {
                  }
 				 
 			 } else if (dv.hasSelection()) {
-				 ret.addPathDerived(dv.getName(), dv.getPath(), dv.getFunc(), dv.getOnAbsent());
+				 PathDerivedVariable pdv = ret.addPathDerived(dv.getName(), dv.getPath(), dv.getFunc(), dv.getOnAbsent());
 			 
 			 } else {
 				 throw new ContentError("Derived variable needs as selection or an expression");
@@ -519,7 +520,10 @@ public class Behavior  {
 
 	public void checkEquations(HashMap<String, Dimensional> cdimHM) throws ContentError {
 		HashMap<String, Dimensional> dimHM = new HashMap<String, Dimensional>();
-		
+
+		for (String s : cdimHM.keySet()) {
+			Dimensional d = cdimHM.get(s);
+		}
 	 
 		dimHM.putAll(cdimHM);
 		
@@ -600,5 +604,12 @@ public class Behavior  {
 	public void addRegime(Regime regime) {
 		regimes.add(regime);
 	}
-
+	
+	public void addOnStart(OnStart os) {
+		 onStarts.add(os);
+	}
+	
+	public void addOnEvent(OnEvent oe) {
+		 onEvents.add(oe);
+	}
 }

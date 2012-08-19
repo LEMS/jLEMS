@@ -177,6 +177,22 @@
 
     </target>
 
+	
+	
+	<target name="ex9" depends="jar"
+	           description="Tests the LEMS example: example9.xml">
+	
+	        <java classname="org.lemsml.Main" fork="true">
+	            <jvmarg value="-Xmx100M" />
+	
+	            <arg value="${examples.dir}/example9.xml"/>
+	
+	            <classpath refid="jarrun.classpath"/>
+	        </java>
+	
+	    </target>
+	
+	
     <target name="exnet" depends="jar"
             description="Tests the LEMS example example3weight.xml">
 

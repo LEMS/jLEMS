@@ -98,25 +98,24 @@ public class DerivedVariable extends ExpressionValued implements Valued, Fillabl
 	}
 
 
-    public String getEvalString() {
-        StringBuilder sb = new StringBuilder();
-        if (value!=null)
-        {
-            if (valueCondition!=null)
-                sb.append("IF (" + valueCondition + ") THEN " );
-            sb.append("" + value + "");
-            if (valueCondition!=null)
-                sb.append(") ELSE " + valueIfFalse + ")" );
-        }
-        else
-        {
-            sb.append(select);
-            if (reduce!=null)
-                sb.append("  (REDUCE: " + reduce + ")" );
-        }
-        return sb.toString();
-    }
-
+	public String getEvalString() {
+		StringBuilder sb = new StringBuilder();
+		if (value != null) {
+			if (valueCondition != null) {
+				sb.append("IF (" + valueCondition + ") THEN ");
+			}
+			sb.append("" + value + "");
+			if (valueCondition != null) {
+				sb.append(") ELSE " + valueIfFalse + ")");
+			}
+		} else {
+			sb.append(select);
+			if (reduce != null) {
+				sb.append("  (REDUCE: " + reduce + ")");
+			}
+		}
+		return sb.toString();
+	}
   
 	
 	public void resolve(Lems lems, LemsCollection<Dimension> dimensions, ComponentType type, HashMap<String, Valued> valHM, Parser parser) throws ContentError, ParseError {

@@ -996,4 +996,8 @@ public class StateInstance implements StateRunnable {
 	public boolean hasTypeParam(String satt) {
 		return uclass.hasPropertyString(satt);
 	}
+
+	public HashMap<String, MultiInstance> getMultiHM() {
+		return multiHM;
+	}
 }

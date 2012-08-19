@@ -2,6 +2,7 @@ package org.lemsml.type;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.lemsml.annotation.Mat;
 import org.lemsml.behavior.Behavior;
@@ -741,7 +742,11 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	public HashMap<String, Component> getChildHM() {
 		return childHM;
 	}
- 
+	
+	public HashMap<String, Component> getRefHM() {
+ 		return refHM;
+	}
+
 	
 	
 	public ArrayList<Component> getStrictChildren() {
@@ -977,6 +982,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	public LemsCollection<Component> getComponents() {
 		return components;
 	}
+
 
 	 
 }

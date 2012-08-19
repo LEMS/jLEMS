@@ -27,9 +27,7 @@ public class MainTest {
 				org.lemsml.test.ComponentTypeTest.class,
 				org.lemsml.test.LemsTest.class,
 				org.lemsml.test.SimTest.class,
-				org.lemsml.test.ExamplesTest.class,
-				org.lemsml.test.CMDFExamplesTest.class,
-				org.lemsml.test.CMDFRewriteTest.class);
+				org.lemsml.test.ExamplesTest.class);
 
 		Date now = new java.util.Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss, EEE dd-MMM-yyyy");

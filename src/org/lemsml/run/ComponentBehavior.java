@@ -118,6 +118,10 @@ public class ComponentBehavior {
             return svars;
     }
 
+    public HashMap<String, String> getAttachmentSet() {
+        return attSetHM;
+    }
+
     public ArrayList<ExpressionDerivedVariable> getExderiveds() {
             return exderiveds;
     }

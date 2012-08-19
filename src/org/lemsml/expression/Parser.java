@@ -278,9 +278,11 @@ public class Parser {
 		int ipos = 0;
 		while (matcher.find(ipos)) {
 			String spm = matcher.group(2);
-			String spmnew = (spm.equals("+") ? "~" : "#");
-			int ipm = matcher.start(2);
-			emod = emod.substring(0, ipm) + spmnew + emod.substring(ipm+1, emod.length());
+			if (spm.length() > 0) {
+				String spmnew = (spm.equals("+") ? "~" : "#");
+				int ipm = matcher.start(2);
+				emod = emod.substring(0, ipm) + spmnew + emod.substring(ipm+1, emod.length());
+			}
 			ipos = matcher.end();
 		}
 		return emod;
@@ -320,11 +322,14 @@ public class Parser {
             
             Parser p = new Parser();
             p.setVerbose();
-            DoubleEvaluable de = p.parseExpression("V * -59");
-            System.out.println("Parsed to: "+de);
+            String s1 = "V * -59";
+            DoubleEvaluable de = p.parseExpression(s1);
+            E.info("Parsed " + s1 + " to: " + de);
 		
- 			//test1(p);
-			//test2(p);
+            String s2 = "1.2 * 5 * 5.0e-3 * 6e34";
+            DoubleEvaluable de2 = p.parseExpression(s2);
+            E.info("Parsed " + s2 + " to: " + de2);
+		 
 			
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -332,33 +337,5 @@ public class Parser {
 		}
 		
 	}
-/*
-
-	private static void test1(Parser p) throws ParseError {
-		String src = "3 + (1.3e-4 + 5) + (3 *4)+ 4/(4*45) + 34.2E-2 + sin(a + b) / cos(b + c)";
-		DoubleEvaluable root = p.parseExpression(src);
-		
-		E.info("parsing " + src);
-		E.info("Parsed to: " + root.toString());
-		
-		HashMap<String, Double> valHM = new HashMap<String, Double>();
-		valHM.put("a", 2.);
-		valHM.put("b", 3.);
-		valHM.put("c", 4.);
-		valHM.put("d", 5.);
-		E.info("evaluates to " + root.evalD(valHM));
-		
-	}
-	
-	
-	private static void test2(Parser p) throws ParseError {
-		String src = "3 + 4^a .lt. 5 * b";
-		BooleanEvaluable bev = p.parseCondition(src);
-		E.info("parsed to " + bev.toString());
-		
-		HashMap<String, Double> valHM = new HashMap<String, Double>();
-		valHM.put("a", 4.);
-		valHM.put("b", 5.);
-		E.info("evals to " + bev.evalB(valHM));
-	}*/
+ 
 }
