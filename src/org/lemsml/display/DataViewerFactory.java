@@ -7,11 +7,17 @@ public class DataViewerFactory {
 	
 	static DataViewerFactory instance;
 
+	
 	public static DataViewerFactory getFactory() {
 		if (instance == null) {
 			instance = new DataViewerFactory();
 		}
 		return instance;
+	}
+	
+	
+	public void setDelegate(DataViewerFactory dvf) {
+		delegatedFactory = dvf;
 	}
 	
 	

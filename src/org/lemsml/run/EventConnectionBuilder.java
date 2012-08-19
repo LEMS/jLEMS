@@ -132,8 +132,12 @@ public class EventConnectionBuilder extends PostBuilder {
 				}
 			}
 		
-			op.connectTo(inPort, delay, base.getEventManager());
-
+			if (op == null) {
+				E.error("Event connection: no connection made from " + from + " to " + to + 
+						" (" + sourcePortId + ", " + targetPortId + ")");
+			} else {
+				op.connectTo(inPort, delay, base.getEventManager());
+			}
 		}
 	}
 
@@ -173,7 +177,7 @@ public class EventConnectionBuilder extends PostBuilder {
 	@Override
 	public void consolidateComponentBehaviors() {
 		 if (receiverCB != null) {
-			 receiverCB = receiverCB.getConsolidatedComponentBehavior();
+			 receiverCB = receiverCB.getConsolidatedComponentBehavior("(receiver)");
 		 }	
 	}
 

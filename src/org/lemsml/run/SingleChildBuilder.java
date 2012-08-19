@@ -32,7 +32,7 @@ public class SingleChildBuilder extends BuilderElement implements ChildInstantia
 	@Override
 	public void consolidateComponentBehaviors() {
 		 if (componentBehavior != null) {
-			 componentBehavior = componentBehavior.getConsolidatedComponentBehavior();
+			 componentBehavior = componentBehavior.getConsolidatedComponentBehavior("(child)");
 		 }	
 	}
  

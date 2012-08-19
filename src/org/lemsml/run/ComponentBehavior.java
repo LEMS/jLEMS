@@ -60,8 +60,8 @@ public class ComponentBehavior {
 	HashMap<String, ComponentRegime> regimeHM = new HashMap<String, ComponentRegime>();
 	
 	HashSet<String> exposedNames = new HashSet<String>();
-        
 	HashMap<String, String> exposedMap = new HashMap<String, String>();
+	
 	
 	RunConfig runConfig = null;
 	
@@ -79,7 +79,12 @@ public class ComponentBehavior {
 	// set true once done
 	boolean consolidated = false;
 	
-	
+	// flattenedCB is genuinely flat - it could be the root flattened one, or one of its children, in the process 
+	// of flattening the root.
+	ComponentBehavior flattenedCB = null;
+
+	// consolidated is a behavior tree in which any behaviors that are marked for flattening have been flattened
+	// but others remain as before
 	ComponentBehavior consolidatedCB = null;
 	
 	
@@ -682,39 +687,66 @@ public class ComponentBehavior {
 
 	 
 	
-	public ComponentBehavior getConsolidatedComponentBehavior() {
+	
+	
+	
+	public ComponentBehavior getConsolidatedComponentBehavior(String knownas) {
 		if (consolidatedCB == null) {
-			consolidatedCB = makeConsolidatedBehavior();
+			consolidatedCB = makeConsolidatedBehavior(knownas);
 		}
 		return consolidatedCB;
 	}
 	
 	
-	public ComponentBehavior makeConsolidatedBehavior() {
+	public ComponentBehavior getFlattenedComponentBehavior(String knownas) {
+		if (flattenedCB == null) {
+			flattenedCB = makeFlattened(knownas);
+		}
+		return flattenedCB;
+	}
+	
+	 
+	
+	public ComponentBehavior makeConsolidatedBehavior(String knownas) {
 		ComponentBehavior ret = null;
 		if (simultaneous) {
-			E.info("Flattening " + cptid);
-			ret = makeRootConsolidated();
+			E.info("********* Flattening " + cptid);
+			ret = makeFlattened(knownas);
 		} else {
-			ret = makeChildConsolidated();
+			ret = makeChildConsolidated(knownas);
 		}
 		return ret;
 	}
 	
 	
-	public ComponentBehavior makeChildConsolidated() {
+	public ComponentBehavior makeChildConsolidated(String knownas) {
 		ComponentBehavior ret = makeShallowCopy();
-		ret.consolidateChildren();
+		ret.consolidateChildren(knownas);
 		return ret;
 	}
 	
+	
+	public HashMap<String, ComponentBehavior> getChildHM() {
+		return childHM;
+	}
+	
+
+	public HashMap<String, ComponentBehavior> getRefHM() {
+		return refHM;
+	}
+	
+	public HashMap<String, MultiComponentBehavior> getMultiHM() {
+		return multiHM;
+	}
 		
-	private void consolidateChildren() {
-		E.info("Consolidating children in " + cptid);
+	
+	
+	private void consolidateChildren(String knownas) {
+		E.info("Consolidating children in " + knownas + (cptid != null ? "(id=" + cptid + ")" : ""));
 		for (String sch : childHM.keySet()) {
 			E.info("Child: " + sch);
 			ComponentBehavior cbch = childHM.get(sch);
-			ComponentBehavior fcbch = cbch.getConsolidatedComponentBehavior();
+			ComponentBehavior fcbch = cbch.getConsolidatedComponentBehavior(sch);
 			childHM.put(sch,  fcbch);
 		}
 		
@@ -723,7 +755,7 @@ public class ComponentBehavior {
 			MultiComponentBehavior mcb = multiHM.get(sm);
 			ArrayList<ComponentBehavior> af = new ArrayList<ComponentBehavior>();
 			for (ComponentBehavior cbv : mcb.getCBs()) {
-				af.add(cbv.getConsolidatedComponentBehavior());
+				af.add(cbv.getConsolidatedComponentBehavior(sm));
 			}
 			
 			MultiComponentBehavior fmcb = new MultiComponentBehavior(af);
@@ -740,17 +772,19 @@ public class ComponentBehavior {
 	
 	
 	
-	public ComponentBehavior makeRootConsolidated() {	
+	public ComponentBehavior makeFlattened(String knownas) {	
 		Flattener flattener = new Flattener();
 		addToFlattener(null, flattener);
 		
 		for (String sch : childHM.keySet()) {
 			ComponentBehavior cbch = childHM.get(sch);
 			
-			ComponentBehavior cbchflat = cbch.getConsolidatedComponentBehavior();
+			ComponentBehavior cbchflat = cbch.getFlattenedComponentBehavior(sch);
 			cbchflat.addToFlattener(sch, flattener);
 			
 		}
+		
+		// TODO - refs and multichildren?
 		
 		flattener.resolvePaths();
 		
@@ -834,6 +868,10 @@ public class ComponentBehavior {
 	public ComponentBehavior makeShallowCopy() {
 		ComponentBehavior ret = new ComponentBehavior(cptid, typeName);
 	
+		for (String s : indeps) {
+			ret.addIndependentVariable(s);
+		}
+		
 		for (String s : childHM.keySet()) {
 			ret.addChildComponentBehavior(s, childHM.get(s)); //.makeShallowCopy());
 		}
@@ -845,6 +883,10 @@ public class ComponentBehavior {
 		
 		for (String s : multiHM.keySet()) {
 			ret.addMultiComponentBehavior(s, multiHM.get(s)); // .makeCopy());
+		}
+		
+		for (String s : exposedMap.keySet()) {
+			ret.addExposureMapping(s, exposedMap.get(s));
 		}
 		
 		
@@ -888,6 +930,10 @@ public class ComponentBehavior {
 		ret.fix();
 	
 		return ret;
+	}
+
+	public HashMap<String, String> getExposureMap() {
+		return exposedMap;
 	}
 
 

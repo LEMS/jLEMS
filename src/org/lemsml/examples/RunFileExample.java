@@ -7,20 +7,32 @@ import org.lemsml.sim.Sim;
 
 public class RunFileExample {
  
+	
+	File fdir = null;
 	String filename;
 	
+	
+	
+	
 	public RunFileExample(String fnm) {
-		filename = fnm;
+		this (new File("."), fnm);
 	}
 	
+	public RunFileExample(File f, String fnm) {
+		fdir = f;
+		filename = fnm;
+	}
 	
 	public void run() {
 		run(false);
 	}
 	
-	
-		public void run(boolean consolidate) {
-			File fex = new File("examples");
+	public void run(boolean consolidate) {
+		run(consolidate, false);
+	}
+		
+	public void run(boolean consolidate, boolean print) {	
+			File fex = new File(fdir, "examples");
 			File fs = new File(fex, filename);
 			
 			Sim sim = new Sim(fs);
@@ -30,6 +42,10 @@ public class RunFileExample {
 		 		
 			sim.build(consolidate);
 				
+			if (print) {
+				sim.printCB();
+			}
+			
 			sim.run();
 			} catch (Exception ex) {
 				ex.printStackTrace();

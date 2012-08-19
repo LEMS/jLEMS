@@ -3,6 +3,7 @@ package org.lemsml.sim;
 import java.io.File;
 import java.io.IOException;
 
+import org.lemsml.display.ComponentBehaviorWriter;
 import org.lemsml.display.DataViewer;
 import org.lemsml.display.DataViewerFactory;
 import org.lemsml.expression.ParseError;
@@ -27,6 +28,8 @@ public class Sim extends LemsProcess {
     private static boolean disableFrames = false;
 
     ComponentBehavior rootBehavior;
+    ComponentBehavior targetBehavior;
+    
     RunConfig runConfig;
     RunDisplay runDisplay;
     StateInstance rootState;
@@ -88,14 +91,14 @@ public class Sim extends LemsProcess {
 	    
 	    EventManager eventManager = new EventManager();
 	
-		ComponentBehavior targetCB = runCpt.getComponentBehavior();
+		targetBehavior = runCpt.getComponentBehavior();
 		
 		 if (consolidate) {
 			 E.info("Getting consolidated version of root component");
-			 targetCB = targetCB.makeConsolidatedBehavior();
+			 targetBehavior = targetBehavior.makeConsolidatedBehavior("ROOT");
 		}
 		
-	    rootState = lems.build(targetCB, eventManager);
+	    rootState = lems.build(targetBehavior, eventManager);
 	
 	    runDisplay = simCpt.getRunDisplay(rootState);	    
 	    
@@ -196,4 +199,10 @@ public class Sim extends LemsProcess {
         }
 
     }
+
+	public void printCB() {
+		ComponentBehaviorWriter cbw = new ComponentBehaviorWriter();
+		cbw.print(targetBehavior);
+		
+	}
 }

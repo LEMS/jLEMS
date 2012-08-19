@@ -71,7 +71,7 @@ public class MultiBuilder extends ChildBuilder {
 
 	@Override
 	public void consolidateComponentBehaviors() {
-		componentBehavior = componentBehavior.getConsolidatedComponentBehavior();
+		componentBehavior = componentBehavior.getConsolidatedComponentBehavior("(multi)");
 	}
 	
 	

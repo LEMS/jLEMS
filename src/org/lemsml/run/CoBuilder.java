@@ -43,7 +43,7 @@ public class CoBuilder extends ChildBuilder {
 	@Override
 	public void consolidateComponentBehaviors() {
 		 if (componentBehavior != null) {
-			 componentBehavior = componentBehavior.getConsolidatedComponentBehavior();
+			 componentBehavior = componentBehavior.getConsolidatedComponentBehavior("(cobuilder)");
 		 }	
 	}
 

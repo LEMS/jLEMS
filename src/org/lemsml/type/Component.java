@@ -700,9 +700,9 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	}
 	
 	
-	public ComponentBehavior makeConsolidatedCoponentBehavior() throws ContentError, ParseError {
+	public ComponentBehavior makeConsolidatedCoponentBehavior(String knownas) throws ContentError, ParseError {
 		ComponentBehavior cb = getComponentBehavior();
-	    ComponentBehavior ret = cb.makeConsolidatedBehavior();
+	    ComponentBehavior ret = cb.makeConsolidatedBehavior(knownas);
  	    return ret;
 	}
 	

@@ -88,7 +88,7 @@ public class PairsEventConnectionBuilder extends PostBuilder {
 	@Override
 	public void consolidateComponentBehaviors() {
 		 if (receiverCB != null) {
-			 receiverCB = receiverCB.getConsolidatedComponentBehavior();
+			 receiverCB = receiverCB.getConsolidatedComponentBehavior("(evtcon)");
 		 }	
 	}
 
