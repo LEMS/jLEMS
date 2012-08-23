@@ -18,6 +18,12 @@ public class ConditionAction {
 	}
 
 
+	public ConditionAction makeCopy() {
+		ConditionAction ret= new ConditionAction(condition.makeCopy());
+		ret.setAction(action.makeCopy());
+		return ret;
+	}
+	
 
 	public void setAction(ActionBlock ea) {
 		action = ea; 

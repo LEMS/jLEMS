@@ -1,6 +1,7 @@
 package org.lemsml.eval;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class DCon extends DVal {
 	
@@ -16,7 +17,7 @@ public class DCon extends DVal {
 	}
 
 	@Override
-	public DVal makePrefixedCopy(String pfx) {
+	public DVal makePrefixedCopy(String pfx, HashSet<String> stetHS) {
 		return makeCopy();
 	}
 	

@@ -2,8 +2,10 @@ package org.lemsml.eval;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import org.lemsml.run.DoublePointer;
+import org.lemsml.util.E;
 import org.lemsml.util.RuntimeError;
 
 public class DVar extends DVal {
@@ -22,8 +24,16 @@ public class DVar extends DVal {
 		return new DVar(varname);
 	}
 	
-	public DVar makePrefixedCopy(String pfx) {
-		return new DVar(pfx + varname);
+	public DVar makePrefixedCopy(String pfx, HashSet<String> stetHS) {
+		String pnm = "";
+		
+		E.info("XXX making prefixed copy " + pfx + " of " + varname + " " + stetHS.contains(varname));
+		if (stetHS.contains(varname)) {
+			pnm = varname;
+		} else {
+			pnm = pfx + varname;
+		}
+		return new DVar(pnm);
 	}
 	
 	public void set(HashMap<String, Double> valHM) {

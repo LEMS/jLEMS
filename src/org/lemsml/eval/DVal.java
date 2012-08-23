@@ -1,6 +1,7 @@
 package org.lemsml.eval;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public abstract class DVal {
 
@@ -15,6 +16,6 @@ public abstract class DVal {
 
 	public abstract DVal makeCopy();
 
-	public abstract DVal makePrefixedCopy(String pfx);
+	public abstract DVal makePrefixedCopy(String pfx, HashSet<String> stetHS);
 	
 }

@@ -1,6 +1,7 @@
 package org.lemsml.eval;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Power extends DOp {
 
@@ -12,8 +13,8 @@ public class Power extends DOp {
 		return new Power(left.makeCopy(), right.makeCopy());
 	}
 	
-	public Power makePrefixedCopy(String s) {
-		return new Power(left.makePrefixedCopy(s), right.makePrefixedCopy(s));
+	public Power makePrefixedCopy(String s, HashSet<String> stetHS) {
+		return new Power(left.makePrefixedCopy(s, stetHS), right.makePrefixedCopy(s, stetHS));
 	}
 	
 	public double eval() {

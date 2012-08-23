@@ -138,14 +138,12 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		}
 		for (FinalParam fp : finalParams) {
 			String sv = fp.getSValue();
-			sb.append("\n         " + fp.getName() + " ("
-					+ fp.getDimension().getName() + ") "
+			sb.append("\n         " + fp.getName() + " (" + fp.getDimension().getName() + ") "
 					+ (sv != null ? " = " + sv : ""));
 		}
 
 		return sb.toString();
 	}
-
 
 	
 	

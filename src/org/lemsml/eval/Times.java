@@ -1,6 +1,7 @@
 package org.lemsml.eval;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Times extends DOp {
 
@@ -13,8 +14,8 @@ public class Times extends DOp {
 		return new Times(left.makeCopy(), right.makeCopy());
 	}
 	
-	public Times makePrefixedCopy(String s) {
-		return new Times(left.makePrefixedCopy(s), right.makePrefixedCopy(s));
+	public Times makePrefixedCopy(String s, HashSet<String> stetHS) {
+		return new Times(left.makePrefixedCopy(s, stetHS), right.makePrefixedCopy(s, stetHS));
 	}
 
 	public double eval() {

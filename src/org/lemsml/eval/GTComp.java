@@ -7,7 +7,10 @@ public class GTComp extends BComp {
 		super(dvl, dvr);
 	}
 
-	 
+	public GTComp makeCopy() {
+		return new GTComp(left.makeCopy(), right.makeCopy());
+	}
+	
 	public boolean eval() {
 		return (left.eval() > right.eval());
 	}

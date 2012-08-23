@@ -7,7 +7,10 @@ public class LTComp extends BComp {
 		super(dvl, dvr);
 	}
 
-	 
+	public LTComp makeCopy() {
+		return new LTComp(left.makeCopy(), right.makeCopy());
+	}
+	
 	public boolean eval() {
 		return (left.eval() < right.eval());
 	}

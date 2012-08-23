@@ -8,7 +8,7 @@
     <Exposure name="fcond" dimension="none"/>
     
    
-    <Behavior>
+    <Behavior simultaneous="false">
         <StateVariable name="x" dimension="none"/>
         <DerivedVariable name="ex" dimension="none" value="exp(x)"/>
         <DerivedVariable name="q" dimension="none" value="ex / (1 + ex)"/>

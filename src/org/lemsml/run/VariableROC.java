@@ -1,6 +1,7 @@
 package org.lemsml.run;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 import org.lemsml.eval.DBase;
 import org.lemsml.util.RuntimeError;
@@ -37,8 +38,8 @@ public class VariableROC {
 		return rateexp.evalptr(varHM, pvarHM);
 	}
 
-	public VariableROC makeFlat(String pfx) {
-		return new VariableROC(pfx + varname, rateexp.makePrefixedCopy(pfx));
+	public VariableROC makeFlat(String pfx, HashSet<String> stetHS) {
+		return new VariableROC(pfx + varname, rateexp.makePrefixedCopy(pfx, stetHS));
 	}
 
 	public VariableROC makeCopy() {

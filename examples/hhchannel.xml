@@ -46,7 +46,7 @@
     <Requirement name="v" dimension="voltage"/>
     <Exposure name="fcond" dimension="none"/>
     
-    <Behavior>
+    <Behavior simultaneous="true">
         <StateVariable name="q" dimension="none"/>
         <DerivedVariable dimension="per_time" name="rf" select="Forward/r"/>
         <DerivedVariable dimension="per_time" name="rr" select="Reverse/r"/> 
@@ -65,7 +65,7 @@
     <Parameter name="conductance" dimension="conductance"/>
     <Children name="gates" type="HHGate"/>
     <Exposure name="g" dimension="conductance"/>
-    <Behavior>
+    <Behavior simultaneous="false">
         <DerivedVariable name="gatefeff" dimension="none" select="gates[*]/fcond" reduce="multiply"/>
         <DerivedVariable name="g" exposure="g" dimension="conductance" value="conductance * gatefeff"/>
     </Behavior>

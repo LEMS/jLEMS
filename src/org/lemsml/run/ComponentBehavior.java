@@ -79,6 +79,9 @@ public class ComponentBehavior {
 	// set true once done
 	boolean consolidated = false;
 	
+	// set if we're completely flat
+	boolean flattened = false;
+	
 	// flattenedCB is genuinely flat - it could be the root flattened one, or one of its children, in the process 
 	// of flattening the root.
 	ComponentBehavior flattenedCB = null;
@@ -254,10 +257,17 @@ public class ComponentBehavior {
         if (includeDerivedVariables) {
             
             for (PathDerivedVariable pdv : pathderiveds) {
+            	if (!varHM.containsKey(pdv.varname)) {
+            		throw new ContentError("No such pd variable " + pdv.varname + " in variables map: " + varHM);
+            	}
                 varHM.get(pdv.varname).set(pdv.eval(uin));
             }
 
             for (ExpressionDerivedVariable edv : exderiveds) {
+            	if (!varHM.containsKey(edv.varname)) {
+            		throw new ContentError("No such ed variable " + edv.varname + " in variables map: " + varHM);
+            	}
+            	
                 varHM.get(edv.varname).set(edv.evalptr(varHM));
             }
         }
@@ -511,8 +521,12 @@ public class ComponentBehavior {
 	
 	
 	public void addIndependentVariable(String vnm) {
-		indeps.add(vnm);
-	}
+		if (indeps.contains(vnm)) {
+			E.warning("Added the an independent variable again? " + vnm + " " + this);
+		} else {
+			indeps.add(vnm);
+		}
+ 	}
 
 	public void addRate(String name, DBase db) {
 		rates.add(new VariableROC(name, db));
@@ -527,7 +541,7 @@ public class ComponentBehavior {
 	}
 	 
 	
-	public void addConditionResponce(ConditionAction cr) {
+	public void addConditionResponse(ConditionAction cr) {
 		conditionResponses.add(cr);
 	 	
 	}
@@ -539,6 +553,9 @@ public class ComponentBehavior {
 	public ArrayList<ActionBlock> getInitBlocks() {
 		return initBlocks;
      }
+	
+	
+	
 	
 	
 	public void fix() {
@@ -646,6 +663,13 @@ public class ComponentBehavior {
 		inPorts.add(name);
 	}
 
+	public void addInPorts(ArrayList<String> pa) {
+		for (String s : pa) {
+			addInputPort(s);
+		}
+	}
+	
+	
 	public void addStateVaraible(String name) {
 		svars.add(name);
 	}
@@ -710,8 +734,8 @@ public class ComponentBehavior {
 	public ComponentBehavior makeConsolidatedBehavior(String knownas) {
 		ComponentBehavior ret = null;
 		if (simultaneous) {
-			E.info("********* Flattening " + cptid);
-			ret = makeFlattened(knownas);
+			E.info("********* Flattening " + knownas + " (id=" + cptid + ")");
+			ret = getFlattenedComponentBehavior(knownas);
 		} else {
 			ret = makeChildConsolidated(knownas);
 		}
@@ -762,6 +786,13 @@ public class ComponentBehavior {
 			multiHM.put(sm, fmcb);
 		}
 		
+		for (String sm : refHM.keySet()) {
+ 			ComponentBehavior cbr = refHM.get(sm);
+			ComponentBehavior fcbr = cbr.getConsolidatedComponentBehavior(sm);
+			refHM.put(sm,  fcbr);
+		}
+		
+		
 		if (builders != null) {
 			for (Builder b : builders) {
 				b.consolidateComponentBehaviors();
@@ -774,24 +805,42 @@ public class ComponentBehavior {
 	
 	public ComponentBehavior makeFlattened(String knownas) {	
 		Flattener flattener = new Flattener();
+
+		E.info("FLAT making flattened of " + typeName + " " + cptid + " " + indeps);
+		
 		addToFlattener(null, flattener);
 		
 		for (String sch : childHM.keySet()) {
 			ComponentBehavior cbch = childHM.get(sch);
-			
 			ComponentBehavior cbchflat = cbch.getFlattenedComponentBehavior(sch);
-			cbchflat.addToFlattener(sch, flattener);
-			
+			cbchflat.addToFlattener(sch, flattener);	
 		}
 		
-		// TODO - refs and multichildren?
+		for (String sm : multiHM.keySet()) {
+			E.info("multi child " + sm);
+			MultiComponentBehavior mcb = multiHM.get(sm);
+ 			int ictr = 0;
+			for (ComponentBehavior cbv : mcb.getCBs()) {
+				ComponentBehavior mcf = cbv.getFlattenedComponentBehavior(sm);
+				 mcf.addToFlattener(sm + ictr, flattener);
+				ictr += 1;
+			}	 
+		}
 		
+		for (String sm : refHM.keySet()) {
+ 			ComponentBehavior cbr = refHM.get(sm);
+			ComponentBehavior fcbr = cbr.getFlattenedComponentBehavior(sm);
+			fcbr.addToFlattener(sm, flattener);
+		}
+ 		
 		flattener.resolvePaths();
 		
 		ComponentBehavior ret = new ComponentBehavior(cptid, typeName);
-		ret.consolidated = true;
+		ret.flattened = true;
 		
 		flattener.exportTo(ret);
+		
+		ret.fix();
 		
 		return ret;
 	}
@@ -804,6 +853,13 @@ public class ComponentBehavior {
 			fullpfx = pfx + "_";
 		}
 			
+		HashSet<String> indHS = new HashSet<String>();
+		indHS.addAll(indeps);
+		
+		for (String s : indeps) {
+			fl.addIndependentVariable(s);
+		}
+		
 		for (String s : svars) {
 			fl.addStateVariable(fullpfx + s);
 		}
@@ -811,10 +867,10 @@ public class ComponentBehavior {
 			fl.add(pdv.makeFlat(fullpfx));
 		}
 		for (ExpressionDerivedVariable edv : exderiveds) {
-			fl.add(edv.makeFlat(fullpfx));
+			fl.add(edv.makeFlat(fullpfx, indHS));
 		}
 		for (VariableROC vroc : rates) {
-			fl.add(vroc.makeFlat(fullpfx));
+			fl.add(vroc.makeFlat(fullpfx, indHS));
 		}
 	}
 	
@@ -916,6 +972,21 @@ public class ComponentBehavior {
 		for (FixedQuantity fq : fixeds) {
 			ret.addFixed(fq.name, fq.value);
 		}
+		
+		ret.addInPorts(inPorts);
+		
+		for (ConditionAction ca : conditionResponses) {
+			ret.addConditionResponse(ca.makeCopy());
+		}
+		
+		for (ActionBlock ab : initBlocks) {
+			ret.addInitialization(ab.makeCopy());
+		}
+		
+		for (String s : eventHM.keySet()) {
+			ret.addEventResponse(new EventAction(s, eventHM.get(s).makeCopy()));
+		}
+		
 		
 		if (runConfig != null) {
 			ret.addRunConfig(runConfig.makeCopy());

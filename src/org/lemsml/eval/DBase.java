@@ -3,6 +3,7 @@ package org.lemsml.eval;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import org.lemsml.run.DoublePointer;
 import org.lemsml.util.RuntimeError;
@@ -61,8 +62,8 @@ public class DBase {
 		return ret;
 	}
 
-	public DBase makePrefixedCopy(String pfx) {
-		DBase ret = new DBase(root.makePrefixedCopy(pfx));
+	public DBase makePrefixedCopy(String pfx, HashSet<String> stetHS) {
+		DBase ret = new DBase(root.makePrefixedCopy(pfx, stetHS));
 		return ret;
 	}
 	

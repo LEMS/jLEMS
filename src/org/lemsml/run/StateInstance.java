@@ -449,7 +449,6 @@ public class StateInstance implements StateRunnable {
 		 
 		} else {
  			if (varHM.containsKey(varname)) {
-		
 			ret = varHM.get(varname).get();
 			
 		} else {
@@ -460,22 +459,22 @@ public class StateInstance implements StateRunnable {
 		}
 
 		if (Double.isNaN(ret)) {
-			StringBuilder err = new StringBuilder("Problem getting exposed var " + varname + " in: " + this + "\n" + "Exposed: " + expHM
-					+ "\n" + "Vars: " + varHM);
+			StringBuilder err = new StringBuilder("Problem getting exposed var " + varname + " in: " + this + "\n" + 
+					"Exposed: " + expHM + "\n" + "Vars: " + varHM + "\n");
 			if (childA != null) {
 				for (StateInstance si : childA) {
-					err.append("\nChild: " + si + ", vars: " + si.varHM);
+					err.append("Child: " + si + ", vars: " + si.varHM + "\n");
 				}
 			} else {
-				err.append("\nchildA is null");
+				err.append("childA is null\n");
 			}
 			if (childHM != null) {
 				for (String k : childHM.keySet()) {
 					StateInstance si = childHM.get(k);
-					err.append("\nChild " + k + ": " + si + ", vars: " + si.varHM);
+					err.append("Child " + k + ": " + si + ", vars: " + si.varHM + "\n");
 				}
 			} else {
-				err.append("\nchildHM is null");
+				err.append("childHM is null\n");
 			}
 			throw new RuntimeError(err.toString());
 		}

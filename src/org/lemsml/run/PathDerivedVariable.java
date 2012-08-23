@@ -12,7 +12,7 @@ public class PathDerivedVariable {
     String varname;
     String path;
     
-    // TODO deprecate
+    @Deprecated
     String onAbsent;
     String func;
     String tgtvar;
@@ -33,9 +33,10 @@ public class PathDerivedVariable {
         String[] bits = path.split("/");
         tgtvar = bits[bits.length - 1];
         
-        if (path.indexOf("[") > 0) {
+
+        if (path.indexOf("[") > 0 || path.indexOf("*") > 0) {
             simple = false; 
-           parseFunc(p);
+            parseFunc(p);
          
         } else {
             simple = true;
@@ -270,9 +271,47 @@ public class PathDerivedVariable {
     	if (simple) {
     		ret = pfx + path.replaceAll("/", "_");
     	} else {
-    		E.missing("Cant flattten " + path);
+    		
+    		String wc = "[*]/";
+    		if (path.indexOf(wc) > 0) {
+    			int iwc = path.indexOf(wc);
+    			String ba = path.substring(0, iwc);
+    			String bb = path.substring(iwc + wc.length(), path.length());
+    			ret = pfx + ba + "*_" + bb;
+    			E.info("Partially flattened " + path + " to " + ret);
+    		} else {
+    			E.missing("Cant flattten " + path);
+    		}
     	}
     	return ret;
     }
-    
+
+
+	public String getOperatorSymbol() {
+		String ret = "";
+		if (mode == SUM) {
+			ret = "+";
+		} else if (mode == PROD) {
+			ret = "*";
+		}
+		return ret;
+	}
+
+
+	public boolean isSum() {
+		boolean ret = false;
+		if (mode == SUM) {
+			ret = true;
+		}
+		return ret;
+	}
+	
+	public boolean isProduct() {
+		boolean ret = false;
+		if (mode == PROD) {
+			ret = true;
+		}
+		return ret;
+	}
+	
 }

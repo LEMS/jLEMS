@@ -2,23 +2,41 @@ package org.lemsml.run;
 
 import java.util.ArrayList;
 
+import org.lemsml.eval.DBase;
+import org.lemsml.eval.DCon;
+import org.lemsml.eval.DOp;
+import org.lemsml.eval.DVal;
+import org.lemsml.eval.DVar;
+import org.lemsml.eval.Plus;
+import org.lemsml.eval.Times;
 import org.lemsml.util.E;
 
 public class Flattener {
 
-	
+	ArrayList<String> indepsA = new ArrayList<String>();
 	ArrayList<PathDerivedVariable> pdvA = new ArrayList<PathDerivedVariable>();
 	ArrayList<ExpressionDerivedVariable> edvA = new ArrayList<ExpressionDerivedVariable>();
 	ArrayList<VariableROC> rocA = new ArrayList<VariableROC>();
 	ArrayList<String> svA = new ArrayList<String>();
 	
 	
+	public void addIndependentVariable(String s) {
+		if (indepsA.contains(s)) {
+			// fine - lots of children could 
+		} else {
+			indepsA.add(s);
+		}
+	}
+	
+	
 	public void add(PathDerivedVariable pdv) {
-		pdvA.add(pdv);
+ 		pdvA.add(pdv);
+ 		E.info("added " + pdv);
 	}
 
 	public void add(ExpressionDerivedVariable edv) {
 		edvA.add(edv);
+		E.info("added edv " + edv);
 	}
 
 	public void add(VariableROC vroc) {
@@ -27,23 +45,158 @@ public class Flattener {
 
 	public void addStateVariable(String sv) {
 		svA.add(sv);
+		E.info("Added sv " + sv);
 	}
 
 	public void resolvePaths() {
-		E.warning("may need to resolve paths??");
+		resolvePathDerived();
+		removeLocalIndeps();
 	}
+	
+	
+	private void removeLocalIndeps() {
+		// one of the children may have added an indep which is actually our own state variable (not a parent)
+		// need to remove these here
+		// TODO - better - don't add in the first place
+		ArrayList<String> wk = new ArrayList<String>();
+		for (String s : indepsA) {
+			if (svA.contains(s)) {
+				E.info("Flattener removing indep " + s + " as it is a local state variable");
+			} else {
+				wk.add(s);
+			}
+		}
+		indepsA = wk;
+	}
+	
+	
+	private void resolvePathDerived() {
+		ArrayList<PathDerivedVariable> pa = new ArrayList<PathDerivedVariable>();
+		
+		for (PathDerivedVariable pdv : pdvA) {
+			String path = pdv.getPath();
+			if (path.indexOf("*") > 0) {
+				
+				String[] elts = expandWildcard(path);
+				E.info("Resolving wildcard path " + path + " n matches=" + elts.length);
+				
+				if (elts.length == 0) {
+					DCon dcon = new DCon(0.);
+					DBase db = new DBase(dcon);
+					edvA.add(new ExpressionDerivedVariable(pdv.getVarName(), db));
+					
+				} else {
+					DVal wk = new DVar(elts[0]);
+				  
+					 for (int i = 1; i < elts.length; i++) {
+						 DVar dv = new DVar(elts[i]);
+						 
+						 if (pdv.isSum()) {
+							 wk = new Plus(wk, dv);
+						 
+						 } else if (pdv.isProduct()) {
+							 wk = new Times(wk, dv);
+						 } else {
+							 E.error("Unhandled operator " + pdv);
+						 }
+					}
+					DBase db = new DBase(wk);
+					edvA.add(new ExpressionDerivedVariable(pdv.getVarName(), db));
+				}
+				
+			 
+				
+				
+			} else {
+				pa.add(pdv);
+			}
+		} 
+		pdvA = pa;
+	}
+	
+	
+	
+	private String[] expandWildcard(String path) {
+		ArrayList<String> wk = new ArrayList<String>();
+		
+		int ia = path.indexOf("*");
+		String sa = path.substring(0, ia);
+		String sb = path.substring(ia+1, path.length());
+		
+		ArrayList<String> avn = getVarNames();
+		
+		for (String vnm : avn) {
+			if (vnm.startsWith(sa) && vnm.endsWith(sb)) {
+				String inner = vnm.substring(sa.length(), vnm.length() - sb.length());
+				E.info("match " + sa + " * " + sb + " from " + vnm + " leaves " + inner);
+					
+				if (isNumeric(inner)) {
+					wk.add(vnm);
+				}
+			}
+			
+		}
+		
+		return wk.toArray(new String[wk.size()]);
+	}
+	
+	
+	private ArrayList<String> getVarNames() {
+		ArrayList<String> ret = new ArrayList<String>();
+		ret.addAll(svA);
+		ret.addAll(indepsA);
+		for (PathDerivedVariable pdv : pdvA) {
+ 			ret.add(pdv.getVarName());
+ 		}
+ 		
+		for (ExpressionDerivedVariable edv : edvA) {
+ 			ret.add(edv.getVarName());
+ 		}
+ 		
+		for (VariableROC vr : rocA) {
+ 			ret.add(vr.getVarName());
+ 		}
+		return ret;
+	}
+	
+	
+	
+	private boolean isNumeric(String s) {
+		boolean ret = true;
+	 
+		for (char c : s.toCharArray()) {
+			if (!Character.isDigit(c)) {
+				ret = false;
+				break;
+		    }
+		}
+		return ret;
+	}
+	
+	
+	
+	
+	
 
 	public void exportTo(ComponentBehavior ret) {
- 		for (String sv : svA) {
+
+		for (String s : indepsA) {
+			ret.addIndependentVariable(s);
+		}
+		
+		for (String sv : svA) {
  			ret.addStateVariable(sv);
  		}
- 		for (PathDerivedVariable pdv : pdvA) {
+ 		
+		for (PathDerivedVariable pdv : pdvA) {
  			ret.addPathDerivedVariable(pdv);
  		}
- 		for (ExpressionDerivedVariable edv : edvA) {
+ 		
+		for (ExpressionDerivedVariable edv : edvA) {
  			ret.addExpressionDerivedVariable(edv);
  		}
- 		for (VariableROC vr : rocA) {
+ 		
+		for (VariableROC vr : rocA) {
  			ret.addVariableROC(vr);
  		}
 	}

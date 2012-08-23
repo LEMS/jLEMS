@@ -7,6 +7,9 @@ public class EQComp extends BComp {
 		super(dvl, dvr);
 	}
 
+	public EQComp makeCopy() {
+		return new EQComp(left.makeCopy(), right.makeCopy());
+	}
 	 
 	public boolean eval() {
 		return (left.eval() == right.eval());

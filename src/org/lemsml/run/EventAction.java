@@ -11,6 +11,11 @@ public class EventAction {
 		 portName = pn;
 	}
 
+	public EventAction(String pn, ActionBlock ab) {
+		portName = pn;
+		action = ab;
+	}
+	
 	public String getPortName() {
 		return portName;
 	}

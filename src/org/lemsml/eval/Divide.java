@@ -1,6 +1,7 @@
 package org.lemsml.eval;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Divide extends DOp {
 
@@ -14,8 +15,8 @@ public class Divide extends DOp {
 	}
 	
 	 
-	public Divide makePrefixedCopy(String s) {
-		return new Divide(left.makePrefixedCopy(s), right.makePrefixedCopy(s));
+	public Divide makePrefixedCopy(String s, HashSet<String> stetHS) {
+		return new Divide(left.makePrefixedCopy(s, stetHS), right.makePrefixedCopy(s, stetHS));
 	}
 	
 	

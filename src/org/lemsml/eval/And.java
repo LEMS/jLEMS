@@ -9,6 +9,10 @@ public class And extends BOp {
 		super(dvl, dvr);
 	}
 	
+	public And makeCopy() {
+		return new And(left.makeCopy(), right.makeCopy());
+	}
+	
 	public boolean eval() {
 		return left.eval() && right.eval();
 	}

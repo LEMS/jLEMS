@@ -16,7 +16,7 @@
     <Requirement name="v" dimension="voltage"/>
     <Exposure name="current" dimension="current"/>
     <Exposure name="geff" dimension="conductance"/>
-    <Behavior>
+    <Behavior simultaneous="false">
          <Build>
             <ChildInstance component="channel"/>
         </Build>
@@ -36,7 +36,7 @@
     <Parameter name="v0" dimension="voltage"/>
     <Exposure name="v" dimension="voltage"/>
     
-    <Behavior simultaneous="false">
+    <Behavior simultaneous="true">
         <OnStart>
              <StateAssignment variable="v" value="v0"/>
         </OnStart>

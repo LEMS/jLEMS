@@ -1,6 +1,7 @@
 package org.lemsml.run;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 import org.lemsml.eval.DBase;
 import org.lemsml.util.RuntimeError;
@@ -27,11 +28,11 @@ public class ExpressionDerivedVariable {
 		rateexp = db;
 	}
 
-	public ExpressionDerivedVariable makeFlat(String pfx) {
+	public ExpressionDerivedVariable makeFlat(String pfx, HashSet<String> indHS) {
 		ExpressionDerivedVariable edv = new ExpressionDerivedVariable();
 		edv.varname = pfx + varname;
 		edv.exposeAs = pfx + exposeAs;
-		edv.rateexp = rateexp.makePrefixedCopy(pfx);
+		edv.rateexp = rateexp.makePrefixedCopy(pfx, indHS);
 		return edv;
 	}
 	

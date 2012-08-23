@@ -1,6 +1,7 @@
 package org.lemsml.eval;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Plus extends DOp {
 
@@ -13,8 +14,8 @@ public class Plus extends DOp {
 		return new Plus(left.makeCopy(), right.makeCopy());
 	}
 	
-	public Plus makePrefixedCopy(String s) {
-		return new Plus(left.makePrefixedCopy(s), right.makePrefixedCopy(s));
+	public Plus makePrefixedCopy(String s, HashSet<String> stetHS) {
+		return new Plus(left.makePrefixedCopy(s, stetHS), right.makePrefixedCopy(s, stetHS));
 	}
 	
 	public double eval() {

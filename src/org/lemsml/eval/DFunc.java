@@ -1,6 +1,7 @@
 package org.lemsml.eval;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.lemsml.type.Lems;
 import org.lemsml.util.E;
@@ -22,8 +23,8 @@ public class DFunc extends DVal {
 	}
 
 	@Override
-	public DVal makePrefixedCopy(String pfx) {
-		return new DFunc(fname, arg.makePrefixedCopy(pfx));
+	public DVal makePrefixedCopy(String pfx, HashSet<String> stetHS) {
+		return new DFunc(fname, arg.makePrefixedCopy(pfx, stetHS));
 	}
 	
 	

@@ -21,6 +21,13 @@ public class BBase {
 		vars = val.toArray(new DVar[val.size()]);
 	}
 
+	
+	public BBase makeCopy() {
+		BBase ret = new BBase(root.makeCopy());
+		return ret;
+	}
+	
+	
     @Override
     public String toString() {
         return "BBase{" + "root=" + root + ", vars=" + Arrays.toString(vars) + '}';

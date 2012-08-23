@@ -9,6 +9,12 @@ public class Or extends BOp {
 		super(dvl, dvr);
 	}
 	
+	
+	public Or makeCopy() {
+		return new Or(left.makeCopy(), right.makeCopy());
+	}
+	
+	
 	public boolean eval() {
 		return left.eval() || right.eval();
 	}

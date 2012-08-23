@@ -185,7 +185,7 @@ public class Behavior  {
 		
 		for (Requirement req : getComponentType().getRequirements()) {
 			p_requiredVars.add(new RequiredVar(req.getName(), req.getDimension()));
-		}
+ 		}
 		
 		for (Exposure exp : getComponentType().getExposures()) {
 			p_exposedVars.add(new ExposedVar(exp.getName(), exp.getDimension()));
@@ -438,7 +438,7 @@ public class Behavior  {
 			 ConditionAction cr = new ConditionAction(bb);
 			 ActionBlock ea = oc.makeEventAction(fixedHM);
 			 cr.setAction(ea);
-			 ret.addConditionResponce(cr);
+			 ret.addConditionResponse(cr);
 		 }
 		 
 		 
