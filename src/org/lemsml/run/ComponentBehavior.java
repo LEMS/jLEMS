@@ -7,6 +7,8 @@ import java.util.Map.Entry;
 
 import org.lemsml.eval.BBase;
 import org.lemsml.eval.DBase;
+import org.lemsml.sim.ComponentBehaviorVisitor;
+import org.lemsml.sim.OutputCollector;
 import org.lemsml.type.Component;
 import org.lemsml.util.ContentError;
 import org.lemsml.util.E;
@@ -62,6 +64,9 @@ public class ComponentBehavior {
 	HashSet<String> exposedNames = new HashSet<String>();
 	HashMap<String, String> exposedMap = new HashMap<String, String>();
 	
+	ArrayList<RuntimeOutput> runtimeOutputs = new ArrayList<RuntimeOutput>();
+	
+	ArrayList<RuntimeRecorder> runtimeRecorders = new ArrayList<RuntimeRecorder>();
 	
 	RunConfig runConfig = null;
 	
@@ -341,7 +346,7 @@ public class ComponentBehavior {
 	public void eulerAdvance(StateInstance uin, StateRunnable parent, double t, double dt) throws RuntimeError, ContentError {
  		HashMap<String, DoublePointer> varHM = uin.getVarHM();
 		varHM.get("t").set(t);
-		
+			
 		evalDerived(uin, varHM, parent);
 		
 		for (VariableROC vroc : rates) {
@@ -371,7 +376,8 @@ public class ComponentBehavior {
 	// created by by getConsolidatedComponentDynamics, which generally 
 	// absorbs some or all of the child objects within a new dynamics definition.
 	public void rk4Advance(StateInstance uin, StateRunnable parent, double t, double dt) throws RuntimeError, ContentError {
- 		HashMap<String, DoublePointer> varHM = uin.getVarHM();
+			
+		HashMap<String, DoublePointer> varHM = uin.getVarHM();
 		varHM.get("t").set(t);
 		
 		if (der1 == null) {
@@ -424,6 +430,11 @@ public class ComponentBehavior {
 	    evalDerivs(val4,  t + dt, der4);
 		  
 		
+	    for (String s : der1.keySet()) {
+	        E.info("Derivs " + s + " " + der1.get(s) + " " + der2.get(s) + " " + der3.get(s) + " " + der4.get(s));
+	    }
+	    
+	    
 	    for (VariableROC vroc : rates) {
 	    	String sn = vroc.varname;
 	    	double v0 = val1.get(sn);
@@ -448,6 +459,10 @@ public class ComponentBehavior {
 	void evalDerivs(HashMap<String, Double> v0, double t, HashMap<String, Double> ret) throws ContentError {
 		
 		v0.put("t", t);
+		//for (PathDerivedVariable pdv : pathderiveds) {
+		//	v0.put(pdv.varname, pdv.eval(v0));
+		//}
+		
 		for (ExpressionDerivedVariable edv : exderiveds) {
 			v0.put(edv.varname, edv.eval(v0));
 		}
@@ -462,14 +477,12 @@ public class ComponentBehavior {
 	void applyDerivs(HashMap<String, Double> v0, HashMap<String, Double> der, 
 			double t, double delta, HashMap<String, Double> ret) {
 		
-		for (Entry<String, Double> me : v0.entrySet()) {
-			String sk = me.getKey();
+		for (String sk : v0.keySet()) {
 			ret.put(sk, v0.get(sk));
 		}
 		
 		
-		for (Entry<String, Double> me : der.entrySet()) {
-			String sk = me.getKey();
+		for (String sk : der.keySet()) {
 			ret.put(sk, v0.get(sk) + delta * der.get(sk));
 		}
 		
@@ -1005,6 +1018,27 @@ public class ComponentBehavior {
 
 	public HashMap<String, String> getExposureMap() {
 		return exposedMap;
+	}
+
+	public void addDataDisplay(String id, String ttl) {
+		runtimeOutputs.add(new RuntimeOutput(id, ttl));
+	}
+
+	
+	public void addRecorder(String id, String q, String sc, String col, String display) {
+		runtimeRecorders.add(new RuntimeRecorder(id, q, sc, col, display));
+	}
+	
+	
+	public void visitAll(ComponentBehaviorVisitor v) {
+		v.visit(this);
+		
+		for (String s : childHM.keySet()) {
+			childHM.get(s).visitAll(v);
+		}
+		for (String s : multiHM.keySet()) {
+			multiHM.get(s).visitAll(v);
+		}
 	}
 
 

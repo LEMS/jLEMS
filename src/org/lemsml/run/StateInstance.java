@@ -235,11 +235,13 @@ public class StateInstance implements StateRunnable {
 			}
 		}
 
-		if (RUN.method == RUN.RK4) {
-			uclass.rk4Advance(this, parent, t, dt);
+		if (RUN.method == RUN.RK4 || RUN.method == RUN.EULER) {
 
-		} else if (RUN.method == RUN.EULER) {
-			uclass.eulerAdvance(this, parent, t, dt);
+			if (uclass.flattened && RUN.method == RUN.RK4) {
+				uclass.rk4Advance(this, parent, t, dt);
+			} else {
+				uclass.eulerAdvance(this, parent, t, dt);
+			}
 		}
 
 		if (hasRegimes) {

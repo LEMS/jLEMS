@@ -603,9 +603,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		type = scl;
 	}
 
-	public RunDisplay getRunDisplay(StateRunnable sr) throws ContentError {
-		return r_type.getBehavior().makeRunDisplay(this, sr);
-	}
+	
 
 	public String getTextParam(String pnm) {
 		String ret = null;

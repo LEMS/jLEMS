@@ -69,6 +69,8 @@ public class Behavior  {
 	
 	public LemsCollection <Run> runs = new LemsCollection<Run>();
 	
+	public LemsCollection <DataDisplay> dataDisplays = new LemsCollection<DataDisplay>();
+	
 	public LemsCollection <Build> builds = new LemsCollection<Build>();
 	
 	public LemsCollection <Regime> regimes = new LemsCollection<Regime>();
@@ -475,8 +477,24 @@ public class Behavior  {
 		 
 		 if (runs.size() > 0) {
 			 Run run = runs.first();
-			 ret.addRunConfig(run.getTargetComponent(cpt), run.getDoubleStep(cpt), run.getDoubleTotal(cpt));
+			 if (run.component != null) {
+				 ret.addRunConfig(run.getTargetComponent(cpt), run.getDoubleStep(cpt), run.getDoubleTotal(cpt));
+			 }
 		 }
+		 
+		 if (dataDisplays.size() > 0) {
+			 for (DataDisplay dd : dataDisplays) {
+				 ret.addDataDisplay(cpt.id, cpt.getTextParam(dd.title));
+			 }
+		 }
+		 
+		 if (records.size() > 0) {
+			 for (Record r : records) {
+				 ret.addRecorder(cpt.id, cpt.getTextParam(r.quantity), cpt.getTextParam(r.scale), r.color, 
+						 cpt.getTextParam(r.display));
+			 }
+		 }
+		 
 		 
 		if (builds.size() > 0) {
 			for (Build b : builds) {
@@ -498,8 +516,8 @@ public class Behavior  {
 	}
 	
 
-	public RunDisplay makeRunDisplay(Component cpt, StateRunnable sr) throws ContentError {
-		RunDisplay ret = new RunDisplay(sr);
+	public RunDisplay makeRunDisplay(Component cpt) throws ContentError {
+		RunDisplay ret = new RunDisplay();
 
 		for (Show show : shows) {
 			ret.addShow(cpt, show);

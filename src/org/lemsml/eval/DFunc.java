@@ -75,5 +75,13 @@ public class DFunc extends DVal {
 		arg.recAdd(val);
 	}
 	 
+	public void substituteVariableWith(String var, String sub) {
+		arg.substituteVariableWith(var, sub);
+	}
+
+	@Override
+	public boolean variablesIn(HashSet<String> known) {
+		return arg.variablesIn(known);
+	}
  
 }

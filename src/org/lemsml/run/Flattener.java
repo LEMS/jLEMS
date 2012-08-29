@@ -1,6 +1,8 @@
 package org.lemsml.run;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 
 import org.lemsml.eval.DBase;
 import org.lemsml.eval.DCon;
@@ -31,7 +33,7 @@ public class Flattener {
 	
 	public void add(PathDerivedVariable pdv) {
  		pdvA.add(pdv);
- 		E.info("added " + pdv);
+ 		E.info("added pdv " + pdv);
 	}
 
 	public void add(ExpressionDerivedVariable edv) {
@@ -50,8 +52,56 @@ public class Flattener {
 
 	public void resolvePaths() {
 		resolvePathDerived();
+		substitutePathDerived();
 		removeLocalIndeps();
+
+		sortExpressions();
 	}
+	
+	
+	private void sortExpressions() {
+		ArrayList<ExpressionDerivedVariable> totalAdded = new ArrayList<ExpressionDerivedVariable>();
+		HashSet<String> known = new HashSet<String>();
+		known.addAll(indepsA);
+		known.addAll(svA);
+		for (VariableROC vr : rocA) {
+			known.add(vr.getVarName());
+		}
+			
+		
+		ArrayList<ExpressionDerivedVariable> wksrc = new ArrayList<ExpressionDerivedVariable>();
+		wksrc.addAll(edvA);
+		
+		int nadded = 1;
+		while (nadded > 0) {
+			nadded = 0;
+			
+			ArrayList<ExpressionDerivedVariable> justAdded = new ArrayList<ExpressionDerivedVariable>();
+			for (ExpressionDerivedVariable edv : wksrc) {
+				if (edv.onlyDependsOn(known)) {
+					justAdded.add(edv);
+					totalAdded.add(edv);
+					known.add(edv.getVarName());
+					nadded += 1;
+				}
+			}
+			E.info("sort cycle nadded=" + nadded);
+			wksrc.removeAll(justAdded);
+		}
+		
+		if (totalAdded.size() == edvA.size()) {
+			// OK - added them all;
+		} else {
+			E.error("Not added all expressions while sorting? total=" + edvA.size() + " added=" + totalAdded.size());
+			E.info("Known are " + known);
+			for (ExpressionDerivedVariable edv : wksrc) {
+				E.info("   not added " + edv.getExpressionString());
+			}
+		}
+		
+		edvA = totalAdded;
+	}
+	
 	
 	
 	private void removeLocalIndeps() {
@@ -112,6 +162,31 @@ public class Flattener {
 			}
 		} 
 		pdvA = pa;
+	}
+	
+	
+	private void substitutePathDerived() {
+		for (PathDerivedVariable pdv : pdvA) {
+			String vnm = pdv.getVarName();
+			String pth = pdv.getPath();
+			
+			E.info("ZZZ sub time " + pth + " " + vnm);
+			
+			if (vnm.equals(pth)) {
+				// degenerate - just leave out
+			} else {
+				for (ExpressionDerivedVariable edv : edvA) {
+					edv.substituteVariableWith(vnm, pth);
+				}
+				
+				for (VariableROC vroc : rocA) {
+					vroc.substituteVariableWith(vnm, pth);
+				}
+			}
+		}
+		
+		//now discard the existing pdvs
+		pdvA = new ArrayList<PathDerivedVariable>();
 	}
 	
 	

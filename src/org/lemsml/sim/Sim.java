@@ -2,6 +2,8 @@ package org.lemsml.sim;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.lemsml.display.ComponentBehaviorWriter;
 import org.lemsml.display.DataViewer;
@@ -12,6 +14,8 @@ import org.lemsml.run.ConnectionError;
 import org.lemsml.run.EventManager;
 import org.lemsml.run.RunConfig;
 import org.lemsml.run.RunDisplay;
+import org.lemsml.run.RuntimeOutput;
+import org.lemsml.run.RuntimeRecorder;
 import org.lemsml.run.StateInstance;
 import org.lemsml.type.Component;
 import org.lemsml.type.Lems;
@@ -24,20 +28,18 @@ import org.lemsml.util.RuntimeError;
 
 public class Sim extends LemsProcess {
 
-    // disable display output
-    private static boolean disableFrames = false;
-
+   
     ComponentBehavior rootBehavior;
     ComponentBehavior targetBehavior;
     
-    RunConfig runConfig;
-    RunDisplay runDisplay;
-    StateInstance rootState;
+     
+    HashMap<String, DataViewer> dvHM;
     
-    File reportFile = null;
-    File timesFile = null;
-
+    ArrayList<RuntimeRecorder> runtimeRecorders;
     
+    ArrayList<RunConfig> runConfigs;
+    
+    EventManager eventManager;
     
     
     public Sim(Class<?> c, String fnm) {
@@ -57,20 +59,10 @@ public class Sim extends LemsProcess {
        super(lems);
     }
 
-    public static boolean isDisableFrames() {
-        return disableFrames;
-    }
-
-    public static void setDisableFrames(boolean df) {
-        disableFrames = df;
-    }
-   
+    
+    	
+    	
     public void build() throws ContentError, ConnectionError, ParseError {
-    	build(false);
-    }
-    	
-    	
-    public void build(boolean consolidate) throws ContentError, ConnectionError, ParseError {
     	
 	    Target dr = lems.getTarget();
 	
@@ -79,77 +71,81 @@ public class Sim extends LemsProcess {
 	    if (simCpt == null) {
 	        E.error("No such component: " + dr.component + " as referred to by default simulation.");
 	        E.error(lems.textSummary());
+	        throw new ContentError("No such component " + dr.component);
 	    }
 	
+	    
 	    E.info("Simulation component: " + simCpt);
 	
 	    rootBehavior = simCpt.getComponentBehavior();
 	    
-	    runConfig = rootBehavior.getRunConfig();
-	
-	    Component runCpt = runConfig.getTarget();
-	    
-	    EventManager eventManager = new EventManager();
-	
-		targetBehavior = runCpt.getComponentBehavior();
-		
-		 if (consolidate) {
-			 E.info("Getting consolidated version of root component");
-			 targetBehavior = targetBehavior.makeConsolidatedBehavior("ROOT");
-		}
-		
-	    rootState = lems.build(targetBehavior, eventManager);
-	
-	    runDisplay = simCpt.getRunDisplay(rootState);	    
-	    
-	    if (dr.reportFile != null) {
-	    	reportFile = new File(dr.reportFile);
+	   
+	    // collect everything in the ComponentBehavior tree that makes a display
+	    ArrayList<RuntimeOutput> runtimeOutputs = new ArrayList<RuntimeOutput>();
+	    OutputCollector oc = new OutputCollector(runtimeOutputs);
+	    rootBehavior.visitAll(oc);
+	   
+	    // build the displays and keep them in dvHM
+	    dvHM = new HashMap<String, DataViewer>();
+	    for (RuntimeOutput ro : runtimeOutputs) {
+	    	dvHM.put(ro.getID(), DataViewerFactory.getFactory().newDataViewer(ro.getTitle()));
 	    }
-	    if (dr.timesFile != null) {
-	    	timesFile = new File(dr.timesFile);
-	    }    
+	     
+	    runtimeRecorders = new ArrayList<RuntimeRecorder>();
+	    RecorderCollector rc = new RecorderCollector(runtimeRecorders);
+	    rootBehavior.visitAll(rc);
+	    
+	    
+	    
+	    runConfigs = new ArrayList<RunConfig>();
+	    RunConfigCollector rcc = new RunConfigCollector(runConfigs);
+	    rootBehavior.visitAll(rcc);
+	    
+	    
+	    
+	    eventManager = new EventManager();
+	     
 	}
 
 
-    public void run() throws ConnectionError, ContentError, RuntimeError, IOException {
-        run(true);
-    }
-
-    public void run(boolean showFrame) throws ConnectionError, ContentError, RuntimeError, IOException {
-
-        runUserDefined(showFrame);
-
+   
+    public void run() throws ConnectionError, ContentError, RuntimeError, IOException, ParseError {
+    	
+    	for (RunConfig rc : runConfigs) {
+    		run(rc);
+    	}
         E.info("Done");
     }
 
-    public void runUserDefined() throws ConnectionError, ContentError, RuntimeError, IOException {
-        runUserDefined(true);
-    }
-
+  
     
     
-    public void runUserDefined(boolean showFrame) throws ConnectionError, ContentError, RuntimeError, IOException {
+    public void run(RunConfig rc) throws ConnectionError, ContentError, RuntimeError, IOException, ParseError {
 
-        RunnableAccessor ra = new RunnableAccessor(rootState);
+    	Component runCpt = rc.getTarget();
+  	    	
+  		targetBehavior = runCpt.getComponentBehavior();
+  	 
+  		
+  	    StateInstance rootState = lems.build(targetBehavior, eventManager);
+  	
+  	    RunnableAccessor ra = new RunnableAccessor(rootState);
+  	    
+  	    
+  	    for (RuntimeRecorder rr : runtimeRecorders) {
+  	    	rr.connectRunnable(ra, dvHM.get(rr.getDisplay()));
+  	    }
+  	    
 
-        runDisplay.connectRunnable(ra);
+        double dt = rc.getTimestep();
+        int nstep = (int) Math.round(rc.getRuntime() / dt);
 
-        DataViewer sv = DataViewerFactory.getFactory().newDataViewer();
-
-        double dt = runConfig.getTimestep();
-        int nstep = (int) Math.round(runConfig.getRuntime() / dt);
-
-        E.info("Running for " + nstep + " steps, with " + runDisplay.getDisplayItems().size() + " display items");
+        E.info("Running for " + nstep + " steps");
 
       
-
         StringBuilder info = new StringBuilder("#Report of running simulation with LEMS Interpreter\n");
         StringBuilder times = new StringBuilder();
-
-        if (reportFile != null) {
-            E.info("Simulation report will go in " + reportFile.getAbsolutePath());
-        }
-
+ 
         long start = System.currentTimeMillis();
   
         double t = 0;
@@ -163,12 +159,11 @@ public class Sim extends LemsProcess {
         		eventManager.advance(t);
                 rootState.advance(null, t, dt);
         	}
-
-            if (runDisplay == null) {
-                rootState.exportState("", t, sv);
-            } else {
-                runDisplay.appendState(t, sv);
-            }
+        	
+        	for (RuntimeRecorder rr : runtimeRecorders) {
+        		rr.appendState(t);
+        	}
+           
             times.append((float) (t * 1000)).append("\n");
             t += dt;
         }
@@ -177,29 +172,9 @@ public class Sim extends LemsProcess {
         
         long end = System.currentTimeMillis();
         info.append("RealSimulationTime=" + ((end - start) / 1000.0) + "\n");
-        start = System.currentTimeMillis();
+       }
 
-        
-        sv.showFinal();
-        
-
-        try {
-            end = System.currentTimeMillis();
-            info.append("SimulationSaveTime=" + ((end - start) / 1000.0) + "\n");
-
-            if (reportFile != null) {
-                FileUtil.writeStringToFile(info.toString(), reportFile);
-            }
-            if (timesFile != null) {
-                FileUtil.writeStringToFile(times.toString(), timesFile);
-            }
-
-        } catch (IOException ex) {
-            throw new RuntimeError("Problem saving traces to file", ex);
-        }
-
-    }
-
+    
 	public void printCB() {
 		ComponentBehaviorWriter cbw = new ComponentBehaviorWriter();
 		cbw.print(targetBehavior);

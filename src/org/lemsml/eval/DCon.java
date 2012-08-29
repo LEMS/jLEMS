@@ -27,12 +27,7 @@ public class DCon extends DVal {
 
         @Override
         public String toString() {
-                if ((int)val==val){
-                        if (val<0) return "("+(int)val+")";
-                        return ""+(int)val;
-                }
-                if (val<0) return "("+(float)val+")";
-                return ""+(float)val;
+        	return "" + val;
         }
         
         public String toString(String prefix, ArrayList<String> ignore) {
@@ -44,6 +39,18 @@ public class DCon extends DVal {
  
 	public void recAdd(ArrayList<DVar> val) {
 		 
+	}
+
+
+	@Override
+	public void substituteVariableWith(String vnm, String pth) {
+	 
+	}
+
+
+	@Override
+	public boolean variablesIn(HashSet<String> known) {
+		return true;
 	}
 
 

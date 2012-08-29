@@ -16,17 +16,18 @@ public class Record {
 	@Mat(info="hex format color suggestion for how the data should be displayed")
 	public String color;
 
-	@Mat(info="Optional name of file to save recorded data in")
-	public String save = "save";
-
+	
+	public String display;
+ 
 
     public Record() {
     }
 
-    public Record(String quantity, String scale, String color) {
+    public Record(String quantity, String scale, String color, String d) {
         this.quantity = quantity;
         this.scale = scale;
         this.color = color;
+        this.display = d;
     }
 
 

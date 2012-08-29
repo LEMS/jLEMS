@@ -46,7 +46,7 @@ public class LemsCollection<T> implements Iterable<T> {
 			if (t instanceof Named) {
 				String tnm = ((Named)t).getName();
 				if (nameHM.containsKey(tnm)) {
-					throw new ContentError("Duplicate name for " + t+"\n" + "Contents: "+ contents);
+					throw new ContentError("Duplicate name for " + t + ": " + tnm + "\n" + "Contents: " + contents);
 					
 				} else {
 					nameHM.put(tnm, t);

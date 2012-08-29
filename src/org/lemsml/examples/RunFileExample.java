@@ -40,7 +40,7 @@ public class RunFileExample {
 			try {
 			sim.readModel();	
 		 		
-			sim.build(consolidate);
+			sim.build();
 				
 			if (print) {
 				sim.printCB();

@@ -21,13 +21,13 @@ public class DataViewerFactory {
 	}
 	
 	
-	public DataViewer newDataViewer() {
+	public DataViewer newDataViewer(String title) {
 		DataViewer ret = null;
 		
 		if (delegatedFactory != null) {
-			ret = delegatedFactory.newDataViewer();
+			ret = delegatedFactory.newDataViewer(title);
 		} else {
-			ret = new PrintDataViewer();
+			ret = new PrintDataViewer(title);
 		}
 		
 		return ret;

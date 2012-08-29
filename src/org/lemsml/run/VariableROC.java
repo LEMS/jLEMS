@@ -47,4 +47,12 @@ public class VariableROC {
 		 return ret;
 	}
 
+	public String getTextExpression() {
+		 return rateexp.getExpressionString();
+	}
+
+	public void substituteVariableWith(String vnm, String pth) {
+		rateexp.substituteVariableWith(vnm, pth);
+	}
+
 }

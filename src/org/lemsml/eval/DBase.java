@@ -32,7 +32,9 @@ public class DBase {
     }
 
     
-
+    public String getExpressionString() {
+ 		return root.toString();
+	}
 	
 	public double eval(HashMap<String, Double> valHM) {
 		for (int i = 0; i < vars.length; i++) {
@@ -66,5 +68,19 @@ public class DBase {
 		DBase ret = new DBase(root.makePrefixedCopy(pfx, stetHS));
 		return ret;
 	}
+
+	public void substituteVariableWith(String vnm, String pth) {
+		root.substituteVariableWith(vnm, pth);
+		for (DVal dv : vars) {
+			dv.substituteVariableWith(vnm, pth);
+		}
+		
+	}
+
+	public boolean variablesIn(HashSet<String> known) {
+		return root.variablesIn(known);
+	}
+
+	
 	
 }

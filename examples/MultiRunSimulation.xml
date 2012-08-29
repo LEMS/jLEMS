@@ -1,0 +1,59 @@
+<Lems>
+
+
+<ComponentType name="DisplayList">
+    <Parameter name="timeScale" Dimension="time"/>
+    <Children name="lines" type="Line"/>
+    
+    <Text name="title"/>  
+    <Text name="display"/>
+</ComponentType>
+
+
+
+<ComponentType name="Display">
+    <Text name="title"/>   
+
+    <Behavior>
+         <DataDisplay title="title"/>
+    </Behavior>
+</ComponentType>
+
+
+<ComponentType name="Line">
+    <Parameter name="scale" Dimension="*"/>
+    <Text name="color"/>
+    <Text name="save"/>
+    <Path name="quantity"/>
+    <Behavior>
+        <Record quantity="quantity" scale="scale" color="color"/>
+    </Behavior>
+</ComponentType>
+
+
+<ComponentType name="Simulation">
+    <Parameter name="length" dimension="time"/>
+    <Parameter name="step" dimension="time"/>
+    <ComponentRef name="target" type="Component"/>
+    <Link name="display" type="Display"/>
+    <Children name="outputs" type="DisplayList"/>
+    <Behavior>
+        <StateVariable name="t" dimension="time"/>
+        <Run component="target" variable="t" increment="step" total="length"/>
+      </Behavior>
+</ComponentType>
+
+
+
+
+<ComponentType name="SimulationSet">
+    <Children name="simulations" type="Simulation"/>
+    <Children name="displays" type="Display"/>
+    
+    <Behavior>
+        <Run simulations="simulations"/>
+    </Behavior>
+
+</ComponentType>
+
+</Lems>

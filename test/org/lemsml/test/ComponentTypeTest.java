@@ -144,7 +144,7 @@ public class ComponentTypeTest {
 
                 Behavior dispB = new Behavior();
                 dispCt.behaviors.add(dispB);
-                dispB.shows.add(new Show("lines", "timeScale"));
+                dispB.shows.add(new Show("lines", "timeScale", ""));
 
                 ComponentType lineCt = new ComponentType("Line");
                 lems.addComponentType(lineCt);
@@ -155,7 +155,7 @@ public class ComponentTypeTest {
 
                 Behavior bL = new Behavior();
                 lineCt.behaviors.add(bL);
-                bL.records.add(new Record("quantity", "scale", "color"));
+                bL.records.add(new Record("quantity", "scale", "color", null));
                 
 
                 dispCt.childrens.add(new Children("lines", lineCt));
@@ -200,7 +200,7 @@ public class ComponentTypeTest {
                 E.info("Building model...");
 
                 sim.build();
-                sim.run(showGui);
+                sim.run();
 
 
                 E.info("Done testCreate!");

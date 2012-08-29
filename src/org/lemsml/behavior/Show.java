@@ -18,13 +18,16 @@ public class Show   {
 	@Mat(info="path to the element that defines what should be shown")
 	public String src;
 
+	@Mat(info="path to the element that defines where it should be shown")
+	public String on;
 
     public Show() {
     }
 
-    public Show(String src, String scale) {
+    public Show(String src, String scale, String on) {
         this.scale = scale;
         this.src = src;
+        this.on = on;
     }
 
 

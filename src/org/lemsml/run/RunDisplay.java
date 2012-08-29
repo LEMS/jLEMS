@@ -14,17 +14,17 @@ import org.lemsml.util.RuntimeError;
 
 public class RunDisplay {
 
-    StateRunnable stateRunnable;
+ 
     ArrayList<DisplayItem> displayItems = new ArrayList<DisplayItem>();
  
 
-    public RunDisplay(StateRunnable sr) {
-        stateRunnable = sr;
+    public RunDisplay() {
+       
     }
 
     @Override
     public String toString() {
-        return "RunDisplay for " + stateRunnable.getID() + " with disp items: " + displayItems;
+        return "RunDisplay for with disp items: " + displayItems;
     }
 
   

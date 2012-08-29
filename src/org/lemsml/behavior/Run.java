@@ -8,13 +8,14 @@ import org.lemsml.expression.Valued;
 import org.lemsml.type.Component;
 import org.lemsml.type.ComponentReference;
 import org.lemsml.type.ComponentType;
+import org.lemsml.type.LemsCollection;
 import org.lemsml.util.ContentError;
 import org.lemsml.util.E;
 
 
 @Mel(info="The run element provides a way to make a model runnable. It should point to the parameters that set the " +
 		"step size etc. The target parameters have to be dimensionally consistent. ")
-public class Run   {
+public class Run {
 
 	@Mat(info="name of the component reference that will set the component to be run")
 	public String component;
@@ -31,6 +32,12 @@ public class Run   {
 	public String total;
 	// private Valued val_total;
 
+	
+	public String simulations;
+	public LemsCollection<Component> r_simulations;
+	
+	
+	
     public Run() {
     }
 
@@ -47,18 +54,30 @@ public class Run   {
 	
 	
 	public void resolve(ComponentType r_type, HashMap<String, Valued> valHM) throws ContentError {
-		r_componentRef = r_type.getComponentRef(component);
-		//val_increment = valHM.get(variable);
-		//val_total = valHM.get(total);
+	
+		if (simulations != null) {
 		
-		if (variable.equals("t")) {
-			// OK
-		} else {
-			E.error("varaible in Run must be 't': Currently lems is harcoded only to accept 't' as the independent variable for runs");
+		}
+		
+		
+		
+		if (component != null) {
+			r_componentRef = r_type.getComponentRef(component);
+			//val_increment = valHM.get(variable);
+			//val_total = valHM.get(total);
+		
+			if (variable.equals("t")) {
+				// OK
+			} else {
+				E.error("varaible in Run must be 't': Currently lems is harcoded only to accept 't' as the independent variable for runs");
+			}
 		}
 	}
 
 
+	 
+	
+	
 	public Component getTargetComponent(Component cpt) throws ContentError {
 		return cpt.getChild(component);
 	}

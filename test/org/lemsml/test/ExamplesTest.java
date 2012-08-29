@@ -89,7 +89,7 @@ public class ExamplesTest {
         sim.readModel();
         sim.build();
         try {
-                sim.run(false);
+             sim.run();
         } catch (IOException ex) {
                 throw new RuntimeError(ex.getMessage());
         }

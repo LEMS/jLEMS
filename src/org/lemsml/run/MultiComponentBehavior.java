@@ -2,6 +2,7 @@ package org.lemsml.run;
 
 import java.util.ArrayList;
 
+import org.lemsml.sim.ComponentBehaviorVisitor;
 import org.lemsml.util.ContentError;
 
 public class MultiComponentBehavior {
@@ -35,6 +36,13 @@ public class MultiComponentBehavior {
 		}
 		MultiComponentBehavior ret = new MultiComponentBehavior(ccba);
 		return ret;
+	}
+
+	public void visitAll(ComponentBehaviorVisitor v) {
+		for (ComponentBehavior cb : cba) {
+			cb.visitAll(v);
+		}
+		
 	}
 	
 }

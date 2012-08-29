@@ -45,9 +45,8 @@ public class ComponentFlatteningTest {
         Sim sim = new Sim(f);
 
         sim.readModel();
-        //boolean consolidate = true;
-        boolean consolidate = false;
-        sim.build(consolidate);
+     
+        sim.build();
 
         //sim.run();
 

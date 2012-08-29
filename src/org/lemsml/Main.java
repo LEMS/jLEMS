@@ -59,10 +59,8 @@ public class Main {
             
             if (argv.length > 1) {
                 String opt = argv[1];
-                if (opt.equals("-nogui")) {
-                    Sim.setDisableFrames(true);
                 
-                } else if (opt.equals("-c")) {
+                if (opt.equals("-c")) {
                 	doRun = false;
                 	  String sc = argv[0].replace(".xml", "-ccl.xml");
                       File fout = new File(sc);
@@ -84,7 +82,7 @@ public class Main {
 
 
         } catch (Exception ex) {
-            E.info("Problem reading model from "+simFile.getAbsolutePath());
+            E.info("Problem reading model from " + simFile.getAbsolutePath());
         	E.info(ex.getMessage());
             ex.printStackTrace();
         }

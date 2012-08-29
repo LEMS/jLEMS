@@ -17,5 +17,9 @@ public abstract class DVal {
 	public abstract DVal makeCopy();
 
 	public abstract DVal makePrefixedCopy(String pfx, HashSet<String> stetHS);
-	
+
+	public abstract void substituteVariableWith(String vnm, String pth);
+
+	public abstract boolean variablesIn(HashSet<String> known);
+	 
 }

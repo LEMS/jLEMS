@@ -18,7 +18,7 @@ public class ExpressionDerivedVariable {
 
     @Override
     public String toString() {
-        return "ExpressionDerivedVariable: "+ varname+" (ex: "+exposeAs+"), "+rateexp;
+        return "ExpressionDerivedVariable: "+ varname+" (ex: " + exposeAs + "), " + rateexp;
     }
 
 
@@ -73,6 +73,22 @@ public class ExpressionDerivedVariable {
 		} else {
 			variables.put(varname, new DoublePointer(d));
 		}
+	}
+
+	public void substituteVariableWith(String vnm, String pth) {
+		rateexp.substituteVariableWith(vnm, pth);
+	}
+
+	public String getExpressionString() {
+		return rateexp.getExpressionString();
+	}
+
+	public boolean onlyDependsOn(HashSet<String> known) {
+		boolean ret = false;
+		if (rateexp.variablesIn(known)) {
+			ret = true;
+		}
+		return ret;
 	}
 
 

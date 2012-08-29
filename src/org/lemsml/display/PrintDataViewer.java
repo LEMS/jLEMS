@@ -4,6 +4,13 @@ import org.lemsml.util.E;
 
 public class PrintDataViewer implements DataViewer {
 
+	String title;
+	
+	public PrintDataViewer(String s) {
+		title = s;
+	}
+	
+	
 	@Override
 	public void addPoint(String line, double x, double y) {
 		E.info("point: " + line + " " + x + " " + y);

@@ -76,4 +76,21 @@ public class DVar extends DVal {
 		} 
 		// just let it throw a null pointer of not found - TODO - RuntimeError
 	}
+	
+	public void substituteVariableWith(String var, String sub) {
+		if (varname.equals(var)) {
+			varname = sub;
+			E.info("SUB: replaced " + var + " with " + sub + " in dval ");
+		}
+	}
+
+
+	@Override
+	public boolean variablesIn(HashSet<String> known) {
+		boolean ret = false;
+		if (known.contains(varname)) {
+			ret = true;
+		}
+		return ret;
+	}
 }
