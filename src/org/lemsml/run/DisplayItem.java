@@ -4,6 +4,7 @@ package org.lemsml.run;
 import org.lemsml.display.LineDisplay;
 import org.lemsml.sim.RunnableAccessor;
 import org.lemsml.util.ContentError;
+import org.lemsml.util.E;
 import org.lemsml.util.RuntimeError;
  
 
@@ -11,8 +12,8 @@ public class DisplayItem {
 
     String id;
     String path;
-    double tscale;
-    double yscale;
+    double tscale = 1.;
+    double yscale = 1.;
     String color;
     StateWrapper stateWrapper;
    
@@ -23,6 +24,7 @@ public class DisplayItem {
         tscale = tf;
         yscale = yf;
         color = col;
+        E.info("ZZZ made a di?");
      }
 
     @Override

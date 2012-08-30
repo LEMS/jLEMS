@@ -6,6 +6,8 @@ public class PrintDataViewer implements DataViewer {
 
 	String title;
 	
+	int nrep = 0;
+	
 	public PrintDataViewer(String s) {
 		title = s;
 	}
@@ -13,7 +15,10 @@ public class PrintDataViewer implements DataViewer {
 	
 	@Override
 	public void addPoint(String line, double x, double y) {
-		E.info("point: " + line + " " + x + " " + y);
+		nrep += 1;
+		if (nrep < 10) {
+			E.info("" + nrep + " point: " + line + " " + x + " " + y);
+		}
 	}
 
 	@Override

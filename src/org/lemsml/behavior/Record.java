@@ -10,6 +10,10 @@ public class Record {
 	@Mat(info="path to the parameter that will contain the path to the quantity to be recorded")
 	public String quantity;
 	
+	
+	public String timeScale;
+	
+	
 	@Mat(info="path to the element that defines the scale for rendering the quantity dimensionless")
 	public String scale;
 	
@@ -30,6 +34,8 @@ public class Record {
         this.display = d;
     }
 
-
+    public String toString() {
+    	return "Recorder q=" + quantity + ", scale=" + scale + ", display=" + display + ", color=" + color;
+    }
   
 }

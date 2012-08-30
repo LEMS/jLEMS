@@ -11,6 +11,10 @@ public class RuntimeOutput {
 		 title = ttl;
 	}
 
+	public String toString() {
+		return "RuntimeOutput, id=" + id + " title=" + title;
+	}
+	
 
 	public String getID() {
 		return id;

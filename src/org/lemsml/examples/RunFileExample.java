@@ -43,7 +43,7 @@ public class RunFileExample {
 			sim.build();
 				
 			if (print) {
-				sim.printCB();
+				sim.printFirstConsolidated();
 			}
 			
 			sim.run();

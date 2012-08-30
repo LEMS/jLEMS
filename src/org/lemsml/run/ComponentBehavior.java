@@ -431,7 +431,7 @@ public class ComponentBehavior {
 		  
 		
 	    for (String s : der1.keySet()) {
-	        E.info("Derivs " + s + " " + der1.get(s) + " " + der2.get(s) + " " + der3.get(s) + " " + der4.get(s));
+	    //    E.info("Derivs " + s + " " + der1.get(s) + " " + der2.get(s) + " " + der3.get(s) + " " + der4.get(s));
 	    }
 	    
 	    
@@ -819,7 +819,7 @@ public class ComponentBehavior {
 	public ComponentBehavior makeFlattened(String knownas) {	
 		Flattener flattener = new Flattener();
 
-		E.info("FLAT making flattened of " + typeName + " " + cptid + " " + indeps);
+		// E.info("FLAT making flattened of " + typeName + " " + cptid + " " + indeps);
 		
 		addToFlattener(null, flattener);
 		
@@ -1025,8 +1025,8 @@ public class ComponentBehavior {
 	}
 
 	
-	public void addRecorder(String id, String q, String sc, String col, String display) {
-		runtimeRecorders.add(new RuntimeRecorder(id, q, sc, col, display));
+	public void addRecorder(String id, String q, double tsc, double ysc, String col, String display) {
+		runtimeRecorders.add(new RuntimeRecorder(id, q, tsc, ysc, col, display));
 	}
 	
 	
@@ -1041,6 +1041,14 @@ public class ComponentBehavior {
 		}
 	}
 
+	
+	public ArrayList<RuntimeOutput> getRuntimeOutputs() {
+		return runtimeOutputs;
+	}
+
+	public ArrayList<RuntimeRecorder> getRuntimeRecorders() {
+		return runtimeRecorders;
+	}
 
 
 }

@@ -33,12 +33,12 @@ public class Flattener {
 	
 	public void add(PathDerivedVariable pdv) {
  		pdvA.add(pdv);
- 		E.info("added pdv " + pdv);
+ //		E.info("added pdv " + pdv);
 	}
 
 	public void add(ExpressionDerivedVariable edv) {
 		edvA.add(edv);
-		E.info("added edv " + edv);
+//		E.info("added edv " + edv);
 	}
 
 	public void add(VariableROC vroc) {
@@ -47,7 +47,7 @@ public class Flattener {
 
 	public void addStateVariable(String sv) {
 		svA.add(sv);
-		E.info("Added sv " + sv);
+//		E.info("Added sv " + sv);
 	}
 
 	public void resolvePaths() {
@@ -85,7 +85,7 @@ public class Flattener {
 					nadded += 1;
 				}
 			}
-			E.info("sort cycle nadded=" + nadded);
+			// E.info("sort cycle nadded=" + nadded);
 			wksrc.removeAll(justAdded);
 		}
 		
@@ -170,7 +170,7 @@ public class Flattener {
 			String vnm = pdv.getVarName();
 			String pth = pdv.getPath();
 			
-			E.info("ZZZ sub time " + pth + " " + vnm);
+			// E.info("ZZZ sub time " + pth + " " + vnm);
 			
 			if (vnm.equals(pth)) {
 				// degenerate - just leave out

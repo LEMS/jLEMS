@@ -27,7 +27,7 @@ public class DVar extends DVal {
 	public DVar makePrefixedCopy(String pfx, HashSet<String> stetHS) {
 		String pnm = "";
 		
-		E.info("XXX making prefixed copy " + pfx + " of " + varname + " " + stetHS.contains(varname));
+		// E.info("XXX making prefixed copy " + pfx + " of " + varname + " " + stetHS.contains(varname));
 		if (stetHS.contains(varname)) {
 			pnm = varname;
 		} else {

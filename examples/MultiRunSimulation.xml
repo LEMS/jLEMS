@@ -22,11 +22,12 @@
 
 <ComponentType name="Line">
     <Parameter name="scale" Dimension="*"/>
+	 <Parameter name="timeScale" Dimension="*"/>
     <Text name="color"/>
     <Text name="save"/>
     <Path name="quantity"/>
     <Behavior>
-        <Record quantity="quantity" scale="scale" color="color"/>
+        <Record quantity="quantity" timeScale="timeScale" scale="scale" color="color" display="display"/>
     </Behavior>
 </ComponentType>
 

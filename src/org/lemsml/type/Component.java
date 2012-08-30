@@ -47,10 +47,8 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 
 	public LemsCollection<ParamValue> paramValues;
 
-	
 	public LemsCollection<Insertion> insertions = new LemsCollection<Insertion>();
-	
-	
+		
 	public LemsCollection<Component> components = new LemsCollection<Component>();
 	
 	@Mat(info="Metadata about a model can be included anywhere by wrapping it in an About element, though this " +
@@ -194,6 +192,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 
 		return ret;
 	}
+	
 	public void resolve(Lems lems, ComponentType parentType) throws ContentError, ParseError {
 		resolve(lems, parentType, true);
 	}
@@ -610,10 +609,41 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		if (textParamHM.containsKey(pnm)) {
 			ret = textParamHM.get(pnm).getText();
 		} else {
-			return null;
+			ret = null;
 		}
 		return ret;
 	}
+	
+	public String getInheritableTextParam(String pnm) {
+		String ret = getTextParam(pnm);
+		if (ret == null && r_parent != null) {
+			ret = r_parent.getInheritableTextParam(pnm);
+		}
+		if (ret == null) {
+			E.info("Inheritable - no " + pnm + " in " + this);
+			E.info("Parent = " + r_parent);
+		}
+		return ret;
+	}
+	
+	
+	public Component getInheritableLinkTarget(String pnm) {
+		Component ret = null;
+		if (refHM.containsKey(pnm)) {
+			ret = refHM.get(pnm);
+		} else if (r_parent != null) {
+			ret = r_parent.getInheritableLinkTarget(pnm);
+		}
+		if (ret == null) {
+			E.info("Inheritable - no ref " + pnm + " in " + this);
+			E.info("Parent = " + r_parent);
+		} else {
+			E.info("XXX got ref tgt " + pnm + " -> " + ret);
+		}
+		return ret;
+	}
+	
+	
 
 	public ComponentBehavior makeComponentBehavior() throws ContentError, ParseError {
 	

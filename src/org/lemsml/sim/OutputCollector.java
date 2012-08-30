@@ -16,8 +16,14 @@ public class OutputCollector implements ComponentBehaviorVisitor {
 
 	@Override
 	public void visit(ComponentBehavior cb) {
-		E.missing();
-		
+		ArrayList<RuntimeOutput> a = cb.getRuntimeOutputs();
+		if (a != null) {
+			outputs.addAll(a);
+		}
+		if (a.size() > 0) {
+			E.info("Added output " + a.get(0) + " from " + cb);
+		}
+ 		
 	}
 
 	

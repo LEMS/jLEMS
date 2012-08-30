@@ -10,8 +10,7 @@ public class RuntimeRecorder {
 
 	String id;
 	String quantity;
-	String scale;
-	String color;
+ 	String color;
 	String display;
 	 
 	  StateWrapper stateWrapper;
@@ -22,14 +21,21 @@ public class RuntimeRecorder {
 	  double yscale;
 	  
 
-	public RuntimeRecorder(String aid, String q, String sc, String col, String d) {
+	public RuntimeRecorder(String aid, String q, double tsc, double ysc, String col, String d) {
 		 id = aid;
 		 quantity = q;
-		 scale = sc;
+		 tscale = tsc;
+		 yscale = ysc;
 		 color = col;
 		 display = d;
 	}
 
+	
+	public String toString() {
+		return "Recorder, " + id + " of " + quantity + " tscale=" + tscale + " yscale=" + yscale + 
+				" display=" + display + " color=" + color;
+	}
+	
 
 	public String getID() {
 		return id;
@@ -42,11 +48,15 @@ public class RuntimeRecorder {
 
  
 
-	public void connectRunnable(RunnableAccessor ra, DataViewer dataViewer) throws ConnectionError {
+	public void connectRunnable(RunnableAccessor ra, DataViewer dv) throws ConnectionError {
+		if (quantity == null) {
+			throw new ConnectionError("Recorder has null quantity " + toString());
+		}
         stateWrapper = ra.getStateWrapper(quantity);
         if (stateWrapper == null) {
             throw new ConnectionError("unable to access state variable: " + quantity);
         }
+        dataViewer = dv;
     }
 
     public void appendState(double ft) throws ContentError, RuntimeError {

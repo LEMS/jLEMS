@@ -18,8 +18,11 @@ public class RunConfigCollector implements ComponentBehaviorVisitor {
 
 	@Override
 	public void visit(ComponentBehavior cb) {
-		E.missing();
-		
+		RunConfig rc = cb.getRunConfig();
+		if (rc != null) {
+			runConfigs.add(rc);
+			E.info("Added a run config " + rc);
+		}
 	}
 
 	

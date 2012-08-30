@@ -490,8 +490,23 @@ public class Behavior  {
 		 
 		 if (records.size() > 0) {
 			 for (Record r : records) {
-				 ret.addRecorder(cpt.id, cpt.getTextParam(r.quantity), cpt.getTextParam(r.scale), r.color, 
-						 cpt.getTextParam(r.display));
+				 String path = cpt.getPathParameterPath(r.quantity);
+				 if (path == null) {
+					 throw new ContentError("No path specified for recorder (" + r.quantity + ") in " + cpt);
+				 }
+				 Component cdisp = cpt.getInheritableLinkTarget(r.display);
+				 String disp = cdisp.id;
+				 if (disp == null) {
+					 throw new ContentError("No display defined for recorder " + r);
+				 } else {
+					 double tsc = cpt.getParamValue(r.timeScale).getDoubleValue();
+					 double ysc = cpt.getParamValue(r.scale).getDoubleValue();
+					 
+					 if (tsc == 0.0 || ysc == 0.0) {
+						 throw new ContentError("Recorder scales cant be 0: " + r + " " + tsc + " " + ysc);
+					 }
+					 ret.addRecorder(cpt.id, path, tsc, ysc, cpt.getTextParam(r.color), disp);
+				 }
 			 }
 		 }
 		 

@@ -121,27 +121,27 @@ public class Sim extends LemsProcess {
     
     
     public void run(RunConfig rc) throws ConnectionError, ContentError, RuntimeError, IOException, ParseError {
-
-    	Component runCpt = rc.getTarget();
-  	    	
-  		targetBehavior = runCpt.getComponentBehavior();
+   	    	
+  		ComponentBehavior raw = rc.getTarget();
+  		targetBehavior = raw.getConsolidatedComponentBehavior("root");
   	 
-  		
   	    StateInstance rootState = lems.build(targetBehavior, eventManager);
   	
   	    RunnableAccessor ra = new RunnableAccessor(rootState);
-  	    
-  	    
+  	       
   	    for (RuntimeRecorder rr : runtimeRecorders) {
-  	    	rr.connectRunnable(ra, dvHM.get(rr.getDisplay()));
+  	    	String disp = rr.getDisplay();
+  	    	if (dvHM.containsKey(disp)) {
+  	    		rr.connectRunnable(ra, dvHM.get(disp));
+  	    	} else {
+  	    		throw new ConnectionError("No such data viewer " + disp + " needed for " + rr);
+  	    	}
   	    }
   	    
-
         double dt = rc.getTimestep();
         int nstep = (int) Math.round(rc.getRuntime() / dt);
 
         E.info("Running for " + nstep + " steps");
-
       
         StringBuilder info = new StringBuilder("#Report of running simulation with LEMS Interpreter\n");
         StringBuilder times = new StringBuilder();
@@ -175,9 +175,28 @@ public class Sim extends LemsProcess {
        }
 
     
-	public void printCB() {
+	public void printCB() throws ContentError, ParseError {
 		ComponentBehaviorWriter cbw = new ComponentBehaviorWriter();
-		cbw.print(targetBehavior);
+		for (RunConfig rc : runConfigs) {
+			
+			cbw.print(rc.getTarget());
+			
+		}
 		
 	}
+	
+	
+	public void printFirstConsolidated() throws ContentError, ParseError {
+		ComponentBehaviorWriter cbw = new ComponentBehaviorWriter();
+		if (runConfigs.size() > 0) {
+			RunConfig rc = runConfigs.get(0);
+			
+			ComponentBehavior cb = rc.getTarget().getConsolidatedComponentBehavior("root");
+			cbw.print(cb);
+		}
+		 
+		
+	}
+	
+	
 }

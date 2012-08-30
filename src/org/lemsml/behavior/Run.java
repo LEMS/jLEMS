@@ -58,9 +58,6 @@ public class Run {
 		if (simulations != null) {
 		
 		}
-		
-		
-		
 		if (component != null) {
 			r_componentRef = r_type.getComponentRef(component);
 			//val_increment = valHM.get(variable);

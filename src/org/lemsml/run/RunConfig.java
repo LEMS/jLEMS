@@ -1,31 +1,33 @@
 package org.lemsml.run;
 
+import org.lemsml.expression.ParseError;
 import org.lemsml.type.Component;
+import org.lemsml.util.ContentError;
 
 public class RunConfig {
 
-	Component target;
+	Component targetComponent;
 	double step;
 	double total;
 	
 	
 
 	public RunConfig(Component cpt, double st, double tot) {
-		target = cpt;
+		targetComponent = cpt;
 		step = st;
 		total = tot;
 	}
 
     @Override
     public String toString() {
-        return "RunConfig {" + "target=" + target + ", step=" + step + ", total=" + total + '}';
+        return "RunConfig {" + "target=" + targetComponent + ", step=" + step + ", total=" + total + '}';
     }
 
     
 
 
-	public Component getTarget() {
-		return target;
+	public ComponentBehavior getTarget() throws ContentError, ParseError {
+		return targetComponent.getComponentBehavior();
 	}
 
 
@@ -38,7 +40,7 @@ public class RunConfig {
 	}
 
 	public RunConfig makeCopy() {
-		RunConfig ret = new RunConfig(target, step, total);
+		RunConfig ret = new RunConfig(targetComponent, step, total);
 		return ret;
 	}
 }
