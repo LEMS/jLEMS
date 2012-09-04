@@ -5,10 +5,10 @@ public class RuntimeOutput {
 	String id;
 	String title;
 	
+	double[] box;
 	
-	public RuntimeOutput(String aid, String ttl) {
-		 id = aid;
-		 title = ttl;
+	public RuntimeOutput() {
+	 
 	}
 
 	public String toString() {
@@ -22,6 +22,22 @@ public class RuntimeOutput {
 	
 	public String getTitle() {
 		return title;
+	}
+
+	public void setTitle(String ttl) {
+		title = ttl;
+	}
+	
+	public void setID(String sid) {
+		id = sid;
+	}
+	
+	public void setBox(double[] b) {
+		box = b;
+	}
+
+	public double[] getBox() {
+		 return box;
 	}
 
 }

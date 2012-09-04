@@ -13,9 +13,13 @@
 
 <ComponentType name="Display">
     <Text name="title"/>   
+	<Parameter name="xmin" dimension="none"/>
+	<Parameter name="xmax" dimension="none"/>
+	<Parameter name="ymin" dimension="none"/>
+	<Parameter name="ymax" dimension="none"/>
 
     <Behavior>
-         <DataDisplay title="title"/>
+         <DataDisplay title="title" dataRegion="xmin,xmax,ymin,ymax"/>
     </Behavior>
 </ComponentType>
 

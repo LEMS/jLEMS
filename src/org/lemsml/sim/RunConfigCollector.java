@@ -21,6 +21,17 @@ public class RunConfigCollector implements ComponentBehaviorVisitor {
 		RunConfig rc = cb.getRunConfig();
 		if (rc != null) {
 			runConfigs.add(rc);
+			
+			ArrayList<RuntimeRecorder> arc = new ArrayList<RuntimeRecorder>();
+			RecorderCollector recc = new RecorderCollector(arc);
+			cb.visitAll(recc);
+			 
+			rc.setRecorders(arc);
+			
+			
+			
+			
+			
 			E.info("Added a run config " + rc);
 		}
 	}

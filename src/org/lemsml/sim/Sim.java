@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.lemsml.display.ComponentBehaviorWriter;
+import org.lemsml.display.DataViewPort;
 import org.lemsml.display.DataViewer;
 import org.lemsml.display.DataViewerFactory;
 import org.lemsml.expression.ParseError;
@@ -34,9 +35,7 @@ public class Sim extends LemsProcess {
     
      
     HashMap<String, DataViewer> dvHM;
-    
-    ArrayList<RuntimeRecorder> runtimeRecorders;
-    
+      
     ArrayList<RunConfig> runConfigs;
     
     EventManager eventManager;
@@ -88,21 +87,18 @@ public class Sim extends LemsProcess {
 	    // build the displays and keep them in dvHM
 	    dvHM = new HashMap<String, DataViewer>();
 	    for (RuntimeOutput ro : runtimeOutputs) {
-	    	dvHM.put(ro.getID(), DataViewerFactory.getFactory().newDataViewer(ro.getTitle()));
+	    	DataViewer dv = DataViewerFactory.getFactory().newDataViewer(ro.getTitle());
+	    	dvHM.put(ro.getID(), dv);
+	    	if (dv instanceof DataViewPort) {
+	    		((DataViewPort)dv).setRegion(ro.getBox());
+ 	    	}
 	    }
 	     
-	    runtimeRecorders = new ArrayList<RuntimeRecorder>();
-	    RecorderCollector rc = new RecorderCollector(runtimeRecorders);
-	    rootBehavior.visitAll(rc);
-	    
-	    
-	    
+	   
 	    runConfigs = new ArrayList<RunConfig>();
 	    RunConfigCollector rcc = new RunConfigCollector(runConfigs);
 	    rootBehavior.visitAll(rcc);
-	    
-	    
-	    
+	     
 	    eventManager = new EventManager();
 	     
 	}
@@ -129,7 +125,9 @@ public class Sim extends LemsProcess {
   	
   	    RunnableAccessor ra = new RunnableAccessor(rootState);
   	       
-  	    for (RuntimeRecorder rr : runtimeRecorders) {
+  	    ArrayList<RuntimeRecorder> recorders = rc.getRecorders();
+  	    
+  	    for (RuntimeRecorder rr : recorders) {
   	    	String disp = rr.getDisplay();
   	    	if (dvHM.containsKey(disp)) {
   	    		rr.connectRunnable(ra, dvHM.get(disp));
@@ -160,7 +158,7 @@ public class Sim extends LemsProcess {
                 rootState.advance(null, t, dt);
         	}
         	
-        	for (RuntimeRecorder rr : runtimeRecorders) {
+        	for (RuntimeRecorder rr : recorders) {
         		rr.appendState(t);
         	}
            

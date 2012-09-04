@@ -1,5 +1,7 @@
 package org.lemsml.run;
 
+import java.util.ArrayList;
+
 import org.lemsml.expression.ParseError;
 import org.lemsml.type.Component;
 import org.lemsml.util.ContentError;
@@ -10,7 +12,7 @@ public class RunConfig {
 	double step;
 	double total;
 	
-	
+	ArrayList<RuntimeRecorder> recorders;
 
 	public RunConfig(Component cpt, double st, double tot) {
 		targetComponent = cpt;
@@ -43,4 +45,16 @@ public class RunConfig {
 		RunConfig ret = new RunConfig(targetComponent, step, total);
 		return ret;
 	}
+
+	public void setRecorders(ArrayList<RuntimeRecorder> arc) {
+		recorders = arc;
+	}
+	
+	public ArrayList<RuntimeRecorder> getRecorders() {
+		if (recorders == null) {
+			recorders = new ArrayList<RuntimeRecorder>();
+		}
+		return recorders;
+	}
+	
 }

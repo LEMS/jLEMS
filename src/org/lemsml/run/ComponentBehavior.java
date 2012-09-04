@@ -1020,8 +1020,8 @@ public class ComponentBehavior {
 		return exposedMap;
 	}
 
-	public void addDataDisplay(String id, String ttl) {
-		runtimeOutputs.add(new RuntimeOutput(id, ttl));
+	public void addRuntimeOutput(RuntimeOutput ro) {
+		runtimeOutputs.add(ro);
 	}
 
 	

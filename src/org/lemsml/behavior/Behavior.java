@@ -22,6 +22,7 @@ import org.lemsml.run.EventAction;
 import org.lemsml.run.KScheme;
 import org.lemsml.run.PathDerivedVariable;
 import org.lemsml.run.RunDisplay;
+import org.lemsml.run.RuntimeOutput;
 import org.lemsml.run.StateRunnable;
 import org.lemsml.type.Component;
 import org.lemsml.type.ComponentType;
@@ -484,7 +485,8 @@ public class Behavior  {
 		 
 		 if (dataDisplays.size() > 0) {
 			 for (DataDisplay dd : dataDisplays) {
-				 ret.addDataDisplay(cpt.id, cpt.getTextParam(dd.title));
+				 RuntimeOutput ro = dd.getRuntimeOutput(cpt);
+				 ret.addRuntimeOutput(ro);
 			 }
 		 }
 		 
