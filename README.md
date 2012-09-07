@@ -1,4 +1,4 @@
 jLEMS
 =====
 
-Java Interpreter for the Low Entropy Model Specification language
+Java Interpreter for the Low Entropy Model Specification language.
