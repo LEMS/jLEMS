@@ -11,7 +11,7 @@ import org.lemsml.util.E;
 + " that should be accessible within the scope of a "
 + "model component. This is only applicable for elements that can be included as children of other elements, where "
 + "the scope comprises its own parameters and those in the scope of its enclosing element. Once a requirement has "
-+ "been declared, then the quantity can be used within the Behavior definition of the component. It is the "
++ "been declared, then the quantity can be used within the Dynamics definition of the component. It is the "
 + "responsibility of an implementation to check that the component is only used in a context in which the requirement "
 + "is met. A typical example is in defining membrand bound components which require access to the membrane "
 + "potential  but where the variable that holds the potential itself is defined in the top level component.")

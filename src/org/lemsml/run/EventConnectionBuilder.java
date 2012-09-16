@@ -33,7 +33,7 @@ public class EventConnectionBuilder extends PostBuilder {
 	}
 
 	 
-	public void postBuild(StateInstance base, HashMap<String, StateInstance> sihm, BuildContext bc) throws ConnectionError, ContentError {
+	public void postBuild(StateInstance base, HashMap<String, StateInstance> sihm, BuildContext bc) throws ConnectionError, ContentError, RuntimeError {
   		StateInstance sf = sihm.get(from);
 		StateInstance st = sihm.get(to);
 		
@@ -168,7 +168,7 @@ public class EventConnectionBuilder extends PostBuilder {
         this.delay = delay;
     }
 
-	public void addAssignment(String property, DoubleEvaluable de) {
+	public void addAssignment(String property, DoubleEvaluable de) throws ContentError {
 		ExpressionDerivedVariable edv = new ExpressionDerivedVariable(property, new DBase(de.makeFixed(null)));
 		edvAL.add(edv);
 	}

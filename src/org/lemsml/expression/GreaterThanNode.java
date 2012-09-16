@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.lemsml.eval.BComp;
 import org.lemsml.eval.GTComp;
+import org.lemsml.util.ContentError;
 
 public class GreaterThanNode extends ComparisonNode {
 
@@ -13,11 +14,7 @@ public class GreaterThanNode extends ComparisonNode {
 		super("greater_than");
 	}
 
-	@Override
-	protected String getMathMLElementName() {
-		return "gt";
-	}
-	
+
 	public GreaterThanNode copy() {
 		return new GreaterThanNode();
 	}
@@ -30,7 +27,7 @@ public class GreaterThanNode extends ComparisonNode {
 		return (x > y);
 	}
 
-	public BComp makeFixed(HashMap<String, Double> fixedHM) {
+	public BComp makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
 		return new GTComp(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
 	}
 

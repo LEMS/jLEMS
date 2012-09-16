@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.lemsml.selection.SelectionExpression;
 import org.lemsml.util.ContentError;
 import org.lemsml.util.E;
+import org.lemsml.util.RuntimeError;
 
 public class GatherPairsBuilder extends PostBuilder {
 
@@ -24,7 +25,7 @@ public class GatherPairsBuilder extends PostBuilder {
 
 	@Override
 	public void postBuild(StateInstance tgt, HashMap<String, StateInstance> sihm, BuildContext bc) throws ConnectionError,
-			ContentError {
+			ContentError, RuntimeError {
 	 		
 			InstanceCollector pic = new InstanceCollector(pselexp);
 			ArrayList<StateInstance> pmatches = pic.collect(tgt.getParent());

@@ -12,8 +12,7 @@ public class PathDerivedVariable {
     String varname;
     String path;
     
-    @Deprecated
-    String onAbsent;
+   
     String func;
     String tgtvar;
     boolean simple = false;
@@ -25,11 +24,11 @@ public class PathDerivedVariable {
     
     
 
-    public PathDerivedVariable(String snm, String p, String f, String oa) {
+    public PathDerivedVariable(String snm, String p, String f) {
         varname = snm;
         path = p;
         func = f;
-        onAbsent = oa;
+      
         String[] bits = path.split("/");
         tgtvar = bits[bits.length - 1];
         
@@ -64,7 +63,7 @@ public class PathDerivedVariable {
     
     @Override
     public String toString() {
-        return "PathDerivedVariable{" + "varname=" + varname + ", path=" + path + ", onAbsent=" + onAbsent + ", func=" + func + ", tgtvar=" + tgtvar + '}';
+        return "PathDerivedVariable{" + "varname=" + varname + ", path=" + path + ",  func=" + func + ", tgtvar=" + tgtvar + '}';
     }
     
     
@@ -80,13 +79,16 @@ public class PathDerivedVariable {
             if (simple) {
                 tgt = sin.getPathStateInstance(path);
                 if (tgt == null) {
-                     if (Lems.allowOnAbsent()) {
-                    	return Double.parseDouble(onAbsent);
-                    } else {
-                    	throw new ContentError("No variable at path " + path + " in " + sin + " seeking " + tgtvar);
-                    }
+                	if (mode == SUM) {
+                		ret = 0;
+                		// its fine to have a sum of no matches - just return zero.
+                		// anything else is an error
+                	} else {
+                		throw new ContentError("Not a sum and no variable at path " + path + " in " + sin + " seeking " + tgtvar);
+                	}
+                } else {
+                	ret = tgt.getVariable(tgtvar);
                 }
-                ret = tgt.getVariable(tgtvar);
             } else {
                 // E.info("seeking psa " + path);
             	// this calls getTargetArray below the first time, then caches
@@ -137,11 +139,8 @@ public class PathDerivedVariable {
             try {
                 wkinst = wkinst.getChildInstance(bits[i]);
             } catch (ContentError e) {
-                if (onAbsent!=null)
-                    return null;
                 throw new ContentError("Problem getting Child instance",e);
             }
-
         }
         ret = wkinst;
 
@@ -262,7 +261,7 @@ public class PathDerivedVariable {
 
 
 	public PathDerivedVariable makeFlat(String pfx) {
-		PathDerivedVariable ret = new PathDerivedVariable(pfx + varname, flattenPath(pfx), func, onAbsent); 
+		PathDerivedVariable ret = new PathDerivedVariable(pfx + varname, flattenPath(pfx), func); 
 		return ret;
 	}
 	

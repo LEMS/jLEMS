@@ -23,7 +23,7 @@ public class Main {
 	 
 	 
 	 public static void showUsage() {
-		 System.out.println(usage);
+		 E.info(usage);
 	 }
 	 
 	 
@@ -38,7 +38,7 @@ public class Main {
         File simFile = new File(argv[0]);
  
         if (!simFile.exists()) {
-        	System.out.println("Error: can't find " + simFile.getAbsolutePath());
+        	E.error("No such file: " + simFile.getAbsolutePath());
         	showUsage();
         	System.exit(1);
         }
@@ -69,8 +69,7 @@ public class Main {
 
                 } else {
                 	E.info("Error, unrecognized command line element: (" + opt + ")");
-                	System.out.println(usage);
-                	
+                	showUsage();
                 }
             }
           

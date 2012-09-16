@@ -3,11 +3,12 @@ package org.lemsml.run;
 import java.util.HashMap;
 
 import org.lemsml.util.ContentError;
+import org.lemsml.util.RuntimeError;
 
 public class OtherwiseBuilder extends PostBuilder {
 
  
-	public void postBuild(StateInstance base, HashMap<String, StateInstance> sihm, BuildContext bc) throws ConnectionError, ContentError {
+	public void postBuild(StateInstance base, HashMap<String, StateInstance> sihm, BuildContext bc) throws ConnectionError, ContentError, RuntimeError {
 		super.postChildren(base, sihm, bc);	
 	}
 

@@ -13,13 +13,13 @@ public class Node {
 	Node par;
 	
 	
-	public static int UNKNOWN = 0;
-	public static int OPEN = 1;
-	public static int CLOSE = 2;
-	public static int CONSTANT = 3;
-	public static int VARIABLE = 4;
-	public static int BNARY_OPERATOR = 5;
-	public static int UNARY_OPERATOR = 6;
+	public final static int UNKNOWN = 0;
+	public final static int OPEN = 1;
+	public final static int CLOSE = 2;
+	public final static int CONSTANT = 3;
+	public final static int VARIABLE = 4;
+	public final static int BNARY_OPERATOR = 5;
+	public final static int UNARY_OPERATOR = 6;
 	
 	public int type = 0;
 	

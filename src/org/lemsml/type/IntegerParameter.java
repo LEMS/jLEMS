@@ -6,7 +6,7 @@ public class IntegerParameter extends Parameter {
 	
 	
 	@Override
-	public void resolve(LemsCollection<Dimension> dimensions) throws ContentError {
+	public void resolve(final LemsCollection<Dimension> dimensions) throws ContentError {
 		    
 	        if (dimension != null) {
 	           throw new ContentError("Integer paramters must be dimensionless: " + name);

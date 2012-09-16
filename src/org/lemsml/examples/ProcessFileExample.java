@@ -7,15 +7,16 @@ import org.lemsml.sim.LemsProcess;
 
 public class ProcessFileExample {
  
+	File froot;
 	String filename;
 	
-	public ProcessFileExample(String fnm) {
+	public ProcessFileExample(File fdir, String fnm) {
+		froot = fdir;
 		filename = fnm;
 	}
 	
 		public void process() {
-			File fex = new File("examples");
-			File fs = new File(fex, filename);
+	 		File fs = new File(froot, filename);
 			
 			LemsProcess lemsp = new LemsProcess(fs);
 	 

@@ -23,10 +23,8 @@ public class VariableNode extends Node implements DoubleEvaluable {
 		return svar;
 	}
 
-        public String getMathML(String indent, String innnerIndent) {
-                return indent+"<ci> "+svar+" </ci>";
-        }
-
+    
+   
 	 
 	public double evalD(HashMap<String, Double> valHS) throws ParseError {
 		double ret = 0;
@@ -49,18 +47,29 @@ public class VariableNode extends Node implements DoubleEvaluable {
 			valueSource = valHM.get(svar);
 		// 	E.info("set the value for " + svar + " to " + valueSource);
 		} else {
-			throw new ContentError("Unrecognized variable in expression: (" + svar+")\nvalHM: "+valHM);
+			throw new ContentError("Unrecognized variable in expression: (" + svar + ")\nvalHM: " + valHM);
 		}
 		
 	}
 	
-	public DVal makeFixed(HashMap<String, Double> fixedHM) {
+	public DVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
 		DVal ret = null;
 		if (valueSource == null) {
 			ret = new DVar(svar);
 			
 		} else if (valueSource.isFixed()) {
+			if (fixedHM == null) {
+				throw new ContentError("No fixed map supplied?");
+				
+			} else if (valueSource.getName() == null) {
+				throw new ContentError("No name for value source when making fixed value? " + valueSource);
+			} else if (!fixedHM.containsKey(valueSource.getName())) {
+				throw new ContentError("Not such item in fixed map " + valueSource.getName() + " " + fixedHM);
+			}
+			
+			
 			ret = new DCon(fixedHM.get(valueSource.getName()));
+
 		} else {
 			ret = new DVar(valueSource.getName());
 		}

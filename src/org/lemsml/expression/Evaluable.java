@@ -12,8 +12,7 @@ public interface Evaluable {
 
 	
 	public Dimensional getDimensionality(HashMap<String, Dimensional> dimHM) throws ContentError;
-
-    public String getMathML(String indent, String innerIndent);
+ 
 
 	public Dimensional evaluateDimensional(HashMap<String, Dimensional> adml) throws ContentError;
 }

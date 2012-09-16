@@ -1,11 +1,22 @@
 package org.lemsml.examples;
+
+import java.io.File;
+ 
+import org.lemsml.examples.RunFileExample;
  
 
 public class Example2 {
 	
 	public static void main(String[] argv) {
-		RunFileExample fe = new RunFileExample("example2.xml");
-		fe.run(false, true);
+	
+	 
+		
+		File fdir = new File("../jLEMS");
+		
+		RunFileExample fe = new RunFileExample(fdir, "example2.xml");
+		
+		fe.run();
+	
 	}
 	 
     

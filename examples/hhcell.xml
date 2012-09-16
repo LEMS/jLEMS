@@ -16,14 +16,23 @@
     <Requirement name="v" dimension="voltage"/>
     <Exposure name="current" dimension="current"/>
     <Exposure name="geff" dimension="conductance"/>
-    <Behavior simultaneous="false">
-         <Build>
-            <ChildInstance component="channel"/>
-        </Build>
+  
+  
+  
+    
+    <Structure>
+        <ChildInstance component="channel"/>
+    </Structure>
+  
+  
+    <Dynamics simultaneous="false">
         <DerivedVariable name="channelg" dimension="conductance" select="channel/g"/>
         <DerivedVariable name="geff" exposure="geff" value="channelg * number"/>
         <DerivedVariable name="current" exposure="current" value="geff * (erev - v)"/>
-    </Behavior>    
+    </Dynamics>
+    
+
+
 </ComponentType>
 
 
@@ -36,7 +45,7 @@
     <Parameter name="v0" dimension="voltage"/>
     <Exposure name="v" dimension="voltage"/>
     
-    <Behavior simultaneous="true">
+    <Dynamics simultaneous="true">
         <OnStart>
              <StateAssignment variable="v" value="v0"/>
         </OnStart>
@@ -44,7 +53,7 @@
          <DerivedVariable name="totcurrent" dimension="current" select="populations[*]/current" reduce="add"/>
         <StateVariable name="v" exposure="v" dimension="voltage"/> 
         <TimeDerivative variable="v" value="(totcurrent + injection) / capacitance"/>
-    </Behavior>
+    </Dynamics>
 </ComponentType>
 
 

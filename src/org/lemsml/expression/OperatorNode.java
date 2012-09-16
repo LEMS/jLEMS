@@ -22,16 +22,7 @@ public abstract class OperatorNode extends UnaryNode implements Cloneable, Evalu
         return "(" + str(left) + " " + symbol + " " + str(right) + ")";
     }
 
-    protected abstract String getMathMLElementName();
-
-    public String getMathML(String indent, String innerIndent) {
-
-        return indent + "<apply>\n"
-                + indent + innerIndent + "<" + getMathMLElementName() + "/>\n"
-                + ((Evaluable) left).getMathML(indent + innerIndent, innerIndent) + "\n"
-                + ((Evaluable) right).getMathML(indent + innerIndent, innerIndent) + "\n"
-                + indent + "</apply>";
-    }
+   
 
     private String str(Node n) {
         String ret = (n == null ? "_" : n.toString());

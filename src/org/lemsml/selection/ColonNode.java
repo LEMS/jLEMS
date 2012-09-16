@@ -7,6 +7,7 @@ import org.lemsml.run.ConnectionError;
 import org.lemsml.run.StateInstance;
 import org.lemsml.util.ContentError;
 import org.lemsml.util.E;
+import org.lemsml.util.RuntimeError;
 
 public class ColonNode extends SelectionOperatorNode {
 
@@ -20,13 +21,7 @@ public class ColonNode extends SelectionOperatorNode {
 		return new ColonNode();
 	}
 	
-
-	@Override
-	protected String getMathMLElementName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	 
+ 
 	public String getEvaluationProcessDescription() {
 		 return "(Quantity selection in " + left + " select:  " + right + ")";
 	}
@@ -64,7 +59,7 @@ public class ColonNode extends SelectionOperatorNode {
 
 
 
-	public double evaluateFloat(StateInstance si) throws ContentError, ConnectionError {
+	public double evaluateFloat(StateInstance si) throws ContentError, ConnectionError, RuntimeError {
 		double ret = 0;
 		boolean ok = false;
 		Node nl = getLeft();

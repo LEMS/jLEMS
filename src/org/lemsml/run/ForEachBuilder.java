@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.lemsml.util.ContentError;
+import org.lemsml.util.RuntimeError;
 
 public class ForEachBuilder extends PostBuilder {
 
@@ -18,7 +19,7 @@ public class ForEachBuilder extends PostBuilder {
 
 
 	 
-	public void postBuild(StateInstance base, HashMap<String, StateInstance> sihm, BuildContext bc) throws ConnectionError, ContentError {
+	public void postBuild(StateInstance base, HashMap<String, StateInstance> sihm, BuildContext bc) throws ConnectionError, ContentError, RuntimeError {
 
 
 		//E.info("postBuild on: " + base + ", bc: " + bc);

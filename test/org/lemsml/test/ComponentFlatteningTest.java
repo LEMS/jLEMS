@@ -38,8 +38,8 @@ public class ComponentFlatteningTest {
     }
     
     
-    public static void flattenFromFile(File f, String tgtid) throws ContentError, ConnectionError, ParseError, IOException {
-        System.out.println("Sys: " + System.getenv());
+    public static void flattenFromFile(File f, String tgtid) throws ContentError, ConnectionError, ParseError, IOException, RuntimeError {
+        E.info("Sys: " + System.getenv());
         E.info("Loading LEMS file from: " + f.getAbsolutePath());
 
         Sim sim = new Sim(f);
@@ -60,7 +60,7 @@ public class ComponentFlatteningTest {
 
        
         E.info("Found: " + comp0);
-        System.out.println("Children: " + comp0.getAllChildren());
+        E.info("Children: " + comp0.getAllChildren());
 
         ComponentBehavior cb = comp0.getComponentBehavior();
 
@@ -75,17 +75,13 @@ public class ComponentFlatteningTest {
 
         String sout0 = XMLSerializer.serialize(comp0);
 
-        System.out.println("-----------\n");
-        System.out.println(sout0);
-        System.out.println("-----------\n");
-
+        E.info("-----------\n" + sout0 + "----------\n");
+      
         String sout = XMLSerializer.serialize(ct0);
 
-        System.out.println("-----------\n");
-        System.out.println(sout);
-        System.out.println("-----------\n");
-
-        System.out.println(""+comp0.getParamValues());
+        E.info("-----------\n" + sout + "------\n");
+ 
+        E.info(""+comp0.getParamValues());
         
 
         ComponentType ctNew = new ComponentType(ct0.getName()+"_flat");
@@ -102,16 +98,11 @@ public class ComponentFlatteningTest {
 
 
         String sout2 = XMLSerializer.serialize(ctNew);
-
-        System.out.println("-----------\n");
-        System.out.println(sout2);
-        System.out.println("-----------\n");/**/
+        E.info("-----------\n" + sout2 + "------\n");
+         
 
         String sout3 = XMLSerializer.serialize(compNew);
-
-        System.out.println("-----------\n");
-        System.out.println(sout3);
-        System.out.println("-----------\n");/**/
+        E.info("-----------\n" + sout3 + "------\n");
         
 //        Component net = lems.getComponent("net1");
 //        Component pop = net.getChildrenAL("populations").get(1);

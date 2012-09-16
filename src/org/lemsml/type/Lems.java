@@ -15,8 +15,9 @@ import org.lemsml.run.EventManager;
 import org.lemsml.run.StateInstance;
 import org.lemsml.util.ContentError;
 import org.lemsml.util.E;
+import org.lemsml.util.RuntimeError;
 
-public class Lems {
+public class Lems implements ComponentContainer {
 	
 		
 	final static int STRICT = 0;
@@ -47,20 +48,8 @@ public class Lems {
     
     private static Random randomGenerator = new Random();
 
-    
-    
-    
-
-	public static boolean allowOnAbsent() {
-		// TODO make this false for native lems - true only needed for NeuroML models
-//		return false;
-		
-		return true; 
-	}
-    
-    
-    
-    
+   
+     
     
     public Lems() {
         globals.add(new IndVar("t"));
@@ -115,6 +104,8 @@ public class Lems {
         	c.resolve(dimensions, null, parser, cvalHM);
         	cvalHM.put(c.getSymbol(), c.getValue());
         }
+        Constants.setConstantsHM(cvalHM);
+        
         
         
         for (Unit unit : units) {
@@ -313,7 +304,7 @@ public class Lems {
     	} else {
     		for (Component cpt : components) {
     			ComponentType ct = cpt.getComponentType();
-    			if (ct.hasBehavior() && ct.getBehavior().definesRun()) {
+    			if (ct.hasSimulation() && ct.getSimulation().definesRun()) {
     				ret = new Target();
     				ret.r_component = cpt;
     				ret.component = cpt.id;
@@ -327,20 +318,10 @@ public class Lems {
     	return ret;
     }
     
-    
-    @Deprecated
-    public DefaultRun getDefaultRun() throws ContentError {
-    	Target t = getTarget();
-    	DefaultRun ret = null;
-    	if (t instanceof DefaultRun) {
-    		ret = (DefaultRun)t;
-    	}
-    	return ret;
-    }
-    
+     
 
-    public StateInstance build(ComponentBehavior cptb, EventManager em) throws ContentError, ConnectionError, ParseError {
-    	
+    public StateInstance build(ComponentBehavior cptb, EventManager em) throws ContentError, ConnectionError, ParseError, RuntimeError {
+    	E.info("bulding a SI");
     	Constants.setConstantsHM(getConstantsValueHM());
     	
     

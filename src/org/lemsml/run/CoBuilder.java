@@ -2,8 +2,9 @@ package org.lemsml.run;
 
 import org.lemsml.type.Component;
 import org.lemsml.util.ContentError;
+import org.lemsml.util.RuntimeError;
 
-public class CoBuilder extends ChildBuilder {
+public class CoBuilder extends AbstractChildBuilder {
 
 	Component ctr;
 	
@@ -17,7 +18,7 @@ public class CoBuilder extends ChildBuilder {
 	}
 	
 	
-	public void childInstantiate(StateInstance par) throws ContentError, ConnectionError {
+	public void childInstantiate(StateInstance par) throws ContentError, ConnectionError, RuntimeError {
   		
 		MultiInstance mi = new MultiInstance(componentBehavior.typeName, "");
 		 

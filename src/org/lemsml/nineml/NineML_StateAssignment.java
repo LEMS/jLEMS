@@ -1,7 +1,7 @@
 package org.lemsml.nineml;
 
-import org.lemsml.behavior.StateAssignment;
 import org.lemsml.io.FormatException;
+import org.lemsml.type.dynamics.StateAssignment;
 
 public class NineML_StateAssignment  {
 

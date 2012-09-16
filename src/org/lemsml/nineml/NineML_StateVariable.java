@@ -1,8 +1,8 @@
 package org.lemsml.nineml;
 
-import org.lemsml.behavior.StateVariable;
 import org.lemsml.io.FormatException;
 import org.lemsml.io.IOFace;
+import org.lemsml.type.dynamics.StateVariable;
 
 public class NineML_StateVariable implements IOFace {
 

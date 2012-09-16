@@ -158,7 +158,7 @@
 
         <mkdir dir="${test.results.dir}"/>
 
-        <java classname="org.neuroml.lems.test.MainTest" fork="true">
+        <java classname="org.lemsml.test.MainTest" fork="true">
             <jvmarg value="-Xmx100M" />
             <classpath refid="test.classpath"/>
         </java>

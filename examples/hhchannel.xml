@@ -18,23 +18,23 @@
 </ComponentType>
 
 <ComponentType name="HHExpRate" extends="HHRate">
-    <Behavior>
+    <Dynamics>
         <DerivedVariable name="r" exposure="r" value="rate * exp((v - midpoint)/scale)"/>
-    </Behavior>
+    </Dynamics>
 </ComponentType>
 
 
 <ComponentType name="HHSigmoidRate" extends="HHRate">
-    <Behavior>
+    <Dynamics>
         <DerivedVariable name="r" exposure="r" value="rate / (1 + exp( -(v - midpoint)/scale))"/>
-    </Behavior>
+    </Dynamics>
 </ComponentType>
 
  <ComponentType name="HHExpLinearRate" extends="HHRate">
-    <Behavior>
+    <Dynamics>
         <DerivedVariable name="x" value="(v - midpoint) / scale"/>
         <DerivedVariable name="r" exposure="r" value="rate * x / (1 - exp(-x))"/>
-    </Behavior>
+    </Dynamics>
 </ComponentType>
  
 
@@ -46,13 +46,13 @@
     <Requirement name="v" dimension="voltage"/>
     <Exposure name="fcond" dimension="none"/>
     
-    <Behavior simultaneous="true">
+    <Dynamics simultaneous="true">
         <StateVariable name="q" dimension="none"/>
         <DerivedVariable dimension="per_time" name="rf" select="Forward/r"/>
         <DerivedVariable dimension="per_time" name="rr" select="Reverse/r"/> 
         <TimeDerivative variable="q" value="rf * (1 - q) - rr * q"/>
         <DerivedVariable name="fcond" exposure="fcond" value="q^power"/>
-    </Behavior>    
+    </Dynamics>    
 </ComponentType>
 
 <Include file="hhaltgate.xml"/>
@@ -65,10 +65,10 @@
     <Parameter name="conductance" dimension="conductance"/>
     <Children name="gates" type="HHGate"/>
     <Exposure name="g" dimension="conductance"/>
-    <Behavior simultaneous="false">
+    <Dynamics simultaneous="false">
         <DerivedVariable name="gatefeff" dimension="none" select="gates[*]/fcond" reduce="multiply"/>
         <DerivedVariable name="g" exposure="g" dimension="conductance" value="conductance * gatefeff"/>
-    </Behavior>
+    </Dynamics>
 </ComponentType>
 
  

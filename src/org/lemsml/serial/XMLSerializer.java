@@ -45,10 +45,6 @@ public class XMLSerializer {
 		quoteStrings = b;
 	}
 
-	public static void err(String s) {
-		System.out.println(s);
-	}
-
 	public static XMLSerializer newInstance() {
 		return new XMLSerializer();
 	}
@@ -96,7 +92,7 @@ public class XMLSerializer {
 			if (lc.size() > 0) {
 				ret = new WrapperElement("anon");
 				for (Object child : lc) {
-					if (parent != null && parent instanceof Inheritor && ((Inheritor)parent).inherited(child)) {
+					if (parent instanceof Inheritor && ((Inheritor)parent).inherited(child)) {
 						// we inherited it from the parent of the object that contains the list
 						// dont need to write it out again 
 						
@@ -270,7 +266,8 @@ public class XMLSerializer {
 
 	}
 
-	private void setAttribute(Class<?> cls, XMLElement ret, String fieldName, String value) {
+	private void setAttribute(Class<?> cls, XMLElement ret, String fieldName, String avalue) {
+		String value = avalue;
 		String anm = fieldName;
 		if (exportMap != null) {
 			String sv = exportMap.getMappedAttributeValue(cls, anm, value);

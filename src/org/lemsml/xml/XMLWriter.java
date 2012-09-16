@@ -28,53 +28,46 @@ public class XMLWriter {
       quoteStrings = b;
    }
 
-
-   public static void err(String s) {
-      System.out.println(s);
-   }
-
+ 
 
    public static XMLWriter newInstance() {
       return new XMLWriter();
    }
 
 
-   public static String serialize(Object ob) {
+   public static String serialize(Object ob) throws XMLException {
       return getSerialization(ob);
    }
 
 
-   public static String getSerialization(Object ob) {
+   public static String getSerialization(Object ob) throws XMLException {
       return newInstance().writeObject(ob);
    }
 
 
 
-   public String writeObject(Object obj) {
+   public String writeObject(Object obj) throws XMLException {
       StringBuffer sb = new StringBuffer();
       appendObject(sb, "", null, obj);
       return sb.toString();
    }
 
  
-public void appendObject(StringBuffer sbv, String psk, String knownAs, Object ob) {
-      boolean write = true;
-
+   public void appendObject(StringBuffer sbv, String psk, String knownAs, Object ob) throws XMLException {
       if (ob instanceof String) {
          sbv.append(psk);
          sbv.append("<String>");
          sbv.append(ob);
          sbv.append("</String>\n");
-         return;
+        
+      } else {
+    	  appendTrueObject(sbv, psk, knownAs, ob);
       }
+   }
 
+    
 
-      if (!write) {
-         // skip this object - it contains no information;
-         return;
-      }
-
-
+   public void appendTrueObject(StringBuffer sbv, String psk, String knownAs, Object ob) throws XMLException {
 
        String tag = "error";
       if (knownAs != null) {
@@ -110,8 +103,14 @@ public void appendObject(StringBuffer sbv, String psk, String knownAs, Object ob
          try {
             ret = flds[i].get(ob);
          } catch (Exception e) {
-            err("WARNING - failed to get field " + fieldName + " in  " + ob);
+        	 ret = null;
          }
+         
+         if (ret == null) {
+        	 throw new XMLException("failed to get field " + fieldName + " in  " + ob);        	 
+         }
+         
+         
          if (Modifier.isFinal(flds[i].getModifiers()))
             ret = null;
 

@@ -55,14 +55,7 @@ public abstract class SelectionOperatorNode extends SelectionNode implements Clo
 	public String toString() {
 		return "(" + str(left) + " " + symbol + " " + str(right) + ")";
 	}
-
-        protected abstract String getMathMLElementName();
-
-        public String getMathML(String indent) {
-        	return null;
-        }
-
-
+ 
 
 
 	private String str(Node n) {

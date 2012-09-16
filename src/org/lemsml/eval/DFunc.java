@@ -33,8 +33,8 @@ public class DFunc extends DVal {
                 return fname + "(" + arg  + ")";
         }
 
-        public String toString(String prefix, ArrayList<String> ignore) {
-                return fname + "(" + arg.toString(prefix, ignore) + ")";
+        public String coditionalPrefixedToString(String prefix, ArrayList<String> ignore) {
+                return fname + "(" + arg.coditionalPrefixedToString(prefix, ignore) + ")";
         }
 
 

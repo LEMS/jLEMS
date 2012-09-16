@@ -5,23 +5,26 @@ import java.util.HashMap;
 
 import org.lemsml.annotation.Mat;
 import org.lemsml.annotation.Mel;
-import org.lemsml.behavior.Behavior;
-import org.lemsml.behavior.DerivedVariable;
-import org.lemsml.behavior.Dynamics;
-import org.lemsml.behavior.Equilibrium;
 import org.lemsml.canonical.CanonicalElement;
 import org.lemsml.expression.Dimensional;
 import org.lemsml.expression.ParseError;
 import org.lemsml.expression.Parser;
 import org.lemsml.expression.Valued;
 import org.lemsml.procedure.Procedure;
+import org.lemsml.run.ComponentBehavior;
+import org.lemsml.run.Constants;
+import org.lemsml.run.MultiComponentBehavior;
+import org.lemsml.type.dynamics.Dynamics;
+import org.lemsml.type.dynamics.DerivedVariable;
+import org.lemsml.type.dynamics.Equilibrium;
+import org.lemsml.type.simulation.Simulation;
+import org.lemsml.type.structure.Structure;
 import org.lemsml.util.ContentError;
 import org.lemsml.util.E;
 import org.lemsml.xml.XMLElement;
 
-@Mel(info="Root element for defining component types. Note that ComponentClass is used for " +
-		"this element in the NeuroML Component definitions. " + 
-		"LEMS will handle ComponentClass elements in the same way as ComponentType elements.")
+@Mel(info="Root element for defining component types.")
+	 
 public class ComponentType extends Base implements Named, Summaried, Inheritor {
 
 	@Mat(info="The name of the component type. This can be uses as an XML element name in the shorthand form when" +
@@ -54,19 +57,18 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	public LemsCollection<Link> links = new LemsCollection<Link>();
 
 	public LemsCollection<Property> propertys = new LemsCollection<Property>();
-
-	public LemsCollection<DefaultBehavior> defaultBehaviors = new LemsCollection<DefaultBehavior>();
-	
-	public LemsCollection<Behavior> behaviors = new LemsCollection<Behavior>();
-
+ 	
 	public LemsCollection<Dynamics> dynamicses = new LemsCollection<Dynamics>();
+ 	
+	public LemsCollection<Structure> structures = new LemsCollection<Structure>();
 	
+	public LemsCollection<Simulation> simulations = new LemsCollection<Simulation>();
+ 	
 	public LemsCollection<Equilibrium> equilibriums  = new LemsCollection<Equilibrium>();
 	
 	public LemsCollection<Procedure> procedures = new LemsCollection<Procedure>();
 	
-	
-	
+ 	
 	
 	public LemsCollection<Fixed> fixeds = new LemsCollection<Fixed>();
 
@@ -167,15 +169,20 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
  
 
 	public boolean isOrExtends(String typeName) {
-		if (getName().equals(typeName))
-			return true;
-		ComponentType ext = this.r_extends;
-		while (ext != null) {
-			if (ext.getName().equals(typeName))
-				return true;
-			ext = ext.r_extends;
+		boolean ret = false;
+		if (getName().equals(typeName)) {
+			ret = true;
+		} else {
+			ComponentType ext = this.r_extends;
+			while (ext != null) {
+				if (ext.getName().equals(typeName)) {
+					ret = true;
+					break;
+				}
+				ext = ext.r_extends;
+			}
 		}
-		return false;
+		return ret;
 	}
 	
 	
@@ -232,7 +239,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 			
 			} else if (ap.mode.equals("reduce")) {
 				if (ap.reduce_op.equals("+")) {
-					for (Behavior b : behaviors) {				
+					for (Dynamics b : dynamicses) {				
 						DerivedVariable dv = new DerivedVariable(ap.name);
 						dv.value = "0";
 						dv.reduce = "add";
@@ -356,14 +363,12 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		}
 
 		for (Fixed sp : fixeds) {
-			try {
+		 
 				if (finalParams.hasName(sp.getPseudoName())) {
 					finalParams.getByName(sp.getPseudoName()).setSValue(
 							sp.getValue());
 				}
-			} catch (ContentError ce) {
-				throw ce;
-			}
+			 
 		}
 
 		for (Constant c : constants) {
@@ -376,15 +381,20 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 			ep.resolve(lems.getDimensions());
 		}
 
-		for (Behavior b : behaviors) {
+		for (Dynamics b : dynamicses) {
 			b.setComponentType(this);
 			b.resolve(lems, p);
 		}
 
-		for (DefaultBehavior db : defaultBehaviors) {
-			db.resolve(this);
+		
+		for (Structure s : structures) {
+			s.resolve(lems, this);
 		}
-
+	 
+		for (Simulation sim : simulations) {
+			sim.resolve(lems, this);
+		}
+		
 		for (Exposure exp : exposures) {
 
 			finalExposeds.add(new FinalExposed(exp.getName(), exp.getDimension()));
@@ -393,6 +403,13 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		resolved = true;
 	}
 
+	
+	
+	
+	
+	
+	
+	
 	public LemsCollection<EventPort> getEventPorts() {
 		return eventPorts;
 	}
@@ -467,40 +484,50 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		return ret;
 	}
 
-	public Behavior getBehavior(String nm) {
-		Behavior ret = null;
-		for (Behavior b : behaviors) {
-			if (nm.equals(b.getName())) {
-				ret = b;
-			}
-		}
-		return ret;
-	}
 
-	public Behavior getBehavior() throws ContentError {
-		Behavior ret = null;
-		if (defaultBehaviors.size() == 1) {
-			ret = defaultBehaviors.getOnly().getBehavior();
-			// E.info("behavior returning default " + ret);
 
-		} else if (defaultBehaviors.size() > 1) {
-			throw new ContentError("only one default behavior allowed");
-		}
-
+	public Dynamics getDynamics() throws ContentError {
+		Dynamics ret = null;
+		
 		if (ret == null) {
-			if (behaviors.size() == 0 && r_extends != null) {
-				ret = r_extends.getBehavior();
+			if (dynamicses.size() == 0 && r_extends != null) {
+				ret = r_extends.getDynamics();
 			} else {
-				if (behaviors.size() == 1) {
-					ret = behaviors.getOnly();
+				if (dynamicses.size() == 1) {
+					ret = dynamicses.getOnly();
 				} else {
 					//E.info("No dynamics is specified for " + name);
-					return null;
 				}
 			}
 		}
 		return ret;
 	}
+	
+	
+	
+	
+	public Simulation getSimulation() throws ContentError {
+		Simulation ret = null;
+		
+
+		if (ret == null) {
+			if (simulations.size() == 0 && r_extends != null) {
+				ret = r_extends.getSimulation();
+			} else {
+				if (simulations.size() == 1) {
+					ret = simulations.getOnly();
+				} else {
+					//E.info("No dynamics is specified for " + name);
+ 				}
+			}
+		}
+		return ret;
+	}
+	
+	
+	
+	
+	
 
 	public Valued getSimpleExposed(String nm) throws ContentError {
 		Valued ret = null;
@@ -572,15 +599,28 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		return r_extends;
 	}
 
+	
 	public boolean hasBehavior() {
 		boolean ret = false;
-		if (behaviors.size() > 0) {
+		if (dynamicses.size() > 0) {
 			ret = true;
 		} else if (r_extends != null && r_extends.hasBehavior()) {
 			ret = true;
 		}
 		return ret;
 	}
+	
+	
+	public boolean hasSimulation() {
+		boolean ret = false;
+		if (simulations.size() > 0) {
+			ret = true;
+		} else if (r_extends != null && r_extends.hasSimulation()) {
+			ret = true;
+		}
+		return ret;
+	}
+	
 
 	public LemsCollection<ComponentReference> getComponentRefs() {
 		return componentReferences;
@@ -592,7 +632,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 
 
 	public void checkEquations(HashMap<String, Dimensional> cdimHM) throws ContentError {
-		for (Behavior b : behaviors) {
+		for (Dynamics b : dynamicses) {
 			b.checkEquations(cdimHM);
 		}
 
@@ -790,8 +830,8 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		
 	}
 
-	public void addBehavior(Behavior b) {
-		behaviors.add(b);
+	public void addBehavior(Dynamics b) {
+		dynamicses.add(b);
 	}
 
 	public void addExposure(Exposure expo) {
@@ -811,6 +851,97 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 
 	public LemsCollection<Procedure> getProcedures() {
 		return procedures;
+	}
+
+	public ComponentBehavior makeComponentBehavior(Component cpt) throws ContentError, ParseError {
+
+		HashMap<String, Double> fixedHM = new HashMap<String, Double>();
+
+		HashMap<String, Double> chm = Constants.getConstantsHM();
+		
+		if (chm != null) {
+			fixedHM.putAll(chm);
+		}
+		
+		for (ParamValue pv : cpt.getParamValues()) {
+			fixedHM.put(pv.getName(), pv.getDoubleValue());
+		}
+
+		ComponentBehavior ret = null;
+		
+		if (hasBehavior()) {
+			Dynamics bv = getDynamics();
+			ret = bv.makeComponentBehavior(cpt, fixedHM);
+
+		} else {
+ 			ret = new ComponentBehavior(cpt.getID(), getName());
+			for (ParamValue pv : cpt.getParamValues()) {
+				 String qn = pv.getName();
+				 double qv = pv.getDoubleValue();
+				 ret.addFixed(qn, qv);
+			}
+
+		}
+		
+		if (structures.size() > 0) {
+			for (Structure b : structures) {
+				ret.addBuilder(b.makeBuilder(cpt));
+			}
+		}
+	 
+	
+		for (Property p : getPropertys()) {
+			String pnm = p.getName();
+			ret.addExposureMapping(pnm, pnm);
+		}
+
+		for (Text text : getTexts()) {
+			String tnm = text.getName();
+			if (cpt.attributes.hasName(tnm)) {
+				ret.addTextParam(tnm, cpt.attributes.getByName(tnm).getValue());
+			}
+		}
+
+		for (String s :cpt.refHM.keySet()) {
+			Component ch = cpt.refHM.get(s);
+			ComponentBehavior chb = ch.getComponentBehavior();
+			ret.addRefComponentBehavior(s, chb);
+		}
+
+		for (String s : cpt.childHM.keySet()) {
+			Component ch = cpt.childHM.get(s);
+			ComponentBehavior chb = ch.getComponentBehavior();
+			ret.addChildComponentBehavior(s, chb);
+		}
+
+		for (String s : cpt.childrenNames) {
+			ArrayList<Component> cpts = cpt.childrenHM.get(s);
+			ArrayList<ComponentBehavior> cba = new ArrayList<ComponentBehavior>();
+			for (Component c : cpts) {
+				cba.add(c.getComponentBehavior());
+			}
+			ret.addMultiComponentBehavior(s, new MultiComponentBehavior(cba));
+		}
+
+		for (Attachments ats : getAttachmentss()) {
+ 			ret.addAttachmentSet(ats.getName(), ats.getComponentType().getName());
+		}
+
+		for (Collection c : getCollections()) {
+			ret.addInstanceSet(c.getName());
+		}
+
+		for (PairCollection c : getPairCollections()) {
+			ret.addInstancePairSet(c.getName());
+		}
+		
+		
+		for (Simulation sim : simulations) {
+			sim.appendToBehavior(cpt, ret);
+		}
+	 
+		return ret;
+	
 	}
 
  

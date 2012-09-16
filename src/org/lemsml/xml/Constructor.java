@@ -8,7 +8,7 @@ import org.lemsml.util.ContentError;
 
 public interface Constructor {
 
-   Object newInstance(String cnm);
+   Object newInstance(String cnm, boolean allowComponent);
 
    Object getChildObject(Object parent, String name, Attribute[] atta) throws BuildException, ContentError;
  

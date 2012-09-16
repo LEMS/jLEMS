@@ -5,22 +5,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.lemsml.annotation.Mat;
-import org.lemsml.behavior.Behavior;
 import org.lemsml.canonical.CanonicalElement;
 import org.lemsml.expression.DoubleEvaluable;
 import org.lemsml.expression.ParseError;
 import org.lemsml.run.ComponentBehavior;
 import org.lemsml.run.Constants;
 import org.lemsml.run.MultiComponentBehavior;
-import org.lemsml.run.RunDisplay;
 import org.lemsml.run.StateRunnable;
+import org.lemsml.type.dynamics.Dynamics;
+import org.lemsml.type.simulation.Simulation;
+import org.lemsml.type.structure.Structure;
 import org.lemsml.util.ContentError;
 import org.lemsml.util.E;
 import org.lemsml.xml.XMLAttribute;
 import org.lemsml.xml.XMLElement;
 
 
-public class Component implements Attributed, IDd, Summaried, Namable, Parented  {
+public class Component implements Attributed, IDd, Summaried, Namable, Parented, ComponentContainer  {
 
     public static final String THIS_COMPONENT = "this";
     public static final String PARENT_COMPONENT = "parent";
@@ -71,14 +72,14 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	public double yPosition;
 	
 	
-	HashMap<String, TextParam> textParamHM = new HashMap<String, TextParam>();
+	final HashMap<String, TextParam> textParamHM = new HashMap<String, TextParam>();
 
 	HashMap<String, Component> childHM;
 
-	HashMap<String, Component> refHM;
+     HashMap<String, Component> refHM;
 
 	ArrayList<String> childrenNames;
-	HashMap<String, ArrayList<Component>> childrenHM;
+	 HashMap<String, ArrayList<Component>> childrenHM;
 
 	
 	
@@ -87,9 +88,9 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 
 	private boolean evaluatedStatic = false;
 
-	Component r_parent;
+	private Component r_parent;
 
-	boolean madeCB = false;
+	private boolean madeCB = false;
 
 	private ComponentBehavior componentBehavior;
  	
@@ -157,8 +158,13 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	}
 
 	public String getUniqueID() {
-		if (id!=null) return id;
-        else return this.getParent().getUniqueID()+"_"+getName();
+		String ret = "";
+		if (id == null) { 
+			ret = getParent().getUniqueID() + "_" + getName();
+		} else {
+			ret = id;
+		}
+		return ret;
 	}
 
 	public void setType(ComponentType ct) {
@@ -637,9 +643,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		if (ret == null) {
 			E.info("Inheritable - no ref " + pnm + " in " + this);
 			E.info("Parent = " + r_parent);
-		} else {
-			E.info("XXX got ref tgt " + pnm + " -> " + ret);
-		}
+		}  
 		return ret;
 	}
 	
@@ -651,81 +655,14 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 			throw new ContentError("remaking a component behavior that is already made " + id + " " + r_type);
 		}
 
-		HashMap<String, Double> fixedHM = new HashMap<String, Double>();
-
-		HashMap<String, Double> chm = Constants.getConstantsHM();
-		if (chm != null) {
-			fixedHM.putAll(chm);
-		}
-		
-		for (ParamValue pv : paramValues) {
-			fixedHM.put(pv.getName(), pv.getDoubleValue());
-		}
-
-		ComponentBehavior ret = null;
-		if (r_type.hasBehavior()) {
-			Behavior bv = r_type.getBehavior();
-			ret = bv.makeComponentBehavior(this, fixedHM);
-		} else {
- 			ret = new ComponentBehavior(getID(), getComponentType().getName());
-			for (ParamValue pv : getParamValues()) {
-				 String qn = pv.getName();
-				 double qv = pv.getDoubleValue();
-				 ret.addFixed(qn, qv);
-			}
-
-		}
-		for (Property p : getComponentType().getPropertys()) {
-			String pnm = p.getName();
-			ret.addExposureMapping(pnm, pnm);
-		}
-
-		for (Text text : r_type.getTexts()) {
-			String tnm = text.getName();
-			if (attributes.hasName(tnm)) {
-				ret.addTextParam(tnm, attributes.getByName(tnm).getValue());
-			}
-		}
-
-		for (String s : refHM.keySet()) {
-			Component ch = refHM.get(s);
-			ComponentBehavior chb = ch.getComponentBehavior();
-			ret.addRefComponentBehavior(s, chb);
-		}
-
-		for (String s : childHM.keySet()) {
-			Component ch = childHM.get(s);
-			ComponentBehavior chb = ch.getComponentBehavior();
-			ret.addChildComponentBehavior(s, chb);
-		}
-
-		for (String s : childrenNames) {
-			ArrayList<Component> cpts = childrenHM.get(s);
-			ArrayList<ComponentBehavior> cba = new ArrayList<ComponentBehavior>();
-			for (Component c : cpts) {
-				cba.add(c.getComponentBehavior());
-			}
-			ret.addMultiComponentBehavior(s, new MultiComponentBehavior(cba));
-		}
-
-		for (Attachments ats : r_type.getAttachmentss()) {
-			ret.addAttachmentSet(ats.getName(), ats.getComponentType().getName());
-		}
-
-		for (Collection c : r_type.getCollections()) {
-			ret.addInstanceSet(c.getName());
-		}
-
-		for (PairCollection c : r_type.getPairCollections()) {
-			ret.addInstancePairSet(c.getName());
-		}
-		
+		ComponentBehavior ret = r_type.makeComponentBehavior(this);
+		componentBehavior = ret;
 		madeCB = true;
-		
-	  
-		componentBehavior = ret; // TODO maybe delete this ref later?
 		return ret;
 	}
+	
+	
+		
 	
 	
 	public ComponentBehavior makeConsolidatedCoponentBehavior(String knownas) throws ContentError, ParseError {
@@ -757,12 +694,12 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 
 	public ArrayList<Component> getChildrenAL(String s) {
 
-		ArrayList<Component> children = childrenHM.get(s);
-		if (children == null) {
+		ArrayList<Component> ret = childrenHM.get(s);
+		if (ret == null) {
 			//E.info("No children of class: " + s + " in " + this.getID() + ", valid values: " + childrenHM.keySet());
-			return new ArrayList<Component>();
+			ret = new ArrayList<Component>();
 		}
-		return children;
+		return ret;
 
 	}
 	
@@ -811,14 +748,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 
 	public String getStringValue(String sn) throws ContentError {
 		String ret = null;
-
-        if (sn.equals(THIS_COMPONENT))
-            return THIS_COMPONENT;
-
-        if (sn.equals(PARENT_COMPONENT))
-            return PARENT_COMPONENT;
-
-
+ 
 		if (refHM.containsKey(sn)) {
 			ret = refHM.get(sn).getID();
 
@@ -829,8 +759,9 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 			ret = attributes.getByName(sn).getValue();
 
 		} else {
+			(new Exception()).printStackTrace();
 			throw new ContentError("No such field '"
-                    + sn + "' in " + this + "\n"+details(""));
+                    + sn + "' in " + this + "\n" + details(""));
 		}
 
 		// which should be the same as attval(sn);
@@ -904,7 +835,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 			}
 
 			Component cpt = getRelativeComponent(bits[0]);
-			return cpt.getPathParamValue(rbits);
+			ret = cpt.getPathParamValue(rbits);
 		}
 		return ret;
 	}

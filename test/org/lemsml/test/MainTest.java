@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
+import org.lemsml.util.E;
 
 /**
  * 
@@ -16,7 +17,7 @@ import org.junit.runner.notification.Failure;
 public class MainTest {
 
 	public static void main(String[] args) {
-		System.out.println("Running the main LEMS  tests...");
+		E.info("Running the main LEMS  tests...");
 
 		Result r = null;
 
@@ -32,7 +33,7 @@ public class MainTest {
 		Date now = new java.util.Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss, EEE dd-MMM-yyyy");
 
-		System.out.println("\n\nFinished  LEMS tests at " + formatter.format(now) + ".");
+		E.info("Finished  LEMS tests at " + formatter.format(now) + ".");
 
 		checkResults(r);
 
@@ -40,27 +41,28 @@ public class MainTest {
 
 	public static void checkResults(Result r) {
 
+		StringBuilder sb = new StringBuilder();
 		if (!r.wasSuccessful()) {
 			for (Failure f : r.getFailures()) {
-				System.out.println("Failure: " + f.getDescription());
-				System.out.println("Exception: " + f.getMessage());
-				System.out.println("Trace: " + f.getTrace());
+				sb.append("Failure: " + f.getDescription() + "\n");
+				sb.append("Exception: " + f.getMessage() + "\n");
+				sb.append("Trace: " + f.getTrace() + "\n");
 			}
 		}
 
-		System.out.println("");
-		System.out.println("Results:");
-		System.out.println("     Total      " + r.getRunCount());
-		System.out.println("     Ignored    " + r.getIgnoreCount());
-		System.out.println("     Failed     " + r.getFailures().size());
-		System.out.println("     Succeeded  " + (r.getRunCount() - r.getFailures().size() - r.getIgnoreCount()));
-		System.out.println("");
-
+		sb.append("\n");
+		sb.append("Results:\n");
+		sb.append("     Total      " + r.getRunCount() + "\n");
+		sb.append("     Ignored    " + r.getIgnoreCount() + "\n");
+		sb.append("     Failed     " + r.getFailures().size() + "\n");
+		sb.append("     Succeeded  " + (r.getRunCount() - r.getFailures().size() - r.getIgnoreCount()) + "\n");
+		sb.append("\n");
+		
 		if (r.wasSuccessful()) {
-			System.out.println("All tests completed successfully");
+			sb.append("All tests completed successfully\n");
 		} else {
-			System.out.println("FAILED " + r.getFailures().size() + " test(s)");
+			sb.append("FAILED " + r.getFailures().size() + " test(s)\n");
 		}
-
+		E.info(sb.toString());
 	}
 }

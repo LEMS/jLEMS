@@ -1,7 +1,7 @@
 package org.lemsml.nineml;
 
-import org.lemsml.behavior.TimeDerivative;
 import org.lemsml.io.FormatException;
+import org.lemsml.type.dynamics.TimeDerivative;
 
 public class NineML_TimeDerivative {
 

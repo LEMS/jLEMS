@@ -50,7 +50,7 @@ public class NineML_ComponentClass implements IOFaceMixed {
 		}
 		
 		for (NineML_Dynamics d : cM_Dynamicses) {
-			ret.addBehavior(d.getBehavior());
+			ret.addBehavior(d.getDynamics());
 		}
 		
 		// these come last as they may need to add some stuff to the behavior

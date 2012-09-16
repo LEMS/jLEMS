@@ -1,9 +1,9 @@
 package org.lemsml.nineml;
 
-import org.lemsml.behavior.Behavior;
-import org.lemsml.behavior.DerivedVariable;
 import org.lemsml.type.ComponentType;
 import org.lemsml.type.Exposure;
+import org.lemsml.type.dynamics.Dynamics;
+import org.lemsml.type.dynamics.DerivedVariable;
 import org.lemsml.util.ContentError;
 
 public class NineML_AnalogPort  {
@@ -28,7 +28,7 @@ public class NineML_AnalogPort  {
 			expo.dimension = dimension;
 			ct.addExposure(expo);
 			
-			Behavior b = ct.getBehavior();
+			Dynamics b = ct.getDynamics();
 			DerivedVariable dv = new DerivedVariable(name, dimension);
 			dv.exposure = name;
 			dv.value = "0";

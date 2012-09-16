@@ -8,11 +8,9 @@
 <ComponentType name="Population">
     <ComponentRef name="component" type="Component"/>
     <Parameter name="size" dimension="none"/>
-    <Behavior>
-        <Build>
-            <MultiInstantiate number="size" component="component"/>
-        </Build>
-    </Behavior>
+    <Structure>
+	    <MultiInstantiate number="size" component="component"/>
+	</Structure>
 </ComponentType>
 
 
@@ -28,15 +26,14 @@
 
 
 <ComponentType name="AllAll" extends="ConnectionPattern">
-    <Behavior>
-        <Build>
+   	<Structure>
             <ForEach instances="../source" as="a">
                  <ForEach instances="../target" as="b">
                       <EventConnection from="a" to="b"/>
                  </ForEach>
             </ForEach>    
-        </Build>
-    </Behavior>
+   	</Structure>
+       
 </ComponentType>
 
 </Lems>

@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.lemsml.util.ContentError;
 import org.lemsml.util.E;
+import org.lemsml.util.RuntimeError;
 
 public class PairsEventConnectionBuilder extends PostBuilder {
 
@@ -18,7 +19,7 @@ public class PairsEventConnectionBuilder extends PostBuilder {
 	}
 
 	 
-	public void postBuild(StateInstance base, HashMap<String, StateInstance> sihm, BuildContext bc) throws ConnectionError, ContentError {
+	public void postBuild(StateInstance base, HashMap<String, StateInstance> sihm, BuildContext bc) throws ConnectionError, ContentError, RuntimeError {
 		InstancePairSet<StateInstance> ips = base.getInstancePairSet(pairs);
 		
 		
@@ -38,7 +39,7 @@ public class PairsEventConnectionBuilder extends PostBuilder {
 	
 	
 	
-	private void connectInstances(StateInstance sf, StateInstance st) throws ContentError, ConnectionError {
+	private void connectInstances(StateInstance sf, StateInstance st) throws ContentError, ConnectionError, RuntimeError {
 
         //TODO: add check for named in & out ports!
 		if (receiverCB != null) {

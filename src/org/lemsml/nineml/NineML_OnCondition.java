@@ -1,8 +1,8 @@
 package org.lemsml.nineml;
 
-import org.lemsml.behavior.OnCondition;
 import org.lemsml.io.FormatException;
 import org.lemsml.type.LemsCollection;
+import org.lemsml.type.dynamics.OnCondition;
 
 public class NineML_OnCondition  {
 

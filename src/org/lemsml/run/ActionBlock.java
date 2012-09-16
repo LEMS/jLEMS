@@ -9,9 +9,9 @@ import org.lemsml.util.RuntimeError;
 
 public class ActionBlock {
 	
-	ArrayList<VariableAssignment> assignments = new ArrayList<VariableAssignment>();
+	private final ArrayList<VariableAssignment> assignments = new ArrayList<VariableAssignment>();
 	 
-	ArrayList<String> outPorts = new ArrayList<String>();
+	private final ArrayList<String> outPorts = new ArrayList<String>();
 	
 	
 	public boolean doesTransition = false;
@@ -37,9 +37,9 @@ public class ActionBlock {
 		doesTransition = true;
 	}
 
-        public ArrayList<VariableAssignment> getAssignments() {
-                return assignments;
-        }
+	public ArrayList<VariableAssignment> getAssignments() {
+		return assignments;
+    }
 
 	public void addVarsTo(ArrayList<String> vars) {
 		for (VariableAssignment va : assignments) {

@@ -2,7 +2,6 @@ package org.lemsml.sim;
 
 import java.io.File;
 
-import org.lemsml.behavior.Behavior;
 import org.lemsml.canonical.CanonicalWriter;
 import org.lemsml.expression.ParseError;
 import org.lemsml.io.LemsMap;
@@ -16,6 +15,9 @@ import org.lemsml.type.Component;
 import org.lemsml.type.ComponentType;
 import org.lemsml.type.Lems;
 import org.lemsml.type.Target;
+import org.lemsml.type.dynamics.Dynamics;
+import org.lemsml.type.simulation.Simulation;
+import org.lemsml.type.structure.Structure;
 import org.lemsml.util.ContentError;
 import org.lemsml.util.E;
 import org.lemsml.util.RuntimeError;
@@ -36,9 +38,8 @@ public class LemsProcess {
 	public static final int BUILT = 4;
 	protected int mode = NONE;
 
-	
+	boolean allowConsolidation = true;
 	 
-	
 	
 	  public LemsProcess(Class<?> c, String fnm) {
 	        root = c;
@@ -62,13 +63,18 @@ public class LemsProcess {
 	    }
 	
 	 
-	
+	    public void setNoConsolidation() {
+	    	allowConsolidation = false;
+	    }
+	    
 	
 	
 	public void readModel() throws ContentError {
 		ReflectionInstantiator ri = new ReflectionInstantiator();
 		ri.addSearchPackage(Lems.class.getPackage());
-		ri.addSearchPackage(Behavior.class.getPackage());
+		ri.addSearchPackage(Dynamics.class.getPackage());
+		ri.addSearchPackage(Structure.class.getPackage());
+		ri.addSearchPackage(Simulation.class.getPackage());
 		ri.addSearchPackage(Procedure.class.getPackage());
 		
 		NameMapper cm = new LemsMap();
@@ -112,7 +118,7 @@ public class LemsProcess {
 	
 	    try {
 	        lems = (Lems) (xmlr.read(stxt));
-	
+	     
 	        if (loose) {
 	        	lems.setResolveModeLoose();
 	        }

@@ -143,9 +143,10 @@ public class ComponentBehavior {
             return pathderiveds;
     }
 	
-	public StateInstance newInstance() throws ContentError, ConnectionError {
+	public StateInstance newInstance() throws ContentError, ConnectionError, RuntimeError {
 	 
 		StateInstance uin = new StateInstance(this);
+		// E.info("Creating new state instance of " + cptid + " " + typeName);
 		
 		uin.setVariables(vars);
 		
@@ -181,9 +182,9 @@ public class ComponentBehavior {
 		}
 		
 		for (String s : attSetHM.keySet()) {
-			uin.addAttachmentSet(s, new MultiInstance(attSetHM.get(s), s));
-		}
-
+ 			uin.addAttachmentSet(s, new MultiInstance(attSetHM.get(s), s));
+		} 
+ 
 		if (isets != null) {
 			for (String s : isets) {
 				uin.addInstanceSet(s);
@@ -212,13 +213,9 @@ public class ComponentBehavior {
 		
 		if (hasRegimes) {
 			for (String srn : regimeHM.keySet()) {
-				try {
-					ComponentRegime cr = regimeHM.get(srn);
-					RegimeStateInstance rsi = cr.newInstance(uin);
-					uin.addRegime(rsi);
-				} catch (RuntimeError re) {
-					throw new ContentError(re.getMessage());
-				}
+				ComponentRegime cr = regimeHM.get(srn);
+				RegimeStateInstance rsi = cr.newInstance(uin);
+				uin.addRegime(rsi); 
 			}
 		}
 		
@@ -230,7 +227,7 @@ public class ComponentBehavior {
 	
 	
 	
-	public void build(StateInstance uin) throws ContentError, ConnectionError {
+	public void build(StateInstance uin) throws ContentError, ConnectionError, RuntimeError {
 		if (hasBuilds) {
 			for (Builder be : builders) { 
 				if (be.isChildInstantiator()) {
@@ -522,8 +519,8 @@ public class ComponentBehavior {
 		exderiveds.add(cdv);
 	} 
 	
-	public PathDerivedVariable addPathDerived(String snm, String path, String rf, String oa) {
-		PathDerivedVariable pdv = new PathDerivedVariable(snm, path, rf, oa);
+	public PathDerivedVariable addPathDerived(String snm, String path, String rf) {
+		PathDerivedVariable pdv = new PathDerivedVariable(snm, path, rf);
 		pathderiveds.add(pdv);
         return pdv;
 	}
@@ -613,9 +610,9 @@ public class ComponentBehavior {
 			ea.addVarsTo(vars);
 			ea.addPortsTo(outPorts);
 		}
-		
 	}
 
+	
 	public void addRefComponentBehavior(String s, ComponentBehavior chb) {
 		refHM.put(s, chb);
 	}
@@ -628,12 +625,12 @@ public class ComponentBehavior {
  		multiHMNames.add(s);
 		multiHM.put(s, mcb);
 		if (s == null) {
-			(new Exception()).printStackTrace();
+			E.stackTrace();
 		}
 	}
 
 	public void addAttachmentSet(String name, String typeName) {
-		attSetHM.put(name, typeName);
+ 		attSetHM.put(name, typeName);
 	}
 
 	public void addKScheme(KScheme scheme) {
@@ -717,7 +714,7 @@ public class ComponentBehavior {
 	public void setSimultaneous(boolean b) {
 		simultaneous = b;
 		if (b) {
-			E.info("Behavior marked for consolidation " + this);
+			E.info("Dynamics marked for consolidation " + this);
 		}
 		
 	}
@@ -779,16 +776,16 @@ public class ComponentBehavior {
 	
 	
 	private void consolidateChildren(String knownas) {
-		E.info("Consolidating children in " + knownas + (cptid != null ? "(id=" + cptid + ")" : ""));
+		// E.info("Consolidating children in " + knownas + (cptid != null ? "(id=" + cptid + ")" : ""));
 		for (String sch : childHM.keySet()) {
-			E.info("Child: " + sch);
+			// E.info("Child: " + sch);
 			ComponentBehavior cbch = childHM.get(sch);
 			ComponentBehavior fcbch = cbch.getConsolidatedComponentBehavior(sch);
 			childHM.put(sch,  fcbch);
 		}
 		
 		for (String sm : multiHM.keySet()) {
-			E.info("multi child " + sm);
+			// E.info("multi child " + sm);
 			MultiComponentBehavior mcb = multiHM.get(sm);
 			ArrayList<ComponentBehavior> af = new ArrayList<ComponentBehavior>();
 			for (ComponentBehavior cbv : mcb.getCBs()) {
@@ -958,6 +955,13 @@ public class ComponentBehavior {
 			ret.addExposureMapping(s, exposedMap.get(s));
 		}
 		
+		for (String s : attSetHM.keySet()) {
+			ret.addAttachmentSet(s, attSetHM.get(s));
+		}
+		
+		for (KScheme ks : kschemes) {
+			ret.addKScheme(ks.makeCopy());
+		}
 		
 		for (VariableROC vroc : rates) {
 			ret.addVariableROC(vroc.makeCopy());

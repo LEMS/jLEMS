@@ -2,6 +2,7 @@ package org.lemsml.display;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.lemsml.run.ComponentBehavior;
 import org.lemsml.run.ExpressionDerivedVariable;
@@ -28,7 +29,8 @@ public class ComponentBehaviorWriter {
 	}
 	
 	
-	private void appendTo(StringBuilder sb, String pfx, ComponentBehavior cb, String ka) {
+	private void appendTo(final StringBuilder sb, String apfx, final ComponentBehavior cb, final String ka) {
+		String pfx = apfx;
 		sb.append(pfx + (ka.length() > 0 ? ka + ": " : "") + "ComponentBehavior " + cb.getComponentID() + "\n");
 		
 		pfx += "   ";
@@ -70,15 +72,15 @@ public class ComponentBehaviorWriter {
 		sb.append("\n");
 		
 		HashMap<String, ComponentBehavior> chm = cb.getChildHM();
-		if (chm.size() > 0) {
-		sb.append(pfx + "Children: " + chm.size() + "\n");
-		for (String s : chm.keySet()) {
-			appendTo(sb, pfx, chm.get(s), s);
-		}
+		if (!chm.isEmpty()) {
+			sb.append(pfx + "Children: " + chm.size() + "\n");
+			for (String s : chm.keySet()) {
+				appendTo(sb, pfx, chm.get(s), s);
+			}
 		}
 		
 		HashMap<String, MultiComponentBehavior> mcbhm = cb.getMultiHM();
-		if (mcbhm.size() > 0) {
+		if (!mcbhm.isEmpty()) {
 		sb.append(pfx + "MultiChildren: " + mcbhm.size() + "\n");
 		for (String s : mcbhm.keySet()) {
 			MultiComponentBehavior mcb = mcbhm.get(s);
@@ -90,7 +92,7 @@ public class ComponentBehaviorWriter {
 		}
 		
 		HashMap<String, ComponentBehavior> rhm = cb.getRefHM();
-		if (rhm.size() > 0) {
+		if (!rhm.isEmpty()) {
 		sb.append(pfx + "Refs: " + rhm.size() + "\n");
 		for (String s : rhm.keySet()) {
 			appendTo(sb, pfx, rhm.get(s), s);
@@ -117,7 +119,7 @@ public class ComponentBehaviorWriter {
 
 
 
-	private String makeRatesList(ArrayList<VariableROC> rates) {
+	private String makeRatesList(final List<VariableROC> rates) {
 		String ret = "";
 		for (VariableROC vr : rates) {
 			ret += "            " + vr.getVarName() + " = " + vr.getTextExpression() + "\n";
@@ -125,7 +127,7 @@ public class ComponentBehaviorWriter {
 		return ret;
 	}
 
-	private String makeEDVList(ArrayList<ExpressionDerivedVariable> arrayList) {
+	private String makeEDVList(final List<ExpressionDerivedVariable> arrayList) {
 		String ret =  "";
 		for (ExpressionDerivedVariable edv : arrayList) {
 			ret += ("    " + edv.getVarName() + " = " + edv.getExpressionString() + "\n");
@@ -142,7 +144,7 @@ public class ComponentBehaviorWriter {
 		*/
 	}
 
-	private String makePDVList(ArrayList<PathDerivedVariable> arrayList) {
+	private String makePDVList(List<PathDerivedVariable> arrayList) {
 		String ret = " ";
 	 	for (PathDerivedVariable vr : arrayList) {
 			ret += "    " + vr.getVarName() + " = " + vr.getPath() + "\n";
@@ -151,7 +153,7 @@ public class ComponentBehaviorWriter {
 	}
 	
 	
-	private String makeList(ArrayList<String> als) {
+	private String makeList(List<String> als) {
 	 		boolean wrapped = false;
 			int linelength = 0;
 			String ret = "";

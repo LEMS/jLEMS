@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.lemsml.eval.BComp;
 import org.lemsml.eval.NEQComp;
+import org.lemsml.util.ContentError;
 
 public class NotEqualsNode extends ComparisonNode {
 
@@ -11,10 +12,7 @@ public class NotEqualsNode extends ComparisonNode {
 		super("!=");
 	}
 
-    @Override
-    protected String getMathMLElementName() {
-            return "neq";
-    }
+  
 	
 	public NotEqualsNode copy() {
 		return new NotEqualsNode();
@@ -28,7 +26,7 @@ public class NotEqualsNode extends ComparisonNode {
 		return (x != y);
 	}
 
-	public BComp makeFixed(HashMap<String, Double> fixedHM) {
+	public BComp makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
 		return new NEQComp(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
 	}
 	

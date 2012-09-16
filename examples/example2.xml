@@ -1,6 +1,6 @@
 <Lems>
  
-<DefaultRun component="simset"/>
+<Target component="simset"/>
  
 <Include file="ex2dims.xml"/>
 <Include file="hhchannel.xml"/> 

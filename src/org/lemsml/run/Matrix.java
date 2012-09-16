@@ -5,14 +5,14 @@ import org.lemsml.util.E;
 
 public final class Matrix extends Object implements Cloneable {
 
-   public double a[][];
-   double ws[];
-   int n;
-   int perm[];
-   int sign;
+   private double a[][];
+   private double ws[];
+   private int n;
+   private int perm[];
+   private int sign;
 
-   int n1 = 0;
-   int n2 = 0;
+   private int n1 = 0;
+   private int n2 = 0;
 
 
    public Matrix(int nnn) {
@@ -47,8 +47,8 @@ public final class Matrix extends Object implements Cloneable {
    }
 
 
-   public void Sp(String s) {
-      System.out.println(s);
+   public void sysPrint(final String s) throws MatrixException {
+     	throw new MatrixException(s);
    }
 
 
@@ -157,9 +157,9 @@ public final class Matrix extends Object implements Cloneable {
 
 
 
-   public void add(Matrix m) {
+   public void add(Matrix m) throws MatrixException {
       if (m.n != n) {
-         Sp("incompativle dims in Matrix.mplyBy " + n + " " + m.n);
+         sysPrint("incompativle dims in Matrix.mplyBy " + n + " " + m.n);
 
       } else {
          for (int i = 0; i < n; i++) {
@@ -171,11 +171,11 @@ public final class Matrix extends Object implements Cloneable {
    }
 
 
-   public Matrix sum(Matrix m) {
+   public Matrix sum(Matrix m) throws MatrixException {
       Matrix mr = copy();
       mr.zero();
       if (m.n != n) {
-         Sp("incompativle dims in Matrix.mplyBy " + n + " " + m.n);
+         sysPrint("incompativle dims in Matrix.mplyBy " + n + " " + m.n);
 
       } else {
          for (int i = 0; i < n; i++) {
@@ -197,17 +197,17 @@ public final class Matrix extends Object implements Cloneable {
    }
 
 
-   public void mpyBy(Matrix m) {
+   public void mpyBy(Matrix m) throws MatrixException {
       a = (prod(m)).a;
    }
 
 
-   public Matrix prod(Matrix m) {
+   public Matrix prod(Matrix m) throws MatrixException {
       Matrix mr = copy();
       mr.zero();
 
       if (m.n != n) {
-         Sp("incompativle dims in Matrix.mplyBy " + n + " " + m.n);
+         sysPrint("incompativle dims in Matrix.mplyBy " + n + " " + m.n);
 
       } else {
          for (int i = 0; i < n; i++) {
@@ -222,10 +222,10 @@ public final class Matrix extends Object implements Cloneable {
    }
 
 
-   public double[] lvprod(double[] v) {
+   public double[] lvprod(double[] v) throws MatrixException {
       double[] r = new double[n];
       if (v.length != n) {
-         Sp("incompatible dimensions in lvprod");
+         sysPrint("incompatible dimensions in lvprod");
       } else {
          for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
@@ -237,14 +237,14 @@ public final class Matrix extends Object implements Cloneable {
    }
 
 
-   public Column times(Column v) {
+   public Column times(Column v) throws MatrixException {
       return new Column(rvprod(v.getData()));
    }
 
-   public double[] rvprod(double[] v) {
+   public double[] rvprod(double[] v) throws MatrixException {
       double[] r = new double[n];
       if (v.length != n) {
-         Sp("incompatible dimensions in lvprod");
+         sysPrint("incompatible dimensions in lvprod");
       } else {
          for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
@@ -313,9 +313,9 @@ public final class Matrix extends Object implements Cloneable {
    }
 
 
-   public double det() {
+   public double det() throws MatrixException {
       Matrix t = copy();
-      t.LU();
+      t.lu();
       double d = 1.0 * t.sign;
       for (int i = 0; i < n; i++) {
          d *= t.a[i][i];
@@ -337,7 +337,7 @@ public final class Matrix extends Object implements Cloneable {
 
 
 
-   public void LU() {
+   public void lu() throws MatrixException {
       int i, imax, j, k;
       double big, dum, sum, temp;
       double vv[] = new double[n];
@@ -354,7 +354,7 @@ public final class Matrix extends Object implements Cloneable {
             }
          }
          if (big == 0.0) {
-            Sp("Singular Matrix in routine LUDCMP");
+            sysPrint("Singular Matrix in routine LUDCMP");
          }
          vv[i] = 1.0 / big;
       }
@@ -403,11 +403,11 @@ public final class Matrix extends Object implements Cloneable {
 
 
 
-   public Matrix inverse() {
+   public Matrix inverse() throws MatrixException {
       Matrix t, r;
       t = copy();
       r = copy();
-      t.LU();
+      t.lu();
 
       double[] c = new double[n];
       for (int j = 0; j < n; j++) {
@@ -425,25 +425,25 @@ public final class Matrix extends Object implements Cloneable {
 
 
 
-   public static double[] LUSolve(double[][] m, double[] R) {
+   public static double[] luSolve(double[][] m, double[] R) throws MatrixException {
 
       Matrix M = new Matrix(m);
-      M.LU();
+      M.lu();
       double[] W = M.lubksb(R);
       return W;
    }
 
 
-   public Column LUSolve(Column r) {
+   public Column luSolve(Column r) throws MatrixException {
       Matrix m = copy();
-      m.LU();
+      m.lu();
       double[] w = m.lubksb(r.getData());
       return new Column(w);
    }
 
 
 
-   public void invert() {
+   public void invert() throws MatrixException {
       a = (inverse()).a;
    }
 
@@ -501,7 +501,7 @@ public final class Matrix extends Object implements Cloneable {
 
 
 
-   public void print() {
+   public String print() {
 
       String[] sa = new String[n];
       for (int i = 0; i < n; i++) {
@@ -510,10 +510,12 @@ public final class Matrix extends Object implements Cloneable {
             sa[i] += (" " + a[i][j]);
          }
       }
-      Sp(" n1: " + n1 + " n2: " + n2);
+      StringBuilder sb = new StringBuilder();
+      sb.append(" n1: " + n1 + " n2: " + n2 + "\n");
       for (int i = 0; i < sa.length; i++) {
-         Sp("" + i + " " + sa[i]);
+        sb.append("" + i + " " + sa[i] + "\n");
       }
+      return sb.toString();
    }
 
 
@@ -532,7 +534,7 @@ public final class Matrix extends Object implements Cloneable {
 
 
 
-   public Matrix power(int p) {
+   public Matrix power(int p) throws MatrixException {
       Matrix mr = identity();
       int pg = 0;
       int pl = 1;
@@ -546,13 +548,13 @@ public final class Matrix extends Object implements Cloneable {
          mp = mp.prod(mp);
       }
       if (pg != p) {
-         Sp("got Matrix power wrong: " + p + " " + pg + " " + pl);
+         sysPrint("got Matrix power wrong: " + p + " " + pg + " " + pl);
       }
       return mr;
    }
 
 
-   public Matrix crudeExpOf(double t) {
+   public Matrix crudeExpOf(double t) throws MatrixException {
       Matrix m = copy();
       m.mpyBy(t);
       double eps = 1.0e-8;
@@ -575,7 +577,7 @@ public final class Matrix extends Object implements Cloneable {
 
 
 
-   public Matrix expOf(double t) {
+   public Matrix expOf(double t) throws MatrixException {
       Matrix m = copy();
       m.mpyBy(t);
       double eps = 1.0e-12;
@@ -640,7 +642,7 @@ public final class Matrix extends Object implements Cloneable {
 
 
 
-   public double[] ev1vec(int np) {
+   public double[] ev1vec(int np) throws MatrixException {
       // find the vector with eigenvalue 1., assuming it exists... or
       // equivalently the null space of M-I, which is assumed to have
       // dimension 1;
@@ -702,7 +704,7 @@ public final class Matrix extends Object implements Cloneable {
    }
 
 
-   public void dump() {
+   public String dump() {
       StringBuffer sb = new StringBuffer();
       for (int i = 0; i < n1; i++) {
          for (int j = 0; j < n2; j++) {
@@ -711,7 +713,7 @@ public final class Matrix extends Object implements Cloneable {
          }
          sb.append("\n");
       }
-      System.out.println(sb.toString());
+      return sb.toString();
    }
 
 

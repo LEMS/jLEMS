@@ -1,46 +1,46 @@
 package org.lemsml.nineml;
 
-import org.lemsml.behavior.Behavior;
 import org.lemsml.io.FormatException;
 import org.lemsml.io.IOFace;
 import org.lemsml.type.LemsCollection;
+import org.lemsml.type.dynamics.Dynamics;
 import org.lemsml.util.E;
 
 public class NineML_Dynamics implements IOFace {
 
-	public LemsCollection<NineML_StateVariable> cM_StateVariables = new LemsCollection<NineML_StateVariable>();
+	public LemsCollection<NineML_StateVariable> ninemlStateVariables = new LemsCollection<NineML_StateVariable>();
 	 
 	
-	public LemsCollection<NineML_Alias> cM_Aliases = new LemsCollection<NineML_Alias>();
+	public LemsCollection<NineML_Alias> ninemlAliases = new LemsCollection<NineML_Alias>();
 	
 	 
-	public LemsCollection<NineML_Regime> cM_Regimes = new LemsCollection<NineML_Regime>();
+	public LemsCollection<NineML_Regime> ninemlRegimes = new LemsCollection<NineML_Regime>();
 
 	
 	
  
 	public Object getInternal() throws FormatException {
-		return getBehavior();
+		return getDynamics();
 	}
 	
 	
 		
-	public Behavior getBehavior() throws FormatException {	
-		Behavior b = new Behavior();
+	public Dynamics getDynamics() throws FormatException {	
+		Dynamics b = new Dynamics();
 		
-		E.info("getting behavior - nregimes = " + cM_Regimes.size());
+		E.info("getting behavior - nregimes = " + ninemlRegimes.size());
 		
-		for (NineML_StateVariable cmsv : cM_StateVariables) {
+		for (NineML_StateVariable cmsv : ninemlStateVariables) {
 			b.addStateVariable(cmsv.getStateVariable());
 		}
 	
 		
-		for (NineML_Alias ali : cM_Aliases) {
+		for (NineML_Alias ali : ninemlAliases) {
 			b.addDerivedVariable(ali.getDerivedVariable());
 		}
 		E.info("stripping regimes and putting in main");
-		if (cM_Regimes.size() == 1) {
-			NineML_Regime cmr = cM_Regimes.first();
+		if (ninemlRegimes.size() == 1) {
+			NineML_Regime cmr = ninemlRegimes.first();
 			for (NineML_TimeDerivative td : cmr.cM_TimeDerivatives) {
 				b.addTimeDerivative(td.getTimeDerivative());
 			}
@@ -51,7 +51,7 @@ public class NineML_Dynamics implements IOFace {
 			
 		} else {
 			E.info("Propagating regimes as is...");
-			for (NineML_Regime cmr : cM_Regimes) {
+			for (NineML_Regime cmr : ninemlRegimes) {
 				b.addRegime(cmr.getRegime());				
 			}
 		}

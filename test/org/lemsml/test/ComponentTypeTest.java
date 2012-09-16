@@ -9,14 +9,6 @@ import java.io.IOException;
 
 import org.junit.Test;
 import org.junit.runner.Result;
-import org.lemsml.behavior.Behavior;
-import org.lemsml.behavior.OnCondition;
-import org.lemsml.behavior.Record;
-import org.lemsml.behavior.Run;
-import org.lemsml.behavior.Show;
-import org.lemsml.behavior.StateAssignment;
-import org.lemsml.behavior.StateVariable;
-import org.lemsml.behavior.TimeDerivative;
 import org.lemsml.expression.ParseError;
 import org.lemsml.run.ConnectionError;
 import org.lemsml.sim.Sim;
@@ -32,6 +24,14 @@ import org.lemsml.type.Path;
 import org.lemsml.type.Target;
 import org.lemsml.type.Text;
 import org.lemsml.type.Unit;
+import org.lemsml.type.dynamics.Dynamics;
+import org.lemsml.type.dynamics.OnCondition;
+import org.lemsml.type.dynamics.Record;
+import org.lemsml.type.dynamics.Run;
+import org.lemsml.type.dynamics.Show;
+import org.lemsml.type.dynamics.StateAssignment;
+import org.lemsml.type.dynamics.StateVariable;
+import org.lemsml.type.dynamics.TimeDerivative;
 import org.lemsml.util.ContentError;
 import org.lemsml.util.E;
 import org.lemsml.util.RuntimeError;
@@ -82,8 +82,8 @@ public class ComponentTypeTest {
                 ct.parameters.add(reset);
 
 
-                Behavior b = new Behavior();
-                ct.behaviors.add(b);
+                Dynamics b = new Dynamics();
+                // ct.behaviors.add(b);
 
                 Exposure vExp = new Exposure("v", volts);
                 ct.exposures.add(vExp);
@@ -125,14 +125,14 @@ public class ComponentTypeTest {
                 ComponentReference cr = new ComponentReference("target", c.getComponentType().getName(), c.getComponentType());
                 simCt.componentReferences.add(cr);
 
-                Behavior simB = new Behavior();
-                simCt.behaviors.add(simB);
+                Dynamics simB = new Dynamics();
+                //simCt.behaviors.add(simB);
 
                 simB.stateVariables.add(new StateVariable("t", time));
                 Run r = new Run(cr.getName(), "t", step.getName(), length.getName());
-                simB.runs.add(r);
+              //  simB.runs.add(r);
 
-                simB.shows.add(new Show("displays"));
+                // simB.shows.add(new Show("displays"));
 
 
                 ComponentType dispCt = new ComponentType("Display");
@@ -142,10 +142,9 @@ public class ComponentTypeTest {
 
 
 
-                Behavior dispB = new Behavior();
-                dispCt.behaviors.add(dispB);
-                dispB.shows.add(new Show("lines", "timeScale", ""));
-
+                Dynamics dispB = new Dynamics();
+                // dispCt.behaviors.add(dispB);
+      
                 ComponentType lineCt = new ComponentType("Line");
                 lems.addComponentType(lineCt);
                 lineCt.parameters.add(new Parameter("scale", new Dimension("*")));
@@ -153,9 +152,9 @@ public class ComponentTypeTest {
                 lineCt.paths.add(new Path("quantity"));
                 lineCt.texts.add(new Text("color"));
 
-                Behavior bL = new Behavior();
-                lineCt.behaviors.add(bL);
-                bL.records.add(new Record("quantity", "scale", "color", null));
+                Dynamics bL = new Dynamics();
+               //  lineCt.behaviors.add(bL);
+            //    bL.records.add(new Record("quantity", "scale", "color", null));
                 
 
                 dispCt.childrens.add(new Children("lines", lineCt));

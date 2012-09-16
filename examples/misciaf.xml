@@ -19,14 +19,14 @@
     <EventPort name="spikes-in" direction="in"/>
     <Exposure name="v" dimension="voltage"/>
 
-    <Behavior>
+    <Dynamics>
        <StateVariable name="v" exposure="v" dimension="voltage"/>
        <TimeDerivative variable="v" value="leakConductance * (leakReversal - v) / capacitance"/>
              
        <OnEvent port="spikes-in">
             <StateAssignment variable="v" value="v + deltaV"/>
        </OnEvent>      
-    </Behavior>
+    </Dynamics>
 
 </ComponentType>
  

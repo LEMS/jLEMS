@@ -13,11 +13,7 @@ public class MinusNode extends FloatResultNode {
 		super("-");
 	}
 
-        @Override
-        protected String getMathMLElementName() {
-                return "minus";
-        }
-
+   
 	
 	public MinusNode copy() {
 		return new MinusNode();
@@ -31,7 +27,7 @@ public class MinusNode extends FloatResultNode {
 		return (Double.isNaN(x) ? 0 : x) - y;
 	}
 	
-	public DVal makeFixed(HashMap<String, Double> fixedHM) {
+	public DVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
 		return new Minus(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
 	}
 

@@ -79,11 +79,11 @@ public class PathEvaluator {
 	
 	
 	
-	private Component getComponent(String cpath) throws ContentError {
+	private Component getComponent(String cpatha) throws ContentError {
+		String cpath = cpatha;
 		if (cpath.startsWith("//")) {
 			cpath = "ALLTYPE:" + cpath.substring(2, cpath.length());
 		}
-		
 		return getComponent(root, cpath);
 	}
 	

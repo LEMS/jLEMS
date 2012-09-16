@@ -36,23 +36,28 @@ public class ConditionDerivedVariable extends ExpressionDerivedVariable {
         if (debug) {
         	E.info(varname +" condition "+cond+" is "+res);
         }
-
+        double ret = 0.;
         if (res) {
-            return rateexp.eval(varHM);
+            ret = rateexp.eval(varHM);
         } else {
-            return ifFalse.eval(varHM);
+            ret = ifFalse.eval(varHM);
         }
+        return ret;
 	}
 
     @Override
 	public double evalptr(HashMap<String, DoublePointer> varHM) throws RuntimeError {
         boolean res = cond.evalptr(varHM);
-        if (debug) E.info(varname +" condition "+cond+" is "+res);
-        if (res) {
-            return rateexp.evalptr(varHM);
-        } else {
-            return ifFalse.evalptr(varHM);
+        if (debug) {
+        	E.info(varname +" condition "+cond+" is "+res);
         }
+        double ret = 0.;
+        if (res) {
+            ret = rateexp.evalptr(varHM);
+        } else {
+            ret = ifFalse.evalptr(varHM);
+        }
+        return ret;
 	}
 	
     @Override
@@ -61,11 +66,13 @@ public class ConditionDerivedVariable extends ExpressionDerivedVariable {
         if (debug) {
         	E.info(varname +" condition "+cond+" is "+res);
         }
+        double ret = 0.;
         if (res) {
-            return rateexp.evalptr(varHM, v2HM);
+            ret = rateexp.evalptr(varHM, v2HM);
         } else {
-            return ifFalse.evalptr(varHM, v2HM);
+            ret = ifFalse.evalptr(varHM, v2HM);
         }
+        return ret;
 	}
 
     @Override

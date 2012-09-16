@@ -1,7 +1,7 @@
 <Lems>
- 	<DefaultRun component="potentials"/>
- 	<DefaultRun component="roomTemperaturePotentials"/>
- 	<DefaultRun component="freezingPotentials"/>
+ 	<Target component="potentials"/>
+ 	<Target component="roomTemperaturePotentials"/>
+ 	<Target component="freezingPotentials"/>
  
  
     <Dimension name="distance" l="1"/>

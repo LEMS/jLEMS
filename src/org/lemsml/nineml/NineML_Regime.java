@@ -1,9 +1,9 @@
 package org.lemsml.nineml;
 
-import org.lemsml.behavior.Regime;
 import org.lemsml.io.FormatException;
 import org.lemsml.io.IOFace;
 import org.lemsml.type.LemsCollection;
+import org.lemsml.type.dynamics.Regime;
 
 public class NineML_Regime implements IOFace {
 

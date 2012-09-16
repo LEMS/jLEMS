@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.lemsml.eval.BComp;
 import org.lemsml.eval.EQComp;
+import org.lemsml.util.ContentError;
 import org.lemsml.util.E;
 
 public class EqualsNode extends ComparisonNode {
@@ -14,10 +15,7 @@ public class EqualsNode extends ComparisonNode {
 		super("equal_to");
 	}
 
-        @Override
-        protected String getMathMLElementName() {
-                return "eq";
-        }
+   
 	
 	public EqualsNode copy() {
 		return new EqualsNode();
@@ -33,7 +31,7 @@ public class EqualsNode extends ComparisonNode {
 	}
  
 
-	public BComp makeFixed(HashMap<String, Double> fixedHM) {
+	public BComp makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
 		return new EQComp(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
 	}
 

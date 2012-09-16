@@ -1,6 +1,7 @@
 package org.lemsml.run;
 
 import org.lemsml.util.ContentError;
+import org.lemsml.util.RuntimeError;
  
 
 public class SingleChildBuilder extends BuilderElement implements ChildInstantiator {
@@ -16,7 +17,7 @@ public class SingleChildBuilder extends BuilderElement implements ChildInstantia
 	}
 	
 	
-	public void childInstantiate(StateInstance parent) throws ContentError, ConnectionError {
+	public void childInstantiate(StateInstance parent) throws ContentError, ConnectionError, RuntimeError {
  
 		StateInstance sr = componentBehavior.newInstance();
 		sr.setParent(parent);

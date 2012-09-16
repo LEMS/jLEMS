@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.lemsml.run.ConnectionError;
 import org.lemsml.run.StateInstance;
 import org.lemsml.util.ContentError;
+import org.lemsml.util.RuntimeError;
 
 public class ComplementNode extends SelectionOperatorNode {
 
@@ -13,12 +14,7 @@ public class ComplementNode extends SelectionOperatorNode {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	protected String getMathMLElementName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+ 
 	@Override
 	public double getPrecedence() {
 		// TODO Auto-generated method stub
@@ -37,7 +33,7 @@ public class ComplementNode extends SelectionOperatorNode {
 
 	
 	@Override
-	public ArrayList<StateInstance> getMatches(StateInstance baseSI) throws ContentError, ConnectionError {
+	public ArrayList<StateInstance> getMatches(StateInstance baseSI) throws ContentError, ConnectionError, RuntimeError {
 		ArrayList<StateInstance> ret = null;
 		if (left instanceof SelectionNode && right instanceof SelectionNode) {
 			ArrayList<StateInstance> ml = ((SelectionNode)left).getMatches(baseSI);

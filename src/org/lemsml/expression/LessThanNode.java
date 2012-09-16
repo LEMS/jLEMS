@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.lemsml.eval.BComp;
 import org.lemsml.eval.LTComp;
+import org.lemsml.util.ContentError;
 
 public class LessThanNode extends ComparisonNode {
 
@@ -13,10 +14,7 @@ public class LessThanNode extends ComparisonNode {
 		super("less_than");
 	}
 
-    @Override
-    protected String getMathMLElementName() {
-            return "lt";
-    }
+  
 	
 	public LessThanNode copy() {
 		return new LessThanNode();
@@ -30,7 +28,7 @@ public class LessThanNode extends ComparisonNode {
 		return (x < y);
 	}
 
-	public BComp makeFixed(HashMap<String, Double> fixedHM) {
+	public BComp makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
 		return new LTComp(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
 	}
 	

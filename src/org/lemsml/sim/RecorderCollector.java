@@ -20,7 +20,7 @@ public class RecorderCollector implements ComponentBehaviorVisitor {
 		ArrayList<RuntimeRecorder> a = cb.getRuntimeRecorders();
 		if (a != null && a.size() > 0) {
 			recorders.addAll(a);
-			E.info("Added recorder " + a + " from " + cb);
+			// E.info("Added recorder " + a + " from " + cb);
 		}
 		
 	}

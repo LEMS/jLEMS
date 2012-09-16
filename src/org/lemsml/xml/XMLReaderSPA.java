@@ -38,31 +38,24 @@ public class XMLReaderSPA {
    }
 
 
-
-   public void err(String s) {
-      System.out.println(s);
-   }
-
-
-   public Object readObject(String s) throws ParseException, BuildException, ContentError, FormatException {
+   public Object readObject(String s) throws ParseException, BuildException, ContentError, FormatException, XMLException {
       return readFromString(s);
    }
 
 
-   public Object read(String s) throws ParseException, BuildException, ContentError, FormatException {
+   public Object read(String s) throws ParseException, BuildException, ContentError, FormatException, XMLException {
       return readFromString(s);
    }
 
 
 
-   public Object readFromString(String sin) throws ParseException, BuildException, ContentError, FormatException {
+   public Object readFromString(String sin) throws ParseException, BuildException, ContentError, FormatException, XMLException {
 	   String s = sin;
       s = XMLChecker.deGarbage(s);
 
-      if (s == null) {
-         return null;
-      }
-
+      Object ret = null;
+      
+      if (s != null) {
       progressFraction = 0.;
 
       nerror = 0;
@@ -85,8 +78,10 @@ public class XMLReaderSPA {
 
       readFieldIntoParent(tkz, xmlHolder, xmlt, null);
 
-      return xmlHolder.getContent();
-   }
+      ret = xmlHolder.getContent();
+      }
+      return ret;
+     }
 
 
 
@@ -107,12 +102,11 @@ public class XMLReaderSPA {
 
 
 
-   public XMLToken readToken(XMLTokenizer tkz) throws ParseException {
+   public XMLToken readToken(XMLTokenizer tkz) throws ParseException, XMLException {
       XMLToken xmlt = tkz.nextToken();
 
       int lno = tkz.lineno();
       if (nerror > 4) {
-         err("too many errors - aborting parse at line " + lno);
          throw new ParseException("too many errors - aborting at line " + lno);
       }
 
@@ -121,7 +115,7 @@ public class XMLReaderSPA {
 
 
 
-   public String readBlock(XMLTokenizer tkz, XMLToken opener) throws ParseException, ContentError {
+   public String readBlock(XMLTokenizer tkz, XMLToken opener) throws ParseException, ContentError, XMLException {
 	   StringBuffer sb = new StringBuffer();
 	   sb.append(opener.getXMLText());
 	   if (opener.isClose()) {
@@ -149,7 +143,7 @@ public class XMLReaderSPA {
 
   
 public void readFieldIntoParent(XMLTokenizer tkz, Object parent, XMLToken start,
-		   Parameterized rootPtzd) throws ParseException, BuildException, ContentError, FormatException {
+		   Parameterized rootPtzd) throws ParseException, BuildException, ContentError, FormatException, XMLException {
       // read the child object that is known to the parent as item.name
       // if the parent is a vector, the object is added as a new element;
       // if the parent is a string, the xml is just apended;
@@ -165,8 +159,7 @@ public void readFieldIntoParent(XMLTokenizer tkz, Object parent, XMLToken start,
 	   
       if (!start.isOpen()) {
          nerror++;
-         err("ERROR - read object start item was not an open tag " + start);
-         return;
+         throw new XMLException("ERROR - read object start item was not an open tag " + start);
       }
 
 
@@ -323,7 +316,7 @@ public void readFieldIntoParent(XMLTokenizer tkz, Object parent, XMLToken start,
               //          E.info("resetting dbl field " + parent + " " + start.getName() + " " + next.svalue);
 
                      } else if (child instanceof Integer && ((Integer)child).intValue() == 0) {
-                        child = new Integer(next.svalue);
+                        child = Integer.valueOf(next.svalue);
 
                      } else if (child instanceof BodyValued) {
                         ((BodyValued)child).setBodyValue(next.svalue);

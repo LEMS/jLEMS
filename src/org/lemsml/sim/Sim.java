@@ -14,7 +14,6 @@ import org.lemsml.run.ComponentBehavior;
 import org.lemsml.run.ConnectionError;
 import org.lemsml.run.EventManager;
 import org.lemsml.run.RunConfig;
-import org.lemsml.run.RunDisplay;
 import org.lemsml.run.RuntimeOutput;
 import org.lemsml.run.RuntimeRecorder;
 import org.lemsml.run.StateInstance;
@@ -29,8 +28,7 @@ import org.lemsml.util.RuntimeError;
 
 public class Sim extends LemsProcess {
 
-   
-    ComponentBehavior rootBehavior;
+   ComponentBehavior rootBehavior;
     ComponentBehavior targetBehavior;
     
      
@@ -58,8 +56,7 @@ public class Sim extends LemsProcess {
        super(lems);
     }
 
-    
-    	
+ 	
     	
     public void build() throws ContentError, ConnectionError, ParseError {
     	
@@ -78,7 +75,6 @@ public class Sim extends LemsProcess {
 	
 	    rootBehavior = simCpt.getComponentBehavior();
 	    
-	   
 	    // collect everything in the ComponentBehavior tree that makes a display
 	    ArrayList<RuntimeOutput> runtimeOutputs = new ArrayList<RuntimeOutput>();
 	    OutputCollector oc = new OutputCollector(runtimeOutputs);
@@ -103,12 +99,15 @@ public class Sim extends LemsProcess {
 	     
 	}
 
-
-   
     public void run() throws ConnectionError, ContentError, RuntimeError, IOException, ParseError {
-    	
+    	run(true);
+    }
+    
+   
+    public void run(boolean flatten) throws ConnectionError, ContentError, RuntimeError, IOException, ParseError {
+    	E.info("Run configs to run: " + runConfigs.size());
     	for (RunConfig rc : runConfigs) {
-    		run(rc);
+    		run(rc, flatten);
     	}
         E.info("Done");
     }
@@ -116,11 +115,16 @@ public class Sim extends LemsProcess {
   
     
     
-    public void run(RunConfig rc) throws ConnectionError, ContentError, RuntimeError, IOException, ParseError {
+    public void run(RunConfig rc, boolean flatten) throws ConnectionError, ContentError, RuntimeError, IOException, ParseError {
    	    	
   		ComponentBehavior raw = rc.getTarget();
-  		targetBehavior = raw.getConsolidatedComponentBehavior("root");
-  	 
+  		
+  		if (flatten) {
+  			targetBehavior = raw.getConsolidatedComponentBehavior("root");
+  		} else {
+  			targetBehavior = raw;
+  		}
+  		
   	    StateInstance rootState = lems.build(targetBehavior, eventManager);
   	
   	    RunnableAccessor ra = new RunnableAccessor(rootState);

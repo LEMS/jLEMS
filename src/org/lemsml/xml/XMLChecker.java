@@ -9,8 +9,9 @@ public class XMLChecker {
 
 
 
-   public static void checkXML(String s, boolean bshow) throws ParseException, ContentError {
-      long starttime = System.currentTimeMillis();
+   public static String checkXML(String s, boolean bshow) throws ParseException, ContentError, XMLException {
+	   StringBuffer sb = new StringBuffer();
+	   long starttime = System.currentTimeMillis();
       XMLTokenizer tkz = new XMLTokenizer(s);
       int nerror = 0;
       int nread = 0;
@@ -18,7 +19,7 @@ public class XMLChecker {
       while (true) {
 	 XMLToken xmlt = tkz.nextToken();
 	 if (bshow) {
-	    System.out.println("item " + nread + "  " + xmlt);
+	    sb.append("item " + nread + "  " + xmlt + "\n");
 	 }
 	 nread++;
 	 if (xmlt.isNone()) {
@@ -27,8 +28,9 @@ public class XMLChecker {
       }
       long endtime = System.currentTimeMillis();
 
-      System.out.println("  Total tags: " + nread + "\n  total errors: " + nerror +
+      sb.append("  Total tags: " + nread + "\n  total errors: " + nerror +
 			 "\n  tokenizing took " + (int)(endtime - starttime) + " ms");
+      return sb.toString();
    }
 
 
@@ -38,7 +40,7 @@ public class XMLChecker {
 
 
 
-   public static String deGarbage(String sin) throws ContentError {
+   public static String deGarbage(String sin) throws ContentError, XMLException {
 	   String s = sin;
       if (s.startsWith("<")) {
 	 // fine;
@@ -50,7 +52,7 @@ public class XMLChecker {
 	    String junk = s.substring(0, iob);
 	    if (junk.trim().length() > 0) {
 
-	       System.out.println("WARNING - garbage at start of xml file - first < is at " +
+	       throw new XMLException("Garbage at start of xml file - first < is at " +
 				  iob + " preceded by ---" + junk + "---");
 	    }
 	    s = s.substring(iob, s.length());

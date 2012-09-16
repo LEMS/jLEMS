@@ -21,7 +21,7 @@ public class OutputCollector implements ComponentBehaviorVisitor {
 			outputs.addAll(a);
 		}
 		if (a.size() > 0) {
-			E.info("Added output " + a.get(0) + " from " + cb);
+			// E.info("Added output " + a.get(0) + " from " + cb);
 		}
  		
 	}

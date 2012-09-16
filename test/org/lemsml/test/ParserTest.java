@@ -235,20 +235,7 @@ public class ParserTest {
     }
 
 
-    @Test
-    public void testMathML() throws ParseError {
-
-        Parser p = new Parser();
-        String src = "3 + (1.3e-4 + 5) + (3 *4)+ 4/(4.*45) + 34.2E-2 + sin(a + b) / cos(b + c)";
-        DoubleEvaluable root = p.parseExpression(src);
-
-        E.info("parsing " + src);
-        E.info("Parsed to: " + root.toString()+", ("+root.getClass()+")");
-
-        E.info("\n" + root.getMathML("    ", "  "));
-    }
-
-
+  
 
     public static void main(String[] args) {
         ParserTest ct = new ParserTest();

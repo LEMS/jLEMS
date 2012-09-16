@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.lemsml.sim.ComponentBehaviorVisitor;
 import org.lemsml.util.ContentError;
+import org.lemsml.util.RuntimeError;
 
 public class MultiComponentBehavior {
 
@@ -20,7 +21,7 @@ public class MultiComponentBehavior {
 	
 	
 	// TODO - set knownAs (name of this array within parent) here instead of "multi"? 
-	public MultiInstance newInstance() throws ContentError, ConnectionError {
+	public MultiInstance newInstance() throws ContentError, ConnectionError, RuntimeError {
 		MultiInstance mi =  new MultiInstance("", "multi");
 		for (ComponentBehavior cb : cba) {
 			mi.add(cb.newInstance());

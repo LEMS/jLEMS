@@ -23,16 +23,15 @@ public final class SMatrix {
 
 
 
-   public static double[][] MMmultiply(double[][] a, double[][] b) {
+   public static double[][] mMmultiply(double[][] a, double[][] b) throws MatrixException {
       int nx = a.length;
       int ny = a[0].length;
 
       int nu = b.length;
       int nv = b[0].length;
       if (ny != nu) {
-         E.error("matrix dims incompatible " + 
+         throw new MatrixException("matrix dims incompatible " + 
 			    nx + " " + ny + "   *   " + ny + " " + nv);
-	 return null;
       }
       
       double[][] r = new double[nx][nv];
@@ -49,16 +48,14 @@ public final class SMatrix {
 
 
 
-   public static double[] MVmultiply(double[][] a, double[] b) {
+   public static double[] mvMultiply(double[][] a, double[] b) throws MatrixException {
       int nx = a.length;
       int ny = a[0].length;
       
       int nu = b.length;
       if (ny != nu) {
-	 E.error("MVMultiply : matrix dimensions " + 
-			    " are incompatible " + 
+    	  throw new MatrixException("MVMultiply : matrix dimensions  are incompatible " + 
 			    nx + " " + ny + "   *   " + ny);
-	 return null;
       }
       
       double[] r = new double[nx];
@@ -72,10 +69,10 @@ public final class SMatrix {
 
 
 
-   public static double[] LUSolve (double[][] m, double[] R) {
+   public static double[] luSolve (double[][] m, double[] R) throws MatrixException {
       
       Matrix M = new Matrix (m);
-      M.LU();
+      M.lu();
       double[] W = M.lubksb(R);
       return W;
    }

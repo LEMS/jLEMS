@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.lemsml.eval.DVal;
 import org.lemsml.eval.Times;
+import org.lemsml.util.ContentError;
 
 public class TimesNode extends FloatResultNode {
 
@@ -12,11 +13,7 @@ public class TimesNode extends FloatResultNode {
 		super("*");
 	}
 
-        @Override
-        protected String getMathMLElementName() {
-                return "times";
-        }
-
+     
 	
 	public TimesNode copy() {
 		return new TimesNode();
@@ -30,7 +27,7 @@ public class TimesNode extends FloatResultNode {
 		return x * y;
 	}
 	
-	public DVal makeFixed(HashMap<String, Double> fixedHM) {
+	public DVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
 		return new Times(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
 	}
 	

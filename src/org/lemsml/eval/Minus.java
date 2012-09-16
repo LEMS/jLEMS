@@ -26,8 +26,8 @@ public class Minus extends DOp {
                 return "("+left +" - "+ right +")";
         }
 
-        public String toString(String prefix, ArrayList<String> ignore) {
-                return "("+left.toString(prefix, ignore) +" - "+ right.toString(prefix, ignore) +")";
+        public String coditionalPrefixedToString(String prefix, ArrayList<String> ignore) {
+                return "("+left.coditionalPrefixedToString(prefix, ignore) +" - "+ right.coditionalPrefixedToString(prefix, ignore) +")";
         }
 
 	

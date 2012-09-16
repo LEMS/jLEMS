@@ -49,13 +49,18 @@ public class XMLTokenizer {
 
    String srcString;
 
+   boolean initialized = false;
+   
+   
    public XMLTokenizer(String s) throws ContentError {
       // EFF remove this - just for debugging;
       srcString = extractCDATAs(s);
+   }
 
-
+   public void init() {
       streamTokenizer = new StreamTokenizer(new StringReader(srcString));
       initializeStreamTokenizer(streamTokenizer);
+      initialized = true;
    }
 
 
@@ -105,6 +110,10 @@ public class XMLTokenizer {
 
 
    public int lineno() {
+	  if (!initialized) {
+		  init();
+	  }
+	   
       return streamTokenizer.lineno();
    }
 
@@ -144,8 +153,12 @@ public class XMLTokenizer {
    }
 
 
-   public XMLToken nextToken() throws ParseException {
-      XMLToken xmlt = new XMLToken();
+   public XMLToken nextToken() throws ParseException, XMLException {
+	   if (!initialized) {
+			  init();
+		}
+	   
+	   XMLToken xmlt = new XMLToken();
       int itok = ntok(streamTokenizer);
 
 
@@ -399,15 +412,18 @@ public class XMLTokenizer {
    }
 
 
-   private int ntok(StreamTokenizer st) {
+   private int ntok(StreamTokenizer st) throws XMLException {
       int itok = -1;
       try {
          itok = st.nextToken();
       } catch (IOException e) {
-         err(" " + e);
          itok = -999;
       }
  
+      if (itok == -999) {
+    	  throw new XMLException("can't read next token from " + st);
+      }
+      
       return itok;
    }
 
@@ -416,14 +432,9 @@ public class XMLTokenizer {
       return "" + (char)itok;
    }
 
-
-   private void err(String s) {
-      System.out.println(s);
-   }
-
+  
    
-   
-	public String readUntil(String closeTagString) {
+	public String readUntil(String closeTagString) throws XMLException {
 		StringBuffer sb = new StringBuffer();
 
 		String closer = "/" + closeTagString;

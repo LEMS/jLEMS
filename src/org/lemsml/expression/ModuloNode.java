@@ -13,11 +13,6 @@ public class ModuloNode extends FloatResultNode {
 		super("mod");
 	}
 
-        @Override
-        protected String getMathMLElementName() {
-                return "mod";
-        }
-
 
 	
 	public ModuloNode copy() {
@@ -34,7 +29,7 @@ public class ModuloNode extends FloatResultNode {
 	}
 
 	
-	public DVal makeFixed(HashMap<String, Double> fixedHM) {
+	public DVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
 		return new Mod(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
 	}
 

@@ -1,6 +1,4 @@
-
-<neuroml2>
-
+<old>
 <Function name="Gaussian">
     <GenParam name="mu"/>
     <GenParam name="sigma"/>
@@ -20,10 +18,7 @@
 </Function>
 
 
-
-
-
-
+ 
 <ConnectionProbability>
 	<Call function="Gaussian">
 		<WithParameter name="mu" select="3"/>
@@ -54,8 +49,6 @@
 </ConnectionProbability>
 
 
-
-
-</neuroml2>
-
  
+ 
+</old> 

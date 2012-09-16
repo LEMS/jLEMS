@@ -45,7 +45,12 @@ public class KScheme {
 		 nstate += 1;
 	}
 
- 
+
+	public KScheme makeCopy() {
+		KScheme ret = new KScheme(name, rateTable, nodesName, edgesName, stateVarname, forwardVar, reverseVar);
+		return ret;
+	}
+
 
 	public String getNodesName() {
 		return nodesName;
@@ -64,6 +69,7 @@ public class KScheme {
 			smi.setDouble(i, stateVarname, 0.);
 		}
 		smi.setDouble(0, stateVarname, 1.);
+ 
 		return ret;
 	}
 
@@ -96,11 +102,23 @@ public class KScheme {
 			a[isrc][itgt] += rr[i];
 		}
 		
-		Matrix me = m.expOf(dt);
-		me.multiplyInto(wkocc);
-
+		boolean ok = true;
+		try {
+			Matrix me = m.expOf(dt);
+			me.multiplyInto(wkocc);
+		
+		} catch (MatrixException mex) {
+			ok = false;
+		}
+		if (!ok) {
+			throw new RuntimeError("Matrix calculation failed while advancing kinetich schem " + m.dump());
+		}
+		
 		inst.stateMI.setDoubles(stateVarname, wkocc);
+ 
 	}
+
+
 
  
 

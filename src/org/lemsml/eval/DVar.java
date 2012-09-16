@@ -24,6 +24,8 @@ public class DVar extends DVal {
 		return new DVar(varname);
 	}
 	
+	
+	
 	public DVar makePrefixedCopy(String pfx, HashSet<String> stetHS) {
 		String pnm = "";
 		
@@ -49,12 +51,7 @@ public class DVar extends DVal {
     public String toString() {
             return varname;
     }
-
-    public String toString(String prefix, ArrayList<String> ignore) {
-            if (ignore.contains(varname)) return varname;
-            return prefix+varname;
-    }
-
+ 
 	 
 	public void recAdd(ArrayList<DVar> val) {
 		val.add(this);
@@ -93,4 +90,18 @@ public class DVar extends DVal {
 		}
 		return ret;
 	}
+	
+	
+	public String coditionalPrefixedToString(String prefix, ArrayList<String> ignore) {
+          String ret = null; 
+          if (ignore.contains(varname)) {
+        	  ret = varname;
+          } else {
+        	  ret = prefix+varname;
+          }
+          return ret;
+	 }
+		
+	 
+	
 }

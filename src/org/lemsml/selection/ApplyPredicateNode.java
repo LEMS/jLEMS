@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.lemsml.run.ConnectionError;
 import org.lemsml.run.StateInstance;
 import org.lemsml.util.ContentError;
+import org.lemsml.util.RuntimeError;
 
 public class ApplyPredicateNode extends SelectionOperatorNode {
 
@@ -17,13 +18,7 @@ public class ApplyPredicateNode extends SelectionOperatorNode {
 	}
 
 	 
-	
-	@Override
-	protected String getMathMLElementName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+ 
 	
 	 
 	@Override
@@ -39,7 +34,7 @@ public class ApplyPredicateNode extends SelectionOperatorNode {
 	
 	
 	@Override
-	public ArrayList<StateInstance> getMatches(StateInstance baseSI) throws ContentError, ConnectionError {
+	public ArrayList<StateInstance> getMatches(StateInstance baseSI) throws ContentError, ConnectionError, RuntimeError {
 		ArrayList<StateInstance> ret = null;
 		if (left instanceof SelectionNode && right instanceof PredicateNode) {
 			ArrayList<StateInstance> ml = ((SelectionNode)left).getMatches(baseSI);

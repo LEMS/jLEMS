@@ -305,9 +305,9 @@ public class E {
 
    public static void pause(int n) {
       try {
-
          Thread.sleep(n);
       } catch (Exception ex) {
+    	  E.warning("Sleep interrupted");
       }
    }
 
@@ -396,10 +396,7 @@ public static void typeError(Object obj) throws ContentError {
 	}
 
 
-	public static void tmpInfo(String s) {
-		System.out.println("INFO - " + s);
-	}
+ 
 
-
-
+	
 }

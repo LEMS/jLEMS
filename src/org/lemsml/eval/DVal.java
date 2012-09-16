@@ -11,9 +11,10 @@ public abstract class DVal {
 
     @Override
 	public abstract String toString();
-
-	public abstract String toString(String prefix, ArrayList<String> ignore);
-
+ 
+    
+    public abstract String coditionalPrefixedToString(String prefix, ArrayList<String> ignore);
+    
 	public abstract DVal makeCopy();
 
 	public abstract DVal makePrefixedCopy(String pfx, HashSet<String> stetHS);

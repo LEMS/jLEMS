@@ -22,13 +22,7 @@ public class FunctionNode extends UnaryNode implements DoubleEvaluable {
 		fname = sf;
 	}
 
-	public String getMathML(String indent, String innerIndent) {
 
-		return indent + "<apply>\n" + indent + innerIndent + "<" + fname + "/>\n"
-		        + ((Evaluable) right).getMathML(indent + innerIndent, innerIndent) + "\n" + 
-		        indent + innerIndent
-		        + "</apply>";
-	}
 
 	@Override
 	public String toString() {
@@ -102,7 +96,7 @@ public class FunctionNode extends UnaryNode implements DoubleEvaluable {
 		}
 	}
 
-	public DVal makeFixed(HashMap<String, Double> fixedHM) {
+	public DVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
 		return new DFunc(fname, argEvaluable.makeFixed(fixedHM));
 	}
 

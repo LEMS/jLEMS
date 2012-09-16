@@ -6,8 +6,9 @@ import java.util.HashMap;
 import org.lemsml.eval.DBase;
 import org.lemsml.expression.DoubleEvaluable;
 import org.lemsml.util.ContentError;
+import org.lemsml.util.RuntimeError;
 
-public class MultiBuilder extends ChildBuilder {
+public class MultiBuilder extends AbstractChildBuilder {
 
 	
 	int number;
@@ -21,7 +22,7 @@ public class MultiBuilder extends ChildBuilder {
  	}
 	
 	
-	public void childInstantiate(StateInstance par) throws ContentError, ConnectionError {
+	public void childInstantiate(StateInstance par) throws ContentError, ConnectionError, RuntimeError {
  		
 		MultiInstance mi = new MultiInstance(componentBehavior.typeName, "");
 		for (int i = 0; i < number; i++) {
@@ -53,12 +54,12 @@ public class MultiBuilder extends ChildBuilder {
 
  
 
-	public void addAssignment(String property, DoubleEvaluable de) {
+	public void addAssignment(String property, DoubleEvaluable de) throws ContentError {
 		ExpressionDerivedVariable edv = new ExpressionDerivedVariable(property, new DBase(de.makeFixed(null)));
 		edvAL.add(edv);
 	}
 
-	public void addAssignment(String property, DoubleEvaluable de, String exposeAs) {
+	public void addAssignment(String property, DoubleEvaluable de, String exposeAs) throws ContentError {
 		ExpressionDerivedVariable edv = new ExpressionDerivedVariable(property, new DBase(de.makeFixed(null)));
 		edv.setInstanceExposeAs(exposeAs);
 		edvAL.add(edv);

@@ -6,7 +6,7 @@ import org.lemsml.canonical.CanonicalElement;
 import org.lemsml.util.ContentError;
 import org.lemsml.util.E;
 
-@Mel(info = "A quantity that is made available to other component in the simulation. All variables in a Behavior "
+@Mel(info = "A quantity that is made available to other component in the simulation. All variables in a Dynamics "
 + "definition are private. If other components need access to them then the definition has to explicitly link them "
 + "to an exposure defined in the component class")
 public class Exposure implements Named {

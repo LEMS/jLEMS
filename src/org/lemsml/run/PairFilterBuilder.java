@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.lemsml.selection.SelectionExpression;
 import org.lemsml.util.ContentError;
 import org.lemsml.util.E;
+import org.lemsml.util.RuntimeError;
 
 public class PairFilterBuilder extends PostBuilder {
 
@@ -22,7 +23,7 @@ public class PairFilterBuilder extends PostBuilder {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void postBuild(StateInstance tgt, HashMap<String, StateInstance> sihm, BuildContext bc) throws ConnectionError,
-			ContentError {
+			ContentError, RuntimeError {
 	
 		InstancePairSet<StateInstance> pairs = bc.getWorkPairs();
 	

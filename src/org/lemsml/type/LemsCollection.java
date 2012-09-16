@@ -9,18 +9,18 @@ import org.lemsml.util.ContentError;
 public class LemsCollection<T> implements Iterable<T> {
 
  
-	ArrayList<T> contents = new ArrayList<T>();
+	private transient ArrayList<T> contents = new ArrayList<T>();
 	
-	HashMap<String, T> nameHM;
-	HashMap<String, T> pseudoNameHM;
-	HashMap<String, T> idHM;
+	private transient HashMap<String, T> nameHM;
+	private transient HashMap<String, T> pseudoNameHM;
+	private transient HashMap<String, T> idHM;
 	
 	public Iterator<T> iterator() {
 		return contents.iterator();
 	}
 
 
-	public boolean add(T arg) {
+	public boolean add(final T arg) {
 		nameHM = null;
 		pseudoNameHM = null;
 		contents.add(arg);	
@@ -29,7 +29,7 @@ public class LemsCollection<T> implements Iterable<T> {
 	}
 
 
-	public T getByName(String name) throws ContentError {
+	public T getByName(final String name) throws ContentError {
 		checkCreateNameHM();
 		T ret = null;
 		if (nameHM.containsKey(name)) {
@@ -44,7 +44,7 @@ public class LemsCollection<T> implements Iterable<T> {
 		nameHM = new HashMap<String, T>();
 		for (T t : contents) {
 			if (t instanceof Named) {
-				String tnm = ((Named)t).getName();
+				final String tnm = ((Named)t).getName();
 				if (nameHM.containsKey(tnm)) {
 					throw new ContentError("Duplicate name for " + t + ": " + tnm + "\n" + "Contents: " + contents);
 					

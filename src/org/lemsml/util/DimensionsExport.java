@@ -15,11 +15,7 @@ public class DimensionsExport {
         int k = d.getK();
         int i = d.getI();
         
-        //todo: improve support for known units!!
-        if (m==1 && l==2&& t==-3 && i==-1) return "V";
-        if (m==-1 && l==-2&& t==4 && i==2) return "F";
-        if (m==-1 && l==-2&& t==3 && i==2) return "S";
-
+       
         if (m == 1) {
             sb.append(" kg");
         } else if (m != 0) {
@@ -54,10 +50,6 @@ public class DimensionsExport {
             sb.append(" mol");
         } else if (n != 0) {
             sb.append(" mol^" + i);
-        }
-
-        if (sb.length() == 0) {
-            return "";
         }
 
         return sb.toString().trim();

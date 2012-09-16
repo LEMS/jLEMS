@@ -154,8 +154,8 @@ public class ComponentRegime {
 		exderiveds.add(edv);
 	}
 	
-	public void addPathDerived(String snm, String path, String rf, String oa) {
-		PathDerivedVariable pdv = new PathDerivedVariable(snm, path, rf, oa);
+	public void addPathDerived(String snm, String path, String rf) {
+		PathDerivedVariable pdv = new PathDerivedVariable(snm, path, rf);
 		pathderiveds.add(pdv);
 	}
 	

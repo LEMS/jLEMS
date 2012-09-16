@@ -18,9 +18,9 @@
 	<Parameter name="ymin" dimension="none"/>
 	<Parameter name="ymax" dimension="none"/>
 
-    <Behavior>
+    <Simulation>
          <DataDisplay title="title" dataRegion="xmin,xmax,ymin,ymax"/>
-    </Behavior>
+    </Simulation>
 </ComponentType>
 
 
@@ -30,9 +30,9 @@
     <Text name="color"/>
     <Text name="save"/>
     <Path name="quantity"/>
-    <Behavior>
+    <Simulation>
         <Record quantity="quantity" timeScale="timeScale" scale="scale" color="color" display="display"/>
-    </Behavior>
+    </Simulation>
 </ComponentType>
 
 
@@ -42,23 +42,21 @@
     <ComponentRef name="target" type="Component"/>
     <Link name="display" type="Display"/>
     <Children name="outputs" type="DisplayList"/>
-    <Behavior>
+    <Dynamics>
         <StateVariable name="t" dimension="time"/>
+    </Dynamics>
+    
+    <Simulation>
         <Run component="target" variable="t" increment="step" total="length"/>
-      </Behavior>
+    </Simulation>
 </ComponentType>
-
-
 
 
 <ComponentType name="SimulationSet">
     <Children name="simulations" type="Simulation"/>
     <Children name="displays" type="Display"/>
     
-    <Behavior>
-        <Run simulations="simulations"/>
-    </Behavior>
-
+    
 </ComponentType>
 
 </Lems>

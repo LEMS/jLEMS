@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.lemsml.selection.SelectionExpression;
 import org.lemsml.util.ContentError;
+import org.lemsml.util.RuntimeError;
 
 public class InstanceCollector {
  
@@ -15,7 +16,7 @@ public class InstanceCollector {
 		selexpr = ex;
 	}
 
-	public ArrayList<StateInstance> collect(StateInstance root) throws ContentError, ConnectionError {
+	public ArrayList<StateInstance> collect(StateInstance root) throws ContentError, ConnectionError, RuntimeError {
 		ArrayList<StateInstance> ret = selexpr.getMatches(root) ; 
 		return ret;
 	}

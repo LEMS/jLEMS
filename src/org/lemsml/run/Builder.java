@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.lemsml.util.ContentError;
+import org.lemsml.util.RuntimeError;
 
 public class Builder {
 
@@ -13,7 +14,7 @@ public class Builder {
 	 
 
  
-	public void postBuild(StateInstance si) throws ConnectionError, ContentError {
+	public void postBuild(StateInstance si) throws ConnectionError, ContentError, RuntimeError {
 		HashMap<String, StateInstance> siHM = new HashMap<String, StateInstance>();
 
 		BuildContext bc = new BuildContext();
@@ -55,7 +56,7 @@ public class Builder {
 		return ret;
 	}
 	
-	public void childInstantiate(StateInstance si) throws ContentError, ConnectionError {
+	public void childInstantiate(StateInstance si) throws ContentError, ConnectionError, RuntimeError {
 		for (BuilderElement be : builderElements) {
 			if (be instanceof ChildInstantiator) {
 				((ChildInstantiator)be).childInstantiate(si);

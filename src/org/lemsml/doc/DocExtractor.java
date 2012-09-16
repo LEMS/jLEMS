@@ -40,7 +40,7 @@ public class DocExtractor {
 	
 	public void extract(String[] argv) {
 		recAdd(ComponentType.class, null);
-//		addClass(Behavior.class, null);
+//		addClass(Dynamics.class, null);
 		recAdd(Component.class, null);
 	 
 		

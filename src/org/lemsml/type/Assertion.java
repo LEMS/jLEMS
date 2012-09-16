@@ -31,7 +31,7 @@ public class Assertion {
 	    }
 
 	
-	 public void check(LemsCollection<Dimension> dimensions, Parser parser) throws ContentError {
+	 public void check(LemsCollection<Dimension> dimensions, Parser parser) throws ContentError, ParseError {
 		 
 		 HashMap<String, Dimension> adm = dimensions.getMap();
 
@@ -40,20 +40,17 @@ public class Assertion {
 			 adml.put(s, adm.get(s));
 		 }
 		 
-		 try {
+	 
 			 Evaluable ev = parser.parse(matches);
 			 
 			 Dimensional dm = ev.evaluateDimensional(adml);
 			 
 			 if (dm.matches(r_about)) {
-				 E.info("OK:  dimension assertion holds: " + dimension + " matches " + matches);
+				 E.info("OK (dimension check): " + dimension + " matches " + matches);
 			 } else {
-				 E.error("Dimension missmatch: " + dimension + " does not match " + matches);
+				 E.error("ERROR (dimension check): " + dimension + " does not match " + matches);
 			 }
 			 
-		 } catch (ParseError pe) {
-			 throw new ContentError("Cant parse " + matches);
-		 } 
 		 
 
 	 }

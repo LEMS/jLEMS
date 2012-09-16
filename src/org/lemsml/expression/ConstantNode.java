@@ -23,10 +23,6 @@ public class ConstantNode extends Node implements DoubleEvaluable {
 		return sval;
 	}
 
-        public String getMathML(String indent, String innerIndent) {
-                return indent+"<cn> "+(float)dval+" </cn>";
-        }
-
 
 
 	 

@@ -104,15 +104,15 @@ public class Parser {
 	
 	
 	
-	public Evaluable parse(String e) throws ParseError {
+	public Evaluable parse(String ea) throws ParseError {
 
+		String e = ea;
 		if (verbose) {
 			E.info("Parsing: " + e);
 		}
         e = e.trim();
 
-        if (e.lastIndexOf("(")==0 && e.indexOf(")")==e.length()-1)
-        {
+        if (e.lastIndexOf("(") == 0 && e.indexOf(")") == e.length()-1) {
             e = e.substring(1, e.length()-1);
 			E.info("Replaced with: " + e);
         }
@@ -120,7 +120,6 @@ public class Parser {
 		ArrayList<Node> nodes = tokenize(e);
 		// now we've got a list of tokens, and each is linked to is neighbor on either side
 	 
-		
 		if (verbose) {
 			E.info("tokens: " + nodes);
 		}
@@ -196,18 +195,8 @@ public class Parser {
 			
 			throw new ParseError(sb.toString());
 		}
-		
-	//	root.evaluablize();
-		
-                try{
-                    root.evaluablize();
-                }
-                catch(ParseError pe){
-                        throw new ParseError("Error evaluating: "+e, pe);
-                }
-		
-				
-	
+	 
+		root.evaluablize();
 		return root;
 	}
 	

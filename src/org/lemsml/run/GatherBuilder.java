@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import org.lemsml.selection.SelectionExpression;
 import org.lemsml.util.ContentError;
+import org.lemsml.util.RuntimeError;
 
 public class GatherBuilder extends PostBuilder {
 
@@ -20,7 +21,7 @@ SelectionExpression selexp;
 
 	@Override
 	public void postBuild(StateInstance tgt, HashMap<String, StateInstance> sihm, BuildContext bc) throws ConnectionError,
-			ContentError {
+			ContentError, RuntimeError {
 	 		
 			InstanceCollector ic = new InstanceCollector(selexp);
 			ArrayList<StateInstance> matches = ic.collect(tgt.getParent());

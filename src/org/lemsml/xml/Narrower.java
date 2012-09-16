@@ -20,10 +20,10 @@ public final class Narrower {
 
        // POSERR - should use field types here!
       if (fcln.endsWith(".int")) {
-         ret = new Integer(makeInt(arg));
+         ret = Integer.valueOf(makeInt(arg));
 
       } else if (fcln.endsWith("boolean")) {
-         ret = new Boolean(makeBoolean(arg));
+         ret = Boolean.valueOf(makeBoolean(arg));
 
       } else if (fcln.endsWith("double")) {
          ret = new Double(makeDouble(arg));

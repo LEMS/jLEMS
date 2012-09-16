@@ -14,11 +14,7 @@ public class AndNode extends BooleanResultNode {
 		super(SYMBOL);
 	}
 
-        @Override
-        protected String getMathMLElementName() {
-                return "and"; // TODO: check..
-        }
-
+    
 
 	
 	public AndNode copy() {
@@ -34,7 +30,7 @@ public class AndNode extends BooleanResultNode {
 	}
 
 	
-	public BVal makeFixed(HashMap<String, Double> fixedHM) {
+	public BVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
 		return new And(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
 	}
 

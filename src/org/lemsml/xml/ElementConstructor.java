@@ -11,7 +11,7 @@ import org.lemsml.util.E;
 public class ElementConstructor implements Constructor {
    
    
-   public Object newInstance(String s) {
+   public Object newInstance(String s, boolean allowCpt) {
 	   E.info("econ making a " + s);
       return new XMLElement(s);
    }

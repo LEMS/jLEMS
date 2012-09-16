@@ -21,17 +21,14 @@ public class PowerNode extends FloatResultNode {
 		return 1;
 	}
 
-        @Override
-        protected String getMathMLElementName() {
-                return "power";
-        }
+    
 	
 	
 	public double op(double x, double y) {
 		return Math.pow(x, y);
 	}
 	
-	public DVal makeFixed(HashMap<String, Double> fixedHM) {
+	public DVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
 		return new Power(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
 	}
 

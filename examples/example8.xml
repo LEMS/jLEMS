@@ -1,6 +1,6 @@
 <Lems>
  
-<DefaultRun component="sim1"/> 
+<Target component="simset"/> 
  
  
  
@@ -75,10 +75,6 @@ gleak="5pS" current="0.00001nA" deltaV="5mV"/>
 
 
 
-
-<Include file="SimpleSimulation.xml"/>
-
-
 <ComponentType name="Network">
     <Children name="populations" type="Population"/>
     <Children name="connectivities" type="EventConnectivity"/>
@@ -129,6 +125,8 @@ gleak="5pS" current="0.00001nA" deltaV="5mV"/>
         <Connections type="AllAll"/>
     </EventConnectivity>
 </Network>
+
+
 
 
 <Simulation id="sim1" length="200ms" step="0.05ms" target="net1">

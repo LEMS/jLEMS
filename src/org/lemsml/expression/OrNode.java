@@ -14,11 +14,7 @@ public class OrNode extends BooleanResultNode {
 		super(SYMBOL);
 	}
 
-        @Override
-        protected String getMathMLElementName() {
-                return "or"; // TODO: check..
-        }
-
+    
 
 	
 	public OrNode copy() {
@@ -34,7 +30,7 @@ public class OrNode extends BooleanResultNode {
 	}
 
 	
-	public BVal makeFixed(HashMap<String, Double> fixedHM) {
+	public BVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
 		return new Or(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
 	}
 

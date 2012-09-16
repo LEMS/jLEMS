@@ -8,13 +8,13 @@ public class ElementXMLReader {
 
 
 
-   public static Object read(String s) throws ParseException, BuildException, ContentError, FormatException {
+   public static Object read(String s) throws ParseException, BuildException, ContentError, FormatException, XMLException {
       return deserialize(s);
    }
 
 
 
-   public static Object deserialize(String s) throws ParseException, BuildException, ContentError, FormatException {
+   public static Object deserialize(String s) throws ParseException, BuildException, ContentError, FormatException, XMLException {
 
       ElementConstructor ein = new ElementConstructor();
 

@@ -1,8 +1,8 @@
 package org.lemsml.nineml;
 
-import org.lemsml.behavior.DerivedVariable;
 import org.lemsml.io.FormatException;
 import org.lemsml.io.IOFace;
+import org.lemsml.type.dynamics.DerivedVariable;
 
 public class NineML_Alias implements IOFace {
 

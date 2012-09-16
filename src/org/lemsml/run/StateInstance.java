@@ -63,7 +63,7 @@ public class StateInstance implements StateRunnable {
 	
 	
 	public StateInstance() {
-		// for standalone instances that aren't related to a Behavior - see
+		// for standalone instances that aren't related to a Dynamics - see
 		// PairFilter for usage
 	}
 
@@ -513,6 +513,9 @@ public class StateInstance implements StateRunnable {
 		if (onlyAMI == null) {
 			onlyAMI = mi;
 			singleAMI = true;
+		} else {
+			// no longer just one multi instance
+			singleAMI = false;
 		}
 	}
 
@@ -535,10 +538,6 @@ public class StateInstance implements StateRunnable {
 	}
 
 	public MultiInstance getMultiInstance(String snm) {
-		if (multiHM == null) {
-			E.info("No MultiInstances: " + snm + " in " + this);
-                        return null;
-		}
 		MultiInstance mi = multiHM.get(snm);
 		if (mi == null) {
 			// E.error("Failed to get MultiInstance: " + snm + "\n" +
@@ -666,7 +665,7 @@ public class StateInstance implements StateRunnable {
 
 	}
 
-	public void addAttachment(String s, StateInstance inst) throws ConnectionError, ContentError {
+	public void addAttachment(String s, StateInstance inst) throws ConnectionError, ContentError, RuntimeError {
 		String snm = s;
 		MultiInstance mi = null;
 		if (snm == null) {
@@ -766,7 +765,7 @@ public class StateInstance implements StateRunnable {
 		return varHM.get(s);
 	}
 
-	public ArrayList<StateInstance> getStateInstances(String path) throws ConnectionError, ContentError {
+	public ArrayList<StateInstance> getStateInstances(String path) throws ConnectionError, ContentError, RuntimeError {
 		//E.info("Getting instances: " + path + " relative to " + this);
 		ArrayList<StateInstance> ret = quietGetStateInstances(path);
 		if (ret == null) {
@@ -775,7 +774,7 @@ public class StateInstance implements StateRunnable {
 		return ret;
 	}
 
-	public ArrayList<StateInstance> quietGetStateInstances(String path) throws ConnectionError, ContentError {
+	public ArrayList<StateInstance> quietGetStateInstances(String path) throws ConnectionError, ContentError, RuntimeError {
 		ArrayList<StateInstance> ret = null;
 		if (hasChildren && childHM.containsKey(path)) {
 			E.info("QUERY - using path twice?");
@@ -799,7 +798,7 @@ public class StateInstance implements StateRunnable {
 		return ret;
 	}
 
-	public ArrayList<StateInstance> getStateInstances() throws ConnectionError, ContentError {
+	public ArrayList<StateInstance> getStateInstances() throws ConnectionError, ContentError, RuntimeError {
 		checkBuilt();
 		ArrayList<StateInstance> ret = null;
 		if (singleAMI) {
@@ -814,7 +813,8 @@ public class StateInstance implements StateRunnable {
 		return ret;
 	}
 
-	public void checkBuilt() throws ConnectionError, ContentError {
+	public void checkBuilt() throws ConnectionError, ContentError, RuntimeError {
+		// E.info("building " + this);
  		if (!built) {
  			uclass.build(this);
 		}
@@ -914,7 +914,7 @@ public class StateInstance implements StateRunnable {
 	// used by path expressions to match a single section of the path.
 	// Expressions and this method should supplant
 	// all the other matching methods here
-	public ArrayList<StateInstance> getPathInstances(String sel) throws ContentError, ConnectionError {
+	public ArrayList<StateInstance> getPathInstances(String sel) throws ContentError, ConnectionError, RuntimeError {
 		ArrayList<StateInstance> ret = null;
 		if (instanceSetHM != null && instanceSetHM.containsKey(sel)) {
 			ret = instanceSetHM.get(sel).getItems();

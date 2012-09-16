@@ -7,8 +7,10 @@ import org.junit.runner.Result;
 import org.lemsml.io.FormatException;
 import org.lemsml.type.Lems;
 import org.lemsml.util.ContentError;
+import org.lemsml.util.E;
 import org.lemsml.xml.BuildException;
 import org.lemsml.xml.ParseException;
+import org.lemsml.xml.XMLException;
 import org.lemsml.xml.XMLReader;
 
 /**
@@ -22,8 +24,8 @@ public class XMLReaderTest {
 
 	@Test
 	public void testReadFromString() throws ParseException, BuildException,
-			ContentError, FormatException {
-		System.out.println("Testing readFromString()...");
+			ContentError, FormatException, XMLException {
+		E.info("Testing readFromString()...");
 
 		String testString = "<Lems>"
 				+ "<Dimension name=\"voltage\" m=\"1\" l=\"2\" t=\"-3\" i=\"-1\"/>"
@@ -35,7 +37,7 @@ public class XMLReaderTest {
           
 		Object obj = xmlReader.readFromString(testString);
 
-		System.out.println("Object returned (" + obj.getClass() + "): " + obj);
+		E.info("Object returned (" + obj.getClass() + "): " + obj);
 
 		assertTrue(obj instanceof Lems);
 	}

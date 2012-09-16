@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.lemsml.eval.BComp;
 import org.lemsml.eval.GEQComp;
+import org.lemsml.util.ContentError;
 
 public class GreaterThanOrEqualsNode extends ComparisonNode {
 
@@ -13,11 +14,7 @@ public class GreaterThanOrEqualsNode extends ComparisonNode {
 		super("greater_than_or_equal_to");
 	}
 
-    @Override
-    protected String getMathMLElementName() {
-            return "geq";
-    }
-	
+ 
 	public GreaterThanOrEqualsNode copy() {
 		return new GreaterThanOrEqualsNode();
 	}
@@ -30,7 +27,7 @@ public class GreaterThanOrEqualsNode extends ComparisonNode {
 		return (x >= y);
 	}
 
-	public BComp makeFixed(HashMap<String, Double> fixedHM) {
+	public BComp makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
 		return new GEQComp(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
 	}
 	

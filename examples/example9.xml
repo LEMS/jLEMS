@@ -1,7 +1,7 @@
 <Lems>
- 	<DefaultRun component="potentials"/>
- 	<DefaultRun component="roomTemperaturePotentials"/>
- 	<DefaultRun component="freezingPotentials"/>
+ 	<Target component="potentials"/>
+ 	<Target component="roomTemperaturePotentials"/>
+ 	<Target component="freezingPotentials"/>
  
  
     <Dimension name="distance" l="1"/>
@@ -86,12 +86,12 @@
 		<Child name="state2" type="BoltzmannState"/>
 		<Exposure name="p1_over_p2" dimension="none"/>
 		
-		<Behavior>
+		<Dynamics>
 			<DerivedVariable name="u1" dimension="energy" select="state1/u"/>
 			<DerivedVariable name="u2" dimension="energy" select="state2/u"/>
 			<DerivedVariable name="T" dimension="temperature" select="env/temperature"/>
 			<DerivedVariable exposure="p1_over_p2" dimension="none" value="exp(-(u2 - u1) / (k_B * T))"/> 		
-		</Behavior>
+		</Dynamics>
 	</ComponentType>
 
 
@@ -109,17 +109,18 @@
 		<Exposure name="E_S" dimension="voltage"/>
 		<Requirement name="temperature" dimension="temperature"/>
 		
-		<Behavior>
-		    <Build>
-          		  <ChildInstance component="species"/>
-            </Build>
-		
+		<Dynamics>
 			<DerivedVariable name="z_S" select="species/valence" dimension="none"/>
 			<DerivedVariable name="T" select="temperature" dimension="temperature"/>
 			<DerivedVariable name="Si" select="Inside/concentration" dimension="concentration"/>
 			<DerivedVariable name="So" select="Outside/concentration" dimension="concentration"/>
 			<DerivedVariable exposure="E_S" value="(R * T) / (z_S * F) * log(So / Si) "/> 		
-		</Behavior>
+		</Dynamics>
+		
+		
+		<Structure>
+			 <ChildInstance component="species"/>
+		</Structure>
 	</ComponentType>
 	
 	

@@ -30,7 +30,7 @@ public class DCon extends DVal {
         	return "" + val;
         }
         
-        public String toString(String prefix, ArrayList<String> ignore) {
+        public String coditionalPrefixedToString(String prefix, ArrayList<String> ignore) {
                 return toString();
         }
 

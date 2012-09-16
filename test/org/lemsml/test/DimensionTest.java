@@ -19,6 +19,7 @@ import org.lemsml.type.QuantityReader;
 import org.lemsml.type.Unit;
 import org.lemsml.util.ContentError;
 import org.lemsml.util.DimensionsExport;
+import org.lemsml.util.E;
 
 /**
  * 
@@ -67,14 +68,15 @@ public class DimensionTest {
 
 		double len = 123.456;
 		DimensionalQuantity dq = QuantityReader.parseValue(len + " f", units);
-		System.out.println(dq);
+
+		E.info("" + dq);
 
 		assertEquals(len, dq.getValueInUnit(f), len / 100000.);
 
 		double a = 10;
 		DimensionalQuantity area = QuantityReader.parseValue(a + " m2", units);
-		System.out.println(area);
-		System.out.println(area.getValueInUnit(cm2) + " " + cm2.getSymbol());
+		E.info("" + area);
+		E.info(area.getValueInUnit(cm2) + " " + cm2.getSymbol());
 
 		assertEquals(100 * 100 * a, area.getValueInUnit(cm2), a / 100000.0);
 
@@ -82,7 +84,7 @@ public class DimensionTest {
 
 		for (double t : temps) {
 			dq = QuantityReader.parseValue(t + " degC", units);
-			System.out.println(dq.getOriginalText() + " - " + dq + " " +
+			E.info(dq.getOriginalText() + " - " + dq + " " +
 					(float) dq.getValueInUnit(kelv) + " " + kelv.getSymbol() + " " + 
 					(float) dq.getValueInUnit(farn) + " " + farn.getSymbol());
 			assertEquals(t, dq.getValueInUnit(celc), t * 1e-6);

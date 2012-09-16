@@ -41,38 +41,38 @@ public class ExamplesTest {
     }
 
     @Test
-    public void testExample1() throws ContentError, ConnectionError, RuntimeError, ParseError  {
+    public void testExample1() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException  {
           executeExample("example1.xml");
     }
 
     @Test
-    public void testExample2() throws ContentError, ConnectionError, RuntimeError, ParseError   {
+    public void testExample2() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException   {
             executeExample("example2.xml");
     }
     
     @Test
-    public void testExample3() throws ContentError, ConnectionError, RuntimeError, ParseError  {
+    public void testExample3() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException  {
           executeExample("example3.xml");
     }
     
     @Test
-    public void testExample4() throws ContentError, ConnectionError, RuntimeError, ParseError   {
+    public void testExample4() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException   {
           executeExample("example4.xml");
     }
     @Test
-    public void testExample5() throws ContentError, ConnectionError, RuntimeError, ParseError   {
+    public void testExample5() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException   {
            executeExample("example5.xml");
     }
     @Test
-    public void testExample6() throws ContentError, ConnectionError, RuntimeError, ParseError   {
+    public void testExample6() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException   {
          executeExample("example6.xml");
     }
     @Test
-    public void testExample7() throws ContentError, ConnectionError, RuntimeError, ParseError   {
+    public void testExample7() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException   {
          executeExample("example7.xml");
     }
     @Test
-    public void testExample8() throws ContentError, ConnectionError, RuntimeError, ParseError   {
+    public void testExample8() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException   {
            executeExample("example8.xml");
     }
     @Test
@@ -80,7 +80,7 @@ public class ExamplesTest {
            executeProcessExample("example9.xml");
     }
 
-    public void executeExample(String filename) throws ContentError, ConnectionError, RuntimeError, ParseError {
+    public void executeExample(String filename) throws ContentError, ConnectionError, RuntimeError, ParseError, IOException {
     	File fdir = new File("examples");
     	
     	File f = new File(fdir, filename);
@@ -88,12 +88,8 @@ public class ExamplesTest {
 
         sim.readModel();
         sim.build();
-        try {
-             sim.run();
-        } catch (IOException ex) {
-                throw new RuntimeError(ex.getMessage());
-        }
-
+        sim.run();
+        
         E.info("  ****  Successfully ran example from file " + filename);
     }
     

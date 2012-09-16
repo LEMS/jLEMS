@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.lemsml.util.ContentError;
+import org.lemsml.util.RuntimeError;
 
 public class ApplyBuilder extends PostBuilder {
  
@@ -20,7 +21,7 @@ public class ApplyBuilder extends PostBuilder {
 	
 	@Override
 	public void postBuild(StateInstance tgt, HashMap<String, StateInstance> sihm, BuildContext bc) throws ConnectionError,
-			ContentError {
+			ContentError, RuntimeError {
  	 
 		MultiInstance mi = tgt.getMultiInstance(listName);
  

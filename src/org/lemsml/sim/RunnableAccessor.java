@@ -103,7 +103,7 @@ public class RunnableAccessor {
 				
 			} else {
 				String msg = "Can't get predicate " + lastbit + " from " + wk + ", original path: " + path  + "\n";
-				msg += "component has " + wk.getMultiInstanceCount() + " sets";
+				msg += "component has singeMI=" + wk.hasSingleMI() + " nmi=" + wk.getMultiInstanceCount() + " sets";
 				throw new ConnectionError(msg);
 			}
 		}

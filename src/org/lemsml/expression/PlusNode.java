@@ -13,12 +13,6 @@ public class PlusNode extends FloatResultNode {
 		super("+");
 	}
 
-        @Override
-        protected String getMathMLElementName() {
-                return "plus";
-        }
-
-
 	
 	public PlusNode copy() {
 		return new PlusNode();
@@ -33,7 +27,7 @@ public class PlusNode extends FloatResultNode {
 	}
 
 	
-	public DVal makeFixed(HashMap<String, Double> fixedHM) {
+	public DVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
 		return new Plus(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
 	}
 

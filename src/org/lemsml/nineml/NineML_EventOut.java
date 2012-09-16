@@ -1,6 +1,6 @@
 package org.lemsml.nineml;
 
-import org.lemsml.behavior.EventOut;
+import org.lemsml.type.dynamics.EventOut;
 
 public class NineML_EventOut   {
 

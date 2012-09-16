@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.lemsml.eval.DVal;
 import org.lemsml.eval.Divide;
+import org.lemsml.util.ContentError;
 
 public class DivideNode extends FloatResultNode {
 
@@ -13,11 +14,7 @@ public class DivideNode extends FloatResultNode {
 		super("/");
 	}
 
-        @Override
-        protected String getMathMLElementName() {
-                return "divide";
-        }
-
+   
 	
 	public DivideNode copy() {
 		return new DivideNode();
@@ -32,7 +29,7 @@ public class DivideNode extends FloatResultNode {
 		return (Double.isNaN(x) ? 1 : x) / y;
 	}
 	
-	public DVal makeFixed(HashMap<String, Double> fixedHM) {
+	public DVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
 		return new Divide(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
 	}
 

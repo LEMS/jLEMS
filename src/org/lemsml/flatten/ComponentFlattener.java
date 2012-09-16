@@ -3,14 +3,7 @@ package org.lemsml.flatten;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import org.lemsml.behavior.Behavior;
-import org.lemsml.behavior.DerivedVariable;
-import org.lemsml.behavior.OnCondition;
-import org.lemsml.behavior.OnEvent;
-import org.lemsml.behavior.OnStart;
-import org.lemsml.behavior.StateAssignment;
-import org.lemsml.behavior.StateVariable;
-import org.lemsml.behavior.TimeDerivative;
+
 import org.lemsml.expression.ParseError;
 import org.lemsml.run.ComponentBehavior;
 import org.lemsml.run.ConnectionError;
@@ -30,6 +23,14 @@ import org.lemsml.type.LemsCollection;
 import org.lemsml.type.ParamValue;
 import org.lemsml.type.Parameter;
 import org.lemsml.type.Text;
+import org.lemsml.type.dynamics.Dynamics;
+import org.lemsml.type.dynamics.DerivedVariable;
+import org.lemsml.type.dynamics.OnCondition;
+import org.lemsml.type.dynamics.OnEvent;
+import org.lemsml.type.dynamics.OnStart;
+import org.lemsml.type.dynamics.StateAssignment;
+import org.lemsml.type.dynamics.StateVariable;
+import org.lemsml.type.dynamics.TimeDerivative;
 import org.lemsml.util.ContentError;
 
 import org.lemsml.util.E;
@@ -93,13 +94,13 @@ public class ComponentFlattener {
 			ctNew.addExposure(new Exposure(prefix + ex.getName(), ex.getDimension()));
 		}
 
-		Behavior b = ctNew.getBehavior();
+		Dynamics b = ctNew.getDynamics();
 		if (b == null) {
-			ctNew.addBehavior(new Behavior());
-			b = ctNew.getBehavior();
+			ctNew.addBehavior(new Dynamics());
+			b = ctNew.getDynamics();
 		}
 		
-		for (StateVariable sv : ct0.getBehavior().getStateVariables()) {
+		for (StateVariable sv : ct0.getDynamics().getStateVariables()) {
 			StateVariable svNew = new StateVariable(prefix + sv.getName(), sv.getDimension());
 			if (sv.getExposure() != null) {
 				svNew = new StateVariable(prefix + sv.getName(), sv.getDimension(), sv.r_exposure);
@@ -107,7 +108,7 @@ public class ComponentFlattener {
 			b.addStateVariable(svNew);
 		}
 		
-		for (OnStart os : ct0.getBehavior().getOnStarts()) {
+		for (OnStart os : ct0.getDynamics().getOnStarts()) {
 			if (b.getOnStarts() == null || b.getOnStarts().isEmpty()) {
 				b.addOnStart(new OnStart());
 			}
@@ -116,24 +117,24 @@ public class ComponentFlattener {
 				osNew.stateAssignments.add(sa);
 			}
 		}
-		for (OnEvent oe : ct0.getBehavior().getOnEvents()) {
+		for (OnEvent oe : ct0.getDynamics().getOnEvents()) {
 			b.addOnEvent(oe);
 		}
 		for (EventPort ep : ct0.getEventPorts()) {
 			ctNew.addEventPort(ep);
 		}
-		for (OnCondition oc : ct0.getBehavior().getOnConditions()) {
+		for (OnCondition oc : ct0.getDynamics().getOnConditions()) {
 			b.addOnCondition(oc);
 		}
 
 		if (b.derivedVariables == null) {
 			b.derivedVariables = new LemsCollection<DerivedVariable>();
 		}
-		for (DerivedVariable dv : ct0.getBehavior().getDerivedVariables()) {
+		for (DerivedVariable dv : ct0.getDynamics().getDerivedVariables()) {
 			b.addDerivedVariable(new DerivedVariable(prefix + dv.getName(), dv.getDimension(), dv.getEvalString(),
 					dv.exposure));
 		}
-		for (TimeDerivative td : ct0.getBehavior().getTimeDerivatives()) {
+		for (TimeDerivative td : ct0.getDynamics().getTimeDerivatives()) {
 			b.addTimeDerivative(new TimeDerivative(prefix + td.getStateVariable().getName(), td.getEvaluable()
 					.toString()));
 		}
@@ -153,8 +154,7 @@ public class ComponentFlattener {
 		}
 		// System.out.println("-pv: "+compNew.paramValues);
 
-		System.out.println("-mh: " + comp0);
-
+	
 		// System.out.println("Childz: "+comp0.getAllChildren());
 		for (Component childComp : comp0.getAllChildren()) {
 			String newPrefix = prefix + childComp.getID() + "_";

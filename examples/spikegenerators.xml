@@ -8,26 +8,26 @@
     <Parameter name="period" dimension="time"/>
     <EventPort name="a" direction="out"/>
     <Exposure name="tsince" dimension="time"/>
-    <Behavior>
+    <Dynamics>
         <StateVariable name="tsince" exposure="tsince" dimension="time"/>
         <TimeDerivative variable="tsince" value="1"/>
         <OnCondition test="tsince .gt. period">
             <StateAssignment variable="tsince" value="0"/>
             <EventOut port="a"/>
         </OnCondition>
-    </Behavior>
+    </Dynamics>
 </ComponentType>
 
 
 <ComponentType name="spikeGenerator2" extends="spikeGenerator">
-    <Behavior>
+    <Dynamics>
         <DerivedVariable name="tsince" exposure="tsince" value="t - tlast"/>
         <StateVariable name="tlast" dimension="time"/>
         <OnCondition test="t - tlast .gt. period">
             <StateAssignment variable="tlast" value="t"/>
             <EventOut port="a"/>
         </OnCondition>
-    </Behavior>
+    </Dynamics>
 </ComponentType>
  
 

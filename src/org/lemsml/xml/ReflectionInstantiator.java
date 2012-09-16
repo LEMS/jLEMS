@@ -14,6 +14,7 @@ import org.lemsml.type.AddableTo;
 import org.lemsml.type.Attribute;
 import org.lemsml.type.Attributed;
 import org.lemsml.type.Component;
+import org.lemsml.type.ComponentContainer;
 import org.lemsml.type.ElementAdder;
 import org.lemsml.type.LemsCollection;
 import org.lemsml.type.MetaContainer;
@@ -54,17 +55,17 @@ public class ReflectionInstantiator implements Constructor {
     	impmap = m;
     }
     
-    public void addSearchPackage(Package pkg) {
+    public final void addSearchPackage(Package pkg) {
     	addSearchPackage(pkg, null);
     }
     
-    public void addSearchPackages(ArrayList<Package> pkga) {
+    public final void addSearchPackages(ArrayList<Package> pkga) {
     	for (Package p : pkga) {
     		addSearchPackage(p, null);
     	}
     }
     
-    public void addSearchPackage(Package pkg, String pfx) {
+    public final void addSearchPackage(Package pkg, String pfx) {
         // REFAC keep package
         String s = pkg.getName();
         addSearchPackage(s);
@@ -74,31 +75,12 @@ public class ReflectionInstantiator implements Constructor {
         }
     }
 
-    public void addSearchPackage(String s) {
+    public final void addSearchPackage(String s) {
         wkpkg = s;
         pkgs[npkg++] = s;
     }
 
-    public void appendContent(Object obj, String s) throws ContentError {
-    	// RCC removed special case for handling NuroML notes elements here
-    	// testing on c.toString is too fragile
-    	// letting "notes" get parsed as a Component and then ignoring it will leave a dummy Component around that
-    	// could cause more problems later
-    	
-    	/*
-        if (obj instanceof Component) {
-            Component c = (Component) obj;
-            //E.info("Appending content to: "+ c);
-            if (c.toString().indexOf("notes") >= 0) {
-                return;
-            }
-        }
-        */
-     
-    		throw new ContentError(" - reflection instantiator doesn't do appendContent on "
-    				+ obj + "(" + obj.getClass() + ") while trying to append " + s);
-    	 
-    }
+    
 
     public void checkAddPackage(Object oret) {
         String scl = oret.getClass().getName();
@@ -127,7 +109,7 @@ public class ReflectionInstantiator implements Constructor {
         }
     }
 
-    public Object newInstance(String rscl) {
+    public Object newInstance(String rscl, boolean allowComponents) {
     	String scl = rscl;
     	if (impmap != null && impmap.renames(scl)) {
     		scl = impmap.getInternalElementName(scl);
@@ -171,11 +153,17 @@ public class ReflectionInstantiator implements Constructor {
         }
 
         if (c == null) {
-             c = Component.class;
+            if (allowComponents) { 
+            	// TODO get this dependency out!
+            	c = Component.class;
+            	E.info("Adding a component, type=" + rscl);
+            } else {
+            	// not allowing Components - will return null
+            }
         }
 
 
-       
+       if (c != null) {
             int imod = c.getModifiers();
             if (Modifier.isAbstract(imod)) {
                 E.error("cant instantiatie " + c + ":  it is an abstract class");
@@ -189,11 +177,10 @@ public class ReflectionInstantiator implements Constructor {
                     }
 
                 } catch (Exception e) {
-                    E.error(" " + e + " instantiating " + c + ". Make sure there is a default constructor for that class!");
-                    e.printStackTrace();
+                    E.error(" " + e + " instantiating " + c + ". Make sure there is a default constructor for that class");
                 }
             }
-       
+       }
 
         if (oret != null) {
             checkAddPackage(oret);
@@ -240,20 +227,7 @@ public class ReflectionInstantiator implements Constructor {
                 throw new ContentError("cant get field " + fnm + " on " + ob + " " + "excception= " + e);
             }
         }
-
-
-        if (!hasField) {
-            if (ob instanceof ArrayList) {
-                // we're OK - the object will just be added;
-            } else {
-                // System.out.println("error - cant get field " + fnm + " on " +
-                // ob);
-            /*
-                 * Field[] af = ob.getClass().getFields(); for (int i = 0; i <
-                 * af.length; i++) { System.out.println("fld " + i + " " + af[i]); }
-                 */
-            }
-        }
+ 
         return ret;
     }
 
@@ -321,12 +295,25 @@ public class ReflectionInstantiator implements Constructor {
         // or perhaps the open tag is a class name? (CASE 3)
         if (child == null) {
         	String cnm = name;
-        	if (impmap != null) {
-        		// TODO - sequence
-        		// cnm = impmap.getInternalElementName(cnm);
-        	}
+        	
+        	if (parent instanceof Component) {
+        		// TODO these shouldn't be listed here.
+        		// they are the hard-coded element types that are allowed inside components
+        		if (cnm.equals("Insertion") || cnm.equals("Meta") || cnm.equals("About")) {
+        			child = newInstance(cnm, false);
+        			
+        		} else {
+        			Component c = new Component();
+        			c.setDeclaredName(cnm);
+        			child = c;
+        		}
+        		
+        	} else if (parent instanceof ComponentContainer) {
+        		child = newInstance(cnm, true);
          
-            child = newInstance(cnm);
+        	} else {
+        		child = newInstance(cnm, false);        		
+        	}	
         }
 
 
@@ -379,27 +366,33 @@ public class ReflectionInstantiator implements Constructor {
    
         //  E.info("setting field " + sf + " in " + ob + " to " + arg);
         if (ob == null) {
-            E.error("null parent for " + sf + " (" + arg + ")");
-            return true;
-        }
+            throw new ContentError("null parent for " + sf + " (" + arg + ")");
+          }
 
         if (arg == null) {
-            E.error("reflection instantiator has null arg setting " + sf + " in " + ob);
-            return true;
-        }
+            throw new ContentError("reflection instantiator has null arg setting " + sf + " in " + ob);
+         }
 
         if (arg.equals(ob)) {
-            E.error("ReflectionInstantiator setField: " + "the child is the same as the parent " + ob);
-            return true;
-        }
+            throw new ContentError("ReflectionInstantiator setField: " + "the child is the same as the parent " + ob);
+         }
 
-        // special case not
+        boolean ok = false;
         if (arg instanceof MetaItem && ob instanceof MetaContainer) {
             ((MetaContainer) ob).addMetaItem((MetaItem) arg);
-            return true;
+            ok = true;
+        } else {
+        	ok = setClassField(ob, sf, arg, ptzd);
         }
+        return ok;
+       }
 
+        
+        public boolean setClassField(Object ob, String sfin, Object argin, Parameterized ptzd) throws FormatException, ContentError {
+        	  String sf = sfin;
+              Object arg = argin;
 
+        
         int icolon = sf.indexOf(":");
         if (icolon >= 0) {
             //	  E.info("got colon field settiung " + sf + " on " + ob + " to " + arg);
@@ -518,11 +511,11 @@ public class ReflectionInstantiator implements Constructor {
                     f.set(ob, d);
 
                 } else if (ftyp == Integer.TYPE && arg instanceof String) {
-                    Integer ig = new Integer((String) arg);
+                    Integer ig = Integer.valueOf((String) arg);
                     f.set(ob, ig);
 
                 } else if (ftyp == Long.TYPE && arg instanceof String) {
-                    Long ig = new Long((String) arg);
+                    Long ig = Long.valueOf((String) arg);
                     f.set(ob, ig);
 
 
@@ -680,51 +673,13 @@ public class ReflectionInstantiator implements Constructor {
         Class<? extends Object> ci, Object ob, String arg, Parameterized ptzd)
         throws IllegalAccessException, InstantiationException {
         boolean ret = false;
-        /*
-        if (ci.equals(DimensionalQuantity.class)) {
-        DimensionalQuantity dq = (DimensionalQuantity) (ftyp.newInstance());
-        Units dfltUnits = null;
-        for (Annotation ant : f.getAnnotations()) {
-        if (ant instanceof Quantity) {
-        dfltUnits = ((Quantity)ant).units();
-        }
-        }
-        if (arg.indexOf("(") >= 0) {
-
-        if (ptzd != null) {
-        QuantityReader.paramPopulate(dq,  arg, dfltUnits, ptzd);
-        f.set(ob, dq);
-        ret = true;
-        } else {
-        E.error("got a bracketed arg " + arg + " but there are no parameters");
-        }
-        } else {
-        // E.info("populating " + arg + " into " + dq);
-        QuantityReader.populate(dq,  arg, dfltUnits);
-        f.set(ob, dq);
-        ret = true;
-        }
-        }
-         */
         return ret;
     }
 
     public void setArrayField(Object obj, Field fld, ArrayList<? extends Object> vals) {
 
-        E.missing();
-
-        System.out.println("setting array field of " + vals.size() + " in " + obj + " fnm="
-            + fld.getName());
-
-        /*
-         * try { int nv = vals.size();
-         *
-         * Class acls = fld.getComponentClass(); Class ccls = acls.getComponentClass();
-         *
-         * Object avals = Array.newInstance(ccls, nv); for (int i = 0; i < nv;
-         * i++) { Array.set(avals, i, vals.get(i)); } fld.set(obj, avals); } catch
-         * (Exception ex) { E.error(" - cant setaray field " + fld + " " + vals); }
-         */
+        E.missing("setting array field of " + vals.size() + " in " + obj + " fnm=" + fld.getName());
+ 
     }
 
     private boolean nonPrimitive(Object arg) {
@@ -755,4 +710,10 @@ public class ReflectionInstantiator implements Constructor {
         }
 
     }
+
+
+	@Override
+	public void appendContent(Object obj, String content) throws ContentError {
+		throw new ContentError("Bare content found while instantiating, content=\"" + content + "\" target=" + obj);
+	}
 }

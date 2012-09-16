@@ -27,12 +27,6 @@ public class RunConfigCollector implements ComponentBehaviorVisitor {
 			cb.visitAll(recc);
 			 
 			rc.setRecorders(arc);
-			
-			
-			
-			
-			
-			E.info("Added a run config " + rc);
 		}
 	}
 
