@@ -1,0 +1,4 @@
+These should not have any external dependencies (no JUnit) so they can run anywhere the lems 
+core is deployed.  
+See the independent test package for more thorough tests.
+ 

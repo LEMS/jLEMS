@@ -114,7 +114,7 @@ public class Parser {
 
         if (e.lastIndexOf("(") == 0 && e.indexOf(")") == e.length()-1) {
             e = e.substring(1, e.length()-1);
-			E.info("Replaced with: " + e);
+			// E.info("Replaced with: " + e);
         }
 		
 		ArrayList<Node> nodes = tokenize(e);
