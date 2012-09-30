@@ -3,20 +3,25 @@ package org.lemsml.test;
 import java.io.File;
 import java.io.IOException;
 
-import org.lemsml.expression.ParseError;
-import org.lemsml.flatten.ComponentFlattener;
-import org.lemsml.run.ComponentBehavior;
-import org.lemsml.run.ConnectionError;
-import org.lemsml.run.StateInstance;
-import org.lemsml.serial.XMLSerializer;
-import org.lemsml.sim.Sim;
-import org.lemsml.type.Component;
-import org.lemsml.type.ComponentType;
-import org.lemsml.type.Lems;
-import org.lemsml.util.ContentError;
-import org.lemsml.util.E;
-import org.lemsml.util.FileUtil;
-import org.lemsml.util.RuntimeError;
+import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.flatten.ComponentFlattener;
+import org.lemsml.jlems.io.FormatException;
+import org.lemsml.jlems.run.ComponentBehavior;
+import org.lemsml.jlems.run.ConnectionError;
+import org.lemsml.jlems.run.StateInstance;
+import org.lemsml.jlems.serial.XMLSerializer;
+import org.lemsml.jlems.sim.Sim;
+import org.lemsml.jlems.type.Component;
+import org.lemsml.jlems.type.ComponentType;
+import org.lemsml.jlems.type.Lems;
+import org.lemsml.jlems.util.ContentError;
+import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.util.RuntimeError;
+import org.lemsml.jlems.xml.BuildException;
+import org.lemsml.jlems.xml.ParseException;
+import org.lemsml.jlems.xml.XMLException;
+import org.lemsml.jlemsio.FileInclusionReader;
+import org.lemsml.jlemsio.FileUtil;
 
 
 public class ComponentFlatteningTest {
@@ -38,11 +43,12 @@ public class ComponentFlatteningTest {
     }
     
     
-    public static void flattenFromFile(File f, String tgtid) throws ContentError, ConnectionError, ParseError, IOException, RuntimeError {
+    public static void flattenFromFile(File f, String tgtid) throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, FormatException, XMLException {
         E.info("Sys: " + System.getenv());
         E.info("Loading LEMS file from: " + f.getAbsolutePath());
 
-        Sim sim = new Sim(f);
+        FileInclusionReader fir = new FileInclusionReader(f);
+        Sim sim = new Sim(fir.read());
 
         sim.readModel();
      
@@ -93,7 +99,7 @@ public class ComponentFlatteningTest {
         cf.parseAndAdd(compNew, comp0, ctNew, ct0, "");
         
         lems.addComponentType(ctNew);
-        lems.addComponent(compNew);
+       // lems.addComponent(compNew);
         compNew.resolve(lems, ctNew);
 
 

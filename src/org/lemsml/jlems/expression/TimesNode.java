@@ -1,0 +1,39 @@
+package org.lemsml.jlems.expression;
+
+import java.util.HashMap;
+
+import org.lemsml.jlems.eval.DVal;
+import org.lemsml.jlems.eval.Times;
+import org.lemsml.jlems.util.ContentError;
+
+public class TimesNode extends FloatResultNode {
+
+	
+	public TimesNode() {
+		super("*");
+	}
+
+     
+	
+	public TimesNode copy() {
+		return new TimesNode();
+	}
+	
+	public int getPrecedence() {
+		return 3;
+	}
+
+	public double op(double x, double y) {
+		return x * y;
+	}
+	
+	public DVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
+		return new Times(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
+	}
+	
+	public Dimensional dimop(Dimensional dl, Dimensional dr) {
+		Dimensional ret = dl.getTimes(dr);
+		return ret;
+	}
+	
+}

@@ -2,7 +2,7 @@
 
 
 <ComponentType name="DisplayList">
-    <Parameter name="timeScale" Dimension="time"/>
+    <Parameter name="timeScale" dimension="time"/>
     <Children name="lines" type="Line"/>
     
     <Text name="title"/>  
@@ -25,8 +25,8 @@
 
 
 <ComponentType name="Line">
-    <Parameter name="scale" Dimension="*"/>
-	 <Parameter name="timeScale" Dimension="*"/>
+    <Parameter name="scale" dimension="*"/>
+	 <Parameter name="timeScale" dimension="*"/>
     <Text name="color"/>
     <Text name="save"/>
     <Path name="quantity"/>

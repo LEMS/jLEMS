@@ -12,13 +12,18 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.Result;
-import org.lemsml.expression.ParseError;
-import org.lemsml.run.ConnectionError;
-import org.lemsml.sim.LemsProcess;
-import org.lemsml.sim.Sim;
-import org.lemsml.util.ContentError;
-import org.lemsml.util.E;
-import org.lemsml.util.RuntimeError;
+import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.io.FormatException;
+import org.lemsml.jlems.run.ConnectionError;
+import org.lemsml.jlems.sim.LemsProcess;
+import org.lemsml.jlems.sim.Sim;
+import org.lemsml.jlems.util.ContentError;
+import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.util.RuntimeError;
+import org.lemsml.jlems.xml.BuildException;
+import org.lemsml.jlems.xml.ParseException;
+import org.lemsml.jlems.xml.XMLException;
+import org.lemsml.jlemsio.FileInclusionReader;
 
 
 /**
@@ -41,50 +46,51 @@ public class ExamplesTest {
     }
 
     @Test
-    public void testExample1() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException  {
+    public void testExample1() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException, FormatException, XMLException  {
           executeExample("example1.xml");
     }
 
     @Test
-    public void testExample2() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException   {
+    public void testExample2() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException, FormatException, XMLException   {
             executeExample("example2.xml");
     }
     
     @Test
-    public void testExample3() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException  {
+    public void testExample3() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException, FormatException, XMLException  {
           executeExample("example3.xml");
     }
     
     @Test
-    public void testExample4() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException   {
+    public void testExample4() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException, FormatException, XMLException   {
           executeExample("example4.xml");
     }
     @Test
-    public void testExample5() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException   {
+    public void testExample5() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException, FormatException, XMLException   {
            executeExample("example5.xml");
     }
     @Test
-    public void testExample6() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException   {
+    public void testExample6() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException, FormatException, XMLException   {
          executeExample("example6.xml");
     }
     @Test
-    public void testExample7() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException   {
+    public void testExample7() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException, FormatException, XMLException   {
          executeExample("example7.xml");
     }
     @Test
-    public void testExample8() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException   {
+    public void testExample8() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException, FormatException, XMLException   {
            executeExample("example8.xml");
     }
     @Test
-    public void testExample9() throws ContentError, ConnectionError, RuntimeError, ParseError   {
+    public void testExample9() throws ContentError, ConnectionError, RuntimeError, ParseError, ParseException, BuildException, FormatException, XMLException   {
            executeProcessExample("example9.xml");
     }
 
-    public void executeExample(String filename) throws ContentError, ConnectionError, RuntimeError, ParseError, IOException {
+    public void executeExample(String filename) throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException, FormatException, XMLException {
     	File fdir = new File("examples");
     	
     	File f = new File(fdir, filename);
-    	Sim sim = new Sim(f);
+    	FileInclusionReader fir = new FileInclusionReader(f);
+    	Sim sim = new Sim(fir.read());
 
         sim.readModel();
         sim.build();
@@ -95,13 +101,15 @@ public class ExamplesTest {
     
     
     
-    public void executeProcessExample(String filename) throws ContentError, ConnectionError, RuntimeError, ParseError {
+    public void executeProcessExample(String filename) throws ContentError, ConnectionError, RuntimeError, ParseError, ParseException, BuildException, FormatException, XMLException {
     	File fdir = new File("examples");
     	
     	File f = new File(fdir, filename);
     	 
     //	try {
-    		LemsProcess lemsp = new LemsProcess(f);
+    		FileInclusionReader fir = new FileInclusionReader(f);
+    		
+    		LemsProcess lemsp = new LemsProcess(fir.read());
    	 
 	 
 			lemsp.readModel();	

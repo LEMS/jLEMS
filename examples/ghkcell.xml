@@ -28,7 +28,7 @@
 
 
 <ComponentType name="ExtConditions">
-		<Parameter name="concentration" Dimension="concentration"/>
+		<Parameter name="concentration" dimension="concentration"/>
 		<Parameter name="temp" dimension="temperature"/>
 </ComponentType>
 

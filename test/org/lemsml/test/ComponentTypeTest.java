@@ -9,32 +9,31 @@ import java.io.IOException;
 
 import org.junit.Test;
 import org.junit.runner.Result;
-import org.lemsml.expression.ParseError;
-import org.lemsml.run.ConnectionError;
-import org.lemsml.sim.Sim;
-import org.lemsml.type.Children;
-import org.lemsml.type.Component;
-import org.lemsml.type.ComponentReference;
-import org.lemsml.type.ComponentType;
-import org.lemsml.type.Dimension;
-import org.lemsml.type.Exposure;
-import org.lemsml.type.Lems;
-import org.lemsml.type.Parameter;
-import org.lemsml.type.Path;
-import org.lemsml.type.Target;
-import org.lemsml.type.Text;
-import org.lemsml.type.Unit;
-import org.lemsml.type.dynamics.Dynamics;
-import org.lemsml.type.dynamics.OnCondition;
-import org.lemsml.type.dynamics.Record;
-import org.lemsml.type.dynamics.Run;
-import org.lemsml.type.dynamics.Show;
-import org.lemsml.type.dynamics.StateAssignment;
-import org.lemsml.type.dynamics.StateVariable;
-import org.lemsml.type.dynamics.TimeDerivative;
-import org.lemsml.util.ContentError;
-import org.lemsml.util.E;
-import org.lemsml.util.RuntimeError;
+import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.run.ConnectionError;
+import org.lemsml.jlems.sim.Sim;
+import org.lemsml.jlems.type.Children;
+import org.lemsml.jlems.type.Component;
+import org.lemsml.jlems.type.ComponentReference;
+import org.lemsml.jlems.type.ComponentType;
+import org.lemsml.jlems.type.Dimension;
+import org.lemsml.jlems.type.Exposure;
+import org.lemsml.jlems.type.Lems;
+import org.lemsml.jlems.type.Parameter;
+import org.lemsml.jlems.type.Path;
+import org.lemsml.jlems.type.Target;
+import org.lemsml.jlems.type.Text;
+import org.lemsml.jlems.type.Unit;
+import org.lemsml.jlems.type.dynamics.Dynamics;
+import org.lemsml.jlems.type.dynamics.OnCondition;
+import org.lemsml.jlems.type.dynamics.StateAssignment;
+import org.lemsml.jlems.type.dynamics.StateVariable;
+import org.lemsml.jlems.type.dynamics.TimeDerivative;
+import org.lemsml.jlems.type.simulation.Record;
+import org.lemsml.jlems.type.simulation.Run;
+import org.lemsml.jlems.util.ContentError;
+import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.util.RuntimeError;
 
 /**
  *
@@ -182,7 +181,7 @@ public class ComponentTypeTest {
 
                 disp1.addToChildren("lines", lineCpt);
 
-                lems.addComponent(sim1);
+               // lems.addComponent(sim1);
 
                 Target dr = new Target();
                 dr.component = sim1.getID();

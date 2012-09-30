@@ -15,13 +15,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.Result;
-import org.lemsml.expression.AndNode;
-import org.lemsml.expression.BooleanEvaluable;
-import org.lemsml.expression.DoubleEvaluable;
-import org.lemsml.expression.OrNode;
-import org.lemsml.expression.ParseError;
-import org.lemsml.expression.Parser;
-import org.lemsml.util.E;
+import org.lemsml.jlems.expression.AndNode;
+import org.lemsml.jlems.expression.BooleanEvaluable;
+import org.lemsml.jlems.expression.DoubleEvaluable;
+import org.lemsml.jlems.expression.OrNode;
+import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.expression.Parser;
+import org.lemsml.jlems.util.E;
 
 
 /**

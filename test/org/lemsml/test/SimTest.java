@@ -11,10 +11,16 @@ import java.io.File;
 
 import org.junit.Test;
 import org.junit.runner.Result;
-import org.lemsml.sim.LemsProcess;
-import org.lemsml.sim.Sim;
-import org.lemsml.util.ContentError;
-import org.lemsml.util.E;
+import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.io.FormatException;
+import org.lemsml.jlems.sim.LemsProcess;
+import org.lemsml.jlems.sim.Sim;
+import org.lemsml.jlems.util.ContentError;
+import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.xml.BuildException;
+import org.lemsml.jlems.xml.ParseException;
+import org.lemsml.jlems.xml.XMLException;
+import org.lemsml.jlemsio.FileInclusionReader;
 
 /**
  *
@@ -36,8 +42,9 @@ public class SimTest {
      */
     @Test
     public void testReadAndPrintModel() throws Exception {
-
-        LemsProcess sim = new Sim(new File(simpleModel));
+    	File f = new File(simpleModel);
+    	FileInclusionReader fir = new FileInclusionReader(f);
+        LemsProcess sim = new Sim(fir.read());
 
         E.info("testReadModel()");
         sim.readModel();
@@ -52,8 +59,11 @@ public class SimTest {
      */
     @Test
     public void testBuild() throws Exception {
-
-        LemsProcess sim = new Sim(new File(complexModel));
+  
+    	File f = new File(complexModel);
+    	FileInclusionReader fir = new FileInclusionReader(f);
+        
+        LemsProcess sim = new Sim(fir.read());
 
         E.info("testBuild()");
         sim.readModel();
@@ -91,11 +101,17 @@ public class SimTest {
    
     /**
      * Test of canonicalText method, of class Sim.
+     * @throws XMLException 
+     * @throws FormatException 
+     * @throws BuildException 
+     * @throws ParseException 
+     * @throws ParseError 
      */
     @Test
-    public void testCanonicalText() throws ContentError {
-
-        LemsProcess sim = new Sim(new File(simpleModel));
+    public void testCanonicalText() throws ContentError, ParseError, ParseException, BuildException, FormatException, XMLException {
+    	File f = new File(simpleModel);
+    	FileInclusionReader fir = new FileInclusionReader(f);
+        LemsProcess sim = new Sim(fir.read());
 
         E.info("testReadModel()");
         sim.readModel();

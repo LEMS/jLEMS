@@ -4,14 +4,16 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.junit.runner.Result;
-import org.lemsml.io.FormatException;
-import org.lemsml.type.Lems;
-import org.lemsml.util.ContentError;
-import org.lemsml.util.E;
-import org.lemsml.xml.BuildException;
-import org.lemsml.xml.ParseException;
-import org.lemsml.xml.XMLException;
-import org.lemsml.xml.XMLReader;
+import org.lemsml.jlems.io.FormatException;
+import org.lemsml.jlems.type.Lems;
+import org.lemsml.jlems.util.ContentError;
+import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.xml.BuildException;
+import org.lemsml.jlems.xml.ParseException;
+import org.lemsml.jlems.xml.XMLException;
+import org.lemsml.jlems.xml.XMLReader;
+import org.lemsml.jlemsio.xmlreflection.ReflectionInstantiator;
+
 
 /**
  * 
@@ -32,7 +34,7 @@ public class XMLReaderTest {
 				+ "<Unit symbol=\"mV\" dimension=\"voltage\" powTen=\"-3\"/>"
 				+ "</Lems>";
 
-		XMLReader xmlReader = new XMLReader();
+		XMLReader xmlReader = new XMLReader(new ReflectionInstantiator()); 
 	    xmlReader.addSearchPackage(Lems.class.getPackage());
           
 		Object obj = xmlReader.readFromString(testString);

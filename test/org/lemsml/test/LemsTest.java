@@ -12,17 +12,20 @@ import java.io.IOException;
 
 import org.junit.Test;
 import org.junit.runner.Result;
-import org.lemsml.expression.ParseError;
-import org.lemsml.run.ConnectionError;
-import org.lemsml.serial.XMLSerializer;
-import org.lemsml.sim.LemsProcess;
-import org.lemsml.sim.Sim;
-import org.lemsml.type.Lems;
-import org.lemsml.util.ContentError;
-import org.lemsml.util.E;
-import org.lemsml.util.FileUtil;
-import org.lemsml.xml.BuildException;
-import org.lemsml.xml.ParseException;
+import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.io.FormatException;
+import org.lemsml.jlems.run.ConnectionError;
+import org.lemsml.jlems.serial.XMLSerializer;
+import org.lemsml.jlems.sim.LemsProcess;
+import org.lemsml.jlems.sim.Sim;
+import org.lemsml.jlems.type.Lems;
+import org.lemsml.jlems.util.ContentError;
+import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.xml.BuildException;
+import org.lemsml.jlems.xml.ParseException;
+import org.lemsml.jlems.xml.XMLException;
+import org.lemsml.jlemsio.FileInclusionReader;
+import org.lemsml.jlemsio.FileUtil;
 
 /**
  * 
@@ -36,12 +39,13 @@ public class LemsTest {
 	}
 
 	@Test
-	public void testLoad() throws ParseException, BuildException, ContentError, ConnectionError, ParseError, IOException {
+	public void testLoad() throws ParseException, BuildException, ContentError, ConnectionError, ParseError, IOException, FormatException, XMLException {
 
 		File f = new File("examples/example1.xml");
 		E.info("Loading LEMS file from: " + f.getAbsolutePath());
 
-		LemsProcess sim = new Sim(f);
+		FileInclusionReader fir = new FileInclusionReader(f);
+		LemsProcess sim = new Sim(fir.read());
 
 		sim.readModel();
 		// sim.build();
@@ -62,8 +66,8 @@ public class LemsTest {
 		assertTrue(saveFile.exists());
 
 		
-		
-		LemsProcess sim2 = new Sim(saveFile);
+		FileInclusionReader fir2 = new FileInclusionReader(saveFile);
+		LemsProcess sim2 = new Sim(fir2.read());
 		sim2.readModel();
 		Lems lems2 = sim2.getLems();
 		

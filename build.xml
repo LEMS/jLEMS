@@ -1,11 +1,12 @@
 
-<project name="LEMS" default="jar" basedir=".">
+<project name="jLEMS" default="jar" basedir=".">
 
     <description>LEMS Interpreter</description>
 	  
     <property file="${basedir}/VERSION"/>
 
-    <property name="main.jar" value="${basedir}/lems-${version.number}.jar"/>
+	<property name="jars.dir" value="${basedir}/builtjars"/>
+    <property name="main.jar" value="${basedir}/builtjars/lems-${version.number}.jar"/>
     <property name="src.dir" value="${basedir}/src"/>
     <property name="test.dir" value="${basedir}/test"/>
     <property name="build.dir" value="${basedir}/build"/>
@@ -37,6 +38,7 @@
     <target name="initdirs">
         <echo>Base dir for LEMS: ${basedir}</echo>
         <mkdir dir="${build.dir}"/>
+    	<mkdir dir="${jars.dir}"/>
     </target>
 
 
@@ -90,8 +92,10 @@
                 <attribute name="Main-Class" value="org.lemsml.Main"/>
             </manifest>
         </jar>
+    	<copy tofile="${jars.dir}/lems.jar" file="${main.jar}"/>
     </target>
    
+	
     
 	
 

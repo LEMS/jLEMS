@@ -11,15 +11,15 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.junit.runner.Result;
-import org.lemsml.expression.ParseError;
-import org.lemsml.type.Dimension;
-import org.lemsml.type.DimensionalQuantity;
-import org.lemsml.type.LemsCollection;
-import org.lemsml.type.QuantityReader;
-import org.lemsml.type.Unit;
-import org.lemsml.util.ContentError;
-import org.lemsml.util.DimensionsExport;
-import org.lemsml.util.E;
+import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.type.Dimension;
+import org.lemsml.jlems.type.DimensionalQuantity;
+import org.lemsml.jlems.type.LemsCollection;
+import org.lemsml.jlems.type.QuantityReader;
+import org.lemsml.jlems.type.Unit;
+import org.lemsml.jlems.util.ContentError;
+import org.lemsml.jlems.util.DimensionsExport;
+import org.lemsml.jlems.util.E;
 
 /**
  * 

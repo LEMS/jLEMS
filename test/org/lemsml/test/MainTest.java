@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
-import org.lemsml.util.E;
+import org.lemsml.jlems.util.E;
 
 /**
  * 
