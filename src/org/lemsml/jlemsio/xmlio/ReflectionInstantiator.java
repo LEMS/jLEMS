@@ -1,4 +1,4 @@
-package org.lemsml.jlemsio.xmlreflection;
+package org.lemsml.jlemsio.xmlio;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -24,7 +24,6 @@ import org.lemsml.jlems.type.Parented;
 import org.lemsml.jlems.util.ContentError;
 import org.lemsml.jlems.util.E;
 import org.lemsml.jlems.xml.BuildException;
-import org.lemsml.jlems.xml.Constructor;
 import org.lemsml.jlems.xml.XMLAttribute;
 
 public class ReflectionInstantiator implements Constructor {

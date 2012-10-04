@@ -11,7 +11,7 @@ public class MessageForkHandler implements MessageHandler {
 
 	public MessageForkHandler() {
 		handlers = new ArrayList<MessageHandler>();
-		handlers.add(new MessagePrintlnHandler());
+		handlers.add(new MinimalMessageHandler());
 	}
 
 

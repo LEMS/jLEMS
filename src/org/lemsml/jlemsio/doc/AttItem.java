@@ -1,4 +1,4 @@
-package org.lemsml.jlems.doc;
+package org.lemsml.jlemsio.doc;
 
 import org.lemsml.jlems.xml.XMLElement;
 

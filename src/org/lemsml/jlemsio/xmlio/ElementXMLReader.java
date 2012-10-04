@@ -1,7 +1,11 @@
-package org.lemsml.jlems.xml;
+package org.lemsml.jlemsio.xmlio;
 
 import org.lemsml.jlems.io.FormatException;
 import org.lemsml.jlems.util.ContentError;
+import org.lemsml.jlems.xml.BuildException;
+import org.lemsml.jlems.xml.ParseException;
+import org.lemsml.jlems.xml.XMLElement;
+import org.lemsml.jlems.xml.XMLException;
 
  
 public class ElementXMLReader {

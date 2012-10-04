@@ -1,7 +1,5 @@
 package org.lemsml.jlems.flatten;
-
-import java.io.File;
-import java.io.IOException;
+ 
 import java.util.ArrayList;
 
 import org.lemsml.jlems.expression.ParseError;
@@ -33,8 +31,7 @@ import org.lemsml.jlems.type.dynamics.StateVariable;
 import org.lemsml.jlems.type.dynamics.TimeDerivative;
 import org.lemsml.jlems.util.ContentError;
 import org.lemsml.jlems.util.E;
-import org.lemsml.jlems.util.RuntimeError;
-import org.lemsml.jlemsio.FileUtil;
+ 
 
 
 public class ComponentFlattener {

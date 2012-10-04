@@ -1,8 +1,9 @@
 
 
-package org.lemsml.jlems.xml;
+package org.lemsml.jlemsio.xmlio;
 
 import org.lemsml.jlems.type.Attribute;
+import org.lemsml.jlems.xml.XMLAttribute;
  
  
 public class XMLToken {

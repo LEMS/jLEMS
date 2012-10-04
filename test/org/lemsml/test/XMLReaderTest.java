@@ -11,8 +11,8 @@ import org.lemsml.jlems.util.E;
 import org.lemsml.jlems.xml.BuildException;
 import org.lemsml.jlems.xml.ParseException;
 import org.lemsml.jlems.xml.XMLException;
-import org.lemsml.jlems.xml.XMLReader;
-import org.lemsml.jlemsio.xmlreflection.ReflectionInstantiator;
+import org.lemsml.jlemsio.xmlio.ReflectionInstantiator;
+import org.lemsml.jlemsio.xmlio.XMLReader;
 
 
 /**
@@ -35,7 +35,7 @@ public class XMLReaderTest {
 				+ "</Lems>";
 
 		XMLReader xmlReader = new XMLReader(new ReflectionInstantiator()); 
-	    xmlReader.addSearchPackage(Lems.class.getPackage());
+	  //  xmlReader.addSearchPackage(Lems.class.getPackage());
           
 		Object obj = xmlReader.readFromString(testString);
 

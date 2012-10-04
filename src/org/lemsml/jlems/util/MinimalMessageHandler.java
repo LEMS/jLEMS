@@ -1,28 +1,22 @@
 package org.lemsml.jlems.util;
 
 import java.util.logging.Logger;
+/*
 import java.util.logging.SimpleFormatter;
 import java.util.logging.StreamHandler;
+*/
 
 
-
-public class MessagePrintlnHandler implements MessageHandler {
+public class MinimalMessageHandler implements MessageHandler {
 
  
 	private static final Logger errorLogger = Logger.getLogger("errors");
 	
 	private static final Logger infoLogger = Logger.getLogger("info");
-	
-	{
-		// TODO these have to go for gwt use
-		infoLogger.setUseParentHandlers(false);
-		SimpleFormatter fmt = new OneLineFormatter();
- 		 StreamHandler sh = new StreamHandler(System.out, fmt);
-		 infoLogger.addHandler(sh);
-	}
+	 
 	
 	
-	public MessagePrintlnHandler() {
+	public MinimalMessageHandler() {
 		
 	}
 	

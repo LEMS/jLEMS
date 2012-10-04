@@ -1,7 +1,5 @@
 package org.lemsml.jlems.sim;
-
-import java.io.File;
-import java.io.IOException;
+ 
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -52,8 +50,12 @@ public class Sim extends LemsProcess {
     	
     public void build() throws ContentError, ConnectionError, ParseError {
     	
+    	E.info("Building " + lems);
+     	
 	    Target dr = lems.getTarget();
 	
+	    E.info("got target...");
+	    
 	    Component simCpt = dr.getComponent();
 	
 	    if (simCpt == null) {
@@ -91,12 +93,12 @@ public class Sim extends LemsProcess {
 	     
 	}
 
-    public void run() throws ConnectionError, ContentError, RuntimeError, IOException, ParseError {
+    public void run() throws ConnectionError, ContentError, RuntimeError, ParseError {
     	run(true);
     }
     
    
-    public void run(boolean flatten) throws ConnectionError, ContentError, RuntimeError, IOException, ParseError {
+    public void run(boolean flatten) throws ConnectionError, ContentError, RuntimeError, ParseError {
     	E.info("Run configs to run: " + runConfigs.size());
     	for (RunConfig rc : runConfigs) {
     		run(rc, flatten);
@@ -107,7 +109,7 @@ public class Sim extends LemsProcess {
   
     
     
-    public void run(RunConfig rc, boolean flatten) throws ConnectionError, ContentError, RuntimeError, IOException, ParseError {
+    public void run(RunConfig rc, boolean flatten) throws ConnectionError, ContentError, RuntimeError, ParseError {
    	    	
   		ComponentBehavior raw = rc.getTarget();
   		

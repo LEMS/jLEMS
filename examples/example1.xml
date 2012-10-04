@@ -230,7 +230,7 @@
     <Parameter name="injection" dimension="current"/>
     <Parameter name="v0" dimension="voltage"/>
     <Exposure name="v" dimension="voltage"/>
-    <Dynamics consolidate="true">
+    <Dynamics>
         <OnStart>
              <StateAssignment variable="v" value="v0"/>
         </OnStart>

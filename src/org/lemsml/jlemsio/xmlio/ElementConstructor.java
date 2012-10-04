@@ -1,9 +1,10 @@
-package org.lemsml.jlems.xml;
+package org.lemsml.jlemsio.xmlio;
 
 import org.lemsml.jlems.type.Attribute;
 import org.lemsml.jlems.type.Parameterized;
 import org.lemsml.jlems.util.ContentError;
 import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.xml.XMLElement;
 
  
 
@@ -89,12 +90,7 @@ public class ElementConstructor implements Constructor {
       E.missing();
    }
 
-
-@Override
-public void addSearchPackage(Package pkg) {
-	 E.missing();
-	
-}
+ 
 
 
 @Override

@@ -217,5 +217,9 @@ public class XMLElement {
 	public String getTag() {
 		return type;
 	}
+
+	public void appendBodyText(String stxt) {
+		addToBody(stxt);
+	}
 	
 }

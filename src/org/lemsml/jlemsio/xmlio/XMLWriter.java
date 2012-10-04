@@ -1,5 +1,5 @@
 
-package org.lemsml.jlemsio.xmlreflection;
+package org.lemsml.jlemsio.xmlio;
 
 
 import java.lang.reflect.Field;

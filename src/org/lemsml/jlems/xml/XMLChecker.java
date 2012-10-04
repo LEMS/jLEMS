@@ -2,6 +2,8 @@
 package org.lemsml.jlems.xml;
 
 import org.lemsml.jlems.util.ContentError;
+import org.lemsml.jlemsio.xmlio.XMLToken;
+import org.lemsml.jlemsio.xmlio.XMLTokenizer;
  
 
 

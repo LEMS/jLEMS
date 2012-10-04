@@ -20,10 +20,8 @@ public class E {
 
    static MessageForkHandler handler = new MessageForkHandler();
 
-   {
-	   debug = true;
-   }
-
+   
+   
 
    public static void setDebug(boolean b) {
 	   debug = b;
@@ -385,6 +383,7 @@ public static void typeError(Object obj) throws ContentError {
 
 
 	public static void setMessageHandler(MessageHandler mh) {
+		mh.msg("Setting handler in E");
 		handler.setHandler(mh);
 	}
 

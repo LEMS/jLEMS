@@ -1,4 +1,4 @@
-package org.lemsml.jlems.xml;
+package org.lemsml.jlemsio.xmlio;
 
 import java.util.ArrayList;
  
@@ -9,6 +9,12 @@ import org.lemsml.jlems.type.Parameterized;
 import org.lemsml.jlems.type.RawValued;
 import org.lemsml.jlems.util.ContentError;
 import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.xml.BuildException;
+import org.lemsml.jlems.xml.ParseException;
+import org.lemsml.jlems.xml.XMLChecker;
+import org.lemsml.jlems.xml.XMLContainer;
+import org.lemsml.jlems.xml.XMLElement;
+import org.lemsml.jlems.xml.XMLException;
 
 public class XMLReader {
 
@@ -23,10 +29,7 @@ public class XMLReader {
         instantiator = insta;
     }
 
-    public void addSearchPackage(Package pkg) {
-        instantiator.addSearchPackage(pkg);
-    }
-
+    
    
     public Object readObject(String s) throws ParseException, BuildException, ContentError, FormatException, XMLException {
         return readFromString(s);

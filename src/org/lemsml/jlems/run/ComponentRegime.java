@@ -249,6 +249,107 @@ public class ComponentRegime {
 	public void addStateVariable(String name) {
 		svars.add(name);
 	}
+ 
+	
+	public void addPathDerivedVariable(PathDerivedVariable pdv) {
+		pathderiveds.add(pdv);
+	}
+	
+	public void addExpressionDerivedVariable(ExpressionDerivedVariable edv) {
+		exderiveds.add(edv);
+	}
+	
+	public void addVariableROC(VariableROC vroc) {
+		rates.add(vroc);
+	}
+ 
+
+	public void addAction(String spn, ActionBlock a) {
+		eventHM.put(spn, a);
+	}
+	 
+	
+	public void addConditionResponse(ConditionAction cr) {
+		conditionResponses.add(cr);
+	 	
+	}
+
+	 
+
+	public ArrayList<ActionBlock> getInitBlocks() {
+		return initBlocks;
+     }
+	
+	
+	
+
+	public ComponentRegime makeCopy(ComponentBehavior p) {
+		ComponentRegime ret= new ComponentRegime(p, name, typeName);
+	
+		for (String s : indeps) {
+			ret.addIndependentVariable(s);
+		}
+
+		for (FixedQuantity fq : fixeds) {
+			ret.addFixed(fq.name, fq.value);
+		}
+		
+	  
+		for (VariableROC vroc : rates) {
+			ret.addVariableROC(vroc.makeCopy());
+		}
+		for (String s : svars) {
+			ret.addStateVariable(s);
+		}
+		
+		for (PathDerivedVariable pdv : pathderiveds) {
+			ret.addPathDerivedVariable(pdv);
+		}
+		
+		for (ExpressionDerivedVariable edv : exderiveds) {
+			ret.addExpressionDerivedVariable(edv);
+		}
+		
+		for (String s : eventHM.keySet()) {
+			// a null action block is OK - it could be a state instance containing regimes,
+			// so the actual action block will be in one or more of the regimes, but we need
+			// and action on the parent to pass it on.
+			ActionBlock eab = eventHM.get(s);
+			if (eab != null) {
+				ret.addAction(s, eab.makeCopy());
+			} else {
+				ret.addAction(s, null);
+			}
+		}
+		
+		for (ActionBlock ab : initBlocks) {
+			ret.addInitialization(ab.makeCopy());
+		}
+		
+	 	
+		for (ConditionAction ca : conditionResponses) {
+			ret.addConditionResponse(ca.makeCopy());
+		}
+		
+		for (ActionBlock ab : entryBlocks) {
+			ret.addEntry(ab.makeCopy());
+		}
+		
+		for (String s : eventHM.keySet()) {
+			ActionBlock ab = eventHM.get(s);
+			if (ab != null) {
+				ret.addEventResponse(new EventAction(s, ab.makeCopy()));
+			} else {
+				ret.addEventResponse(new EventAction(s, null));
+			}
+		}
+	 
+	  
+		ret.fix();
+	
+		
+		return ret;
+	}
 	  
 	
 

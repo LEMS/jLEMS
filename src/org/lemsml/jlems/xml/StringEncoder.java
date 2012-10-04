@@ -14,7 +14,7 @@ public final class StringEncoder {
    }
 
 
-   static String xmlUnescape(String sin) {
+   public static String xmlUnescape(String sin) {
 	   String s = sin;
       s = s.replaceAll("&amp;", "&");
       s = s.replaceAll("\\\\\"", "\"");

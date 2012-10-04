@@ -1,11 +1,9 @@
-package org.lemsml.jlems;
+package org.lemsml.jlemsio;
  
 import java.io.File;
 
 import org.lemsml.jlems.sim.Sim;
 import org.lemsml.jlems.util.E;
-import org.lemsml.jlemsio.FileInclusionReader;
-import org.lemsml.jlemsio.FileUtil;
  
 
 public class Main {

@@ -391,16 +391,19 @@ public class Dynamics  {
 			 EventAction er = new EventAction(oe.getPortName());	 
 			 ActionBlock ea = oe.makeEventAction(fixedHM);
 			 er.setAction(ea);
+			 if (ea == null) {
+				 throw new ContentError("Null action block from OnEvent " + oe);
+			 }
 			 ret.addEventResponse(er);
 		 }
 		 if (regimes.size() > 0) {
 			 for (EventPort p :  r_type.getEventPorts()) {
 				 if (p.isDirectionIn()) {
 					 if (onEvents.hasName(p.getName())) {
-						 // OK, the existinig action will also send the event on to the active regime
+						 // OK, the existing action will also send the event on to the active regime
 					 } else {
-						 EventAction er = new EventAction(p.getName());
-						 ret.addEventResponse(er);
+ 						 EventAction er = new EventAction(p.getName());
+	                     ret.addEventResponse(er);
 					 }
 				 }
 			 }

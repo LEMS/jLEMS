@@ -6,11 +6,11 @@ import org.lemsml.jlems.type.Lems;
 import org.lemsml.jlems.util.ContentError;
 import org.lemsml.jlems.util.E;
 import org.lemsml.jlems.xml.BuildException;
-import org.lemsml.jlems.xml.ElementXMLReader;
 import org.lemsml.jlems.xml.ParseException;
 import org.lemsml.jlems.xml.XMLElement;
 import org.lemsml.jlems.xml.XMLException;
-import org.lemsml.jlems.xml.XMLReader;
+import org.lemsml.jlemsio.xmlio.ElementXMLReader;
+import org.lemsml.jlemsio.xmlio.XMLReader;
  
 public class XMLReaderCheck {
 

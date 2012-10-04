@@ -979,7 +979,15 @@ public class ComponentBehavior {
 		}
 		
 		for (String s : eventHM.keySet()) {
-			ret.addAction(s, eventHM.get(s).makeCopy());
+			// a null action block is OK - it could be a state instance containing regimes,
+			// so the actual action block will be in one or more of the regimes, but we need
+			// and action on the parent to pass it on.
+			ActionBlock eab = eventHM.get(s);
+			if (eab != null) {
+				ret.addAction(s, eab.makeCopy());
+			} else {
+				ret.addAction(s, null);
+			}
 		}
 		
 		for (ActionBlock ab : initBlocks) {
@@ -1001,7 +1009,19 @@ public class ComponentBehavior {
 		}
 		
 		for (String s : eventHM.keySet()) {
-			ret.addEventResponse(new EventAction(s, eventHM.get(s).makeCopy()));
+			ActionBlock ab = eventHM.get(s);
+			if (ab != null) {
+				ret.addEventResponse(new EventAction(s, ab.makeCopy()));
+			} else {
+				ret.addEventResponse(new EventAction(s, null));
+			}
+		}
+	 
+		if (hasRegimes) {
+			ret.hasRegimes = true;
+			for (String s : regimeHM.keySet()) {
+				ret.addComponentRegime(regimeHM.get(s).makeCopy(ret));
+			}
 		}
 		
 		

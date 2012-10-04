@@ -25,21 +25,7 @@ public class RunFileExample {
 		filename = fnm;
 	 
 	}
- 
-	private void tryDataViewerInitialization() {
-		String cnm = "org.lemsml.jlems.datadisplay.SwingDataViewerFactory";
-		try {
-			Class<? extends Object> csdv = Class.forName(cnm);
-			
-			Object o = csdv.newInstance();
-			E.info("instantiated " + o);
-			
-		} catch (Exception ex) {
-			E.info("Couldn't initialize a viewer - none on classpath?");
-		}
-	}
-	
-	
+  	
 	private File getSrcFile() {
 		File fex = new File(fdir, "examples");
 		File fs = new File(fex, filename);
@@ -50,14 +36,17 @@ public class RunFileExample {
 		
 	public void run() {	
 		
-		tryDataViewerInitialization();
-			
+ 			
 		try {
-		FileInclusionReader fir = new FileInclusionReader(getSrcFile());
- 			Sim sim = new Sim(fir.read());
+			FileInclusionReader fir = new FileInclusionReader(getSrcFile());
+ 			
+			
+			
+			Sim sim = new Sim(fir.read());
 	 
 			sim.readModel();	
  			
+		
 		    sim.build();
 	        sim.run(true);
 	        
@@ -68,9 +57,7 @@ public class RunFileExample {
 	
 	
 	public void runEulerTree() {
-		
-		tryDataViewerInitialization();
-        
+         
 		try {
 		FileInclusionReader fir = new FileInclusionReader(getSrcFile());
 			Sim sim = new Sim(fir.read());

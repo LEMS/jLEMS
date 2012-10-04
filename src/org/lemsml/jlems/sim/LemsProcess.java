@@ -1,7 +1,5 @@
 package org.lemsml.jlems.sim;
-
-import java.io.File;
-
+ 
 import org.lemsml.jlems.canonical.CanonicalWriter;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.io.FormatException;
@@ -19,10 +17,11 @@ import org.lemsml.jlems.util.ContentError;
 import org.lemsml.jlems.util.E;
 import org.lemsml.jlems.util.RuntimeError;
 import org.lemsml.jlems.xml.BuildException;
-import org.lemsml.jlems.xml.ElementXMLReader;
 import org.lemsml.jlems.xml.ParseException;
 import org.lemsml.jlems.xml.XMLElement;
+import org.lemsml.jlems.xml.XMLElementReader;
 import org.lemsml.jlems.xml.XMLException;
+import org.lemsml.jlemsio.xmlio.ElementXMLReader;
  
 
 public class LemsProcess {
@@ -30,9 +29,7 @@ public class LemsProcess {
 	protected Class<?> root;
 
 	protected String srcfnm;
-
-	protected File srcFile;
-
+ 
 	protected String srcStr;
 
 	protected Lems lems;
@@ -65,15 +62,18 @@ public class LemsProcess {
 	public void readModel() throws ContentError, ParseError, ParseException, BuildException, FormatException,
 			XMLException {
 		String stxt = getSourceText();
-
+	 	
 		boolean loose = true;
+ 	
+		// TODO tmp - make reader cope without extra spaces
+		XMLElementReader exmlr = new XMLElementReader(stxt + "    ");
 
-		ElementXMLReader exmlr = new ElementXMLReader();
+		XMLElement xel = exmlr.getRootElement();
 
-		XMLElement xel = exmlr.readElement(stxt);
-
+		
 		// E.info("read xml " + xel.toXMLString(""));
 
+	
 		LemsFactory lf = new LemsFactory();
 		lems = lf.buildLemsFromXMLElement(xel);
 

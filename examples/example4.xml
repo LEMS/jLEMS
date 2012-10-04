@@ -26,12 +26,10 @@
     <Exposure name="fopen" dimension="none"/>
     
     <Dynamics>
-          <KineticScheme name="ks">
-            <Nodes children="states" variable="occupancy"/> 
-            <Edges children="transitions" sourceNodeName="from" targetNodeName="to" forwardRate="rf" reverseRate="rr"/>
-            <Tabulable variable="v" increment="deltaV"/>
-        </KineticScheme>
-    
+          <KineticScheme name="ks" nodes="states" stateVariable="occupancy"
+            	edges="transitions" edgeSource="from" edgeTarget="to" 
+            	forwardRate="rf" reverseRate="rr"/>
+       
         <DerivedVariable name="q" dimension="none" select="states[*]/q" reduce="add"/>
         <DerivedVariable name="fopen" exposure="fopen" dimension="none" value="q^power"/>
     </Dynamics>

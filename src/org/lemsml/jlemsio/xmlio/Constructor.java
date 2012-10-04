@@ -1,9 +1,10 @@
-package org.lemsml.jlems.xml;
+package org.lemsml.jlemsio.xmlio;
 
 import org.lemsml.jlems.io.FormatException;
 import org.lemsml.jlems.type.Attribute;
 import org.lemsml.jlems.type.Parameterized;
 import org.lemsml.jlems.util.ContentError;
+import org.lemsml.jlems.xml.BuildException;
 
 
 public interface Constructor {
@@ -23,7 +24,6 @@ public interface Constructor {
    void appendContent(Object child, String content) throws ContentError;
 
    void setIntFromStatic(Object ret, String id, String sv) throws ContentError, FormatException;
-
-   void addSearchPackage(Package pkg);
+ 
 
 }

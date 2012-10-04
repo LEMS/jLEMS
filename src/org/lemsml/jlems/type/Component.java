@@ -267,16 +267,14 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented,
 
 		
 		if ((eXtends != null && type == null) || (type != null && type.equals("Component"))) {			
-			// an Instance without a "class" attribute - it must have a "proto"
-			// attribute instead or its an error
+			// an Instance without a type attribute - it must extend something else 
+		
 			if (eXtends != null) {
 				if (lems.hasComponent(eXtends)) {
 					pinst = lems.getComponent(eXtends);
 					pinst.checkResolve(lems, parentType);
 					r_type = pinst.getComponentType();
 
-					 
-					
 				} else {
 					throw new ContentError("no such component " + eXtends + " (needed for proto of " + id);
 				}
@@ -294,7 +292,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented,
 				}
 			}
 			if (type == null) {
-				throw new ContentError("No type for " + this);
+				throw new ContentError("No type for " + this + " extends=" + eXtends);
 			}
 			
 			r_type = lems.getComponentTypeByName(type);
@@ -369,10 +367,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented,
 		}
 
 		for (ComponentReference cr : r_type.getComponentRefs()) {
-
-			E.info("resolving reference " + cr.name + " in " + this);
-			
-			String crn = cr.getName();
+ 			String crn = cr.getName();
 			if (attributes.hasName(crn)) {
 				Attribute att = attributes.getByName(crn);
 				String attval = att.getValue();

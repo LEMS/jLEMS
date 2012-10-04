@@ -1,4 +1,4 @@
-package org.lemsml.jlems.xml;
+package org.lemsml.jlemsio.xmlio;
 
 import java.io.IOException;
 import java.io.StreamTokenizer;
@@ -8,6 +8,9 @@ import java.util.HashSet;
 
 import org.lemsml.jlems.util.ContentError;
 import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.xml.ParseException;
+import org.lemsml.jlems.xml.StringEncoder;
+import org.lemsml.jlems.xml.XMLException;
  
 
 public class XMLTokenizer {

@@ -8,8 +8,8 @@ import org.lemsml.jlems.type.procedure.Procedure;
 import org.lemsml.jlems.type.simulation.Simulation;
 import org.lemsml.jlems.type.structure.Structure;
 import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.xml.XMLReader;
-import org.lemsml.jlemsio.xmlreflection.ReflectionInstantiator;
+import org.lemsml.jlemsio.xmlio.ReflectionInstantiator;
+import org.lemsml.jlemsio.xmlio.XMLReader;
 
 public class ReflectionReader {
 	

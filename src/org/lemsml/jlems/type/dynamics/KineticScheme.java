@@ -9,6 +9,7 @@ import org.lemsml.jlems.annotation.Mel;
 import org.lemsml.jlems.run.KScheme;
 import org.lemsml.jlems.type.Children;
 import org.lemsml.jlems.type.Component;
+import org.lemsml.jlems.type.ComponentReference;
 import org.lemsml.jlems.type.ComponentType;
 import org.lemsml.jlems.util.ContentError;
 import org.lemsml.jlems.util.E;
@@ -17,34 +18,54 @@ import org.lemsml.jlems.util.E;
 		"It is rather a way of connecting quantities in existing components by saying that " +
 		"quantities in the edge elements should be interpreted as transition rates among " +
 		"quantities in the node elements. ")
-public class KineticScheme  implements ExplicitChildContainer {
+public class KineticScheme {
 
 	@Mat(info="")
 	public String name;
 	 
 	@Mat(info="")
-	public Nodes nodes;
+	public String nodes;
 	
 	@Mat(info="")
-	public Edges edges;
+	public String edges;
 	
+	public String stateVariable;
+
+	public String edgeSource;
 	
-	public Tabulable tabulable; 
-	// MUSTDO use. If present, the KScheme should take responsibility for updating the rate objects only when it 
-	// needs them
+	public String edgeTarget;
 	
+	public String forwardRate;
+	
+	public String reverseRate;
+	
+	public String dependency;
+	
+	public String step;
+	
+	/*
+	 <KineticScheme name="ks" nodes="states" stateVariable="occupancy"
+         	edges="transitions" edgeSource="from" edgeTarget="to" 
+         	forwardRate="rf" reverseRate="rr" dependency="v" step="deltaV"/>
+	
+	*/
+ 
 	
 	Children r_nodes;
 	Children r_edges; 
 	
-	 
+	ComponentReference r_srcRef;
+	ComponentReference r_tgtRef;
+	
 
 	public void resolve(ComponentType r_type) throws ContentError {
-		r_nodes = r_type.getChildrenByName(nodes.children);
-		r_edges = r_type.getChildrenByName(edges.children);
-		
-		edges.resolve(r_edges);
-	 
+		r_nodes = r_type.getChildrenByName(nodes);
+		r_edges = r_type.getChildrenByName(edges);
+	
+		ComponentType tedge = r_edges.getComponentType();
+			
+		r_srcRef = tedge.getComponentRef(edgeSource);
+		r_tgtRef = tedge.getComponentRef(edgeTarget);
 	}
 
 
@@ -63,37 +84,28 @@ public class KineticScheme  implements ExplicitChildContainer {
 		for (int i = 0; i < nr; i++) {
 			Component r = arat.get(i);
 	
-			String srcid = r.getStringValue(edges.sourceNodeName);
-			String tgtid = r.getStringValue(edges.targetNodeName);
+			String srcid = r.getStringValue(edgeSource);
+			String tgtid = r.getStringValue(edgeTarget);
 			tbl[i][0] = stateIndexHM.get(srcid);
 			tbl[i][1] = stateIndexHM.get(tgtid);
 		}
 		
-		KScheme ret = new KScheme(name, tbl, nodes.children, edges.children, nodes.variable, edges.forwardRate, edges.reverseRate);
+		KScheme ret = new KScheme(name, tbl, nodes, edges, stateVariable, forwardRate, reverseRate);
  
 		return ret;
 	}
 
 
 	public String getNodesName() {
-		return nodes.children;
+		return nodes;
 	}
 
 
 	public String getEdgesName() {
-		return edges.children;
+		return edges;
 	}
 
-
-	@Override
-	public ArrayList<Class<?>> getChildClasses() {
-		 ArrayList<Class<?>> ret = new ArrayList<Class<?>>();
-		 ret.add(Nodes.class);
-		 ret.add(Edges.class);
-		 return ret;
-	}
-	
-	
+ 
 	
 	
 }

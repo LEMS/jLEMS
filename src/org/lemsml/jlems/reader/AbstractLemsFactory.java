@@ -50,8 +50,7 @@ public abstract class AbstractLemsFactory {
 			} else if (xel.isTag("ComponentType")) {
 				ret.componentTypes.add((ComponentType)instantiateFromXMLElement(xel));
 			} else {
-				E.info("Reading a component: " + xel.getTag());
-				ret.components.add(readComponentFromXMLElement(xel));
+ 				ret.components.add(readComponentFromXMLElement(xel));
 			}
 		}
 		return ret;
@@ -74,7 +73,7 @@ public abstract class AbstractLemsFactory {
 				ret.id = xa.getValue();
 			} else if (xn.equals("type")) {
 				ret.type = xa.getValue();
-			} else if (xn.equals("eXtends")) {
+			} else if (xn.equals("extends")) {
 				ret.eXtends = xa.getValue();
 			} else {
 				ret.addAttribute(xa.makeCopy());

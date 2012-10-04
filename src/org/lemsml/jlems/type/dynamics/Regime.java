@@ -266,6 +266,9 @@ public class Regime implements Named {
 			 EventAction er = new EventAction(oe.getPortName());
 			 
 			 ActionBlock ea = oe.makeEventAction(fixedHM);
+			 if (ea == null) {
+				 throw new ContentError("Null action block from OnEvent " + oe);
+			 }
 			 er.setAction(ea);
 			 ret.addEventResponse(er);
 		 }
