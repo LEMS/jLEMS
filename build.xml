@@ -78,9 +78,11 @@
    
 	
     
-	  
- 
- 
+	 <target name="canonical-examples">
+		<mkdir dir="build/canonical-examples"/>
+	 	<xslt basedir="examples" destdir="build/canonical-examples"
+		     	extension=".xml"  style="xsl/canonical.xsl"/>
+ 	</target>
  
  
     <target name="clean" description="Removes the built files" depends="initdirs">
