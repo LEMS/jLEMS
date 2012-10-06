@@ -49,7 +49,7 @@ public class DocExtractor {
 			root.add(di.makeXMLElement());
 		}
 		
-		String stxt = root.toXMLString("");
+		String stxt = root.serialize();
 		// E.info("stxt is " + stxt);
 		if (argv.length > 0) {
 			String sf = argv[0];

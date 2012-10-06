@@ -15,15 +15,11 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
     public int k;  // Temperature
     public int n;  // Amount of substance
     
-    @Deprecated
-    public int c;  // old form for amount of substance - still existsin NeuroML xml 
-    
+  
     private double dval = Double.NaN; // bit messy, just for constant powers
 
     
-    
-    public final static Dimension TIME_DIMENSION = new Dimension("time", 0, 0, 1, 0);
-    
+    static Dimension timeDimension;
     
     
     public Dimension() {
@@ -33,40 +29,8 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
         name = sn;
     }
 
-    public Dimension(String sn, int am, int al, int at, int ai) {
-        name = sn;
-        m = am;
-        l = al;
-        t = at;
-        i = ai;
-        k = 0;
-        n = 0;
-    }
-
-    public Dimension(String sn, int am, int al, int at, int ai, int ak, int ac) {
-        name = sn;
-        m = am;
-        l = al;
-        t = at;
-        i = ai;
-        k = ak;
-        n = ac;
-    }
-
-    
-    public void checkDep() {
-    	if (c != 0) {
-    		n = c;
-    		c = 0;    		
-    		E.warning("Dimension " + this + " expressed with deprecated attribute 'c': use 'n' instead");
-    	}
-    }
-    
-    
-    
+   
     public boolean dataMatches(Object obj) {
-    	checkDep();
-    	
         boolean ret = false;
         if (obj instanceof Dimension) {
             Dimension d = (Dimension) obj;
@@ -83,12 +47,11 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
 
     @Override
     public String toString() {
-        return "Dimension[" + summary()+"]";
+        return "Dimension[" + summary() + "]";
     }
 
     public String summary() {
-    	checkDep();
-    	String ret = (name != null ? name : " (unnamed) ");
+     	String ret = (name != null ? name : " (unnamed) ");
     	int[] vals = {m, l, t, i, k, n};
     	String[] names= {"m", "l", "t", "i", "k", "n"};
     	int nnz = 0;
@@ -107,8 +70,7 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
    
 
     public boolean matches(Dimension d) {
-    	checkDep();
-    	
+     	
         boolean ret = false;
         if (this.equals(d)) {
             ret = true;
@@ -122,8 +84,7 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
     }
 
     public Dimension getTimes(Dimensional d) {
-    	checkDep();
-    	
+      	
     	Dimension ret = new Dimension("");
         ret.m = m + d.getM();
         ret.l = l + d.getL();
@@ -135,8 +96,7 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
     }
 
     public Dimensional getDivideBy(Dimensional d) {
-    	checkDep();
-    	
+      	
     	Dimension ret = new Dimension("");
         ret.m = m - d.getM();
         ret.l = l - d.getL();
@@ -148,7 +108,6 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
     }
 
     public boolean isDimensionless() {
-    	checkDep();
     	
         boolean ret = false;
         if (m == 0 && l == 0 && t == 0 && i == 0 && k == 0 && n == 0) {
@@ -178,8 +137,7 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
     }
 
     public int getN() {
-    	checkDep();
-        return n;
+         return n;
     }
 
     public void setN(int n) {
@@ -209,9 +167,7 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
     
 
     public boolean matches(Dimensional d) {
-    	checkDep();
-    	
-        boolean ret = false;
+         boolean ret = false;
         if (m == d.getM() && l == d.getL() && t == d.getT() && i == d.getI() && k == d.getK() && n == d.getN()) {
             ret = true;
         }
@@ -219,13 +175,17 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
     }
 
     public Dimensional power(double dbl) {
-    	checkDep();
-    	
-        Dimensional ret = null;
+       Dimensional ret = null;
         if (dbl - Math.round(dbl) < 1.e-6) {
             int ifac = (int) (Math.round(dbl));
-            ret = new Dimension("", ifac * m, ifac * l, ifac * t, ifac * i, ifac * k, ifac * n);
-
+            Dimension d = new Dimension("");
+            d.m = ifac * m;
+            d.l = ifac * l;
+            d.t = ifac * t;
+            d.i = ifac * i;
+            d.k = ifac * k;
+            d.n = ifac * n;
+            ret = d;
         } else {
             E.missing("Can't work with fractional dimensions yet");
         }
@@ -243,6 +203,14 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
     public double getDoubleValue() {
         return dval;
     }
+
+	public static Dimension getTimeDimension() {
+		if (timeDimension == null) {
+			timeDimension = new Dimension("time");
+			timeDimension.setT(1);
+		}
+		return timeDimension;
+	}
 
   
    

@@ -21,7 +21,7 @@ import org.lemsml.jlems.type.Target;
 import org.lemsml.jlems.util.ContentError;
 import org.lemsml.jlems.util.E;
 import org.lemsml.jlems.util.RuntimeError;
-import org.lemsml.jlemsio.FileUtil;
+ 
 
 
 public class Sim extends LemsProcess {
@@ -36,6 +36,7 @@ public class Sim extends LemsProcess {
     
     EventManager eventManager;
     
+    int maxExecutionTime = 0;
     
 
     public Sim(String srcStr) {
@@ -50,23 +51,15 @@ public class Sim extends LemsProcess {
     	
     public void build() throws ContentError, ConnectionError, ParseError {
     	
-    	E.info("Building " + lems);
-     	
-	    Target dr = lems.getTarget();
-	
-	    E.info("got target...");
-	    
-	    Component simCpt = dr.getComponent();
+  	    Target dr = lems.getTarget();
+ 	    Component simCpt = dr.getComponent();
 	
 	    if (simCpt == null) {
 	        E.error("No such component: " + dr.component + " as referred to by default simulation.");
 	        E.error(lems.textSummary());
 	        throw new ContentError("No such component " + dr.component);
 	    }
-	
-	    
-	    E.info("Simulation component: " + simCpt);
-	
+ 	
 	    rootBehavior = simCpt.getComponentBehavior();
 	    
 	    // collect everything in the ComponentBehavior tree that makes a display
@@ -97,17 +90,18 @@ public class Sim extends LemsProcess {
     	run(true);
     }
     
-   
-    public void run(boolean flatten) throws ConnectionError, ContentError, RuntimeError, ParseError {
-    	E.info("Run configs to run: " + runConfigs.size());
-    	for (RunConfig rc : runConfigs) {
+    public void runTree() throws ConnectionError, ContentError, RuntimeError, ParseError {
+    	run(false);
+    }
+    
+    private void run(boolean flatten) throws ConnectionError, ContentError, RuntimeError, ParseError {
+     	for (RunConfig rc : runConfigs) {
     		run(rc, flatten);
     	}
-        E.info("Done");
-    }
+      }
 
   
-    
+
     
     public void run(RunConfig rc, boolean flatten) throws ConnectionError, ContentError, RuntimeError, ParseError {
    	    	
@@ -137,7 +131,7 @@ public class Sim extends LemsProcess {
         double dt = rc.getTimestep();
         int nstep = (int) Math.round(rc.getRuntime() / dt);
 
-        E.info("Running for " + nstep + " steps");
+
       
         StringBuilder info = new StringBuilder("#Report of running simulation with LEMS Interpreter\n");
         StringBuilder times = new StringBuilder();
@@ -150,6 +144,9 @@ public class Sim extends LemsProcess {
         rootState.initialize(null);  
         EventManager eventManager = rootState.getEventManager();
         
+        long realTimeStart = System.currentTimeMillis();
+        int nsDone = 0;
+     
         for (int istep = 0; istep < nstep; istep++) {
         	if (istep > 0) {
         		eventManager.advance(t);
@@ -162,8 +159,18 @@ public class Sim extends LemsProcess {
            
             times.append((float) (t * 1000)).append("\n");
             t += dt;
+            
+            if (maxExecutionTime > 0 && istep % 100 == 0) {
+            	long realTimeNow = System.currentTimeMillis();
+            	long dtReal = realTimeNow - realTimeStart;
+            	if (dtReal > maxExecutionTime) {
+            		E.info("Stopped execution at t=" + t + " (exceeded maxExecutionTime) " + (dtReal));
+            		break;
+            	}
+            }
+            nsDone = istep;
         }
-        E.info("Finished " + nstep + " steps");
+        E.info("Finished " + nsDone + " steps");
 
         
         long end = System.currentTimeMillis();
@@ -192,6 +199,10 @@ public class Sim extends LemsProcess {
 		}
 		 
 		
+	}
+
+	public void setMaxExecutionTime(int i) {
+		maxExecutionTime = i;
 	}
 	
 	

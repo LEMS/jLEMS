@@ -27,6 +27,19 @@ public class LemsCollection<T> implements Iterable<T> {
 	 
 		return true;
 	}
+	
+	public void addIfNew(final T arg) throws ContentError {
+		if (arg instanceof Named) {
+			String nm = ((Named)arg).getName();
+			if (hasName(nm)) {
+				// don't add 
+			} else {
+				add(arg);
+			}
+		} else {
+			add(arg);
+		}
+	}
 
 
 	public T getByName(final String name) throws ContentError {

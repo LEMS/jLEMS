@@ -47,8 +47,6 @@ public class LemsFactory extends AbstractLemsFactory {
             ret = buildChildren(xel);
         } else if (tag.equals("Link")) {
             ret = buildLink(xel);
-        } else if (tag.equals("ComponentRef")) {
-            ret = buildComponentRef(xel);
         } else if (tag.equals("ComponentReference")) {
             ret = buildComponentReference(xel);
         } else if (tag.equals("EventPort")) {
@@ -156,8 +154,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.k = parseInt(xv);
             } else if (xn.equals("n")) {
                 ret.n = parseInt(xv);
-            } else if (xn.equals("c")) {
-                ret.c = parseInt(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
             }
@@ -192,8 +188,7 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.symbol = parseString(xv);
             } else if (xn.equals("dimension")) {
                 ret.dimension = parseString(xv);
-            } else if (xn.equals("powTen")) {
-                ret.powTen = parseInt(xv);
+           
             } else if (xn.equals("power")) {
                 ret.power = parseInt(xv);
             } else if (xn.equals("scale")) {
@@ -614,42 +609,6 @@ public class LemsFactory extends AbstractLemsFactory {
 
     private Link buildLink(XMLElement xel) {
         Link ret = new Link();
-
-        for (XMLAttribute xa : xel.getAttributes()) {
-            String xn = internalFieldName(xa.getName());
-            String xv = xa.getValue();
-
-            if (xn.equals("UNUSED")) {
-            } else if (xn.equals("name")) {
-                ret.name = parseString(xv);
-            } else if (xn.equals("type")) {
-                ret.type = parseString(xv);
-            } else if (xn.equals("isAny")) {
-                ret.isAny = parseBoolean(xv);
-            } else if (xn.equals("compClass")) {
-                ret.compClass = parseString(xv);
-            } else {
-                E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
-        return ret;
-    }
-
-    private ComponentRef buildComponentRef(XMLElement xel) {
-        ComponentRef ret = new ComponentRef();
 
         for (XMLAttribute xa : xel.getAttributes()) {
             String xn = internalFieldName(xa.getName());
@@ -1912,8 +1871,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.increment = parseString(xv);
             } else if (xn.equals("total")) {
                 ret.total = parseString(xv);
-            } else if (xn.equals("components")) {
-                ret.components = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
             }

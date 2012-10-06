@@ -21,7 +21,6 @@ import org.lemsml.jlems.xml.ParseException;
 import org.lemsml.jlems.xml.XMLElement;
 import org.lemsml.jlems.xml.XMLElementReader;
 import org.lemsml.jlems.xml.XMLException;
-import org.lemsml.jlemsio.xmlio.ElementXMLReader;
  
 
 public class LemsProcess {
@@ -83,7 +82,6 @@ public class LemsProcess {
 
 		lems.deduplicate();
 		lems.resolve();
-		E.info("Resolved  ");
 
 		lems.evaluateStatic();
 

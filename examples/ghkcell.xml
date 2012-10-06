@@ -10,7 +10,7 @@
  <Unit name="mMolar" dimension="concentration" power="0"/>
 
 <ComponentType name="ChannelPopulation">
-    <ComponentRef name="channel" type="HHChannel"/>
+    <ComponentReference name="channel" type="HHChannel"/>
     <Parameter name="number" dimension="none"/>
     <Parameter name="erev" dimension="voltage"/>
     <Requirement name="v" dimension="voltage"/>
@@ -37,7 +37,7 @@
 
 
 <ComponentType name="GHKChannelPopulation">
-    <ComponentRef name="channel" type="GHK_HHChannel"/>
+    <ComponentReference name="channel" type="GHK_HHChannel"/>
     <Parameter name="number" dimension="none"/>
     
     <DerivedVariable name="extconc" 
@@ -88,7 +88,7 @@
 </ComponentType>
 
 <Component name="Solute">
-	<ComponentRef name="specie"/>
+	<ComponentReference name="specie"/>
 	<Parameter name="concentration" dimension="concentration"/>
 </Component>
 
@@ -107,15 +107,13 @@
 <Specie name="Potassium" symbol="K" valence="1"/>
 
 
-<GHKChannelPopulation channnel="ghk1">
-</GHKChannelPopulation>
+<GHKChannelPopulation channnel="ghk1"/>
 
 <GHK_HHChannel permeant_species="Ca">
 	...gates
 </GHK_HHChannel>
 
- <Solution name="extsol">
- 
- </Solution>
+ <Solution name="extsol"/>
+
  
 </Lems>

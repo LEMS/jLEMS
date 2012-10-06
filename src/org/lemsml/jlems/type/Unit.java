@@ -13,10 +13,7 @@ public class Unit implements PseudoNamed, Summaried, DataMatchable {
     
     public String dimension;
     private Dimension r_dimension;
-    
-    @Deprecated
-    public int powTen = 0;
-    
+   
     public int power = 0;
     
     public double scale = 1;
@@ -43,8 +40,7 @@ public class Unit implements PseudoNamed, Summaried, DataMatchable {
         this.symbol = symbol;
         this.dimension = dimension.getName();
         this.r_dimension= dimension;
-        this.powTen = pt;
-        this.power = pt;
+         this.power = pt;
         this.scale = scale;
         this.offset = offset;
     }
@@ -76,16 +72,12 @@ public class Unit implements PseudoNamed, Summaried, DataMatchable {
     }
 
     public String summary() {
-        return name + ": " + symbol + ", dimension=" + dimension + ", scale=" + scale + ", powTen=" + powTen+", offset="+offset;
+        return name + ": " + symbol + ", dimension=" + dimension + ", scale=" + scale + ", power=" + power+", offset="+offset;
     }
 
     
 
-    public void resolve(LemsCollection<Dimension> dimensions) throws ContentError {
-    	if (powTen != 0) {
-    		power = powTen;
-    	}
-    	
+    public void resolve(LemsCollection<Dimension> dimensions) throws ContentError {  	
     	if (name == null) {
             name = symbol;
         }

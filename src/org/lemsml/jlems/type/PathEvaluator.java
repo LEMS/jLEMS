@@ -1,7 +1,6 @@
 package org.lemsml.jlems.type;
 
 import java.util.ArrayList;
- 
 
 import org.lemsml.jlems.util.ContentError;
 import org.lemsml.jlems.util.E;

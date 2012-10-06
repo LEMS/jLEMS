@@ -54,9 +54,7 @@ public class SampleLemsFactory extends AbstractLemsFactory {
 			Object och = instantiateFromXMLElement(xe);
 			if (och instanceof Dynamics) {
 				ret.dynamicses.add((Dynamics)och);
-			} else if (false) {
-				
-			}
+			} 
 		}
 		
 		

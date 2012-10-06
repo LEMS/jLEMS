@@ -12,7 +12,7 @@
  	</xsl:template>
  
  
- 	<xsl:template match="Target|Unit|Dimension|ComponentType|Assertion|Include">
+ 	<xsl:template match="Target|Unit|Dimension|ComponentType|Assertion|Include|Component">
  		<xsl:copy-of select="."/>
  	</xsl:template>
  

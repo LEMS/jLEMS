@@ -1,14 +1,10 @@
 package org.lemsml.jlems.type.simulation;
 
-import java.util.HashMap;
-
 import org.lemsml.jlems.annotation.Mat;
 import org.lemsml.jlems.annotation.Mel;
-import org.lemsml.jlems.expression.Valued;
 import org.lemsml.jlems.type.Component;
 import org.lemsml.jlems.type.ComponentReference;
 import org.lemsml.jlems.type.ComponentType;
-import org.lemsml.jlems.type.LemsCollection;
 import org.lemsml.jlems.util.ContentError;
 import org.lemsml.jlems.util.E;
 
@@ -32,11 +28,7 @@ public class Run {
 	public String total;
 	// private Valued val_total;
 
-	
-	public String components;
-	private LemsCollection<Component> r_components;
-	
-
+	 
     public Run() {
     
     }
@@ -55,10 +47,7 @@ public class Run {
 	
 	
 	public void resolve(ComponentType r_type) throws ContentError {
-	
-		if (components != null) {
-		
-		}
+	 
 		if (component != null) {
 			r_componentRef = r_type.getComponentRef(component);
 			//val_increment = valHM.get(variable);

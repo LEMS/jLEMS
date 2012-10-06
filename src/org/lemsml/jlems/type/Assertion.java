@@ -46,7 +46,7 @@ public class Assertion {
 			 Dimensional dm = ev.evaluateDimensional(adml);
 			 
 			 if (dm.matches(r_about)) {
-				 E.info("OK (dimension check): " + dimension + " matches " + matches);
+			//	 E.info("OK (dimension check): " + dimension + " matches " + matches);
 			 } else {
 				 E.error("ERROR (dimension check): " + dimension + " does not match " + matches);
 			 }

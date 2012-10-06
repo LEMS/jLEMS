@@ -27,7 +27,7 @@ refractoryPeriod="4ms" capacitance="1pF"/>
 
 
 <ComponentType name="Population">
-    <ComponentRef name="component" type="Component"/>
+    <ComponentReference name="component" type="Component"/>
     <Parameter name="size" dimension="none"/>
    
         <Structure>
@@ -44,8 +44,7 @@ refractoryPeriod="4ms" capacitance="1pF"/>
     <Child name="Connections" type="ConnectionPattern"/>
 </ComponentType>
 
-<ComponentType name="ConnectionPattern">
-</ComponentType>
+<ComponentType name="ConnectionPattern"/>
 
 
 <ComponentType name="AllAll" extends="ConnectionPattern">
@@ -76,9 +75,7 @@ refractoryPeriod="4ms" capacitance="1pF"/>
 <Include file="MultiRunSimulation.xml"/>
 
 <SimulationSet id="simset">
-	<Display id="disp1" title="Example 7: User defined types for networks and populations" xmin="0" xmax="80" ymin="-80" ymax="50">
-	
-	</Display>
+	<Display id="disp1" title="Example 7: User defined types for networks and populations" xmin="0" xmax="80" ymin="-80" ymax="50"/>
  
 	<Simulation id="sim1" length="80ms" step="0.05ms" target="net1" display="disp1">
     	<DisplayList timeScale="1ms" title="">

@@ -1,12 +1,10 @@
 package org.lemsml.jlems.run;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 
 import org.lemsml.jlems.eval.DBase;
 import org.lemsml.jlems.eval.DCon;
-import org.lemsml.jlems.eval.DOp;
 import org.lemsml.jlems.eval.DVal;
 import org.lemsml.jlems.eval.DVar;
 import org.lemsml.jlems.eval.Plus;

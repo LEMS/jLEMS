@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import org.lemsml.jlems.sim.InclusionReader;
 import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
 
 
 public class FileInclusionReader extends InclusionReader {
@@ -80,7 +79,7 @@ public class FileInclusionReader extends InclusionReader {
         
         boolean readOK = false;
         try {
-            E.info("Reading " + f.getCanonicalPath());
+           // E.info("Reading " + f.getCanonicalPath());
             ret = FileUtil.readStringFromFile(f);
             readOK = true;
         } catch (IOException ex) {

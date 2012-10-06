@@ -3,9 +3,7 @@ package org.lemsml.jlems.sim;
 import java.util.ArrayList;
 
 import org.lemsml.jlems.run.ComponentBehavior;
-import org.lemsml.jlems.run.RuntimeOutput;
 import org.lemsml.jlems.run.RuntimeRecorder;
-import org.lemsml.jlems.util.E;
 
 public class RecorderCollector implements ComponentBehaviorVisitor {
 

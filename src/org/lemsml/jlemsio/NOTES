@@ -1,3 +1,9 @@
-The jlemsio package has dependencies on files and reflection that are incompatible with some applications of the 
-core jlems code. For pure java environments, jlemsio would normally be included in any build. Other environments, 
+The jlemsio package has dependencies on classes that are incompatible with some applications of the 
+core jlems code. 
+
+For pure java environments, jlemsio would normally be included in any build. Other environments, 
 such as GWT will need separate implementations of the io logic here.
+
+In particular, anything involving Files, Reflection, Logging, Dates and StreamTokenizers should go in here,
+not in jlems.
+

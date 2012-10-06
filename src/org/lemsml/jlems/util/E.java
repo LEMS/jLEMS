@@ -383,8 +383,7 @@ public static void typeError(Object obj) throws ContentError {
 
 
 	public static void setMessageHandler(MessageHandler mh) {
-		mh.msg("Setting handler in E");
-		handler.setHandler(mh);
+ 		handler.setHandler(mh);
 	}
 
 	

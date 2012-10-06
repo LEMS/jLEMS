@@ -4,13 +4,13 @@ import org.lemsml.jlems.type.About;
 import org.lemsml.jlems.type.Assertion;
 import org.lemsml.jlems.type.Component;
 import org.lemsml.jlems.type.ComponentType;
+import org.lemsml.jlems.type.Constant;
 import org.lemsml.jlems.type.Dimension;
 import org.lemsml.jlems.type.Insertion;
-import org.lemsml.jlems.type.Meta;
-import org.lemsml.jlems.type.Unit;
 import org.lemsml.jlems.type.Lems;
+import org.lemsml.jlems.type.Meta;
 import org.lemsml.jlems.type.Target;
-import org.lemsml.jlems.type.Constant;
+import org.lemsml.jlems.type.Unit;
 import org.lemsml.jlems.util.ContentError;
 import org.lemsml.jlems.util.E;
 import org.lemsml.jlems.xml.XMLAttribute;
@@ -35,9 +35,8 @@ public abstract class AbstractLemsFactory {
 	private Lems readLems(XMLElement root) throws ContentError {
 		Lems ret = new Lems();
 		for (XMLElement xel : root.getElements()) {
-			if (xel.isTag("Number")) {
-				ret.numbers.add((Number)instantiateFromXMLElement(xel));
-			} else if (xel.isTag("Constant")) {
+			
+			if (xel.isTag("Constant")) {
 				ret.constants.add((Constant)instantiateFromXMLElement(xel));
 			} else if (xel.isTag("Unit")) {
 				ret.units.add((Unit)instantiateFromXMLElement(xel));

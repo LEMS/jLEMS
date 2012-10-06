@@ -23,9 +23,7 @@ public class Lems implements ComponentContainer {
 	final static int STRICT = 0;
 	final static int LOOSE = 1;
 	
-	public int resolveMode = STRICT;
-	
-	public LemsCollection<Number> numbers = new LemsCollection<Number>();
+	private int resolveMode = STRICT;
 	   
     public LemsCollection<Dimension> dimensions = new LemsCollection<Dimension>();
     public LemsCollection<Constant> constants = new LemsCollection<Constant>();
@@ -44,7 +42,7 @@ public class Lems implements ComponentContainer {
     
     
     private LemsCollection<Valued> globals = new LemsCollection<Valued>();
-    public LemsCollection<Valued> constantValued = null;
+    private LemsCollection<Valued> constantValued = null;
     
     private static Random randomGenerator = new Random();
 
@@ -306,11 +304,8 @@ public class Lems implements ComponentContainer {
      
 
     public StateInstance build(ComponentBehavior cptb, EventManager em) throws ContentError, ConnectionError, ParseError, RuntimeError {
-    	E.info("bulding a SI");
-    	Constants.setConstantsHM(getConstantsValueHM());
-    	
-    
-        StateInstance ret = cptb.newInstance();
+      	Constants.setConstantsHM(getConstantsValueHM());
+      	StateInstance ret = cptb.newInstance();
         ret.setEventManager(em);
         
         ret.checkBuilt();

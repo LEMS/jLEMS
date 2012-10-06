@@ -3,7 +3,6 @@ package org.lemsml.jlemsio.examples;
 import java.io.File;
 
 import org.lemsml.jlems.sim.Sim;
-import org.lemsml.jlems.util.E;
 import org.lemsml.jlemsio.FileInclusionReader;
 
 
@@ -34,9 +33,7 @@ public class RunFileExample {
 	
 	 
 		
-	public void run() {	
-		
- 			
+	public void run() {
 		try {
 			FileInclusionReader fir = new FileInclusionReader(getSrcFile());
  			
@@ -48,17 +45,17 @@ public class RunFileExample {
  			
 		
 		    sim.build();
-	        sim.run(true);
-	        
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}		 
+	        sim.run();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		  
 		}
 	
 	
 	public void runEulerTree() {
-         
-		try {
+         try {
+	 
 		FileInclusionReader fir = new FileInclusionReader(getSrcFile());
 			Sim sim = new Sim(fir.read());
 		 
@@ -68,11 +65,11 @@ public class RunFileExample {
 	 		
 		sim.build();
 		
-		sim.run(false);
-		
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}		 
+		sim.runTree();
+         } catch (Exception ex) {
+        	 ex.printStackTrace();
+         }
+		 
 	}
 	
 	

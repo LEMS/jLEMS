@@ -18,7 +18,7 @@
 
 
 <ComponentType name="MembranePotential">
-    <ComponentRef name="species" type="Species"/>
+    <ComponentReference name="species" type="Species"/>
     <Parameter name="reversal" dimension="voltage"/>
 </ComponentType>
 
@@ -38,7 +38,7 @@
     
 <ComponentType name="KSChannel">
     <Parameter name="conductance" dimension="conductance"/>
-    <ComponentRef name="species" type="Species"/>
+    <ComponentReference name="species" type="Species"/>
     <Children name="gates" type="KSGate"/>
     <Exposure name="g" dimension="conductance"/>
     
@@ -145,7 +145,7 @@
 
 
 <ComponentType name="ChannelPopulation">
-    <ComponentRef name="channel" type="KSChannel"/>
+    <ComponentReference name="channel" type="KSChannel"/>
     <Parameter name="number" dimension="none"/>
      <Requirement name="v" dimension="voltage"/>
     <Exposure name="current" dimension="current"/>
@@ -168,7 +168,7 @@
 
 <ComponentType name="KSCell">
     <Parameter name="capacitance" dimension="capacitance"/>
-    <ComponentRef name="environment" type="Environment"/>
+    <ComponentReference name="environment" type="Environment"/>
     <Children name="populations" type="ChannelPopulation"/>
     <Parameter name="injection" dimension="current"/>
     <Parameter name="v0" dimension="voltage"/>
@@ -197,10 +197,8 @@
 <Include file="MultiRunSimulation.xml"/>
 
 <SimulationSet id="simset">
-	<Display id="disp1" title="Example 5: References and paths" xmin="0" xmax="80" ymin="-80" ymax="50">
-	
-	</Display>
- 
+	<Display id="disp1" title="Example 5: References and paths" xmin="0" xmax="80" ymin="-80" ymax="50"/>
+
 	<Simulation id="sim1" length="80ms" step="0.05ms" target="kscell_1" display="disp1">
     	<DisplayList timeScale="1ms" title="">
              <Line quantity="v" scale="1mV" timeScale="1ms" color="#ff4040"/>

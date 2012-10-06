@@ -1,9 +1,9 @@
 <Lems>
     <Include file="hhchannel.xml"/>
 
-    <Unit symbol="mV" dimension="voltage" powTen="-3"/> 
-    <Unit symbol="per_ms" dimension="per_time" powTen="3"/>
-    <Unit symbol="pS" dimension="conductance" powTen="-12"/>
+    <Unit symbol="mV" dimension="voltage" power="-3"/> 
+    <Unit symbol="per_ms" dimension="per_time" power="3"/>
+    <Unit symbol="pS" dimension="conductance" power="-12"/>
 
     
     <HHChannel id="na" conductance="20pS">

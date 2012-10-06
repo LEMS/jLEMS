@@ -20,9 +20,6 @@ import org.lemsml.jlems.run.ComponentRegime;
 import org.lemsml.jlems.run.ConditionAction;
 import org.lemsml.jlems.run.EventAction;
 import org.lemsml.jlems.run.KScheme;
-import org.lemsml.jlems.run.PathDerivedVariable;
-import org.lemsml.jlems.run.RuntimeOutput;
-import org.lemsml.jlems.run.StateRunnable;
 import org.lemsml.jlems.type.Component;
 import org.lemsml.jlems.type.ComponentType;
 import org.lemsml.jlems.type.EventPort;
@@ -35,7 +32,6 @@ import org.lemsml.jlems.type.Named;
 import org.lemsml.jlems.type.ParamValue;
 import org.lemsml.jlems.type.Property;
 import org.lemsml.jlems.type.Requirement;
-import org.lemsml.jlems.type.structure.Structure;
 import org.lemsml.jlems.util.ContentError;
 import org.lemsml.jlems.util.E;
 
@@ -362,7 +358,7 @@ public class Dynamics  {
                  }
 				 
 			 } else if (dv.hasSelection()) {
-				 PathDerivedVariable pdv = ret.addPathDerived(dv.getName(), dv.getPath(), dv.getFunc());
+				 ret.addPathDerived(dv.getName(), dv.getPath(), dv.getFunc());
 			 
 			 } else {
 				 throw new ContentError("Derived variable needs as selection or an expression");

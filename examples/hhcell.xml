@@ -10,7 +10,7 @@
  
 
 <ComponentType name="ChannelPopulation">
-    <ComponentRef name="channel" type="HHChannel"/>
+    <ComponentReference name="channel" type="HHChannel"/>
     <Parameter name="number" dimension="none"/>
     <Parameter name="erev" dimension="voltage"/>
     <Requirement name="v" dimension="voltage"/>

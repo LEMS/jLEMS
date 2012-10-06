@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.lemsml.jlems.run.ComponentBehavior;
 import org.lemsml.jlems.run.RuntimeOutput;
-import org.lemsml.jlems.util.E;
 
 public class OutputCollector implements ComponentBehaviorVisitor {
 

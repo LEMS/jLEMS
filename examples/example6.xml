@@ -66,7 +66,7 @@ refractoryPeriod="4ms" capacitance="1pF"/>
 <ComponentType name="Simulation">
     <Parameter name="length" dimension="time"/>
     <Parameter name="step" dimension="time"/>
-    <ComponentRef name="target" type="Component"/>
+    <ComponentReference name="target" type="Component"/>
     <Link name="display" type="Display"/>
     <Children name="outputs" type="DisplayList"/>
     <Dynamics>
@@ -89,10 +89,8 @@ refractoryPeriod="4ms" capacitance="1pF"/>
  
 
 <SimulationSet id="simset">
-	<Display id="disp1" title="Example 6:  User defined types for simulation and display" xmin="0" xmax="80" ymin="-80" ymax="50">
-	
-	</Display>
- 
+	<Display id="disp1" title="Example 6:  User defined types for simulation and display" xmin="0" xmax="80" ymin="-80" ymax="50"/>
+	 
 	<Simulation id="sim1" length="80ms" step="0.05ms" target="hhcell_1" display="disp1">
     	<DisplayList timeScale="1ms" title="">
              <Line id="V" quantity="v" scale="1mV" timeScale="1ms" color="#0000f0"/>

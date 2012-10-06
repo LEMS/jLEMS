@@ -3,13 +3,14 @@ package org.lemsml.jlemsio.logging;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import java.util.logging.StreamHandler;
+
+import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.util.MessageHandler;
+import org.lemsml.jlems.util.MessageType;
 /*
 import java.util.logging.SimpleFormatter;
 import java.util.logging.StreamHandler;
 */
-
-import org.lemsml.jlems.util.MessageHandler;
-import org.lemsml.jlems.util.MessageType;
 
 
 public class MessagePrintlnHandler implements MessageHandler {
@@ -19,16 +20,24 @@ public class MessagePrintlnHandler implements MessageHandler {
 	
 	private static final Logger infoLogger = Logger.getLogger("info");
 	
-	{
+	private static MessagePrintlnHandler instance;
+	
+  
+	
+	public static void initialize() {
+		if (instance == null) {
 		infoLogger.setUseParentHandlers(false);
 		SimpleFormatter fmt = new OneLineFormatter();
- 		 StreamHandler sh = new StreamHandler(System.out, fmt);
-		 infoLogger.addHandler(sh);
-	 
+		StreamHandler sh = new StreamHandler(System.out, fmt);
+		infoLogger.addHandler(sh);
+		
+		instance = new MessagePrintlnHandler();
+		E.setMessageHandler(instance);
+		}
 	}
 	
 	
-	public MessagePrintlnHandler() {
+	private MessagePrintlnHandler() {
 		
 	}
 	

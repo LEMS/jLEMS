@@ -331,34 +331,37 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 					dp.getDimension(), dp.getSelect(), dp.getValue()));
 		}
 
+		
+		// using addIfNew so we an locally override an inherited element
+		// happens with rereading lems models where the resolved type gets written out
 		if (r_extends != null) {
 			for (FinalParam fp : r_extends.getFinalParams()) {
-				finalParams.add(fp.makeCopy());
+				finalParams.addIfNew(fp.makeCopy());
 			}
 			for (EventPort ep : r_extends.getEventPorts()) {
-				eventPorts.add(ep.makeCopy());
+				eventPorts.addIfNew(ep.makeCopy());
 			}
 
 			for (ComponentReference cr : r_extends.getComponentRefs()) {
-				componentReferences.add(cr.makeCopy());
+				componentReferences.addIfNew(cr.makeCopy());
 			}
 
 			for (Link lin : r_extends.getLinks()) {
-				links.add(lin.makeLinkCopy());
+				links.addIfNew(lin.makeLinkCopy());
 			}
 			for (Requirement req : r_extends.getRequirements()) {
-				requirements.add(req.makeCopy());
+				requirements.addIfNew(req.makeCopy());
 			}
 			for (Exposure exp : r_extends.getExposures()) {
-				exposures.add(exp.makeCopy());
+				exposures.addIfNew(exp.makeCopy());
 			}
 			
 			for (PairCollection pc : r_extends.getPairCollections()) {
-				pairCollections.add(pc.makeCopy());
+				pairCollections.addIfNew(pc.makeCopy());
 			}
 			
 			for (Collection c : r_extends.getCollections()) {
-				collections.add(c.makeCopy());
+				collections.addIfNew(c.makeCopy());
 			}
 			
 		}

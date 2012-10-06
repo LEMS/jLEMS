@@ -16,7 +16,6 @@ import org.lemsml.jlems.type.FillableFrom;
 import org.lemsml.jlems.type.Lems;
 import org.lemsml.jlems.type.LemsCollection;
 import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
  
 @Mel(info="A quantity that depends algebraically on other quantities in the model. The 'value' field can be " +
 		"set to a mathematical expression, or the select field to a path expression. If the path expression " +

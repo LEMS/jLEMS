@@ -62,7 +62,12 @@ public class XMLElement {
 	}
 	
 	
-	public String toXMLString(String indent) {
+	public String serialize() {
+		return toXMLString("");
+	}
+	
+	
+	private String toXMLString(String indent) {
 		StringBuilder sb = new StringBuilder();
 		boolean sameLine = true;
 		sb.append(indent + "<" + type);

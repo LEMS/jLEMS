@@ -265,4 +265,33 @@ public class XMLElementReader {
 		}
 		return ret;
 	}
+
+
+	public static String deComment(String stxt) throws XMLException {
+		 StringBuilder sb= new StringBuilder();
+		 int ipos = 0;
+		 while (true) {			 
+			 int inc = stxt.indexOf("<!--", ipos);
+			 if (inc > 0) {
+				 sb.append(stxt.substring(ipos, inc));
+				 int ie = stxt.indexOf("-->", inc + 3);
+				 if (ie > 0) {
+					 ipos = ie + 3;
+				 } else {
+					 throw new XMLException("Non matching comment around " + inc + " " + stxt);
+				 }
+			 } else {
+				 break;
+			 }
+		 }
+		 sb.append(stxt.substring(ipos, stxt.length()));
+		 return sb.toString();
+	}
+
+
+	public static String deSpace(String stxt) {
+		String ret = stxt.replaceAll("\\r|\\n|\\t| ", "");
+		return ret;
+	}
+	
 }

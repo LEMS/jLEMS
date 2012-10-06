@@ -2,19 +2,12 @@ package org.lemsml.jlems.type;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import org.lemsml.jlems.annotation.Mat;
 import org.lemsml.jlems.canonical.CanonicalElement;
 import org.lemsml.jlems.expression.DoubleEvaluable;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.run.ComponentBehavior;
-import org.lemsml.jlems.run.Constants;
-import org.lemsml.jlems.run.MultiComponentBehavior;
-import org.lemsml.jlems.run.StateRunnable;
-import org.lemsml.jlems.type.dynamics.Dynamics;
-import org.lemsml.jlems.type.simulation.Simulation;
-import org.lemsml.jlems.type.structure.Structure;
 import org.lemsml.jlems.util.ContentError;
 import org.lemsml.jlems.util.E;
 import org.lemsml.jlems.xml.XMLAttribute;

@@ -3,7 +3,6 @@ package org.lemsml.jlems.type.dynamics;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.lemsml.jlems.annotation.ExplicitChildContainer;
 import org.lemsml.jlems.annotation.Mat;
 import org.lemsml.jlems.annotation.Mel;
 import org.lemsml.jlems.run.KScheme;
@@ -12,7 +11,6 @@ import org.lemsml.jlems.type.Component;
 import org.lemsml.jlems.type.ComponentReference;
 import org.lemsml.jlems.type.ComponentType;
 import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
 
 @Mel(info="A kinetic scheme does not itself introduce any new elements or state variables. " +
 		"It is rather a way of connecting quantities in existing components by saying that " +

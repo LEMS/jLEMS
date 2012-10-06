@@ -1,8 +1,6 @@
 package org.lemsml.jlems.type;
 
 import java.util.HashSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.util.ContentError;

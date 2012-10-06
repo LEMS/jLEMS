@@ -112,7 +112,7 @@
 
 
 <ComponentType name="ChannelPopulation">
-    <ComponentRef name="channel" type="KSChannel"/>
+    <ComponentReference name="channel" type="KSChannel"/>
     <Parameter name="number" dimension="none"/>
     <Parameter name="erev" dimension="voltage"/>
     <Requirement name="v" dimension="voltage"/>
@@ -162,10 +162,8 @@
 <Include file="MultiRunSimulation.xml"/>
 
 <SimulationSet id="simset">
-	<Display id="disp1" title="Example 4: Kinetic Schemes" xmin="0" xmax="80" ymin="-80" ymax="50">
+	<Display id="disp1" title="Example 4: Kinetic Schemes" xmin="0" xmax="80" ymin="-80" ymax="50"/>
 	
-	</Display>
- 
 	<Simulation id="sim1" length="80ms" step="0.05ms" target="kscell_1" display="disp1">
     	<DisplayList timeScale="1ms" title="">
              <Line quantity="v" scale="1mV" timeScale="1ms" color="#ff4040"/>

@@ -8,7 +8,6 @@ import java.util.Map.Entry;
 import org.lemsml.jlems.eval.BBase;
 import org.lemsml.jlems.eval.DBase;
 import org.lemsml.jlems.sim.ComponentBehaviorVisitor;
-import org.lemsml.jlems.sim.OutputCollector;
 import org.lemsml.jlems.type.Component;
 import org.lemsml.jlems.util.ContentError;
 import org.lemsml.jlems.util.E;
@@ -426,11 +425,7 @@ public class ComponentBehavior {
 	    applyDerivs(val1, der3, t, dt, val4);
 	    evalDerivs(val4,  t + dt, der4);
 		  
-		
-	    for (String s : der1.keySet()) {
-	    //    E.info("Derivs " + s + " " + der1.get(s) + " " + der2.get(s) + " " + der3.get(s) + " " + der4.get(s));
-	    }
-	    
+	   
 	    
 	    for (VariableROC vroc : rates) {
 	    	String sn = vroc.varname;

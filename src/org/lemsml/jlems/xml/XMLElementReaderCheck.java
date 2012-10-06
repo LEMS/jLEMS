@@ -22,7 +22,7 @@ public class XMLElementReaderCheck {
 		
 		XMLElement xel = xer.getRootElement();
 		
-		E.info("Read " + xel.toXMLString(""));
+		E.info("Read " + xel.serialize());
 		
 		
 	}

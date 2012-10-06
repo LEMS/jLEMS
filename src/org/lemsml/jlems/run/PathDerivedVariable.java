@@ -2,7 +2,6 @@ package org.lemsml.jlems.run;
 
 import java.util.ArrayList;
 
-import org.lemsml.jlems.type.Lems;
 import org.lemsml.jlems.util.ContentError;
 import org.lemsml.jlems.util.E;
 import org.lemsml.jlems.util.RuntimeError;

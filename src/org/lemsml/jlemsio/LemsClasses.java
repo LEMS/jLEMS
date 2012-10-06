@@ -3,9 +3,9 @@ package org.lemsml.jlemsio;
 import java.util.ArrayList;
 
 import org.lemsml.jlems.type.Assertion;
+import org.lemsml.jlems.type.Attachments;
 import org.lemsml.jlems.type.Child;
 import org.lemsml.jlems.type.Children;
-import org.lemsml.jlems.type.ComponentRef;
 import org.lemsml.jlems.type.ComponentReference;
 import org.lemsml.jlems.type.ComponentType;
 import org.lemsml.jlems.type.Constant;
@@ -13,17 +13,16 @@ import org.lemsml.jlems.type.DerivedParameter;
 import org.lemsml.jlems.type.Dimension;
 import org.lemsml.jlems.type.EventPort;
 import org.lemsml.jlems.type.Exposure;
+import org.lemsml.jlems.type.Fixed;
 import org.lemsml.jlems.type.Insertion;
 import org.lemsml.jlems.type.IntegerParameter;
 import org.lemsml.jlems.type.Link;
 import org.lemsml.jlems.type.Parameter;
-import org.lemsml.jlems.type.Fixed;
 import org.lemsml.jlems.type.Path;
 import org.lemsml.jlems.type.Requirement;
 import org.lemsml.jlems.type.Target;
 import org.lemsml.jlems.type.Text;
 import org.lemsml.jlems.type.Unit;
-import org.lemsml.jlems.type.Attachments;
 import org.lemsml.jlems.type.dynamics.DerivedVariable;
 import org.lemsml.jlems.type.dynamics.Dynamics;
 import org.lemsml.jlems.type.dynamics.Edges;
@@ -76,7 +75,8 @@ public class LemsClasses {
 	
 	private LemsClasses() {
 		classList = new ArrayList<Class<?>>();
-		
+	
+		classList.addAll(getLemsClasses());
 		classList.addAll(getComponentTypeClasses());
 		classList.addAll(getDynamicsClasses());
 		classList.addAll(getStructureClasses());
@@ -85,10 +85,22 @@ public class LemsClasses {
 	}
 
 	public ArrayList<Class<?>> getClasses() {
-		// TODO Auto-generated method stub
-		return classList;
+ 		return classList;
 	}
 
+	
+
+	private ArrayList<Class<?>> getLemsClasses() {
+		ArrayList<Class<?>> ret =  new ArrayList<Class<?>>();
+		ret.add(Dimension.class);
+		ret.add(Unit.class);
+		ret.add(Assertion.class);
+		ret.add(ComponentType.class);
+		ret.add(Target.class);
+		return ret;
+	}
+	
+	
 	private ArrayList<Class<?>> getDynamicsClasses() {
 		ArrayList<Class<?>> ret =  new ArrayList<Class<?>>();
 	
@@ -128,11 +140,7 @@ public class LemsClasses {
 	private ArrayList<Class<?>> getComponentTypeClasses() {
 		ArrayList<Class<?>> ret =  new ArrayList<Class<?>>();
 		
-		ret.add(Dimension.class);
-		ret.add(Unit.class);
-		ret.add(Assertion.class);
-		ret.add(ComponentType.class);
-		ret.add(Target.class);
+	
 		ret.add(Parameter.class);
 		ret.add(DerivedParameter.class);
 		ret.add(Fixed.class);
@@ -143,8 +151,7 @@ public class LemsClasses {
 		// NB Link has to come before ComponentRef here becuase it is a subclass and we want
 		// link elts in the right list. TODO - make same with different scope parameter
 		ret.add(Link.class);
-		ret.add(ComponentRef.class);
-		ret.add(ComponentReference.class);
+ 		ret.add(ComponentReference.class);
 		ret.add(EventPort.class);
 		ret.add(Text.class);
 		ret.add(Path.class);

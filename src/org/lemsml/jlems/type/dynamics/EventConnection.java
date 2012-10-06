@@ -52,12 +52,8 @@ public class EventConnection extends BuildElement {
 		}
 
 		if (delay != null && cpt.hasAttribute(delay)) {
-			//			ret.setDelay(Double.parseDouble(cpt.getStringValue(delay)));
-			// RCC - taking account of dimension/units in delay
 			ParamValue pv = cpt.getParamValue(delay);
-			ret.setDelay(pv.getDoubleValue(Dimension.TIME_DIMENSION));
-			
-			
+			ret.setDelay(pv.getDoubleValue(Dimension.getTimeDimension()));
 		}
 		
 		if (receiver != null && cpt.hasAttribute(receiver)) {

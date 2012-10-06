@@ -46,7 +46,7 @@ refractoryPeriod="4ms" capacitance="1pF"/>
 
 <Synapse id="sy1" deltaG="30pS" erev="50mV"  tfall="10ms"/>
 
- <ComponentType name="Cell"></ComponentType>
+ <ComponentType name="Cell"/>
  
 <ComponentType name="synapseCell" extends="Cell">
     <Parameter name="capacitance" dimension="capacitance"/>
@@ -75,7 +75,7 @@ refractoryPeriod="4ms" capacitance="1pF"/>
 
 
 <ComponentType name="Population">
-    <ComponentRef name="component" type="Component"/>
+    <ComponentReference name="component" type="Component"/>
     <Parameter name="size" dimension="none"/>
    
    	 <Structure>
@@ -91,7 +91,7 @@ refractoryPeriod="4ms" capacitance="1pF"/>
     <Path name="from"/>
     <Path name="to"/>
      
-    <ComponentRef name="synapse" type="Synapse"/>
+    <ComponentReference name="synapse" type="Synapse"/>
       
     <Text name="destination"/>
     <Text name="sourcePort"/>
@@ -123,10 +123,8 @@ refractoryPeriod="4ms" capacitance="1pF"/>
 <Include file="MultiRunSimulation.xml"/>
 
 <SimulationSet id="simset">
-	<Display id="disp1" title="Example 3: User defined types for networks and populations" xmin="0" xmax="80" ymin="-80" ymax="50">
-	
-	</Display>
- 
+	<Display id="disp1" title="Example 3: User defined types for networks and populations" xmin="0" xmax="80" ymin="-80" ymax="50"/>
+
 	<Simulation id="sim1" length="80ms" step="0.05ms" target="net1" display="disp1">
     	<DisplayList timeScale="1ms" title="">
            <Line id="gen0_tsince" quantity="p1[0]/tsince" scale="1ms" timeScale="1ms" color="#a0a000"/>
