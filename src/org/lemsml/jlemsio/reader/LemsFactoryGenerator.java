@@ -33,7 +33,7 @@ public class LemsFactoryGenerator {
 		
 		sb.append("import org.lemsml.jlems.xml.XMLElement;\n");
 		sb.append("import org.lemsml.jlems.xml.XMLAttribute;\n");
-		sb.append("import org.lemsml.jlems.util.E;\n");
+		sb.append("import org.lemsml.jlems.logging.E;\n");
 		
 		sb.append("// NB this is generated code. Don't edit it. If there is a problem, fix the superclass,\n");
 		sb.append("// the generator - org.jlems.jlemsio.LemsFactoryGenerator, or the class being instantiated.\n\n");

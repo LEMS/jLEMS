@@ -54,7 +54,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 
 	public LemsCollection<ComponentReference> componentReferences = new LemsCollection<ComponentReference>();
 
-	public LemsCollection<ComponentTypeReference> componentTypeRefs = new LemsCollection<ComponentTypeReference>();
+	public LemsCollection<ComponentTypeReference> componentTypeReferences = new LemsCollection<ComponentTypeReference>();
 
 
 	public LemsCollection<Property> propertys = new LemsCollection<Property>();
@@ -290,7 +290,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 			cr.resolve(lems, p);
 		}
 
-		for (ComponentTypeReference tr : componentTypeRefs) {
+		for (ComponentTypeReference tr : componentTypeReferences) {
 			tr.resolve(lems, p);
 		}
 
@@ -708,7 +708,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	}
 
 	public LemsCollection<ComponentTypeReference> getComponentTypeRefs() {
-		return componentTypeRefs;
+		return componentTypeReferences;
 	}
 
 	public LemsCollection<PathParameter> getPathParameters() {

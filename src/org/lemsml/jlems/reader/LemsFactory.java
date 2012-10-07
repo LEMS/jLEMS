@@ -1,6 +1,5 @@
 package org.lemsml.jlems.reader;
 
-import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.type.*;
 import org.lemsml.jlems.type.dynamics.*;
 import org.lemsml.jlems.type.structure.*;
@@ -10,6 +9,9 @@ import org.lemsml.jlems.type.procedure.*;
 
 import org.lemsml.jlems.xml.XMLElement;
 import org.lemsml.jlems.xml.XMLAttribute;
+import org.lemsml.jlems.logging.E;
+// NB this is generated code. Don't edit it. If there is a problem, fix the superclass,
+// the generator - org.jlems.jlemsio.LemsFactoryGenerator, or the class being instantiated.
 
 public class LemsFactory extends AbstractLemsFactory {
 
@@ -83,10 +85,6 @@ public class LemsFactory extends AbstractLemsFactory {
             ret = buildEventOut(xel);
         } else if (tag.equals("KineticScheme")) {
             ret = buildKineticScheme(xel);
-        } else if (tag.equals("Nodes")) {
-            ret = buildNodes(xel);
-        } else if (tag.equals("Edges")) {
-            ret = buildEdges(xel);
         } else if (tag.equals("Regime")) {
             ret = buildRegime(xel);
         } else if (tag.equals("OnEntry")) {
@@ -406,7 +404,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (obj instanceof ComponentReference) {
                 ret.componentReferences.add((ComponentReference)obj);
             } else if (obj instanceof ComponentTypeReference) {
-                ret.componentTypeRefs.add((ComponentTypeReference)obj);
+                ret.componentTypeReferences.add((ComponentTypeReference)obj);
             } else if (obj instanceof Property) {
                 ret.propertys.add((Property)obj);
             } else if (obj instanceof Dynamics) {
@@ -1298,76 +1296,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.dependency = parseString(xv);
             } else if (xn.equals("step")) {
                 ret.step = parseString(xv);
-            } else {
-                E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
-        return ret;
-    }
-
-    private Nodes buildNodes(XMLElement xel) {
-        Nodes ret = new Nodes();
-
-        for (XMLAttribute xa : xel.getAttributes()) {
-            String xn = internalFieldName(xa.getName());
-            String xv = xa.getValue();
-
-            if (xn.equals("UNUSED")) {
-            } else if (xn.equals("children")) {
-                ret.children = parseString(xv);
-            } else if (xn.equals("variable")) {
-                ret.variable = parseString(xv);
-            } else {
-                E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
-        return ret;
-    }
-
-    private Edges buildEdges(XMLElement xel) {
-        Edges ret = new Edges();
-
-        for (XMLAttribute xa : xel.getAttributes()) {
-            String xn = internalFieldName(xa.getName());
-            String xv = xa.getValue();
-
-            if (xn.equals("UNUSED")) {
-            } else if (xn.equals("children")) {
-                ret.children = parseString(xv);
-            } else if (xn.equals("sourceNodeName")) {
-                ret.sourceNodeName = parseString(xv);
-            } else if (xn.equals("targetNodeName")) {
-                ret.targetNodeName = parseString(xv);
-            } else if (xn.equals("forwardRate")) {
-                ret.forwardRate = parseString(xv);
-            } else if (xn.equals("reverseRate")) {
-                ret.reverseRate = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
             }

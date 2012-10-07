@@ -21,25 +21,35 @@ public class KineticScheme {
 	@ModelProperty(info="")
 	public String name;
 	 
-	@ModelProperty(info="")
+	@ModelProperty(info="Source of notes for scheme")
 	public String nodes;
 	
-	@ModelProperty(info="")
+	@ModelProperty(info="The element that provides the transitions for the scheme")
 	public String edges;
 	
+	@ModelProperty(info="Name of state variable in state elements")
 	public String stateVariable;
 
+	@ModelProperty(info="The name of the attribute in the rate element that defines the source of the transition")
 	public String edgeSource;
 	
+	@ModelProperty(info="Attribute tha defines the target")
 	public String edgeTarget;
 	
+	@ModelProperty(info="Name of forward rate exposure")
 	public String forwardRate;
 	
+	@ModelProperty(info="Name of reverse rate exposure")
 	public String reverseRate;
 	
 	public String dependency;
 	
 	public String step;
+	
+	
+	 
+	
+	
 	
 	/*
 	 <KineticScheme name="ks" nodes="states" stateVariable="occupancy"
