@@ -1,13 +1,9 @@
 package org.lemsml.jlems.flatten;
  
-import java.util.ArrayList;
-
 import org.lemsml.jlems.expression.ParseError;
-import org.lemsml.jlems.run.ComponentBehavior;
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.ConnectionError;
-import org.lemsml.jlems.run.ExpressionDerivedVariable;
-import org.lemsml.jlems.run.PathDerivedVariable;
-import org.lemsml.jlems.run.VariableROC;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Component;
 import org.lemsml.jlems.type.ComponentType;
 import org.lemsml.jlems.type.EventPort;
@@ -25,53 +21,16 @@ import org.lemsml.jlems.type.dynamics.OnStart;
 import org.lemsml.jlems.type.dynamics.StateAssignment;
 import org.lemsml.jlems.type.dynamics.StateVariable;
 import org.lemsml.jlems.type.dynamics.TimeDerivative;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
  
 
 
 public class ComponentFlattener {
 
-    ArrayList<PathDerivedVariable> pdvA = new ArrayList<PathDerivedVariable>();
-    ArrayList<ExpressionDerivedVariable> edvA = new ArrayList<ExpressionDerivedVariable>();
-    ArrayList<VariableROC> rocA = new ArrayList<VariableROC>();
-    ArrayList<String> svA = new ArrayList<String>();
-
-    public void add(PathDerivedVariable pdv) {
-        pdvA.add(pdv);
-    }
-
-    public void add(ExpressionDerivedVariable edv) {
-        edvA.add(edv);
-    }
-
-    public void add(VariableROC vroc) {
-        rocA.add(vroc);
-    }
-
-    public void addStateVariable(String sv) {
-        svA.add(sv);
-    }
-
+     
     public void resolvePaths() {
         E.warning("may need to resolve paths??");
     }
-
-    public void exportTo(ComponentBehavior ret) {
-        for (String sv : svA) {
-            ret.addStateVariable(sv);
-        }
-        for (PathDerivedVariable pdv : pdvA) {
-            ret.addPathDerivedVariable(pdv);
-        }
-        for (ExpressionDerivedVariable edv : edvA) {
-            ret.addExpressionDerivedVariable(edv);
-        }
-        for (VariableROC vr : rocA) {
-            ret.addVariableROC(vr);
-        }
-    }
-
+ 
 	public static void parseAndAdd(Component compNew, Component comp0, ComponentType ctNew, ComponentType ct0,
 			String prefix) throws ContentError, ParseError, ConnectionError {
 

@@ -1,5 +1,6 @@
 package org.lemsml.jlems.type;
 
+
 public class ComponentWriter {
 	
 	
@@ -61,17 +62,8 @@ public class ComponentWriter {
                 sb.append(comp.details(indent+"        ")+"\n");
             }
         }
-        /*
-	HashMap<String, TextParam> textParamHM = new HashMap<String, TextParam>();
-
-	HashMap<String, Component> childHM;
-
-	HashMap<String, Component> refHM;
-
-	HashMap<String, ArrayList<Component>> childrenHM;*/
-
-        
-        
+    
+         
         if (cpt.textParamHM!=null && !cpt.textParamHM.isEmpty()) {
             sb.append(indent+"    Text Parameters:\n");
             sb.append(indent+"        "+cpt.textParamHM+"\n");
@@ -82,7 +74,6 @@ public class ComponentWriter {
             for (String name: cpt.childHM.keySet()){
                 sb.append(indent+"        --"+name+"--\n");
                 sb.append(cpt.childHM.get(name).details(indent+"        ")+"\n");
-
             }
         }
 

@@ -1,10 +1,10 @@
 package org.lemsml.jlems.type.dynamics;
 
-import org.lemsml.jlems.annotation.Mel;
+import org.lemsml.jlems.annotation.ModelElement;
 import org.lemsml.jlems.type.Dimension;
  
 
-@Mel(info="Has 'variable' and 'value' fields")
+@ModelElement(info="Has 'variable' and 'value' fields")
 public class StateAssignment extends StateChange {
 
 	

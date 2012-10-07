@@ -1,17 +1,17 @@
 package org.lemsml.jlems.type;
 
-import org.lemsml.jlems.annotation.Mat;
-import org.lemsml.jlems.annotation.Mel;
+import org.lemsml.jlems.annotation.ModelProperty;
+import org.lemsml.jlems.annotation.ModelElement;
 
 
-@Mel(info="Fixes the value of a parameter in the parent class, so that it does not have to be supplied separately " +
+@ModelElement(info="Fixes the value of a parameter in the parent class, so that it does not have to be supplied separately " +
 		"in component definitions.")
 public class Fixed implements PseudoNamed  {
 
-	@Mat(info="")
+	@ModelProperty(info="")
 	public String parameter;
 
-	@Mat(info="")
+	@ModelProperty(info="")
 	public String value;
 
    

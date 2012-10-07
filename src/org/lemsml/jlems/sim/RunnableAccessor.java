@@ -2,12 +2,12 @@ package org.lemsml.jlems.sim;
 
 import java.util.ArrayList;
 
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.ConnectionError;
 import org.lemsml.jlems.run.MultiInstance;
 import org.lemsml.jlems.run.StateInstance;
 import org.lemsml.jlems.run.StateRunnable;
 import org.lemsml.jlems.run.StateWrapper;
-import org.lemsml.jlems.util.E;
 
 public class RunnableAccessor {
 

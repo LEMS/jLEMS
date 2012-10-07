@@ -1,19 +1,18 @@
 package org.lemsml.jlems.type;
 
-import org.lemsml.jlems.annotation.Mat;
-import org.lemsml.jlems.annotation.Mel;
-import org.lemsml.jlems.canonical.CanonicalElement;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.annotation.ModelProperty;
+import org.lemsml.jlems.annotation.ModelElement;
+import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.sim.ContentError;
 
-@Mel(info = "A quantity that is made available to other component in the simulation. All variables in a Dynamics "
+@ModelElement(info = "A quantity that is made available to other component in the simulation. All variables in a Dynamics "
 + "definition are private. If other components need access to them then the definition has to explicitly link them "
 + "to an exposure defined in the component class")
 public class Exposure implements Named {
 
-    @Mat(info = "name")
+    @ModelProperty(info = "name")
     public String name;
-    @Mat(info = "Reference to a dimension")
+    @ModelProperty(info = "Reference to a dimension")
     public String dimension;
     public String description;
     public Dimension r_dimension;
@@ -72,11 +71,5 @@ public class Exposure implements Named {
         ret.r_dimension = r_dimension;
         return ret;
     }
-
-    public CanonicalElement makeCanonical() {
-        CanonicalElement ret = new CanonicalElement("Requirement");
-        ret.add(new CanonicalElement("name", name));
-        ret.add(new CanonicalElement("dimension", dimension));
-        return ret;
-    }
+ 
 }

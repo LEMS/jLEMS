@@ -9,7 +9,7 @@ import org.lemsml.jlems.eval.DVal;
 import org.lemsml.jlems.eval.DVar;
 import org.lemsml.jlems.eval.Plus;
 import org.lemsml.jlems.eval.Times;
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.logging.E;
 
 public class Flattener {
 

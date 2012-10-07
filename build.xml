@@ -5,17 +5,13 @@
 	  
     <property file="VERSION"/>
   
-
+  
 	
-    <path id="testlib.classpath">
+    <path id="junit.classpath">
         <pathelement location="lib/junit-4.8.1.jar"/>
     </path>
 	
-    <path id="testrun.classpath">
-        <pathelement location="lib/junit-4.8.1.jar"/>
-        <pathelement location="build"/>
-    </path>
-	 
+    
 	
     <target name="initdirs">
         <mkdir dir="build"/>
@@ -27,7 +23,7 @@
     <target name="compile" depends="initdirs"
             description="Compiles the source code">
 
-        <echo>Compiling to dir: build</echo>
+        <echo>Compiling to /build</echo>
         
         <javac srcdir="src"
                destdir="build"
@@ -36,39 +32,22 @@
                compiler="modern"
                source="1.5"
                target="1.5"
-               includeantruntime="false">
-            <include name="**/*.java"/>
-        </javac>
-        	
-        <copy todir="build">
-            <fileset dir="build" includes="examples/*.xml"/>
-        </copy>
-    </target>
-
-
-    <target name="compiletests" depends="compile"
-          description="Compiles the test code">
-
-        <javac srcdir="test"
-               destdir="build"
-               debug="true"
-               optimize="${optimize}"
-               compiler="modern"
-               source="1.5"
-               target="1.5"
                includeantruntime="false"
-      		   classpathref="testlib.classpath">
+        		classpathref="junit.classpath">
             <include name="**/*.java"/>
         </javac>
     </target>
+
+
+   
 
 
 
     <target name="jar" depends="compile" description="Creates main Jar file">
 		
         <jar destfile="builtjars/lems-${version.number}.jar">
-            <fileset dir="build"/>
-            <fileset dir="src"/>
+            <fileset dir="build" includes="org/lemsml/jlems/**,org/lemsml/jlemsio/**"/>
+            <fileset dir="src" includes="org/lemsml/jlems/**,org/lemsml/jlemsio/**"/>
             <manifest>
                 <attribute name="Main-Class" value="org.lemsml.Main"/>
             </manifest>

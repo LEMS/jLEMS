@@ -3,8 +3,8 @@ package org.lemsml.jlems.type;
 import java.util.HashSet;
 
 import org.lemsml.jlems.expression.ParseError;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.sim.ContentError;
 
 public class QuantityReader {
 

@@ -1,6 +1,5 @@
 package org.lemsml.jlems.run;
 
-import org.lemsml.jlems.util.RuntimeError;
 
 public class PendingEvent {
 

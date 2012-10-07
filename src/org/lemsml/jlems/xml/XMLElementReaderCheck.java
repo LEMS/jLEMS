@@ -1,6 +1,6 @@
 package org.lemsml.jlems.xml;
 
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.logging.E;
  
  
 public class XMLElementReaderCheck {

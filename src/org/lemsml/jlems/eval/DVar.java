@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.DoublePointer;
-import org.lemsml.jlems.util.E;
-import org.lemsml.jlems.util.RuntimeError;
+import org.lemsml.jlems.run.RuntimeError;
 
 public class DVar extends DVal {
 

@@ -1,19 +1,19 @@
 package org.lemsml.jlems.type;
 
-import org.lemsml.jlems.annotation.Mat;
-import org.lemsml.jlems.annotation.Mel;
+import org.lemsml.jlems.annotation.ModelProperty;
+import org.lemsml.jlems.annotation.ModelElement;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.expression.Parser;
-import org.lemsml.jlems.util.ContentError;
+import org.lemsml.jlems.sim.ContentError;
 
-@Mel(info="Specifies that a component can accept attached components of a particular class. Attached components can " +
+@ModelElement(info="Specifies that a component can accept attached components of a particular class. Attached components can " +
 		"be added at build time dependent on other events. For scoping " +
 		"and access purposes they are like child components. The cannonical use of attachments is in " +
 		"adding synapses to a cell when a network connection is made.")
 public class Attachments implements Named {
-	@Mat(info="")
+	@ModelProperty(info="")
 	public String name;
-	@Mat(info="")
+	@ModelProperty(info="")
 	public String type;
 	public ComponentType r_type;
 

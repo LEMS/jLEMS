@@ -2,9 +2,9 @@ package org.lemsml.jlems.template;
 
 import java.util.HashMap;
 
+import org.lemsml.jlems.run.RuntimeError;
 import org.lemsml.jlems.run.StateInstance;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.RuntimeError;
+import org.lemsml.jlems.sim.ContentError;
  
 
 public abstract class TemplateElement {

@@ -7,14 +7,13 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.junit.runner.Result;
 import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Dimension;
 import org.lemsml.jlems.type.DimensionalQuantity;
 import org.lemsml.jlems.type.LemsCollection;
 import org.lemsml.jlems.type.QuantityReader;
 import org.lemsml.jlems.type.Unit;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.DimensionsExport;
-import org.lemsml.jlemsio.logging.MessagePrintlnHandler;
+import org.lemsml.jlemsio.logging.DefaultLogger;
 
 /**
  * 
@@ -36,7 +35,7 @@ public class DimensionTest {
 		Dimension temp = new Dimension("temperature");
 		temp.setK(1);
 		assertFalse(current.matches(temp));
-		assertEquals(DimensionsExport.getSIUnit(temp), "K");
+		assertEquals(Dimension.getSIUnit(temp), "K");
 
 		Unit kelv = new Unit("kelvin", "K", temp, 0, 1);
 		Unit celc = new Unit("celsius", "degC", temp, 0, 1, -273.15);
@@ -74,7 +73,7 @@ public class DimensionTest {
 	}
 
 	public static void main(String[] args) {
-		MessagePrintlnHandler.initialize();
+		DefaultLogger.initialize();
 		DimensionTest ct = new DimensionTest();
 		Result r = org.junit.runner.JUnitCore.runClasses(ct.getClass());
 		MainTest.checkResults(r);

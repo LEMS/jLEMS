@@ -2,14 +2,14 @@ package org.lemsml.jlems.type;
 
 import java.util.ArrayList;
 
-import org.lemsml.jlems.util.ContentError;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.xml.XMLElement;
  
 
 // RawValued indicates that XML found inside Meta elements should be treated 
 // processed into an element tree, but not interpreted as lems elements.
 // other tools can do thier own thing with the content
-public class Meta implements AddableTo, RawValued {
+public class Meta {
 
 	public String context;
 	

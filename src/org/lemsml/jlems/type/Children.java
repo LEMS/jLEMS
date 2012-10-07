@@ -1,22 +1,22 @@
 package org.lemsml.jlems.type;
 
-import org.lemsml.jlems.annotation.Mat;
-import org.lemsml.jlems.annotation.Mel;
-import org.lemsml.jlems.canonical.CanonicalElement;
+import org.lemsml.jlems.annotation.ModelProperty;
+import org.lemsml.jlems.annotation.ModelElement;
+ 
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.expression.Parser;
-import org.lemsml.jlems.util.ContentError;
+import org.lemsml.jlems.sim.ContentError;
  
 
-@Mel(info="Specifies that a component can have children of a particular class. The class may refer to an extended" +
+@ModelElement(info="Specifies that a component can have children of a particular class. The class may refer to an extended" +
 		"type, in which case components of any class that extends the specified target class should be valid as " +
 		"child components")
 public class Children implements Named  {
 
-	@Mat(info="")
+	@ModelProperty(info="")
     public String name;
     
-	@Mat(info="The class of component allowed as children.")
+	@ModelProperty(info="The class of component allowed as children.")
 	public String type;
     public ComponentType r_type;
       
@@ -66,11 +66,5 @@ public class Children implements Named  {
     public ComponentType getComponentType() {
         return r_type;
     }
-
-    public CanonicalElement makeCanonical() {
-        CanonicalElement ret = new CanonicalElement("Children");
-        ret.add(new CanonicalElement("name", name));
-        ret.add(new CanonicalElement("type", type));
-        return ret;
-    }
+ 
 }

@@ -4,11 +4,11 @@ import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.run.BuilderElement;
 import org.lemsml.jlems.run.CoBuilder;
 import org.lemsml.jlems.run.ComponentBehavior;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Component;
 import org.lemsml.jlems.type.ComponentType;
 import org.lemsml.jlems.type.Lems;
 import org.lemsml.jlems.type.LemsCollection;
-import org.lemsml.jlems.util.ContentError;
 
 public class CoInstantiate extends BuildElement {
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import org.lemsml.jlems.annotation.Mel;
+import org.lemsml.jlems.annotation.ModelElement;
 import org.lemsml.jlems.eval.BBase;
 import org.lemsml.jlems.eval.DBase;
 import org.lemsml.jlems.expression.BooleanEvaluable;
@@ -14,12 +14,14 @@ import org.lemsml.jlems.expression.ExprDimensional;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.expression.Parser;
 import org.lemsml.jlems.expression.Valued;
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.ActionBlock;
 import org.lemsml.jlems.run.ComponentBehavior;
 import org.lemsml.jlems.run.ComponentRegime;
 import org.lemsml.jlems.run.ConditionAction;
 import org.lemsml.jlems.run.EventAction;
 import org.lemsml.jlems.run.KScheme;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Component;
 import org.lemsml.jlems.type.ComponentType;
 import org.lemsml.jlems.type.EventPort;
@@ -32,11 +34,9 @@ import org.lemsml.jlems.type.Named;
 import org.lemsml.jlems.type.ParamValue;
 import org.lemsml.jlems.type.Property;
 import org.lemsml.jlems.type.Requirement;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
 
 
-@Mel(info="Specifies the dynamical behavior of components build from this ComponentType. ")
+@ModelElement(info="Specifies the dynamical behavior of components build from this ComponentType. ")
 public class Dynamics  {
 
 	public String name;

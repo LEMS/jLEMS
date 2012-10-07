@@ -1,5 +1,6 @@
 package org.lemsml.jlems.reader;
 
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.type.*;
 import org.lemsml.jlems.type.dynamics.*;
 import org.lemsml.jlems.type.structure.*;
@@ -9,9 +10,6 @@ import org.lemsml.jlems.type.procedure.*;
 
 import org.lemsml.jlems.xml.XMLElement;
 import org.lemsml.jlems.xml.XMLAttribute;
-import org.lemsml.jlems.util.E;
-// NB this is generated code. Don't edit it. If there is a problem, fix the superclass,
-// the generator - org.jlems.jlemsio.LemsFactoryGenerator, or the class being instantiated.
 
 public class LemsFactory extends AbstractLemsFactory {
 
@@ -21,6 +19,12 @@ public class LemsFactory extends AbstractLemsFactory {
        String tag = xel.getName();
 
         if (tag.equals("UNUSED")) {
+        } else if (tag.equals("Lems")) {
+            ret = buildLems(xel);
+        } else if (tag.equals("Target")) {
+            ret = buildTarget(xel);
+        } else if (tag.equals("Constant")) {
+            ret = buildConstant(xel);
         } else if (tag.equals("Dimension")) {
             ret = buildDimension(xel);
         } else if (tag.equals("Unit")) {
@@ -29,8 +33,6 @@ public class LemsFactory extends AbstractLemsFactory {
             ret = buildAssertion(xel);
         } else if (tag.equals("ComponentType")) {
             ret = buildComponentType(xel);
-        } else if (tag.equals("Target")) {
-            ret = buildTarget(xel);
         } else if (tag.equals("Parameter")) {
             ret = buildParameter(xel);
         } else if (tag.equals("DerivedParameter")) {
@@ -57,8 +59,6 @@ public class LemsFactory extends AbstractLemsFactory {
             ret = buildPath(xel);
         } else if (tag.equals("Attachments")) {
             ret = buildAttachments(xel);
-        } else if (tag.equals("Constant")) {
-            ret = buildConstant(xel);
         } else if (tag.equals("Insertion")) {
             ret = buildInsertion(xel);
         } else if (tag.equals("IntegerParameter")) {
@@ -132,6 +132,118 @@ public class LemsFactory extends AbstractLemsFactory {
     }
 
 
+    private Lems buildLems(XMLElement xel) {
+        Lems ret = new Lems();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("description")) {
+                ret.description = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        for (XMLElement cel : xel.getXMLElements()) {
+            String xn = cel.getTag();
+
+            Object obj = instantiateFromXMLElement(cel);
+            if (xn.equals("UNUSED")) {
+            } else if (obj instanceof Dimension) {
+                ret.dimensions.add((Dimension)obj);
+            } else if (obj instanceof Constant) {
+                ret.constants.add((Constant)obj);
+            } else if (obj instanceof Unit) {
+                ret.units.add((Unit)obj);
+            } else if (obj instanceof Assertion) {
+                ret.assertions.add((Assertion)obj);
+            } else if (obj instanceof ComponentType) {
+                ret.componentTypes.add((ComponentType)obj);
+            } else if (obj instanceof Component) {
+                ret.components.add((Component)obj);
+            } else if (obj instanceof Target) {
+                ret.targets.add((Target)obj);
+            } else {
+                E.warning("unrecognized element " + cel);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private Target buildTarget(XMLElement xel) {
+        Target ret = new Target();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("component")) {
+                ret.component = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        for (XMLElement cel : xel.getXMLElements()) {
+            String xn = cel.getTag();
+
+            Object obj = instantiateFromXMLElement(cel);
+            if (xn.equals("UNUSED")) {
+            } else {
+                E.warning("unrecognized element " + cel);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private Constant buildConstant(XMLElement xel) {
+        Constant ret = new Constant();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("name")) {
+                ret.name = parseString(xv);
+            } else if (xn.equals("description")) {
+                ret.description = parseString(xv);
+            } else if (xn.equals("symbol")) {
+                ret.symbol = parseString(xv);
+            } else if (xn.equals("value")) {
+                ret.value = parseString(xv);
+            } else if (xn.equals("dimension")) {
+                ret.dimension = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        for (XMLElement cel : xel.getXMLElements()) {
+            String xn = cel.getTag();
+
+            Object obj = instantiateFromXMLElement(cel);
+            if (xn.equals("UNUSED")) {
+            } else {
+                E.warning("unrecognized element " + cel);
+            }
+        }
+
+
+        return ret;
+    }
+
     private Dimension buildDimension(XMLElement xel) {
         Dimension ret = new Dimension();
 
@@ -188,7 +300,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.symbol = parseString(xv);
             } else if (xn.equals("dimension")) {
                 ret.dimension = parseString(xv);
-           
             } else if (xn.equals("power")) {
                 ret.power = parseInt(xv);
             } else if (xn.equals("scale")) {
@@ -294,8 +405,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.links.add((Link)obj);
             } else if (obj instanceof ComponentReference) {
                 ret.componentReferences.add((ComponentReference)obj);
-            } else if (obj instanceof ComponentTypeRef) {
-                ret.componentTypeRefs.add((ComponentTypeRef)obj);
+            } else if (obj instanceof ComponentTypeReference) {
+                ret.componentTypeRefs.add((ComponentTypeReference)obj);
             } else if (obj instanceof Property) {
                 ret.propertys.add((Property)obj);
             } else if (obj instanceof Dynamics) {
@@ -330,40 +441,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.abouts.add((About)obj);
             } else if (obj instanceof Meta) {
                 ret.metas.add((Meta)obj);
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
-        return ret;
-    }
-
-    private Target buildTarget(XMLElement xel) {
-        Target ret = new Target();
-
-        for (XMLAttribute xa : xel.getAttributes()) {
-            String xn = internalFieldName(xa.getName());
-            String xv = xa.getValue();
-
-            if (xn.equals("UNUSED")) {
-            } else if (xn.equals("component")) {
-                ret.component = parseString(xv);
-            } else if (xn.equals("reportFile")) {
-                ret.reportFile = parseString(xv);
-            } else if (xn.equals("timesFile")) {
-                ret.timesFile = parseString(xv);
-            } else {
-                E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
             } else {
                 E.warning("unrecognized element " + cel);
             }
@@ -787,44 +864,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.type = parseString(xv);
             } else if (xn.equals("compClass")) {
                 ret.compClass = parseString(xv);
-            } else {
-                E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
-        return ret;
-    }
-
-    private Constant buildConstant(XMLElement xel) {
-        Constant ret = new Constant();
-
-        for (XMLAttribute xa : xel.getAttributes()) {
-            String xn = internalFieldName(xa.getName());
-            String xv = xa.getValue();
-
-            if (xn.equals("UNUSED")) {
-            } else if (xn.equals("name")) {
-                ret.name = parseString(xv);
-            } else if (xn.equals("description")) {
-                ret.description = parseString(xv);
-            } else if (xn.equals("symbol")) {
-                ret.symbol = parseString(xv);
-            } else if (xn.equals("value")) {
-                ret.value = parseString(xv);
-            } else if (xn.equals("dimension")) {
-                ret.dimension = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
             }

@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import org.lemsml.jlems.eval.DBase;
-import org.lemsml.jlems.util.RuntimeError;
 
 public class VariableROC {
 

@@ -3,8 +3,8 @@ package org.lemsml.jlems.eval;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.type.Lems;
-import org.lemsml.jlems.util.E;
 
 
 public class DFunc extends DVal {

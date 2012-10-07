@@ -1,18 +1,36 @@
 package org.lemsml.jlems.type;
 
+import org.lemsml.jlems.annotation.ModelElement;
+import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.expression.Dimensional;
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.logging.E;
 
+@ModelElement(info="A Dimenson element associated a name with a particular combination " +
+		"of  the standards SI base dimensions, mass, lenght, time, current, temperature " +
+		"and amount if substance (moles). Fractional dimensions are not currently supported.")
 public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
 
     public static final String NO_DIMENSION = "none";
 
+    @ModelProperty(info="The name to be used when referring to this dimension from variable declaration or units")
     public String name;
+    
+    @ModelProperty(info="Mass")
     public int m;  // Mass
+    
+    @ModelProperty(info="Length")
     public int l;  // Length
+
+    @ModelProperty(info="Time")
     public int t;  // Time
+
+    @ModelProperty(info="Current")
     public int i;  // Current
+
+    @ModelProperty(info="Temperature")
     public int k;  // Temperature
+
+    @ModelProperty(info="Amunt of substance")
     public int n;  // Amount of substance
     
   
@@ -212,6 +230,33 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
 		return timeDimension;
 	}
 
-  
+	 public static String getSIUnit(Dimension d) {
+	        StringBuilder sb = new StringBuilder();
+
+	        int m = d.getM();
+	        int l = d.getL();
+	        int t = d.getT();
+	        int n = d.getN();
+	        int k = d.getK();
+	        int i = d.getI();
+	        
+	       
+	        String[] symbols = {"kg", "m", "s", "A", "K", "mol"};
+	        int[] powers = {m, l, t, i, k, n};
+	        
+	        String ret = "";
+	        for (int j = 0; j < powers.length; j++) {
+	        	int p = powers[j];
+	        	if (p != 0) {
+	        		ret += symbols[j];
+	        		if (p != 1) {
+	        			ret += "^" + p;
+	        		}
+	        		ret += " ";
+	        	}
+	        }
+	        ret = ret.trim();
+	        return ret;
+	    }
    
 }

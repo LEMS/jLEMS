@@ -1,19 +1,19 @@
 package org.lemsml.jlems.type;
 
-import org.lemsml.jlems.annotation.Mat;
-import org.lemsml.jlems.annotation.Mel;
-import org.lemsml.jlems.canonical.CanonicalElement;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.annotation.ModelProperty;
+import org.lemsml.jlems.annotation.ModelElement;
+ 
+import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.sim.ContentError;
 
-@Mel(info = "Sets the name an dimensionality of a parameter that must be supplied when a component is defined "
+@ModelElement(info = "Sets the name an dimensionality of a parameter that must be supplied when a component is defined "
 + "curresponding to the enclosing ComponentType")
 public class Parameter implements Named {
     
-	@Mat(info="The name of the parameter. This isthe attibute name when the parameter is supplied in a component definition")
+	@ModelProperty(info="The name of the parameter. This isthe attibute name when the parameter is supplied in a component definition")
 	public String name;
 	
-	@Mat(info="The dimension, or 'none'. This should be the ID of a deminsion element defined elsewhere")
+	@ModelProperty(info="The dimension, or 'none'. This should be the ID of a deminsion element defined elsewhere")
 	public String dimension;
 	
 	public Dimension r_dimension;
@@ -60,10 +60,5 @@ public class Parameter implements Named {
         return r_dimension;
     }
 
-    public CanonicalElement makeCanonical() {
-        CanonicalElement ret = new CanonicalElement("Parameter");
-        ret.add(new CanonicalElement("name", name));
-        ret.add(new CanonicalElement("dimension", dimension));
-        return ret;
-    }
+     
 }

@@ -1,18 +1,18 @@
 package org.lemsml.jlems.type;
 
-import org.lemsml.jlems.annotation.Mat;
-import org.lemsml.jlems.annotation.Mel;
-import org.lemsml.jlems.canonical.CanonicalElement;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.annotation.ModelProperty;
+import org.lemsml.jlems.annotation.ModelElement;
+ 
+import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.sim.ContentError;
 
-@Mel(info = "A port on a component that can send or receive events, depending on the direction speicfied.")
+@ModelElement(info = "A port on a component that can send or receive events, depending on the direction speicfied.")
 
 public class EventPort implements Named {
 
-    @Mat(info = "")
+    @ModelProperty(info = "")
     public String name;
-    @Mat(info = "'IN' or 'OUT'")
+    @ModelProperty(info = "'IN' or 'OUT'")
     public String direction;
     public String description;
     
@@ -90,10 +90,5 @@ public class EventPort implements Named {
         return new EventPort(name, direction, dir);
     }
 
-    public CanonicalElement makeCanonical() {
-        CanonicalElement ret = new CanonicalElement("EventPort");
-        ret.add(new CanonicalElement("name", name));
-        ret.add(new CanonicalElement("direction", direction));
-        return ret;
-    }
+  
 }

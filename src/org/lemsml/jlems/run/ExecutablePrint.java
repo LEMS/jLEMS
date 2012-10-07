@@ -2,11 +2,10 @@ package org.lemsml.jlems.run;
 
 import java.util.HashMap;
 
+import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.template.StringTemplate;
 import org.lemsml.jlems.type.Lems;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
-import org.lemsml.jlems.util.RuntimeError;
 
 public class ExecutablePrint extends ExecutableStatement {
 

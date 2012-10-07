@@ -2,8 +2,8 @@ package org.lemsml.jlems.run;
 
 import java.util.HashMap;
 
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.RuntimeError;
+import org.lemsml.jlems.sim.ContentError;
+
 
 public class EquilibrateStatement extends ExecutableStatement {
 

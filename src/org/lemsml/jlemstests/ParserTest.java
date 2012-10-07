@@ -14,7 +14,7 @@ import org.lemsml.jlems.expression.DoubleEvaluable;
 import org.lemsml.jlems.expression.OrNode;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.expression.Parser;
-import org.lemsml.jlemsio.logging.MessagePrintlnHandler;
+import org.lemsml.jlemsio.logging.DefaultLogger;
 
 /**
  * 
@@ -118,7 +118,7 @@ public class ParserTest {
 	}
 
 	public static void main(String[] args) {
-		MessagePrintlnHandler.initialize();
+		DefaultLogger.initialize();
 		ParserTest ct = new ParserTest();
 		Result r = org.junit.runner.JUnitCore.runClasses(ct.getClass());
 		MainTest.checkResults(r);

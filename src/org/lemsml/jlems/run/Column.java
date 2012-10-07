@@ -1,6 +1,6 @@
 package org.lemsml.jlems.run;
 
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.logging.E;
  
 public final class Column {
 

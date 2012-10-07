@@ -3,7 +3,7 @@ package org.lemsml.jlemsio.examples;
 import java.io.File;
 
 import org.lemsml.jlems.sim.Sim;
-import org.lemsml.jlemsio.FileInclusionReader;
+import org.lemsml.jlemsio.reader.FileInclusionReader;
 
 
 public class RunFileExample {

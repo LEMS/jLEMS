@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.logging.E;
 
 public class Parser {
 	

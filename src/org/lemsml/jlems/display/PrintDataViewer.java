@@ -1,6 +1,6 @@
 package org.lemsml.jlems.display;
 
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.logging.E;
 
 public class PrintDataViewer implements DataViewer {
 

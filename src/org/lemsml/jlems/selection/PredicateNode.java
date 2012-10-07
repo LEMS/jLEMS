@@ -11,9 +11,9 @@ import org.lemsml.jlems.expression.IntegerConstantNode;
 import org.lemsml.jlems.expression.Node;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.run.ConnectionError;
+import org.lemsml.jlems.run.RuntimeError;
 import org.lemsml.jlems.run.StateInstance;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.RuntimeError;
+import org.lemsml.jlems.sim.ContentError;
 
 public class PredicateNode extends Node {
 

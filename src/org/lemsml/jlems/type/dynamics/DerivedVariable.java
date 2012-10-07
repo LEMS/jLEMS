@@ -2,44 +2,43 @@ package org.lemsml.jlems.type.dynamics;
 
 import java.util.HashMap;
 
-import org.lemsml.jlems.annotation.Mat;
-import org.lemsml.jlems.annotation.Mel;
+import org.lemsml.jlems.annotation.ModelProperty;
+import org.lemsml.jlems.annotation.ModelElement;
 import org.lemsml.jlems.expression.Dimensional;
 import org.lemsml.jlems.expression.DoubleEvaluable;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.expression.Parser;
 import org.lemsml.jlems.expression.Valued;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.ComponentType;
 import org.lemsml.jlems.type.Dimension;
 import org.lemsml.jlems.type.Exposure;
-import org.lemsml.jlems.type.FillableFrom;
 import org.lemsml.jlems.type.Lems;
 import org.lemsml.jlems.type.LemsCollection;
-import org.lemsml.jlems.util.ContentError;
  
-@Mel(info="A quantity that depends algebraically on other quantities in the model. The 'value' field can be " +
+@ModelElement(info="A quantity that depends algebraically on other quantities in the model. The 'value' field can be " +
 		"set to a mathematical expression, or the select field to a path expression. If the path expression " +
 		"produces multiple matches, then the 'reduce' field says how these are reduced to a single value by " +
 		"taking the sum or product. ")
-public class DerivedVariable extends ExpressionValued implements Valued, FillableFrom {
+public class DerivedVariable extends ExpressionValued implements Valued {
 
-	@Mat(info="")
+	@ModelProperty(info="")
 	public String name;
 
  
 
-	@Mat(info="")
+	@ModelProperty(info="")
 	public String select;
 	 
 	
-	@Mat(info="")
+	@ModelProperty(info="")
 	public String dimension;
 	public Dimension r_dimension;
 
-	@Mat(info="Either 'add' or 'multiply'")
+	@ModelProperty(info="Either 'add' or 'multiply'")
 	public String reduce;
 	
-	@Mat(info="")
+	@ModelProperty(info="")
 	public String exposure;   
 	public Exposure r_exposure;
 

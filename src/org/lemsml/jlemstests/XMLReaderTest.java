@@ -4,15 +4,14 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.junit.runner.Result;
-import org.lemsml.jlems.io.FormatException;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
-import org.lemsml.jlems.xml.BuildException;
-import org.lemsml.jlems.xml.ParseException;
+import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.sim.ContentError;
+import org.lemsml.jlems.sim.ParseException;
+import org.lemsml.jlems.type.BuildException;
 import org.lemsml.jlems.xml.XMLElement;
 import org.lemsml.jlems.xml.XMLElementReader;
 import org.lemsml.jlems.xml.XMLException;
-import org.lemsml.jlemsio.logging.MessagePrintlnHandler;
+import org.lemsml.jlemsio.logging.DefaultLogger;
  
 /**
  * 
@@ -25,7 +24,7 @@ public class XMLReaderTest {
 
 	@Test
 	public void testReadFromString() throws ParseException, BuildException,
-			ContentError, FormatException, XMLException {
+			ContentError, XMLException {
  
 		String testString = "<Lems>"
 				+ "<Dimension name=\"voltage\" m=\"1\" l=\"2\" t=\"-3\" i=\"-1\"/>"
@@ -42,7 +41,7 @@ public class XMLReaderTest {
 	
 
 	public static void main(String[] args) {
-		MessagePrintlnHandler.initialize();
+		DefaultLogger.initialize();
 		
 		XMLReaderTest ct = new XMLReaderTest();
 		Result r = org.junit.runner.JUnitCore.runClasses(ct.getClass());

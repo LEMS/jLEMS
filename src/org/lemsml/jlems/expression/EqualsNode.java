@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 import org.lemsml.jlems.eval.BComp;
 import org.lemsml.jlems.eval.EQComp;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.sim.ContentError;
 
 public class EqualsNode extends ComparisonNode {
 

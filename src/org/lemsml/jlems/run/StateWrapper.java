@@ -1,9 +1,8 @@
 package org.lemsml.jlems.run;
 
 import org.lemsml.jlems.display.LineDisplay;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
-import org.lemsml.jlems.util.RuntimeError;
+import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.sim.ContentError;
 
 
 // TODO this shouldn't implement StateRunnable 

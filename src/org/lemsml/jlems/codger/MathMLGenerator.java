@@ -3,11 +3,13 @@ package org.lemsml.jlems.codger;
 import org.lemsml.jlems.expression.DoubleEvaluable;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.expression.Parser;
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.logging.E;
 
 public class MathMLGenerator {
 	
 	
+// TODO - code here moved from inide parse tree elements.
+// need to generalize such generators with a visitor 
 	 
 	    public void testMathML() throws ParseError {
 

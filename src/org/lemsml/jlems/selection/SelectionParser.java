@@ -24,7 +24,7 @@ import org.lemsml.jlems.expression.Parser;
 import org.lemsml.jlems.expression.PlusNode;
 import org.lemsml.jlems.expression.PrecedenceComparator;
 import org.lemsml.jlems.expression.TimesNode;
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.util.StringUtil;
 
 public class SelectionParser {

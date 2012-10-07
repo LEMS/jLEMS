@@ -1,8 +1,7 @@
 package org.lemsml.jlems.run;
 
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Component;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.RuntimeError;
 
 public class CoBuilder extends AbstractChildBuilder {
 

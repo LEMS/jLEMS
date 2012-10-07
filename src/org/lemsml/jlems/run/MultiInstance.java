@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.lemsml.jlems.display.LineDisplay;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.RuntimeError;
+import org.lemsml.jlems.sim.ContentError;
 
 public class MultiInstance {
 

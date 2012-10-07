@@ -2,29 +2,30 @@ package org.lemsml.jlems.type;
 
 import java.util.HashMap;
 
-import org.lemsml.jlems.annotation.Mat;
-import org.lemsml.jlems.annotation.Mel;
+import org.lemsml.jlems.annotation.ModelProperty;
+import org.lemsml.jlems.annotation.ModelElement;
 import org.lemsml.jlems.expression.DoubleEvaluable;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.expression.Parser;
 import org.lemsml.jlems.expression.Valued;
-import org.lemsml.jlems.util.ContentError;
+import org.lemsml.jlems.sim.ContentError;
 
-@Mel(info="A constant quantity: like a parameter for which the value is supplied in the class definition itself rather " +
+@ModelElement(info="A constant quantity: like a parameter for which the value is supplied in the class definition itself rather " +
 		"than when a component is defined.")
 public class Constant implements Named, Valued  {
-	@Mat(info="")
+	@ModelProperty(info="A readable name for the constant.")
 	public String name;
 	
 	public String description;
 	
-	@Mat(info="")
+	@ModelProperty(info="The symbol used in expressions to refer to this constant.")
 	public String symbol;
 	
-	@Mat(info="")
+	@ModelProperty(info="The value of a constant must be a plain number (no units) giving the SI " +
+			"magnitude of the quantity or an expression involving only plain numbers or other constants.")
 	public String value;
 
-	@Mat(info="")
+	@ModelProperty(info="")
 	public String dimension;
 
 	public Dimension r_dimension;

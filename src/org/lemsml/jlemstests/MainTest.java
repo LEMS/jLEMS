@@ -5,13 +5,13 @@ import java.util.Date;
 
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
-import org.lemsml.jlems.util.E;
-import org.lemsml.jlemsio.logging.MessagePrintlnHandler;
+import org.lemsml.jlems.logging.E;
+import org.lemsml.jlemsio.logging.DefaultLogger;
 
 public class MainTest {
 
 	public static void main(String[] args) {
-		MessagePrintlnHandler.initialize();
+		DefaultLogger.initialize();
 		
 		E.info("Running tests");		
 		

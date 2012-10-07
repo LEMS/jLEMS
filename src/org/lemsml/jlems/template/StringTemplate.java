@@ -3,11 +3,11 @@ package org.lemsml.jlems.template;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.run.RuntimeError;
 import org.lemsml.jlems.run.StateInstance;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Lems;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
-import org.lemsml.jlems.util.RuntimeError;
  
 
 public class StringTemplate {

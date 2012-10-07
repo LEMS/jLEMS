@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import org.lemsml.jlems.eval.DVal;
 import org.lemsml.jlems.eval.Plus;
-import org.lemsml.jlems.util.ContentError;
+import org.lemsml.jlems.sim.ContentError;
 
 public class PlusNode extends FloatResultNode {
 

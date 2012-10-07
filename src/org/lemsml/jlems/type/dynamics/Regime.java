@@ -12,11 +12,13 @@ import org.lemsml.jlems.expression.ExprDimensional;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.expression.Parser;
 import org.lemsml.jlems.expression.Valued;
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.ActionBlock;
 import org.lemsml.jlems.run.ComponentBehavior;
 import org.lemsml.jlems.run.ComponentRegime;
 import org.lemsml.jlems.run.ConditionAction;
 import org.lemsml.jlems.run.EventAction;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Component;
 import org.lemsml.jlems.type.ComponentType;
 import org.lemsml.jlems.type.FinalParam;
@@ -25,8 +27,6 @@ import org.lemsml.jlems.type.LemsCollection;
 import org.lemsml.jlems.type.Named;
 import org.lemsml.jlems.type.ParamValue;
 import org.lemsml.jlems.type.Requirement;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
 
 public class Regime implements Named {
 	

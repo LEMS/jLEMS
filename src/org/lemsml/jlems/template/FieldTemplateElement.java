@@ -2,11 +2,11 @@ package org.lemsml.jlems.template;
 
 import java.util.HashMap;
 
+import org.lemsml.jlems.run.RuntimeError;
 import org.lemsml.jlems.run.StateInstance;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Lems;
 import org.lemsml.jlems.type.Unit;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.RuntimeError;
  
 
 public class FieldTemplateElement extends TemplateElement {

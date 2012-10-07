@@ -1,23 +1,20 @@
 package org.lemsml.jlems.sim;
- 
-import org.lemsml.jlems.canonical.CanonicalWriter;
+  
 import org.lemsml.jlems.expression.ParseError;
-import org.lemsml.jlems.io.FormatException;
+ 
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.reader.LemsFactory;
 import org.lemsml.jlems.run.ConnectionError;
 import org.lemsml.jlems.run.EventManager;
 import org.lemsml.jlems.run.ExecutableProcedure;
+import org.lemsml.jlems.run.RuntimeError;
 import org.lemsml.jlems.run.StateInstance;
+import org.lemsml.jlems.type.BuildException;
 import org.lemsml.jlems.type.Component;
 import org.lemsml.jlems.type.ComponentType;
 import org.lemsml.jlems.type.Lems;
 import org.lemsml.jlems.type.Target;
 import org.lemsml.jlems.type.procedure.Procedure;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
-import org.lemsml.jlems.util.RuntimeError;
-import org.lemsml.jlems.xml.BuildException;
-import org.lemsml.jlems.xml.ParseException;
 import org.lemsml.jlems.xml.XMLElement;
 import org.lemsml.jlems.xml.XMLElementReader;
 import org.lemsml.jlems.xml.XMLException;
@@ -58,7 +55,7 @@ public class LemsProcess {
 		allowConsolidation = false;
 	}
 
-	public void readModel() throws ContentError, ParseError, ParseException, BuildException, FormatException,
+	public void readModel() throws ContentError, ParseError, ParseException, BuildException,
 			XMLException {
 		String stxt = getSourceText();
 	 	
@@ -106,10 +103,7 @@ public class LemsProcess {
 		E.info("Model:\n" + lems.textSummary());
 	}
 
-	public String canonicalText() {
-		CanonicalWriter cw = new CanonicalWriter(lems);
-		return cw.writeText();
-	}
+	 
 
 	public Lems getLems() {
 		return lems;

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import org.lemsml.jlems.run.DoublePointer;
-import org.lemsml.jlems.util.RuntimeError;
+import org.lemsml.jlems.run.RuntimeError;
 
 public class DBase {
 

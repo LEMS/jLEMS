@@ -2,8 +2,10 @@ package org.lemsml.jlems.type.dynamics;
 
 import org.lemsml.jlems.expression.DoubleEvaluable;
 import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.BuilderElement;
 import org.lemsml.jlems.run.EventConnectionBuilder;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Component;
 import org.lemsml.jlems.type.ComponentType;
 import org.lemsml.jlems.type.Dimension;
@@ -12,8 +14,6 @@ import org.lemsml.jlems.type.LemsCollection;
 import org.lemsml.jlems.type.ParamValue;
 import org.lemsml.jlems.type.structure.Assign;
 import org.lemsml.jlems.type.structure.BuildElement;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
 
 public class EventConnection extends BuildElement {
 

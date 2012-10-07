@@ -1,29 +1,29 @@
 package org.lemsml.jlems.type.dynamics;
 
-import org.lemsml.jlems.annotation.Mat;
+import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.expression.Valued;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Children;
 import org.lemsml.jlems.type.ComponentReference;
 import org.lemsml.jlems.type.ComponentType;
-import org.lemsml.jlems.util.ContentError;
 
 
 
 public class Edges {
 
-	@Mat(info="The element that provides the transitions for the scheme")
+	@ModelProperty(info="The element that provides the transitions for the scheme")
 	public String children;
 
-	@Mat(info="The name of the attribute in the rate element that defines the source of the transition")
+	@ModelProperty(info="The name of the attribute in the rate element that defines the source of the transition")
 	public String sourceNodeName;
 	
-	@Mat(info="")
+	@ModelProperty(info="")
 	public String targetNodeName;
 	
-	@Mat(info="")
+	@ModelProperty(info="")
 	public String forwardRate;
 
-	@Mat(info="")
+	@ModelProperty(info="")
 	public String reverseRate;
 	
 	

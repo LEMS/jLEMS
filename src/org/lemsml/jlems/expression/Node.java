@@ -2,7 +2,7 @@ package org.lemsml.jlems.expression;
 
 import java.util.HashMap;
 
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.logging.E;
 
 
 public class Node {

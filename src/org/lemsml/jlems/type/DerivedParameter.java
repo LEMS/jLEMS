@@ -1,12 +1,12 @@
 package org.lemsml.jlems.type;
 
-import org.lemsml.jlems.annotation.Mat;
-import org.lemsml.jlems.annotation.Mel;
-import org.lemsml.jlems.canonical.CanonicalElement;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.annotation.ModelProperty;
+import org.lemsml.jlems.annotation.ModelElement;
+ 
+import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.sim.ContentError;
 
-@Mel(info="A parameter that comes from other parameter values in the model rather than being set explicitly. Its value " +
+@ModelElement(info="A parameter that comes from other parameter values in the model rather than being set explicitly. Its value " +
 		"can be supplied either with the 'value' attribute that evaluates within the scope of the definition, or with the " +
 		"'select' attribute which gives a path to 'primary' version of the parameter. For example, " +
 		" setting select='//MembranePotential[species=channel/species]/reversal' within the appropriate context allows " +
@@ -19,10 +19,10 @@ public class DerivedParameter implements Named {
 	public String dimension;
 	public Dimension r_dimension;
 	
-	@Mat(info="Path to the parameter that supplies the value. Exactly one of 'select' and 'value' is required.")
+	@ModelProperty(info="Path to the parameter that supplies the value. Exactly one of 'select' and 'value' is required.")
 	public String select;
 	
-	@Mat(info="Expression that supplies the value. Exactly one of 'select' and 'value' is required.")
+	@ModelProperty(info="Expression that supplies the value. Exactly one of 'select' and 'value' is required.")
 	public String value;
 	
 	public void resolve(LemsCollection<Dimension> dimensions) throws ContentError {
@@ -55,14 +55,7 @@ public class DerivedParameter implements Named {
 	public String getSelect() {
 		return select;
 	}
-
-	public CanonicalElement makeCanonical() {
-		CanonicalElement ret = new CanonicalElement("DerivedParameter");
-		ret.add(new CanonicalElement("name", name));
-		ret.add(new CanonicalElement("dimension", dimension));
-		return ret;
-	}
-
+ 
 
 	public String getValue() {
 		return value;

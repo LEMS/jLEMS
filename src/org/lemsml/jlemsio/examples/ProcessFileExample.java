@@ -2,9 +2,9 @@ package org.lemsml.jlemsio.examples;
 
 import java.io.File;
 
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.sim.LemsProcess;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlemsio.FileInclusionReader;
+import org.lemsml.jlemsio.reader.FileInclusionReader;
 
 
 public class ProcessFileExample {

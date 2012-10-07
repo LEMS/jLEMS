@@ -1,9 +1,9 @@
 package org.lemsml.jlems.type;
 
-import org.lemsml.jlems.canonical.CanonicalElement;
+ 
 import org.lemsml.jlems.expression.ParseError;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.sim.ContentError;
 
 
 public class ParamValue implements Named {
@@ -96,15 +96,7 @@ public class ParamValue implements Named {
 		return ret;
 	}
 	
-	
-	
-	public CanonicalElement makeCanonicalElement() {
-//		 CanonicalElement ret = new CanonicalElement(getName(), "" + value);
-		CanonicalElement ret = new CanonicalElement("value", "" + value);
-		ret.addAttribute("parameter", getName());
-		
-		return ret;
-	}
+	 
 
 	public void setDoubleValue(double v) {
 		value = v;

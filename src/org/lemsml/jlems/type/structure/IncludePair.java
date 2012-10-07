@@ -1,13 +1,13 @@
 package org.lemsml.jlems.type.structure;
 
 import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.BuilderElement;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Component;
 import org.lemsml.jlems.type.ComponentType;
 import org.lemsml.jlems.type.Lems;
 import org.lemsml.jlems.type.PairCollection;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
 
 public class IncludePair extends BuildElement {
 

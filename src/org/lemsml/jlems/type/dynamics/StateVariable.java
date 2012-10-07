@@ -1,27 +1,27 @@
 package org.lemsml.jlems.type.dynamics;
 
-import org.lemsml.jlems.annotation.Mat;
+import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.expression.Dimensional;
 import org.lemsml.jlems.expression.Valued;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.ComponentType;
 import org.lemsml.jlems.type.Dimension;
 import org.lemsml.jlems.type.Exposure;
 import org.lemsml.jlems.type.LemsCollection;
 import org.lemsml.jlems.type.Named;
-import org.lemsml.jlems.util.ContentError;
 
  
  
 
 public class StateVariable implements Valued  {
 	
-	@Mat(info="")
+	@ModelProperty(info="")
 	public String name;
-	@Mat(info="")
+	@ModelProperty(info="")
 	public String dimension;
 	public Dimension r_dimension;
 	
-	@Mat(info="If this variable is to be accessed from outside, it should be linked to an Exposure that is " +
+	@ModelProperty(info="If this variable is to be accessed from outside, it should be linked to an Exposure that is " +
 			"defined in the ComponentType.")
 	public String exposure;
 	public Exposure r_exposure;

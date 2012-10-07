@@ -3,35 +3,35 @@ package org.lemsml.jlems.type;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.lemsml.jlems.annotation.Mat;
-import org.lemsml.jlems.annotation.Mel;
-import org.lemsml.jlems.canonical.CanonicalElement;
+import org.lemsml.jlems.annotation.ModelProperty;
+import org.lemsml.jlems.annotation.ModelElement;
+ 
 import org.lemsml.jlems.expression.Dimensional;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.expression.Parser;
 import org.lemsml.jlems.expression.Valued;
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.ComponentBehavior;
 import org.lemsml.jlems.run.Constants;
 import org.lemsml.jlems.run.MultiComponentBehavior;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.dynamics.DerivedVariable;
 import org.lemsml.jlems.type.dynamics.Dynamics;
 import org.lemsml.jlems.type.dynamics.Equilibrium;
 import org.lemsml.jlems.type.procedure.Procedure;
 import org.lemsml.jlems.type.simulation.Simulation;
 import org.lemsml.jlems.type.structure.Structure;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
 import org.lemsml.jlems.xml.XMLElement;
 
-@Mel(info="Root element for defining component types.")
+@ModelElement(info="Root element for defining component types.")
 	 
 public class ComponentType extends Base implements Named, Summaried, Inheritor {
 
-	@Mat(info="The name of the component type. This can be uses as an XML element name in the shorthand form when" +
+	@ModelProperty(info="The name of the component type. This can be uses as an XML element name in the shorthand form when" +
 			"defining components. ")
 	public String name;
 
-	@Mat(info="The component type that this type inherits field definitions for, if any")
+	@ModelProperty(info="The component type that this type inherits field definitions for, if any")
 	public String eXtends;
 
 	public ComponentType r_extends;
@@ -54,7 +54,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 
 	public LemsCollection<ComponentReference> componentReferences = new LemsCollection<ComponentReference>();
 
-	public LemsCollection<ComponentTypeRef> componentTypeRefs = new LemsCollection<ComponentTypeRef>();
+	public LemsCollection<ComponentTypeReference> componentTypeRefs = new LemsCollection<ComponentTypeReference>();
 
 
 	public LemsCollection<Property> propertys = new LemsCollection<Property>();
@@ -100,12 +100,12 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	private LemsCollection<FinalExposed> finalExposeds = new LemsCollection<FinalExposed>();
 	
 	
-	@Mat(info="Metadata about a component type can be included anywhere by wrapping it in an About element, though this " +
+	@ModelProperty(info="Metadata about a component type can be included anywhere by wrapping it in an About element, though this " +
 			"is not necessary: LEMS does not use the body text of XML elements itself, so this is free for the " +
 			"modeler to include descriptive text or other markup of thier own.")
 	public LemsCollection<About> abouts = new LemsCollection<About>();
 
-	@Mat(info="Structured metadata can be put in Meta elements. The content is read into a generic xml data structure. " +
+	@ModelProperty(info="Structured metadata can be put in Meta elements. The content is read into a generic xml data structure. " +
 			"Other tools can then do their own thing with it. Each Meta element should set the context attribute, so " +
 			"tools can use the getMeta(context) method to retrieve elements that match a particular context.")
 	public LemsCollection<Meta> metas = new LemsCollection<Meta>();
@@ -290,7 +290,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 			cr.resolve(lems, p);
 		}
 
-		for (ComponentTypeRef tr : componentTypeRefs) {
+		for (ComponentTypeReference tr : componentTypeRefs) {
 			tr.resolve(lems, p);
 		}
 
@@ -658,34 +658,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		return componentReferences.getByName(sn);
 	}
 
-	public CanonicalElement makeCanonical() {
-		CanonicalElement ret = new CanonicalElement("ComponentType");
-		ret.add(new CanonicalElement("name", name));
-		if (eXtends != null) {
-			ret.add(new CanonicalElement("extends", eXtends));
-		}
-		for (Parameter p : parameters) {
-			ret.add(p.makeCanonical());
-		}
-
-		for (EventPort ep : eventPorts) {
-			ret.add(ep.makeCanonical());
-		}
-
-		for (Child ch : childs) {
-			ret.add(ch.makeCanonical());
-		}
-		for (Children chn : childrens) {
-			ret.add(chn.makeCanonical());
-		}
-		for (ComponentReference cr : componentReferences) {
-			ret.add(cr.makeCanonical());
-		}
-
-		// MUSTDO - other component classes
-
-		return ret;
-	}
+ 
 
 	public LemsCollection<Path> getPaths() {
 		return paths;
@@ -734,7 +707,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		return pairCollections;
 	}
 
-	public LemsCollection<ComponentTypeRef> getComponentTypeRefs() {
+	public LemsCollection<ComponentTypeReference> getComponentTypeRefs() {
 		return componentTypeRefs;
 	}
 

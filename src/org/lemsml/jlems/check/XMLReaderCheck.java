@@ -1,8 +1,8 @@
 package org.lemsml.jlems.check;
   
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.reader.LemsFactory;
 import org.lemsml.jlems.type.Lems;
-import org.lemsml.jlems.util.E;
 import org.lemsml.jlems.xml.XMLElement;
 import org.lemsml.jlems.xml.XMLElementReader;
  

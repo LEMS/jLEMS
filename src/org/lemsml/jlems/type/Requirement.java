@@ -1,13 +1,13 @@
 package org.lemsml.jlems.type;
 
-import org.lemsml.jlems.annotation.Mat;
-import org.lemsml.jlems.annotation.Mel;
-import org.lemsml.jlems.canonical.CanonicalElement;
+import org.lemsml.jlems.annotation.ModelProperty;
+import org.lemsml.jlems.annotation.ModelElement;
+ 
 import org.lemsml.jlems.expression.Dimensional;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.sim.ContentError;
 
-@Mel(info = "A Requirement gives the name and dimension of a quantity (parameter or variable)"
+@ModelElement(info = "A Requirement gives the name and dimension of a quantity (parameter or variable)"
 + " that should be accessible within the scope of a "
 + "model component. This is only applicable for elements that can be included as children of other elements, where "
 + "the scope comprises its own parameters and those in the scope of its enclosing element. Once a requirement has "
@@ -17,9 +17,9 @@ import org.lemsml.jlems.util.E;
 + "potential  but where the variable that holds the potential itself is defined in the top level component.")
 public class Requirement implements Named {
 
-    @Mat(info = "name")
+    @ModelProperty(info = "name")
     public String name;
-    @Mat(info = "reference to a dimension")
+    @ModelProperty(info = "reference to a dimension")
     public String dimension;
     public Dimension r_dimension;
     public String description;
@@ -56,13 +56,7 @@ public class Requirement implements Named {
     public Dimension getDimension() {
         return r_dimension;
     }
-
-    public CanonicalElement makeCanonical() {
-        CanonicalElement ret = new CanonicalElement("Requirement");
-        ret.add(new CanonicalElement("name", name));
-        ret.add(new CanonicalElement("dimension", dimension));
-        return ret;
-    }
+ 
 
     public Dimensional getDimensionality() {
         return r_dimension;

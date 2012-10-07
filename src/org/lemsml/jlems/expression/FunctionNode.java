@@ -4,9 +4,9 @@ import java.util.HashMap;
 
 import org.lemsml.jlems.eval.DFunc;
 import org.lemsml.jlems.eval.DVal;
+import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Lems;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
 
 
 public class FunctionNode extends UnaryNode implements DoubleEvaluable {

@@ -7,11 +7,10 @@ import java.util.Map.Entry;
 
 import org.lemsml.jlems.eval.BBase;
 import org.lemsml.jlems.eval.DBase;
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.sim.ComponentBehaviorVisitor;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Component;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
-import org.lemsml.jlems.util.RuntimeError;
 
 public class ComponentBehavior {
 

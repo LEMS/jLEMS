@@ -1,8 +1,7 @@
 package org.lemsml.jlems.run;
  
 
-import org.lemsml.jlems.util.E;
-import org.lemsml.jlems.util.RuntimeError;
+import org.lemsml.jlems.logging.E;
 
 public class KScheme {
 

@@ -1,13 +1,13 @@
 package org.lemsml.jlems.type;
 
-import org.lemsml.jlems.annotation.Mat;
-import org.lemsml.jlems.annotation.Mel;
-import org.lemsml.jlems.util.ContentError;
+import org.lemsml.jlems.annotation.ModelProperty;
+import org.lemsml.jlems.annotation.ModelElement;
+import org.lemsml.jlems.sim.ContentError;
 
-@Mel(info="Holds textual information that does not change the model but is needed for other purposes such as " +
+@ModelElement(info="Holds textual information that does not change the model but is needed for other purposes such as " +
 		"labelling graphs.")
 public class Text implements Named  {
-	@Mat(info="")
+	@ModelProperty(info="")
 	public String name;
 
     public Text() {

@@ -1,12 +1,12 @@
 package org.lemsml.jlems.type;
 
-import org.lemsml.jlems.annotation.Mat;
-import org.lemsml.jlems.annotation.Mel;
-import org.lemsml.jlems.util.ContentError;
+import org.lemsml.jlems.annotation.ModelProperty;
+import org.lemsml.jlems.annotation.ModelElement;
+import org.lemsml.jlems.sim.ContentError;
 
-@Mel(info="Duplicates some functionality of PathParameter - the two should be merged.")
+@ModelElement(info="Duplicates some functionality of PathParameter - the two should be merged.")
 public class Path implements Named  {
-	@Mat(info="")
+	@ModelProperty(info="")
 	public String name;
 
     public Path() {

@@ -1,9 +1,9 @@
 package org.lemsml.jlems.reader;
 
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.ComponentType;
 import org.lemsml.jlems.type.Lems;
 import org.lemsml.jlems.type.dynamics.Dynamics;
-import org.lemsml.jlems.util.ContentError;
 import org.lemsml.jlems.xml.XMLAttribute;
 import org.lemsml.jlems.xml.XMLElement;
 

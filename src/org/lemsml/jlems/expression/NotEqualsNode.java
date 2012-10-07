@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import org.lemsml.jlems.eval.BComp;
 import org.lemsml.jlems.eval.NEQComp;
-import org.lemsml.jlems.util.ContentError;
+import org.lemsml.jlems.sim.ContentError;
 
 public class NotEqualsNode extends ComparisonNode {
 

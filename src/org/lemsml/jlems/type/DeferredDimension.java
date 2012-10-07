@@ -1,7 +1,7 @@
 package org.lemsml.jlems.type;
 
 import org.lemsml.jlems.expression.Dimensional;
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.logging.E;
 
 public class DeferredDimension extends Dimension {
 

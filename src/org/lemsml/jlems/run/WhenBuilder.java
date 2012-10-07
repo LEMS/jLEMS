@@ -2,8 +2,8 @@ package org.lemsml.jlems.run;
 
 import java.util.HashMap;
 
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.sim.RunnableAccessor;
-import org.lemsml.jlems.util.E;
 
 public class WhenBuilder extends BuilderElement {
 

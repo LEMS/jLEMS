@@ -7,10 +7,10 @@ import org.lemsml.jlems.expression.DoubleEvaluable;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.expression.Parser;
 import org.lemsml.jlems.expression.Valued;
+import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Dimension;
 import org.lemsml.jlems.type.LemsCollection;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
 
 public abstract class StateChange extends ExpressionValued {
 

@@ -2,21 +2,21 @@ package org.lemsml.jlems.type.dynamics;
 
 import java.util.HashMap;
 
-import org.lemsml.jlems.annotation.Mat;
-import org.lemsml.jlems.annotation.Mel;
+import org.lemsml.jlems.annotation.ModelProperty;
+import org.lemsml.jlems.annotation.ModelElement;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.expression.Parser;
 import org.lemsml.jlems.expression.Valued;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.EventPort;
 import org.lemsml.jlems.type.LemsCollection;
-import org.lemsml.jlems.util.ContentError;
 
 
 
-@Mel(info="Event handler block")
+@ModelElement(info="Event handler block")
 public class OnEvent extends PointResponse {
  
-	@Mat(info="the port to lesten on")
+	@ModelProperty(info="the port to lesten on")
 	public String port;
 	
 	EventPort eventPort;

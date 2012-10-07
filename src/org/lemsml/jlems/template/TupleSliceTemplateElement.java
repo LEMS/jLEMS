@@ -2,8 +2,8 @@ package org.lemsml.jlems.template;
 
 import java.util.HashMap;
 
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.StateInstance;
-import org.lemsml.jlems.util.E;
  
 
 public class TupleSliceTemplateElement extends TemplateElement {

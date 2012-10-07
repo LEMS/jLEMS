@@ -5,11 +5,11 @@ import org.lemsml.jlems.run.BuilderElement;
 import org.lemsml.jlems.run.GatherPairsBuilder;
 import org.lemsml.jlems.selection.SelectionExpression;
 import org.lemsml.jlems.selection.SelectionParser;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Component;
 import org.lemsml.jlems.type.ComponentType;
 import org.lemsml.jlems.type.Lems;
 import org.lemsml.jlems.type.PairCollection;
-import org.lemsml.jlems.util.ContentError;
 
 public class GatherPairs extends BuildElement {
 

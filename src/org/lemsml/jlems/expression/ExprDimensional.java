@@ -1,6 +1,6 @@
 package org.lemsml.jlems.expression;
 
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.logging.E;
 
 public class ExprDimensional implements Dimensional {
 

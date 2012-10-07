@@ -2,9 +2,9 @@ package org.lemsml.jlems.type.procedure;
 
 import org.lemsml.jlems.run.ExecutableForEach;
 import org.lemsml.jlems.run.ExecutableStatement;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Lems;
 import org.lemsml.jlems.type.LemsCollection;
-import org.lemsml.jlems.util.ContentError;
 
 public class ForEachComponent extends Statement {
 

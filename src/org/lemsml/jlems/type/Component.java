@@ -3,38 +3,38 @@ package org.lemsml.jlems.type;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.lemsml.jlems.annotation.Mat;
-import org.lemsml.jlems.canonical.CanonicalElement;
+import org.lemsml.jlems.annotation.ModelProperty;
+ 
 import org.lemsml.jlems.expression.DoubleEvaluable;
 import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.ComponentBehavior;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.xml.XMLAttribute;
 import org.lemsml.jlems.xml.XMLElement;
 
 
-public class Component implements Attributed, IDd, Summaried, Namable, Parented, ComponentContainer  {
+public class Component implements Attributed, IDd, Summaried, Namable, Parented {
 
     public static final String THIS_COMPONENT = "this";
     public static final String PARENT_COMPONENT = "parent";
     
-	@Mat(info="")
+	@ModelProperty(info="")
 	public String id;
 
 	// name is just used if the parent component contains <xyz type="abc".../>
 	// in which case the
 	// element is instantiated, called "xyz", and added to the components list
 	
-	@Mat(info="Name by which the component was declared - this shouldn't be accessible.")
+	@ModelProperty(info="Name by which the component was declared - this shouldn't be accessible.")
 	public String name;
  
 	
-	@Mat(info="")
+	@ModelProperty(info="")
 	public String type;
 	public ComponentType r_type;
 
-	@Mat(info="")
+	@ModelProperty(info="")
 	public String eXtends;
 
 	public LemsCollection<Attribute> attributes = new LemsCollection<Attribute>();
@@ -45,14 +45,14 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented,
 		
 	public LemsCollection<Component> components = new LemsCollection<Component>();
 	
-	@Mat(info="Metadata about a model can be included anywhere by wrapping it in an About element, though this " +
+	@ModelProperty(info="Metadata about a model can be included anywhere by wrapping it in an About element, though this " +
 			"is not necessary: LEMS does not use the body text of XML elements itself, so this is free for the " +
 			"modeler to include descriptive text or other markup of thier own.")
 	public LemsCollection<About> abouts = new LemsCollection<About>();
 
 	
 
-	@Mat(info="Structured metadata can be put in Meta elements. The content is read into a generic xml data structure. " +
+	@ModelProperty(info="Structured metadata can be put in Meta elements. The content is read into a generic xml data structure. " +
 			"Other tools can then do their own thing with it. Each Meta element should set the context attribute, so " +
 			"tools can use the getMeta(context) method to retrieve elements that match a particular context.")
 	public LemsCollection<Meta> metas;
@@ -455,7 +455,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented,
 			flagAttribute(p.getName());
 		}
 
-		for (ComponentTypeRef ctr : r_type.getComponentTypeRefs()) {
+		for (ComponentTypeReference ctr : r_type.getComponentTypeRefs()) {
 			flagAttribute(ctr.getName());
 		}
 
@@ -808,29 +808,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented,
 		return ret;
 	}
 
-	public CanonicalElement makeCanonical() {
-		CanonicalElement ret = new CanonicalElement("Component");
-		// MUSTDO
-		ret.add(new CanonicalElement("id", id));
-		if (type.equals("Component")) {
-			// leave it out
-		} else {
-			ret.add(new CanonicalElement("class", type));
-		}
-
-		if (eXtends != null) {
-			ret.add(new CanonicalElement("extends", eXtends));
-		}
-		for (ParamValue pv : paramValues) {
-			ret.add(pv.makeCanonicalElement());
-		}
-
-		for (Component c : components) {
-			ret.add(c.makeCanonical());
-		}
-
-		return ret;
-	}
+ 
 
 	public ParamValue getPathParamValue(String[] bits) throws ContentError {
 		ParamValue ret = null;

@@ -4,8 +4,7 @@ import java.util.HashMap;
 
 import org.lemsml.jlems.eval.BBase;
 import org.lemsml.jlems.eval.DBase;
-import org.lemsml.jlems.util.E;
-import org.lemsml.jlems.util.RuntimeError;
+import org.lemsml.jlems.logging.E;
  
 
 public class ConditionDerivedVariable extends ExpressionDerivedVariable {

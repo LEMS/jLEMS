@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.ComponentBehavior;
 import org.lemsml.jlems.run.ExpressionDerivedVariable;
 import org.lemsml.jlems.run.MultiComponentBehavior;
 import org.lemsml.jlems.run.PathDerivedVariable;
 import org.lemsml.jlems.run.VariableROC;
-import org.lemsml.jlems.util.E;
 
 public class ComponentBehaviorWriter {
 

@@ -1,10 +1,10 @@
 package org.lemsml.jlems.type.dynamics;
 
-import org.lemsml.jlems.annotation.Mel;
+import org.lemsml.jlems.annotation.ModelElement;
 import org.lemsml.jlems.type.Dimension;
 
  
-@Mel(info="Has a variable and a value. The value is the rate of change of the variable.")
+@ModelElement(info="Has a variable and a value. The value is the rate of change of the variable.")
 public class TimeDerivative extends StateChange {
 
 	

@@ -10,9 +10,9 @@ import java.io.IOException;
 
 import org.junit.Test;
 import org.junit.runner.Result;
-import org.lemsml.jlems.util.E;
-import org.lemsml.jlemsio.FileUtil;
-import org.lemsml.jlemsio.logging.MessagePrintlnHandler;
+import org.lemsml.jlems.logging.E;
+import org.lemsml.jlemsio.logging.DefaultLogger;
+import org.lemsml.jlemsio.util.FileUtil;
 
  
 public class CoreDependenciesTest {
@@ -62,7 +62,7 @@ public class CoreDependenciesTest {
     
 
     public static void main(String[] args) {
-    	MessagePrintlnHandler.initialize();
+    	DefaultLogger.initialize();
     	
     	CoreDependenciesTest ct = new CoreDependenciesTest();
         Result r = org.junit.runner.JUnitCore.runClasses(ct.getClass());

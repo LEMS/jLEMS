@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.lemsml.jlems.util.ContentError;
+import org.lemsml.jlems.sim.ContentError;
 
 public class LemsCollection<T> implements Iterable<T> {
 
@@ -225,38 +225,7 @@ public class LemsCollection<T> implements Iterable<T> {
 		return ret;
 	}
 	
-	
-	public void fillInFrom(LemsCollection<T> pcol) throws ContentError {
-		for (T elt : pcol) {
-			T loc = null;
-			if (elt instanceof Named) {
-				String sn = ((Named)elt).getName();
-				if (hasName(sn)) {
-					loc = getByName(sn);
-				}
-			} else if (elt instanceof PseudoNamed) {
-				String sn = ((PseudoNamed)elt).getPseudoName();
-				if (hasPseudoName(sn)) {
-					loc = getByPseudoName(sn);
-				}
-				
-				
-			} else if (elt instanceof IDd) {
-				String sn = ((IDd)elt).getID();
-				if (hasID(sn)) {
-					loc = getByID(sn);
-				}
-			}
-			if (loc == null) {
-				add(elt);
-			} else {
-				if (loc instanceof FillableFrom) {
-					((FillableFrom)loc).fillFrom(elt);
-				}
-			}
-		}
-	}
-
+	 
 
 	public void deduplicate() throws ContentError {
 		HashMap<String, T> xidHM = new HashMap<String, T>();

@@ -1,6 +1,6 @@
 package org.lemsml.jlems.type;
 
-import org.lemsml.jlems.util.ContentError;
+import org.lemsml.jlems.sim.ContentError;
 
  
 

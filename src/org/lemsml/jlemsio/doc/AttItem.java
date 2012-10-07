@@ -5,12 +5,12 @@ import org.lemsml.jlems.xml.XMLElement;
 public class AttItem {
 
 	String name;
-	Class<?> type;
+String typeName;
  	String info;
 	
-	public AttItem(String nm, Class<?> ct, String si) {
+	public AttItem(String nm, String tnm, String si) {
 		name = nm;
-		type = ct;
+		typeName = tnm;
 		info = si;
  
 	}
@@ -18,15 +18,10 @@ public class AttItem {
 	public XMLElement makeXMLElement() {
 		 XMLElement ret= new XMLElement("Property");
 		 ret.addAttribute("name", name);
-		 ret.addAttribute("class", shortName(type));
+		 ret.addAttribute("type", typeName);
 		 ret.setBody(info);
 		 return ret;
 	}
 
-	private String shortName(Class<?> cls) {
-		String ret = cls.getName();
-		ret = ret.substring(ret.lastIndexOf(".") + 1, ret.length());
-		return ret;
-	}
-
+	
 }

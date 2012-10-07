@@ -3,8 +3,8 @@ package org.lemsml.jlems.run;
 import java.util.ArrayList;
 
 import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Component;
-import org.lemsml.jlems.util.ContentError;
 
 public class RunConfig {
 

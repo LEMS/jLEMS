@@ -3,8 +3,8 @@ package org.lemsml.jlems.xml;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.type.Attribute;
-import org.lemsml.jlems.util.E;
 
 public class XMLElement {
 

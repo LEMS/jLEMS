@@ -1,6 +1,6 @@
 package org.lemsml.jlems.type.dynamics;
 
-import org.lemsml.jlems.util.ContentError;
+import org.lemsml.jlems.sim.ContentError;
 
 public class ExpressionValued {
 	

@@ -2,7 +2,6 @@ package org.lemsml.jlems.run;
 
 import java.util.ArrayList;
 
-import org.lemsml.jlems.util.RuntimeError;
 
 public class EventManager {
 

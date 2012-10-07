@@ -1,19 +1,19 @@
 package org.lemsml.jlems.type;
 
-import org.lemsml.jlems.annotation.Mat;
-import org.lemsml.jlems.annotation.Mel;
-import org.lemsml.jlems.canonical.CanonicalElement;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.annotation.ModelProperty;
+import org.lemsml.jlems.annotation.ModelElement;
+ 
+import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.sim.ContentError;
 
-@Mel(info="An property on an instance of a component. Unlike a Parameter, a Property can very from " +
+@ModelElement(info="An property on an instance of a component. Unlike a Parameter, a Property can very from " +
 		"instance to instance. It should be set with an Assign element within the build specification.")
 public class Property implements Named {
 
-	@Mat(info="")
+	@ModelProperty(info="")
 	public String name;
 	
-	@Mat(info="")
+	@ModelProperty(info="")
 	public String dimension;
 	public Dimension r_dimension;
 	
@@ -44,11 +44,5 @@ public class Property implements Named {
 		return r_dimension;
 	}
 
-
-	public CanonicalElement makeCanonical() {
-		CanonicalElement ret = new CanonicalElement("Property");
-		ret.add(new CanonicalElement("name", name));
-		ret.add(new CanonicalElement("dimension", dimension));
-		return ret;
-	}
+ 
 }

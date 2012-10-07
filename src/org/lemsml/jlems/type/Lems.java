@@ -4,20 +4,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+import org.lemsml.jlems.annotation.ModelProperty;
+import org.lemsml.jlems.annotation.ModelElement;
 import org.lemsml.jlems.expression.Dimensional;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.expression.Parser;
 import org.lemsml.jlems.expression.Valued;
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.ComponentBehavior;
 import org.lemsml.jlems.run.ConnectionError;
 import org.lemsml.jlems.run.Constants;
 import org.lemsml.jlems.run.EventManager;
+import org.lemsml.jlems.run.RuntimeError;
 import org.lemsml.jlems.run.StateInstance;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
-import org.lemsml.jlems.util.RuntimeError;
+import org.lemsml.jlems.sim.ContentError;
 
-public class Lems implements ComponentContainer {
+@ModelElement(info="Root element for any lems content")
+public class Lems {
 	
 		
 	final static int STRICT = 0;
@@ -25,15 +28,26 @@ public class Lems implements ComponentContainer {
 	
 	private int resolveMode = STRICT;
 	   
+	 
     public LemsCollection<Dimension> dimensions = new LemsCollection<Dimension>();
-    public LemsCollection<Constant> constants = new LemsCollection<Constant>();
-    public LemsCollection<Unit> units = new LemsCollection<Unit>();
-    public LemsCollection<Assertion> assertions = new LemsCollection<Assertion>();
+ 
+ 
+	public LemsCollection<Constant> constants = new LemsCollection<Constant>();
+
+	 
+	public LemsCollection<Unit> units = new LemsCollection<Unit>();
+
+ 
+	public LemsCollection<Assertion> assertions = new LemsCollection<Assertion>();
     
-    
+ 
     public LemsCollection<ComponentType> componentTypes = new LemsCollection<ComponentType>();
-    public LemsCollection<Component> components = new LemsCollection<Component>();
-    public LemsCollection<Target> targets = new LemsCollection<Target>();
+
+ 
+	public LemsCollection<Component> components = new LemsCollection<Component>();
+
+ 
+	public LemsCollection<Target> targets = new LemsCollection<Target>();
  
     Parser parser;
 

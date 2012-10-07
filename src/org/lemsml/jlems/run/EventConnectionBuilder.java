@@ -5,9 +5,8 @@ import java.util.HashMap;
 
 import org.lemsml.jlems.eval.DBase;
 import org.lemsml.jlems.expression.DoubleEvaluable;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
-import org.lemsml.jlems.util.RuntimeError;
+import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.sim.ContentError;
 
 public class EventConnectionBuilder extends PostBuilder {
 

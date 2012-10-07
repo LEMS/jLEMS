@@ -3,11 +3,11 @@ package org.lemsml.jlems.type.structure;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.run.BuilderElement;
 import org.lemsml.jlems.run.ForEachBuilder;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Component;
 import org.lemsml.jlems.type.ComponentType;
 import org.lemsml.jlems.type.Lems;
 import org.lemsml.jlems.type.PathEvaluator;
-import org.lemsml.jlems.util.ContentError;
  
 
 public class ForEach extends BuildElement {

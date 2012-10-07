@@ -2,31 +2,31 @@ package org.lemsml.jlems.type.dynamics;
 
 import java.util.HashMap;
 
-import org.lemsml.jlems.annotation.Mat;
+import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.expression.BooleanEvaluable;
 import org.lemsml.jlems.expression.DoubleEvaluable;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.expression.Parser;
 import org.lemsml.jlems.expression.Valued;
+import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.ComponentType;
 import org.lemsml.jlems.type.Dimension;
 import org.lemsml.jlems.type.Lems;
 import org.lemsml.jlems.type.LemsCollection;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
  
  
 
 
 public class ConditionalDerivedVariable extends DerivedVariable {
 
-	@Mat(info = "An optional boolean condition. If true, variable is set to \"value\", otherwise \"valueIfFalse\"")
+	@ModelProperty(info = "An optional boolean condition. If true, variable is set to \"value\", otherwise \"valueIfFalse\"")
 	public String valueCondition;
-	@Mat(info = "A fallback value for the variable if \"valueCondition\" is false, otherwise \"value\"")
+	@ModelProperty(info = "A fallback value for the variable if \"valueCondition\" is false, otherwise \"value\"")
 	public String valueIfFalse;
 	BooleanEvaluable evaluableCondition;
 	DoubleEvaluable evaluableIfFalse;
-	@Mat(info = "A value to be used if the path at select is not found")
+	@ModelProperty(info = "A value to be used if the path at select is not found")
 	public String onAbsent;
 
 	public String getOnAbsent() {

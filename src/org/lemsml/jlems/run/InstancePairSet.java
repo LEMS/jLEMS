@@ -2,7 +2,7 @@ package org.lemsml.jlems.run;
 
 import java.util.ArrayList;
 
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.logging.E;
 
 public class InstancePairSet<T> {
 

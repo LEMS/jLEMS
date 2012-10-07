@@ -1,13 +1,13 @@
 package org.lemsml.jlems.type;
 
-import org.lemsml.jlems.annotation.Mat;
-import org.lemsml.jlems.annotation.Mel;
+import org.lemsml.jlems.annotation.ModelProperty;
+import org.lemsml.jlems.annotation.ModelElement;
 
 
-@Mel(info="Defines a named collection of paris of instances, similar to the Collection element.")
+@ModelElement(info="Defines a named collection of paris of instances, similar to the Collection element.")
 public class PairCollection implements Named {
 
-	@Mat(info="")
+	@ModelProperty(info="")
 	public String name;
 	
 	public String getName() {

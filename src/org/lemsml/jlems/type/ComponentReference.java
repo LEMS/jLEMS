@@ -1,21 +1,21 @@
 package org.lemsml.jlems.type;
 
-import org.lemsml.jlems.annotation.Mat;
-import org.lemsml.jlems.annotation.Mel;
-import org.lemsml.jlems.canonical.CanonicalElement;
+import org.lemsml.jlems.annotation.ModelProperty;
+import org.lemsml.jlems.annotation.ModelElement;
+ 
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.expression.Parser;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.sim.ContentError;
 
 
-@Mel(info="A reference to another component. The target component can be accessed with path expressions in the " +
+@ModelElement(info="A reference to another component. The target component can be accessed with path expressions in the " +
 		"same way as a child component, but can be defined independently")
 public class ComponentReference implements Named  {
 
-	@Mat(info="")
+	@ModelProperty(info="")
 	public String name;
-	@Mat(info="Target type")
+	@ModelProperty(info="Target type")
 	public String type;
 	
 	public ComponentType r_type;
@@ -94,11 +94,5 @@ public class ComponentReference implements Named  {
 	}
 
 
-	public CanonicalElement makeCanonical() {
-		CanonicalElement ret = new CanonicalElement("ComponentRef");
-		ret.add(new CanonicalElement("name", name));
-		ret.add(new CanonicalElement("type", type));
-		return ret; 
-	}
-
+ 
 }

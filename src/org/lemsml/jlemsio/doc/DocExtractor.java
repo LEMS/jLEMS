@@ -1,36 +1,33 @@
 package org.lemsml.jlemsio.doc;
 
-import java.awt.Component;
+
 import java.io.File;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
 
-import org.lemsml.jlems.annotation.ExplicitChildContainer;
-import org.lemsml.jlems.annotation.Mat;
-import org.lemsml.jlems.annotation.Mel;
-import org.lemsml.jlems.type.ComponentType;
+import org.lemsml.jlems.annotation.ModelProperty;
+import org.lemsml.jlems.annotation.ModelElement;
+import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.type.Component;
 import org.lemsml.jlems.type.LemsCollection;
-import org.lemsml.jlems.util.E;
 import org.lemsml.jlems.xml.XMLElement;
-import org.lemsml.jlemsio.FileUtil;
+import org.lemsml.jlemsio.logging.DefaultLogger;
+import org.lemsml.jlemsio.reader.LemsClass;
+import org.lemsml.jlemsio.reader.LemsClasses;
+import org.lemsml.jlemsio.util.FileUtil;
 
 
 
 public class DocExtractor {
 
-	LinkedList<Class<? extends Object>> classLL = new LinkedList<Class<? extends Object>>();
-	HashSet<Class<? extends Object>> classHS = new HashSet<Class<? extends Object>>();
-	HashMap<Class<? extends Object>, DocItem> itemHM = new HashMap<Class<? extends Object>, DocItem>();
-	
-	ArrayList<DocItem> items = new ArrayList<DocItem>();
+ 	
 	
 	public static void main(String[] argv) {
+		DefaultLogger.initialize();
+		
 		DocExtractor de = new DocExtractor();
 		de.extract(argv);
 	}
@@ -39,10 +36,13 @@ public class DocExtractor {
 	
 	
 	public void extract(String[] argv) {
-		recAdd(ComponentType.class, null);
-//		addClass(Dynamics.class, null);
-		recAdd(Component.class, null);
-	 
+		
+		ArrayList<DocItem> items = new ArrayList<DocItem>();
+		
+		for (LemsClass lc : LemsClasses.getInstance().getClasses()) {
+			items.add(makeDocItem(lc));
+		}
+		items.add(makeDocItem(new LemsClass(Component.class, "components")));
 		
 		XMLElement root = new XMLElement("ElementTypes");
 		for (DocItem di : items) {
@@ -60,33 +60,31 @@ public class DocExtractor {
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
+		} else {
+			E.info("Got docs xml: " + stxt);
 		}
 			
 	}
 	
 	
-	private void recAdd(Class<? extends Object> cl, Class<? extends Object> pclass) {
-		if (!classHS.contains(cl)) {
-			classLL.add(cl);
-			classHS.add(cl);
-			DocItem di = new DocItem(cl);
-			items.add(di);
-			itemHM.put(cl, di);
+	private DocItem makeDocItem(LemsClass lc) {
+	 
+			DocItem di = new DocItem(lc.jclass);
+	 		
+			di.setSection(lc.section);
 			
-			Annotation[] caa = (Annotation[]) cl.getAnnotations();
+			Annotation[] caa = (Annotation[]) lc.jclass.getAnnotations();
 			if (caa != null) {
 				for (Annotation a : caa) {
-					if (a instanceof Mel) {
-						Mel mel = (Mel)a;
+					if (a instanceof ModelElement) {
+						ModelElement mel = (ModelElement)a;
 						di.setInfo(mel.info());
 					}
 				}
 			}
 			
 			
-			
-			
-			for (Field fld : cl.getFields()) {
+			for (Field fld : lc.jclass.getFields()) {
 				if (Modifier.isPublic(fld.getModifiers())) {
 				
 					String fnm = fld.getName();
@@ -94,20 +92,23 @@ public class DocExtractor {
 					
 					if (fnm.startsWith("r_") || fnm.startsWith("p_")) {
 						// naming convention for semi private fields
-					} else {
-						if (fld.getType().equals(LemsCollection.class)) {
+					
+					} else if (fld.getType().equals(LemsCollection.class)) {
 							ParameterizedType t = (ParameterizedType)fld.getGenericType();
  
 							Class<?> c =  (Class<?>)(t.getActualTypeArguments()[0]);
-							recAdd(c, cl);
-						}
-						
+						 
+							di.addListAttribute(fld.getName(), shortName(c), "");
+								 
+							
+					
+					} else {
 						Annotation[] aa = fld.getAnnotations();
 						if (aa != null) {
 							for (Annotation a : aa) {
-								if (a instanceof Mat) {
-									Mat mat = (Mat)a;
-									di.addAttribute(fld.getName(), fld.getType(), mat.info());
+								if (a instanceof ModelProperty) {
+									ModelProperty mat = (ModelProperty)a;
+									di.addAttribute(fld.getName(), shortName(fld.getType()), mat.info());
 								}
 							}
 						}
@@ -116,29 +117,17 @@ public class DocExtractor {
 				}
 				
 			}
-			
-			for (Class<?> cfi : cl.getInterfaces()) {
-				if (cfi.equals(ExplicitChildContainer.class)) {
-					try {
-					ExplicitChildContainer obj = (ExplicitChildContainer)cl.newInstance();
-					 
-					for (Class<?> cc : obj.getChildClasses()) {
-						recAdd(cc, cl);
-					}
-					} catch (Exception ex) {
-						ex.printStackTrace();
-					}
-				}
-			}
-			
-			
-		}
-		if (pclass != null) {
-			// itemHM.get(pclass).addC
-			itemHM.get(cl).addContainer(pclass);
-			itemHM.get(pclass).addContent(cl);
-		}
+			return di;
 	
 	}
+	
+	
+	private String shortName(Class<?> cls) {
+		String ret = cls.getName();
+		ret = ret.substring(ret.lastIndexOf(".") + 1, ret.length());
+		return ret;
+	}
+
+	
 	
 }

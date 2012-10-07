@@ -7,16 +7,15 @@ import java.io.IOException;
 
 import org.junit.Test;
 import org.junit.runner.Result;
-import org.lemsml.jlems.io.FormatException;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
-import org.lemsml.jlems.xml.BuildException;
-import org.lemsml.jlems.xml.ParseException;
+import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.sim.ContentError;
+import org.lemsml.jlems.sim.ParseException;
+import org.lemsml.jlems.type.BuildException;
 import org.lemsml.jlems.xml.XMLElement;
 import org.lemsml.jlems.xml.XMLElementReader;
 import org.lemsml.jlems.xml.XMLException;
-import org.lemsml.jlemsio.FileUtil;
-import org.lemsml.jlemsio.logging.MessagePrintlnHandler;
+import org.lemsml.jlemsio.logging.DefaultLogger;
+import org.lemsml.jlemsio.util.FileUtil;
  
  
 
@@ -28,7 +27,7 @@ public class XMLExamplesReaderTest {
 
 	@Test
 	public void testReadFromString() throws ParseException, BuildException,
-			ContentError, FormatException, XMLException, IOException {
+			ContentError, XMLException, IOException {
 
 		File fdir = new File("examples");
 		for (File fx : fdir.listFiles()) {
@@ -60,7 +59,7 @@ public class XMLExamplesReaderTest {
 	
 
 	public static void main(String[] args) {
-		MessagePrintlnHandler.initialize();
+		DefaultLogger.initialize();
 		XMLExamplesReaderTest ct = new XMLExamplesReaderTest();
 		Result r = org.junit.runner.JUnitCore.runClasses(ct.getClass());
 		MainTest.checkResults(r);

@@ -5,8 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import org.lemsml.jlems.eval.DBase;
-import org.lemsml.jlems.util.E;
-import org.lemsml.jlems.util.RuntimeError;
+import org.lemsml.jlems.logging.E;
 
 public class ComponentRegime {
 

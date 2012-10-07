@@ -2,8 +2,8 @@ package org.lemsml.jlems.type;
 
 import java.util.ArrayList;
 
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.sim.ContentError;
 
 
 // TODO this is just a quick hack as a POC for a few special cases. It needs a proper parser as for expressions.

@@ -1,9 +1,8 @@
 package org.lemsml.jlems.run;
 
 import org.lemsml.jlems.display.DataViewer;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.sim.RunnableAccessor;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.RuntimeError;
 
 
 public class RuntimeRecorder {

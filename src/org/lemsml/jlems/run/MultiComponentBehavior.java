@@ -3,8 +3,7 @@ package org.lemsml.jlems.run;
 import java.util.ArrayList;
 
 import org.lemsml.jlems.sim.ComponentBehaviorVisitor;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.RuntimeError;
+import org.lemsml.jlems.sim.ContentError;
 
 public class MultiComponentBehavior {
 

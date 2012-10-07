@@ -5,8 +5,8 @@ import java.util.HashMap;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.expression.Parser;
 import org.lemsml.jlems.expression.Valued;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.LemsCollection;
-import org.lemsml.jlems.util.ContentError;
 
 public class OnEntry extends PointResponse {
  

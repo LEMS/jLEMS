@@ -1,23 +1,23 @@
 package org.lemsml.jlems.type.simulation;
 
-import org.lemsml.jlems.annotation.Mat;
+import org.lemsml.jlems.annotation.ModelProperty;
  
 
 
 
 public class Record {
 
-	@Mat(info="path to the parameter that will contain the path to the quantity to be recorded")
+	@ModelProperty(info="path to the parameter that will contain the path to the quantity to be recorded")
 	public String quantity;
 	
 	
 	public String timeScale;
 	
 	
-	@Mat(info="path to the element that defines the scale for rendering the quantity dimensionless")
+	@ModelProperty(info="path to the element that defines the scale for rendering the quantity dimensionless")
 	public String scale;
 	
-	@Mat(info="hex format color suggestion for how the data should be displayed")
+	@ModelProperty(info="hex format color suggestion for how the data should be displayed")
 	public String color;
 
 	

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import org.lemsml.jlems.expression.BooleanEvaluable;
 import org.lemsml.jlems.expression.DoubleEvaluable;
 import org.lemsml.jlems.expression.Parser;
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.logging.E;
 
  
 public class ParserCheck {

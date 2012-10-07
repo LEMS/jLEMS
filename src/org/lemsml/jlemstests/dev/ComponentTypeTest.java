@@ -10,7 +10,10 @@ import java.io.IOException;
 import org.junit.Test;
 import org.junit.runner.Result;
 import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.ConnectionError;
+import org.lemsml.jlems.run.RuntimeError;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.sim.Sim;
 import org.lemsml.jlems.type.Children;
 import org.lemsml.jlems.type.Component;
@@ -30,9 +33,6 @@ import org.lemsml.jlems.type.dynamics.StateAssignment;
 import org.lemsml.jlems.type.dynamics.StateVariable;
 import org.lemsml.jlems.type.dynamics.TimeDerivative;
 import org.lemsml.jlems.type.simulation.Run;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
-import org.lemsml.jlems.util.RuntimeError;
 import org.lemsml.jlemstests.MainTest;
 
 /**

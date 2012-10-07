@@ -1,21 +1,21 @@
 package org.lemsml.jlems.type;
 
-import org.lemsml.jlems.annotation.Mat;
-import org.lemsml.jlems.annotation.Mel;
-import org.lemsml.jlems.canonical.CanonicalElement;
+import org.lemsml.jlems.annotation.ModelProperty;
+import org.lemsml.jlems.annotation.ModelElement;
+ 
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.expression.Parser;
-import org.lemsml.jlems.util.ContentError;
+import org.lemsml.jlems.sim.ContentError;
 
-@Mel(info="Specifies that a component can have a child of a particular type. The name supplied here can be used in " +
+@ModelElement(info="Specifies that a component can have a child of a particular type. The name supplied here can be used in " +
 		"path expressions to access the component. This is useful, for example, where a component can have multiple " +
 		"children of the same type but with different roles, such as the forward and reverse transition rates in a channel.")
 public class Child implements Named {
 
-	@Mat(info="")
+	@ModelProperty(info="")
     public String name;
     
-	@Mat(info="Reference to a component class, the value should be the name of the target class.")
+	@ModelProperty(info="Reference to a component class, the value should be the name of the target class.")
 	public String type;
     public ComponentType r_type;
 	
@@ -59,10 +59,5 @@ public class Child implements Named {
         return r_type;
     }
 
-    public CanonicalElement makeCanonical() {
-        CanonicalElement ret = new CanonicalElement("Child");
-        ret.add(new CanonicalElement("name", name));
-        ret.add(new CanonicalElement("type", type));
-        return ret;
-    }
+  
 }

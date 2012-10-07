@@ -1,7 +1,7 @@
 package org.lemsml.jlems.type;
-import org.lemsml.jlems.annotation.Mel;
+import org.lemsml.jlems.annotation.ModelElement;
 
-@Mel(info="Like a ComponentRef, but resolved relative to the enclosing object so the target must already be " +
+@ModelElement(info="Like a ComponentRef, but resolved relative to the enclosing object so the target must already be " +
 		"in the model. One or the other should be deprecated. " +
 		"The Link element has the same properties as ComponentRef. The Link element just " +
 		"establishes a connection with the target component, but leaves it in its existing place in the " +

@@ -6,12 +6,12 @@ import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.run.ApplyBuilder;
 import org.lemsml.jlems.run.BuilderElement;
 import org.lemsml.jlems.run.ComponentBehavior;
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Children;
 import org.lemsml.jlems.type.Component;
 import org.lemsml.jlems.type.ComponentType;
 import org.lemsml.jlems.type.Lems;
 import org.lemsml.jlems.type.structure.BuildElement;
-import org.lemsml.jlems.util.ContentError;
 
 public class Apply extends BuildElement {
 

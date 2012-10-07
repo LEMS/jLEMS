@@ -2,7 +2,8 @@ package org.lemsml.jlems.run;
 
 import java.util.ArrayList;
 
-import org.lemsml.jlems.util.ContentError;
+import org.lemsml.jlems.sim.ContentError;
+
 
 public class InstanceSet<T> {
 

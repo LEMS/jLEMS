@@ -5,7 +5,7 @@ import java.util.HashMap;
 import org.lemsml.jlems.eval.DCon;
 import org.lemsml.jlems.eval.DVal;
 import org.lemsml.jlems.eval.DVar;
-import org.lemsml.jlems.util.ContentError;
+import org.lemsml.jlems.sim.ContentError;
 
 public class VariableNode extends Node implements DoubleEvaluable {
 

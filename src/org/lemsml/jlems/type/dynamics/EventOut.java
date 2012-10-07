@@ -1,8 +1,8 @@
 package org.lemsml.jlems.type.dynamics;
 
+import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.ComponentType;
 import org.lemsml.jlems.type.EventPort;
-import org.lemsml.jlems.util.ContentError;
 
 public class EventOut {
 

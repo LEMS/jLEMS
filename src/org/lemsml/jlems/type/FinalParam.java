@@ -2,8 +2,8 @@ package org.lemsml.jlems.type;
 
 import org.lemsml.jlems.expression.Dimensional;
 import org.lemsml.jlems.expression.Valued;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.sim.ContentError;
 
 public class FinalParam implements Valued {
 

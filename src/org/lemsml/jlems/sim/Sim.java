@@ -8,19 +8,18 @@ import org.lemsml.jlems.display.DataViewPort;
 import org.lemsml.jlems.display.DataViewer;
 import org.lemsml.jlems.display.DataViewerFactory;
 import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.ComponentBehavior;
 import org.lemsml.jlems.run.ConnectionError;
 import org.lemsml.jlems.run.EventManager;
 import org.lemsml.jlems.run.RunConfig;
+import org.lemsml.jlems.run.RuntimeError;
 import org.lemsml.jlems.run.RuntimeOutput;
 import org.lemsml.jlems.run.RuntimeRecorder;
 import org.lemsml.jlems.run.StateInstance;
 import org.lemsml.jlems.type.Component;
 import org.lemsml.jlems.type.Lems;
 import org.lemsml.jlems.type.Target;
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
-import org.lemsml.jlems.util.RuntimeError;
  
 
 

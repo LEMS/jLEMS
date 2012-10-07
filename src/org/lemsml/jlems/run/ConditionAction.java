@@ -3,7 +3,6 @@ package org.lemsml.jlems.run;
 import java.util.HashMap;
 
 import org.lemsml.jlems.eval.BBase;
-import org.lemsml.jlems.util.RuntimeError;
 
 public class ConditionAction {
  

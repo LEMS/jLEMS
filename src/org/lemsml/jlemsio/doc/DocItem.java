@@ -10,36 +10,21 @@ public class DocItem {
 	
 	String info;
 	
+	String section;
+	
 	Class<? extends Object> cls;
 	
-	ArrayList<Class<? extends Object>> containers = new ArrayList<Class<? extends Object>>();
-	ArrayList<Class<? extends Object>> contents = new ArrayList<Class<? extends Object>>();
-	
+ 	
 	ArrayList<AttItem> attItems = new ArrayList<AttItem>();
 	
+	ArrayList<ListItem> listItems = new ArrayList<ListItem>();
 	
 	public DocItem(Class<? extends Object> cl) {
 		cls = cl;
 
 	}		 
 	
-	
-	
-	public void addContainer(Class<? extends Object> cl) {
-		if (!containers.contains(cl)) {
-			containers.add(cl);
- 
-		}
-	}
-
-	public void addContent(Class<? extends Object> cl) {
-		if (!contents.contains(cl)) {
-			contents.add(cl);
- 
-		}
-	}
-
-	
+	 
 
 	public void setInfo(String s) {
 		info = s;
@@ -47,9 +32,14 @@ public class DocItem {
 	}
 
 
+	public void addListAttribute(String name, String tnm, String info) {
+		listItems.add(new ListItem(name, tnm, info));
+	}
 
-	public void addAttribute(String name, Class<?> type, String info) {
-		attItems.add(new AttItem(name, type, info));
+
+
+	public void addAttribute(String name, String tnm, String info) {
+		attItems.add(new AttItem(name, tnm, info));
 	}
 
 
@@ -63,6 +53,9 @@ public class DocItem {
 	public XMLElement makeXMLElement() {
 		XMLElement ret = new XMLElement("ElementType");
 		ret.addAttribute("name", shortName(cls));
+		if (section != null) {
+			ret.addAttribute("section", section);
+		}
 		
 		if (info != null) {
 			ret.addBodiedElement("Info", info);
@@ -71,21 +64,18 @@ public class DocItem {
 			ret.add(ai.makeXMLElement());
 		}
 		
-		
-		for (Class<?> c : containers) {
-			XMLElement x = new XMLElement("OccursInside");
-			x.setBody(shortName(c));
-			ret.add(x);
+		for (ListItem ai : listItems) {
+			ret.add(ai.makeXMLElement());
 		}
 		
-
-		for (Class<?> c : contents) {
-			XMLElement x = new XMLElement("CanContain");
-			x.setBody(shortName(c));
-			ret.add(x);
-		}
 		
 		return ret;
+	}
+
+
+
+	public void setSection(String s) {
+		 section = s;
 	}
 
 }

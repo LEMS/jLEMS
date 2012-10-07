@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import org.lemsml.jlems.run.DoublePointer;
-import org.lemsml.jlems.util.RuntimeError;
+import org.lemsml.jlems.run.RuntimeError;
 
 public class BBase {
 

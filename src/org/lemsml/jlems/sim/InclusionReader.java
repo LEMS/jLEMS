@@ -2,8 +2,7 @@ package org.lemsml.jlems.sim;
 
 import java.util.HashSet;
 
-import org.lemsml.jlems.util.ContentError;
-import org.lemsml.jlems.util.E;
+import org.lemsml.jlems.logging.E;
 
 public abstract class InclusionReader {
 

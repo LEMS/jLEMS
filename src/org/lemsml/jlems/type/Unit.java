@@ -1,23 +1,36 @@
 package org.lemsml.jlems.type;
 
-import org.lemsml.jlems.util.ContentError;
+import org.lemsml.jlems.annotation.ModelProperty;
+import org.lemsml.jlems.annotation.ModelElement;
+import org.lemsml.jlems.sim.ContentError;
 
-
+@ModelElement(info="A Unit asociates a symbol with a dimension and a power of ten. For non-metric units a " +
+		"scale can be provided, as in '1 inch = 0.0254 m'. In this case there is a degeneracy between " +
+		"the power and the scale which is best resolved by not using the two together. The offset " +
+		"parameter is available for units which are not zero-offset, such as farenheit.")
 public class Unit implements PseudoNamed, Summaried, DataMatchable {
 
     public static final String NO_UNIT = "none";
-
+    
+    @ModelProperty(info="As with constants, units are only referred to within expressions using their symbols, " +
+    		"so the name is just for readability.")
     public String name;
     
+    @ModelProperty(info="The symbol is used to refer to this unit inside compound expressions coutaining a number and " +
+    		"a unit symbol. Such expressions can only occur on the right hand side of assignments statements.")
     public String symbol;
-    
+
+    @ModelProperty(info="Reference to the dimension for this unit")
     public String dimension;
     private Dimension r_dimension;
-   
+
+    @ModelProperty(info="Power of ten")
     public int power = 0;
     
+    @ModelProperty(info="Scale, only to be used for scales which are not powers of ten")
     public double scale = 1;
     
+    @ModelProperty(info="Offset for non zero-offset units")
     public double offset = 0;
 
     
