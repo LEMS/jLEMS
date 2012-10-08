@@ -4,32 +4,31 @@
     <description>LEMS Interpreter</description>
 	  
     <property file="VERSION"/>
-  
-  
-	
+   
+ 
     <path id="junit.classpath">
         <pathelement location="lib/junit-4.8.1.jar"/>
     </path>
 	
-    
 	
     <target name="initdirs">
         <mkdir dir="build"/>
     	<mkdir dir="builtjars"/>
     </target>
 
+	<target name="clean" description="Removes the built files">
+	   <delete failonerror="false">
+			<fileset dir="build" includes="**/*.*"/>
+		   		<fileset dir="builtjars" includes="**/*.*"/>
+	    </delete>
+	   </target>
 
 
-    <target name="compile" depends="initdirs"
-            description="Compiles the source code">
-
+    <target name="compile" depends="initdirs" description="Compile src to /build">
         <echo>Compiling to /build</echo>
-        
         <javac srcdir="src"
                destdir="build"
                debug="true"
-               optimize="${optimize}"
-               compiler="modern"
                source="1.5"
                target="1.5"
                includeantruntime="false"
@@ -38,11 +37,11 @@
         </javac>
     </target>
 
-
-   
-
-
-
+ 
+	
+	
+	
+	
     <target name="jar" depends="compile" description="Creates main Jar file">
 		
         <jar destfile="builtjars/lems-${version.number}.jar">
@@ -55,22 +54,47 @@
     	<copy tofile="builtjars/lems.jar" file="builtjars/lems-${version.number}.jar"/>
     </target>
    
+	 
 	
+	  <target name="core-jar" depends="compile" description="Create core Jar file">
+			
+	        <jar destfile="builtjars/lems-core-${version.number}.jar">
+	            <fileset dir="build" includes="org/lemsml/jlems/**"/>
+	            <fileset dir="src" includes="org/lemsml/jlems/**"/>
+	        </jar>
+	    	<copy tofile="builtjars/lems-core.jar" file="builtjars/lems-core-${version.number}.jar"/>
+	    </target>
+	
+	
+	
+	 <target name="testsjar" depends="compile" description="Creates main Jar file">
+			
+	        <jar destfile="builtjars/lems-tests.jar">
+	            <fileset dir="build"/>
+	            <fileset dir="src"/>
+	            <manifest>
+	                <attribute name="Main-Class" value="org.lemsml.jlemstests.MainTest"/>
+	            </manifest>
+	        </jar>
+ 	 </target>
     
+
+	<target name="runtests" depends="compile">
+		<java classname="org.lemsml.jlemstests.MainTest">
+		<classpath>
+			<pathelement location="build"/>
+			<pathelement location="lib/junit-4.8.1.jar"/>
+		</classpath>
+			</java>
+	</target>
+	
+	
+	
 	 <target name="canonical-examples">
 		<mkdir dir="build/canonical-examples"/>
 	 	<xslt basedir="examples" destdir="build/canonical-examples"
 		     	extension=".xml"  style="xsl/canonical.xsl"/>
  	</target>
- 
- 
-    <target name="clean" description="Removes the built files" depends="initdirs">
-        <delete dir="build"/>
-    	<mkdir dir="build"/>
-      
-    </target>
-
-   
-     
+  
 
 </project>

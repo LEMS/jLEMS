@@ -1,6 +1,6 @@
-version.major=0
-version.minor=8
-version.release=2
-version.date=4-Nov-2011
+version.major=1
+version.minor=0
+version.release=0
+version.date=8-Oct-2012
 version.number=${version.major}.${version.minor}.${version.release}
  
