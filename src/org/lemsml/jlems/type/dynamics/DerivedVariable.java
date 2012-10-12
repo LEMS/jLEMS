@@ -35,7 +35,12 @@ public class DerivedVariable extends ExpressionValued implements Valued {
 	public String dimension;
 	public Dimension r_dimension;
 
-	@ModelProperty(info="Either 'add' or 'multiply'")
+	@ModelProperty(info="Either 'add' or 'multiply'. This applies if ther are multiple " +
+			"matches to the path or if 'required' is false. In the latter case, for multiply mode, " +
+	"multiplicative expressions in this variable behave as if the term was absent. " +
+	"Additive expressions generate an error. Conversely, if set to 'add' then " +
+	"additive expressions behave as if it was not there and multiplicative ones generate" +
+	"and error.")
 	public String reduce;
 	
 	@ModelProperty(info="")
@@ -43,6 +48,13 @@ public class DerivedVariable extends ExpressionValued implements Valued {
 	public Exposure r_exposure;
 
 	DoubleEvaluable evaluable;
+
+	 
+	@ModelProperty(info="Set to true if it OK for this variable to be absent. " +
+			"See 'reduce' for what happens in this case")
+	public boolean required = true;
+	
+	
 	public DerivedVariable() {
     }
 
@@ -50,27 +62,7 @@ public class DerivedVariable extends ExpressionValued implements Valued {
     	this.name = s;
     }
     
-    public DerivedVariable(String s, String d) {
-    	this(s);
-    	dimension = d;
-    }
-    
-    
-    public DerivedVariable(String name, Dimension d, String value) {
-        this(name);
-        this.value = value;
-        this.r_dimension = d;
-        this.dimension = d.getName();
-
-    }
-
-    public DerivedVariable(String name, Dimension d, String value, String exposure) {
-        this(name, d, value);
-        this.r_exposure = new Exposure(exposure, d);
-        this.exposure = r_exposure.getName();
-    }
-
-    
+     
 	
 	public String getName() {
 		return name;
@@ -81,22 +73,7 @@ public class DerivedVariable extends ExpressionValued implements Valued {
 		return "DerivedVariable " + name + " val=" + value;
 	}
 
-
-	public String getEvalString() {
-		StringBuilder sb = new StringBuilder();
-		if (value != null) {
-			 
-			sb.append("" + value + "");
-			 
-		} else {
-			sb.append(select);
-			if (reduce != null) {
-				sb.append("  (REDUCE: " + reduce + ")");
-			}
-		}
-		return sb.toString();
-	}
-  
+ 
 	
 	public void resolve(Lems lems, LemsCollection<Dimension> dimensions, ComponentType type, HashMap<String, Valued> valHM, Parser parser) throws ContentError, ParseError {
 		if (select == null) {
@@ -197,8 +174,7 @@ public class DerivedVariable extends ExpressionValued implements Valued {
         this.reduce = reduce;
     }
 
-
-
+ 
 	public boolean hasExpression() {
 		boolean ret = false;
 		if (value != null) {
@@ -222,6 +198,10 @@ public class DerivedVariable extends ExpressionValued implements Valued {
 	
 	public Exposure getExposure() {
 		return r_exposure;
+	}
+
+	public boolean isRequired() {
+		return required;
 	}
 
 }

@@ -35,7 +35,7 @@
         <StateVariable name="x" dimension="none"/>
 
        <DerivedVariable name="rateFactor" dimension="none" select="temperatureDependency/rateFactor" 
-       			role="scale" required="false"/>
+       			reduce="multiply" required="false"/>
 
         <DerivedVariable name="rf" dimension="per_time" select="Forward/r"/>
         <DerivedVariable name="rr" dimension="per_time" select="Reverse/r"/> 
@@ -61,10 +61,8 @@
    </HHGateQ10>
 
    <HHGateQ10 id="h" power="1">
-        <temperatureDependency type="Q10TemperatureDependency" Q10="3" baseTemperature="32degC" /> 
         <Forward type="HHExpRate" rate="0.07per_ms" midpoint="-65mV" scale="-20mV"/>
         <Reverse type="HHSigmoidRate" rate="1per_ms" midpoint="-35mV" scale="10mV"/>
-
    </HHGateQ10>
 
 </HHChannel>

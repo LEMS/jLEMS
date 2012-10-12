@@ -358,8 +358,11 @@ public class Dynamics  {
                  }
 				 
 			 } else if (dv.hasSelection()) {
-				 ret.addPathDerived(dv.getName(), dv.getPath(), dv.getFunc());
-			 
+				 
+				 ret.addPathDerived(dv.getName(), dv.getPath(), dv.getFunc(), dv.isRequired(), dv.getReduce());
+				 
+				 
+				 
 			 } else {
 				 throw new ContentError("Derived variable needs as selection or an expression");
 			 }

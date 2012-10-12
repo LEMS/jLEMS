@@ -304,7 +304,18 @@ public class ComponentBehavior {
 	public void applyPathDerived(StateInstance uin) throws ContentError {
 		for (PathDerivedVariable pdv : pathderiveds) {
 			if (pdv.isSimple()) {
-				uin.addPathStateInstance(pdv.getPath(), pdv.getTargetState(uin));
+				try {
+					StateInstance si = pdv.getTargetState(uin);
+					uin.addPathStateInstance(pdv.getPath(), si);
+				} catch (ContentError ce) {
+					if (pdv.isRequired()) {
+						E.info("Rethrowing ce...");
+						throw ce;
+					} else {
+						E.info("Optional path variable is absent " + pdv);
+					}
+				}
+				
 			} else {
 				uin.addPathStateArray(pdv.getPath(), pdv.getTargetArray(uin));
 			}
@@ -513,8 +524,9 @@ public class ComponentBehavior {
 		exderiveds.add(cdv);
 	} 
 	
-	public PathDerivedVariable addPathDerived(String snm, String path, String rf) {
-		PathDerivedVariable pdv = new PathDerivedVariable(snm, path, rf);
+	public PathDerivedVariable addPathDerived(String snm, String path, String rf, 
+			boolean reqd, String reduce) {
+		PathDerivedVariable pdv = new PathDerivedVariable(snm, path, rf, reqd, reduce);
 		pathderiveds.add(pdv);
         return pdv;
 	}

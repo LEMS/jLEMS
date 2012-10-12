@@ -1110,6 +1110,9 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.reduce = parseString(xv);
             } else if (xn.equals("exposure")) {
                 ret.exposure = parseString(xv);
+         
+            } else if (xn.equals("required")) {
+                ret.required = parseBoolean(xv);
             } else if (xn.equals("value")) {
                 ret.value = parseString(xv);
             } else {

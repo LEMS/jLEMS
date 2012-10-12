@@ -20,13 +20,25 @@ public class PathDerivedVariable {
     final static int PROD = 2;
     int mode;
     
+    boolean required;
     
 
-    public PathDerivedVariable(String snm, String p, String f) {
+    public PathDerivedVariable(String snm, String p, String f, boolean rd, String reduce) {
         varname = snm;
         path = p;
         func = f;
+        required = rd;
       
+        if (reduce != null) {
+        	if (reduce.equals("add")) {
+        		mode = SUM;
+        	} else if (reduce.equals("multiply")) {
+        		mode = PROD;
+        	} else {
+        		E.warning("Unrecognized reduce value: " + reduce);
+        	}
+        }
+         
         String[] bits = path.split("/");
         tgtvar = bits[bits.length - 1];
         
@@ -82,7 +94,12 @@ public class PathDerivedVariable {
                 		// its fine to have a sum of no matches - just return zero.
                 		// anything else is an error
                 	} else {
-                		throw new ContentError("Not a sum and no variable at path " + path + " in " + sin + " seeking " + tgtvar);
+                		if (!required &&  mode == PROD) {
+                			ret = 1;
+                	
+                		} else {
+                			throw new ContentError("Not a sum and no variable at path " + path + " in " + sin + " seeking " + tgtvar + " mode=" + mode);
+                		}
                 	}
                 } else {
                 	ret = tgt.getVariable(tgtvar);
@@ -259,7 +276,15 @@ public class PathDerivedVariable {
 
 
 	public PathDerivedVariable makeFlat(String pfx) {
-		PathDerivedVariable ret = new PathDerivedVariable(pfx + varname, flattenPath(pfx), func); 
+		String modeString = null;
+		// TODO cleaner constructor
+		if (mode == SUM) {
+			modeString = "add";
+		} else if (mode == PROD) {
+			modeString = "multiply";
+		}
+		PathDerivedVariable ret = new PathDerivedVariable(pfx + varname, flattenPath(pfx), 
+				func, required, modeString); 
 		return ret;
 	}
 	
@@ -309,6 +334,11 @@ public class PathDerivedVariable {
 			ret = true;
 		}
 		return ret;
+	}
+
+
+	public boolean isRequired() {
+		return required;
 	}
 	
 }

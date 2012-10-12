@@ -38,12 +38,12 @@ public class ComponentFlattener {
 			ctNew.texts.add(t);
 		}
 
-		for (FinalParam p : ct0.getFinalParams()) {
-			ctNew.addParameter(new Parameter(prefix + p.getName(), p.getDimension()));
-		}
+		//for (FinalParam p : ct0.getFinalParams()) {
+		//	ctNew.addParameter(new Parameter(prefix + p.getName(), p.getDimension()));
+		//}
 		
 		for (Exposure ex : ct0.getExposures()) {
-			ctNew.addExposure(new Exposure(prefix + ex.getName(), ex.getDimension()));
+		//	ctNew.addExposure(new Exposure(prefix + ex.getName(), ex.getDimension()));
 		}
 
 		Dynamics b = ctNew.getDynamics();
@@ -52,6 +52,7 @@ public class ComponentFlattener {
 			b = ctNew.getDynamics();
 		}
 		
+		/*
 		for (StateVariable sv : ct0.getDynamics().getStateVariables()) {
 			StateVariable svNew = new StateVariable(prefix + sv.getName(), sv.getDimension());
 			if (sv.getExposure() != null) {
@@ -59,6 +60,7 @@ public class ComponentFlattener {
 			}
 			b.addStateVariable(svNew);
 		}
+		*/
 		
 		for (OnStart os : ct0.getDynamics().getOnStarts()) {
 			if (b.getOnStarts() == null || b.getOnStarts().isEmpty()) {
@@ -82,10 +84,10 @@ public class ComponentFlattener {
 		if (b.derivedVariables == null) {
 			b.derivedVariables = new LemsCollection<DerivedVariable>();
 		}
-		for (DerivedVariable dv : ct0.getDynamics().getDerivedVariables()) {
-			b.addDerivedVariable(new DerivedVariable(prefix + dv.getName(), dv.getDimension(), dv.getEvalString(),
-					dv.exposure));
-		}
+	//	for (DerivedVariable dv : ct0.getDynamics().getDerivedVariables()) {
+	//		b.addDerivedVariable(new DerivedVariable(prefix + dv.getName(), dv.getDimension(), dv.getEvalString(),
+	//				dv.exposure));
+	//	}
 		for (TimeDerivative td : ct0.getDynamics().getTimeDerivatives()) {
 			b.addTimeDerivative(new TimeDerivative(prefix + td.getStateVariable().getName(), td.getEvaluable()
 					.toString()));

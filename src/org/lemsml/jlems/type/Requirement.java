@@ -26,12 +26,7 @@ public class Requirement implements Named {
 
     public Requirement() {
     }
-
-    public Requirement(String name, Dimension r_dimension) {
-        this.name = name;
-        this.r_dimension = r_dimension;
-        this.dimension = r_dimension.getName();
-    }
+ 
 
     public void resolve(LemsCollection<Dimension> dimensions) throws ContentError {
         if (dimension == null) {

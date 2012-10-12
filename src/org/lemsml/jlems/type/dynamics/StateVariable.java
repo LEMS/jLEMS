@@ -33,21 +33,7 @@ public class StateVariable implements Valued  {
     	this.name = name;
     }
     
-    
-    public StateVariable(String name, Dimension dimension) {
-        this.name = name;
-        this.r_dimension = dimension;
-        this.dimension = dimension.getName();
-    }
-
-    public StateVariable(String name, Dimension dimension, Exposure exposure) {
-        this.name = name;
-        this.r_dimension = dimension;
-        this.dimension = dimension.getName();
-        this.r_exposure = exposure;
-        this.exposure = exposure.getName();
-    }
-
+   
 
    
 	

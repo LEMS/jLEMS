@@ -240,7 +240,7 @@ public class Regime implements Named {
 			 ret.addExpressionDerived(dv.getName(), db);
 			 } else if (dv.hasSelection()) {
 				 
-				 ret.addPathDerived(dv.getName(), dv.getPath(), dv.getFunc());
+				 ret.addPathDerived(dv.getName(), dv.getPath(), dv.getFunc(), dv.isRequired(), dv.getReduce());
 			 }
 		 }
 		 
