@@ -47,7 +47,7 @@ public class Parameter implements Named {
                 r_dimension = d;
                 //	E.info("resolved param " + name);
             } else {
-                throw new ContentError("no such dimension: " + dimension);
+                throw new ContentError("no such dimension: " + dimension + " for parameter " + name + " " + description);
             }
         }
     }

@@ -22,12 +22,7 @@ import org.lemsml.jlems.type.BuildException;
 import org.lemsml.jlems.xml.XMLException;
 import org.lemsml.jlemsio.logging.DefaultLogger;
 import org.lemsml.jlemsio.reader.FileInclusionReader;
-
-
-/**
- *
- * @author Padraig
- */
+ 
 public class ExamplesTest {
 
  
@@ -70,7 +65,13 @@ public class ExamplesTest {
     public void testExample9() throws ContentError, ConnectionError, RuntimeError, ParseError, ParseException, BuildException, XMLException   {
            executeProcessExample("example9.xml");
     }
-
+    
+    @Test
+    public void testExample10() throws ContentError, ConnectionError, RuntimeError, ParseError, ParseException, BuildException, XMLException, IOException   {
+           executeTreeExample("example10_Q10.xml");
+    }
+    
+    
     public void executeExample(String filename) throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException,  XMLException {
     	File fdir = new File("examples");
     	File f = new File(fdir, filename);

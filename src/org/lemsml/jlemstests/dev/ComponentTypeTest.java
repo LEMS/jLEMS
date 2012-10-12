@@ -108,7 +108,7 @@ public class ComponentTypeTest {
 
                 E.info("Created: "+lems.textSummary(true, true));
 
-                Component c = new Component("IaF_1", ct);
+                Component c = null; // new Component("IaF_1", ct);
 
                 c.setParameter(thresh.getName(), "-50mV");
                 c.setParameter(leak.getName(), "-49mV");
@@ -161,25 +161,25 @@ public class ComponentTypeTest {
             //    bL.records.add(new Record("quantity", "scale", "color", null));
                 
 
-                dispCt.childrens.add(new Children("lines", lineCt));
-                simCt.childrens.add(new Children("displays", dispCt));
+              //  dispCt.childrens.add(new Children("lines", lineCt));
+              //  simCt.childrens.add(new Children("displays", dispCt));
 
 
 
-                Component sim1 = new Component("sim1", simCt);
+                Component sim1 = null; // new Component("sim1", simCt);
                 
                 sim1.setParameter(length.getName(), "400ms");
                 sim1.setParameter(step.getName(), "0.1ms");
                 sim1.setParameter(cr.getName(), c.getID());
 
-                Component disp1 = new Component("disp1", dispCt);
+                Component disp1 = null; // new Component("disp1", dispCt);
                 disp1.setParameter("timeScale", "1ms");
                 disp1.setParameter("title", "Tester Frame!");
 
 
                 sim1.addToChildren("displays", disp1);
 
-                Component lineCpt = new Component("l1", lineCt);
+                Component lineCpt = null; // new Component("l1", lineCt);
                 lineCpt.setParameter("scale", "1mV");
                 lineCpt.setParameter("quantity", "v");
                 lineCpt.setParameter("color", "#ee40FF");

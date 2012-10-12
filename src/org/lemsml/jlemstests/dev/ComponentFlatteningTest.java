@@ -91,7 +91,7 @@ public class ComponentFlatteningTest {
         
 
         ComponentType ctNew = new ComponentType(ct0.getName()+"_flat");
-        Component compNew = new Component(comp0.getID()+"_flat", ctNew);
+        Component compNew = null; // new Component(comp0.getID()+"_flat", ctNew);
 
         
         ComponentFlattener cf = new ComponentFlattener();

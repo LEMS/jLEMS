@@ -91,11 +91,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	public Component() {
 	}
 
-	public Component(String id, ComponentType componentType) {
-		this.id = id;
-		this.r_type = componentType;
-		this.type = r_type.getName();
-	}
+ 
 
 	public void setID(String s) {
 		id = s;
@@ -404,8 +400,9 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 				if (cpt != null) {
 					refHM.put(crn, cpt);
 				} else {
-					E.error("The path " + attval + " for attribute '" + crn
-					        + "' does not match any component relative to my ("+this+") parent:\n" + this.getParent().details(""));
+					E.error("The path " + attval + " for attribute '" + crn + "'" +
+							"does not match any component relative to my (" + this + ") parent:\n" + 
+							this.getParent().details(""));
 				}
 			} else {
 				if (bwarn) {
@@ -419,7 +416,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 			String scb = cpt.getName();
 			boolean done = false;
 			if (scb != null) {
-				if (r_type.hasChild(scb)) {
+ 				if (r_type.hasChild(scb)) {
 					childHM.put(scb, cpt);
 					done = true;
 				}

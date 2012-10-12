@@ -31,14 +31,7 @@ public class Children implements Named  {
     public Children() {
     }
 
-    public Children(String name, ComponentType type) {
-        this.name = name;
-        this.r_type = type;
-        this.type = type.getName();
-    }
-
-   
-
+     
     @Override
     public String toString() {
         return "Children {" + name + ", type=" + type + "}";
@@ -66,5 +59,13 @@ public class Children implements Named  {
     public ComponentType getComponentType() {
         return r_type;
     }
+
+	public Children makeCopy() {
+		Children ret = new Children();
+		ret.name = name;
+		ret.type = type;
+		ret.r_type = r_type;
+		return ret;
+	}
  
 }

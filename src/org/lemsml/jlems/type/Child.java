@@ -29,12 +29,7 @@ public class Child implements Named {
     public Child() {
     }
 
-    public Child(String name, ComponentType r_type) {
-        this.name = name;
-        this.r_type = r_type;
-        this.type = r_type.getName();
-    }
-
+    
     public void resolve(Lems lems, Parser p) throws ContentError, ParseError {
         LemsCollection<ComponentType> types = lems.getComponentTypes();
          
@@ -58,6 +53,14 @@ public class Child implements Named {
     public ComponentType getComponentType() {
         return r_type;
     }
+
+	public Child makeCopy() {
+		 Child ret = new Child();
+		 ret.name = name;
+		 ret.type = type;
+		 ret.r_type = r_type;
+		 return ret;
+	}
 
   
 }

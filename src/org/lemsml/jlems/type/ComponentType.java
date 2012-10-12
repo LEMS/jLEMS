@@ -356,6 +356,15 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 				exposures.addIfNew(exp.makeCopy());
 			}
 			
+			for (Children chn : r_extends.getChildrens()) {
+				childrens.addIfNew(chn.makeCopy());
+			}
+			
+			for (Child ch : r_extends.getChilds()) {
+				childs.addIfNew(ch.makeCopy());
+			}
+			
+			
 			for (PairCollection pc : r_extends.getPairCollections()) {
 				pairCollections.addIfNew(pc.makeCopy());
 			}
@@ -561,6 +570,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 
 	public Children getChildren(ComponentType ftype) throws ContentError {
 		Children ret = null;
+		
 		for (Children chn : childrens) {
 			ComponentType t = chn.getComponentType();
 			if (ftype.equals(t) || ftype.eXtends(t)) {
@@ -569,8 +579,11 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		}
 		
 		if (ret == null) {
-			throw new ContentError("No such children list for type: (" + ftype.getName()+") in "+ this.getName() + "\n"
-                                + "Existing children lists: [" + childrens.listAsText() + "], existing childs: ["+childs.listAsText()+"]\n");
+			String msg = "No such children list for type: (" + ftype.getName()+") in "+ this.getName() + "\n";
+			msg += "Existing children lists: [" + childrens.listAsText() + "]\n";
+			msg += "existing childs: ["+childs.listAsText()+"]\n";
+			
+			throw new ContentError(msg);
 		}
 		return ret;
 	}
@@ -676,6 +689,14 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		return exposures;
 	}
 
+	public LemsCollection<Children> getChildrens() {
+		return childrens;
+	}
+	
+	public LemsCollection<Child> getChilds() {
+		return childs;
+	}
+	
 	public Exposure getExposure(String snm) throws ContentError {
 		if (!exposures.hasName(snm)) {
 			throw new ContentError("No such exposure " + snm + " in " + this);
