@@ -383,4 +383,9 @@ public class Lems {
 	}
 
 
+	public void addDimension(Dimension d) {
+		dimensions.add(d);
+	}
+
+
 }

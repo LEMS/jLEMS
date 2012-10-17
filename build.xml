@@ -96,5 +96,9 @@
 		     	extension=".xml"  style="xsl/canonical.xsl"/>
  	</target>
   
-
+	<target name="compact-text-examples">
+		<mkdir dir="build/compact-text-examples"/>
+	 	<xslt basedir="examples" destdir="build/compact-text-examples"
+		     	extension=".txt"  style="xsl/compacttext.xsl"/>
+	</target>
 </project>

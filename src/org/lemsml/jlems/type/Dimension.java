@@ -16,24 +16,27 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
     public String name;
     
     @ModelProperty(info="Mass")
-    public int m;  // Mass
+    public int m;   
     
     @ModelProperty(info="Length")
-    public int l;  // Length
+    public int l;  
 
     @ModelProperty(info="Time")
-    public int t;  // Time
+    public int t;   
 
     @ModelProperty(info="Current")
-    public int i;  // Current
+    public int i;   
 
     @ModelProperty(info="Temperature")
-    public int k;  // Temperature
+    public int k;   
 
     @ModelProperty(info="Amunt of substance")
-    public int n;  // Amount of substance
+    public int n;   
     
-  
+    @ModelProperty(info="Luminous intensity")
+    public int j;  
+    
+    
     private double dval = Double.NaN; // bit messy, just for constant powers
 
     
@@ -180,6 +183,10 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
 
     public void setT(int t) {
         this.t = t;
+    }
+    
+    public void setJ(int j) {
+        this.j = j;
     }
 
     
