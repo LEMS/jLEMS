@@ -45,8 +45,12 @@
     <target name="jar" depends="compile" description="Creates main Jar file">
 		
         <jar destfile="builtjars/lems-${version.number}.jar">
-            <fileset dir="build" includes="org/lemsml/jlems/**,org/lemsml/jlemsio/**"/>
-            <fileset dir="src" includes="org/lemsml/jlems/**,org/lemsml/jlemsio/**"/>
+            <fileset dir="build" includes="org/lemsml/jlems/**"/>
+           	<fileset dir="build" includes="org/lemsml/jlemsio/**"/>
+        	<fileset dir="build" includes="org/lemsml/jlemsviz/**"/>
+        	
+        	<fileset dir="src" includes="org/lemsml/jlems/**"/>
+            <fileset dir="src" includes="org/lemsml/jlemsio/**"/>
             <manifest>
                 <attribute name="Main-Class" value="org.lemsml.Main"/>
             </manifest>
