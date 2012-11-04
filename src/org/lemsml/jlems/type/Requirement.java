@@ -19,9 +19,11 @@ public class Requirement implements Named {
 
     @ModelProperty(info = "name")
     public String name;
+    
     @ModelProperty(info = "reference to a dimension")
     public String dimension;
     public Dimension r_dimension;
+    
     public String description;
 
     public Requirement() {
@@ -64,4 +66,14 @@ public class Requirement implements Named {
         ret.r_dimension = r_dimension;
         return ret;
     }
+
+
+	protected void setName(String rn) {
+		name = rn;
+	}
+	
+	protected void setDimension(String dn) {
+		dimension = dn;
+	}
+	
 }

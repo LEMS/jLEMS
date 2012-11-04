@@ -3,6 +3,7 @@ package org.lemsml.jlemstests.dev;
 import java.io.File;
 import java.io.IOException;
 
+import org.junit.Test;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.flatten.ComponentFlattener;
 import org.lemsml.jlems.logging.E;
@@ -19,6 +20,7 @@ import org.lemsml.jlems.type.Component;
 import org.lemsml.jlems.type.ComponentType;
 import org.lemsml.jlems.type.Lems;
 import org.lemsml.jlems.xml.XMLException;
+import org.lemsml.jlemsio.logging.DefaultLogger;
 import org.lemsml.jlemsio.reader.FileInclusionReader;
 import org.lemsml.jlemsio.util.FileUtil;
 import org.lemsml.jlemsio.xmlio.XMLSerializer;
@@ -26,26 +28,48 @@ import org.lemsml.jlemsio.xmlio.XMLSerializer;
 
 public class ComponentFlatteningTest {
 
-    public static void main(String[] args) throws ContentError, ParseError, ConnectionError, RuntimeError, IOException {
+	
+	
+	
+	
+/*
+    public static void main(String[] args) {
+    	DefaultLogger.initialize();
     	
-    	File f1 = new File("examples/IaFcurr.xml");
-    	File f2 = new File("examples/HHex.xml");
-    	File f3 = new File("examples/NMDAex.xml");
-    
+    	ComponentFlatteningTest ct = new ComponentFlatteningTest();
+        Result r = org.junit.runner.JUnitCore.runClasses(ct.getClass());
+        MainTest.checkResults(r);
+
+    }
+*/
+	
+	 
+    public static void main(String[] args) throws ContentError, ParseError, ConnectionError, RuntimeError, IOException {
+    	DefaultLogger.initialize();
+    	File f1 = new File("examples/example1.xml");
+     
     	try {
-    		// flattenFromFile(f1, "iafTau0");
-    		flattenFromFile(f2, "k");
-//    		flattenFrimFile(f3, "nmdaSyn1");
+    		ComponentFlatteningTest cft = new ComponentFlatteningTest();
+    		cft.runExample1();
     		
     	} catch (Exception ex) {
     		ex.printStackTrace();
     	}
     }
     
+    @Test
+    public void runExample1() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException {
+    	File f1 = new File("examples/example1.xml");
+ 		flattenFromFile(f1, "na");
+    }
     
-    public static void flattenFromFile(File f, String tgtid) throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException {
-        E.info("Sys: " + System.getenv());
-        E.info("Loading LEMS file from: " + f.getAbsolutePath());
+    
+    
+    
+    public void flattenFromFile(File f, String tgtid) throws ContentError,
+    		ConnectionError, ParseError, IOException, RuntimeError, ParseException, 
+    		BuildException, XMLException {
+    	E.info("Loading LEMS file from: " + f.getAbsolutePath());
 
         FileInclusionReader fir = new FileInclusionReader(f);
         Sim sim = new Sim(fir.read());
@@ -57,76 +81,27 @@ public class ComponentFlatteningTest {
         //sim.run();
 
         Lems lems = sim.getLems();
+        Component cpt = lems.getComponent(tgtid);
 
-        E.info("Found " + lems.getComponentTypes().size() + " Component Types:\n");
-        //Component comp0 = lems.getComponent("nmdaSyn1");
-        //Component comp0 = lems.getComponent("hhcell");
-        //Component comp0 = lems.getComponent("k");
-        Component comp0 = lems.getComponent(tgtid);
+        ComponentFlattener cf = new ComponentFlattener(lems, cpt);
 
-       
-        E.info("Found: " + comp0);
-        E.info("Children: " + comp0.getAllChildren());
-
-        ComponentBehavior cb = comp0.getComponentBehavior();
-
-        StateInstance si = cb.newInstance();
-
-        E.info("Found: " + si.getMultiHM());
-
-        //ComponentBehavior cb2 = cb.getConsolidatedComponentBehavior();
-        //E.info("Found: " + cb2);
-
-        ComponentType ct0 = comp0.getComponentType();
-
-        String sout0 = XMLSerializer.serialize(comp0);
-
-        E.info("-----------\n" + sout0 + "----------\n");
-      
-        String sout = XMLSerializer.serialize(ct0);
-
-        E.info("-----------\n" + sout + "------\n");
- 
-        E.info(""+comp0.getParamValues());
+        ComponentType ct = cf.getFlatType();
+        Component cp = cf.getFlatComponent();
         
+        String typeOut = XMLSerializer.serialize(ct);
 
-        ComponentType ctNew = new ComponentType(ct0.getName()+"_flat");
-        Component compNew = null; // new Component(comp0.getID()+"_flat", ctNew);
-
+        String cptOut = XMLSerializer.serialize(cp);
         
-        ComponentFlattener cf = new ComponentFlattener();
         
-        cf.parseAndAdd(compNew, comp0, ctNew, ct0, "");
+       E.info("Flat type: \n" + typeOut);
+       E.info("Flat cpt: \n" + cptOut);
         
-        lems.addComponentType(ctNew);
-       // lems.addComponent(compNew);
-        compNew.resolve(lems, ctNew);
-
-
-        String sout2 = XMLSerializer.serialize(ctNew);
-        E.info("-----------\n" + sout2 + "------\n");
-         
-
-        String sout3 = XMLSerializer.serialize(compNew);
-        E.info("-----------\n" + sout3 + "------\n");
-        
-//        Component net = lems.getComponent("net1");
-//        Component pop = net.getChildrenAL("populations").get(1);
-//		pop.getRefHM().put("component",compNew);
- //       System.out.println("net: "+net+", pop: "+pop.getRefHM());
-        //pop.paramValues.getByName("component")., comp0.getID()+"_flat");
-
-        
-        lems.resolve();
-        String lemsString  = XMLSerializer.serialize(lems);
-
-        //E.info("Created: \n"+lemsString);
-        //E.info("Info: \n"+lems.textSummary());
-
-        File testFile = new File(new File("/tmp"), f.getName().replaceAll(".xml", "")+"_SBML.xml");
-
-        FileUtil.writeStringToFile(lemsString, testFile);
-
-        E.info("Written to: "+ testFile.getCanonicalPath());
+		lems.addComponentType(ct);
+		
+		lems.addComponent(cp);
+	
+		lems.resolve(ct);
+		lems.resolve(cp);
+	 
     }
 }

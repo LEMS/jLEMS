@@ -117,9 +117,9 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	public ComponentType() {
 
 	}
-
-	public ComponentType(String name) {
-		this.name = name;
+	
+	protected void setName(String s) {
+		name = s;
 	}
 
 	public String getName() {
@@ -697,6 +697,10 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		return childs;
 	}
 	
+	public LemsCollection<ComponentReference> getComponentReferences() {
+		return componentReferences;
+	}
+	
 	public Exposure getExposure(String snm) throws ContentError {
 		if (!exposures.hasName(snm)) {
 			throw new ContentError("No such exposure " + snm + " in " + this);
@@ -941,6 +945,20 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		return ret;
 	
 	}
+
+	protected void addText(String txt) {
+		 texts.add(new Text(txt));
+	}
+
+	protected void addRequirement(Requirement req) {
+		requirements.add(req);
+	}
+
+	protected void setDynamics(Dynamics td) {
+		dynamicses.add(td);
+		
+	}
+ 
 
  
 	

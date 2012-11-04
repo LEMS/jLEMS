@@ -33,6 +33,19 @@ public class StringUtil {
 		return ret;
 	}
 
+	public static String join(ArrayList<String> items, String op) {
+		String ret = "";
+		boolean first = true;
+		for (String s : items) {
+			if (!first) {
+				ret += op;
+			}
+			ret += s;
+			first = false;
+		}
+		return ret;
+	}
+
 	 
 	
 	

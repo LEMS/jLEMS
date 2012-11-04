@@ -23,11 +23,7 @@ public class OnCondition extends PointResponse   {
     public OnCondition() {
     }
 
-    public OnCondition(String test) {
-        this.test = test;
-
-    }
- 
+   
 	
 	public void resolve(Dynamics bhv, LemsCollection<StateVariable> stateVariables, HashMap<String, Valued> valHM, Parser parser) throws ContentError, ParseError {
 		if (trigger != null) {
@@ -61,6 +57,15 @@ public class OnCondition extends PointResponse   {
 	
 	public void addEventOut(EventOut eo) {
 		eventOuts.add(eo);
+	}
+
+	public OnCondition makeCopy() {
+		OnCondition ret = new OnCondition();
+		ret.test = test;
+		if (trigger != null) {
+			ret.trigger = trigger.makeCopy();
+		}
+		return ret;
 	}
 	
 }

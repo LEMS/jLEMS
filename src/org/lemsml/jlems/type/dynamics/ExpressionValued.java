@@ -10,6 +10,14 @@ public class ExpressionValued {
 	public MathInline mathInline;
 	
 	
+	public void setValue(String s) {
+		value = s;
+	}
+	
+	public String getValueExpression() {
+		return value;
+	}
+	
 	
 	public void extract() throws ContentError {
 		if (mathInline != null) {

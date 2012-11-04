@@ -47,10 +47,24 @@ public class VariableNode extends Node implements DoubleEvaluable {
 			valueSource = valHM.get(svar);
 		// 	E.info("set the value for " + svar + " to " + valueSource);
 		} else {
-			throw new ContentError("Unrecognized variable in expression: (" + svar + ")\nvalHM: " + valHM);
+			throw new ContentError("Unrecognized variable in expression: (" + svar + ")" +
+					"\n" + printMap(valHM));
 		}
-		
 	}
+	
+	private String printMap(HashMap<String, Valued> valHM) {
+		String ret = "";
+		for (String s : valHM.keySet()) {
+			String sp = s;
+			if (sp.length() < 20) {
+				sp = (sp + "                          ").substring(0, 20);
+			}
+			ret += sp + " =\t" + valHM.get(s) + "\n";
+		}
+		return ret;
+	}
+	
+	
 	
 	public DVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
 		DVal ret = null;

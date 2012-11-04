@@ -29,6 +29,16 @@ public abstract class StateChange extends ExpressionValued {
    public StateChange(String vnm) {
 	   variable = vnm;
    }
+   
+   
+   public void setVariable(String s) {
+	   variable = s;
+   }
+   
+   public String getVariable() {
+	   return variable;
+   }
+   
 	
 	public void resolve(LemsCollection<StateVariable> stateVariables, HashMap<String, Valued> valHM, Parser parser) throws ContentError, ParseError {
 		super.extract();

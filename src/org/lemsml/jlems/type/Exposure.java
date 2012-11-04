@@ -20,12 +20,13 @@ public class Exposure implements Named {
     public Exposure() {
     }
  
-   
-
-    public Exposure(String n, String d) {
-        name = n;
-        dimension = d;
+    
+    protected Exposure(String nm, String dm) {
+    	name = nm;
+    	dimension = dm;
     }
+   
+     
 
     public void resolve(LemsCollection<Dimension> dimensions) throws ContentError {
         if (dimension == null) {
@@ -63,5 +64,16 @@ public class Exposure implements Named {
         ret.r_dimension = r_dimension;
         return ret;
     }
+
+
+
+	protected void setName(String newName) {
+		 name = newName;
+	}
  
+	protected void setDimension(String d) {
+		dimension = d;
+	}
+	
+	
 }

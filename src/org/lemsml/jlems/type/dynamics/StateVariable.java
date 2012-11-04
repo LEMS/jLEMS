@@ -17,24 +17,20 @@ public class StateVariable implements Valued  {
 	
 	@ModelProperty(info="")
 	public String name;
+	
 	@ModelProperty(info="")
 	public String dimension;
-	public Dimension r_dimension;
+	private Dimension r_dimension;
 	
 	@ModelProperty(info="If this variable is to be accessed from outside, it should be linked to an Exposure that is " +
 			"defined in the ComponentType.")
 	public String exposure;
-	public Exposure r_exposure;
+	private Exposure r_exposure;
 
     public StateVariable() {
     }
 
-    public StateVariable(String name) {
-    	this.name = name;
-    }
     
-   
-
    
 	
 	public String getName() {
@@ -90,6 +86,29 @@ public class StateVariable implements Valued  {
 	public Named getExposure() {
 		return r_exposure;
 	}
+
+	protected void setName(String nm) {
+		name = nm;
+	}
+
+	protected void setDimension(String dn) {
+		dimension = dn;
+	}
+
+	public void setExposure(String enm) {
+		exposure = enm;
+	}
+
+	public String getExposureName() {
+		String ret = null;
+		if (r_exposure != null) {
+			ret = r_exposure.getName();
+		} else {
+			ret = exposure;
+		}
+		return ret;
+	}
+	
 	
 	
 }

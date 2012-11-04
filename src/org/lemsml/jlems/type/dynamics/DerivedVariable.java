@@ -25,12 +25,9 @@ public class DerivedVariable extends ExpressionValued implements Valued {
 	@ModelProperty(info="")
 	public String name;
 
- 
-
 	@ModelProperty(info="")
 	public String select;
-	 
-	
+	 	
 	@ModelProperty(info="")
 	public String dimension;
 	public Dimension r_dimension;
@@ -67,6 +64,11 @@ public class DerivedVariable extends ExpressionValued implements Valued {
 	public String getName() {
 		return name;
 	}
+	
+	public String getSelect() {
+		return select;
+	}
+	
 	
         @Override
 	public String toString() {
@@ -202,6 +204,22 @@ public class DerivedVariable extends ExpressionValued implements Valued {
 
 	public boolean isRequired() {
 		return required;
+	}
+
+	public void setName(String nm) {
+		name = nm;
+	}
+	
+	public void setDimension(String dn) {
+		dimension = dn;
+	}
+
+	public void setValue(String sv) {
+		value = sv;
+	}
+
+	public void setExposure(String s) {
+		exposure = s;
 	}
 
 }

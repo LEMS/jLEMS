@@ -238,8 +238,7 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
 	}
 
 	 public static String getSIUnit(Dimension d) {
-	        StringBuilder sb = new StringBuilder();
-
+ 
 	        int m = d.getM();
 	        int l = d.getL();
 	        int t = d.getT();

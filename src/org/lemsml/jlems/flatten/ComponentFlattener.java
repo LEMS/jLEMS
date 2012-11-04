@@ -1,17 +1,26 @@
 package org.lemsml.jlems.flatten;
- 
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.ConnectionError;
 import org.lemsml.jlems.sim.ContentError;
+import org.lemsml.jlems.type.Child;
 import org.lemsml.jlems.type.Component;
+import org.lemsml.jlems.type.ComponentBuilder;
+import org.lemsml.jlems.type.ComponentReference;
 import org.lemsml.jlems.type.ComponentType;
+import org.lemsml.jlems.type.ComponentTypeBuilder;
 import org.lemsml.jlems.type.EventPort;
 import org.lemsml.jlems.type.Exposure;
 import org.lemsml.jlems.type.FinalParam;
+import org.lemsml.jlems.type.Lems;
 import org.lemsml.jlems.type.LemsCollection;
 import org.lemsml.jlems.type.ParamValue;
 import org.lemsml.jlems.type.Parameter;
+import org.lemsml.jlems.type.Requirement;
 import org.lemsml.jlems.type.Text;
 import org.lemsml.jlems.type.dynamics.DerivedVariable;
 import org.lemsml.jlems.type.dynamics.Dynamics;
@@ -21,103 +30,303 @@ import org.lemsml.jlems.type.dynamics.OnStart;
 import org.lemsml.jlems.type.dynamics.StateAssignment;
 import org.lemsml.jlems.type.dynamics.StateVariable;
 import org.lemsml.jlems.type.dynamics.TimeDerivative;
- 
-
+import org.lemsml.jlems.util.StringUtil;
 
 public class ComponentFlattener {
 
-     
-    public void resolvePaths() {
-        E.warning("may need to resolve paths??");
-    }
+	Lems lems;
+
+	Component srcComponent;
  
-	public static void parseAndAdd(Component compNew, Component comp0, ComponentType ctNew, ComponentType ct0,
-			String prefix) throws ContentError, ParseError, ConnectionError {
+	ComponentBuilder cbuilder;
+	ComponentTypeBuilder typeB;
 
-		for (Text t : ct0.getTexts()) {
-			ctNew.texts.add(t);
-		}
-
-		//for (FinalParam p : ct0.getFinalParams()) {
-		//	ctNew.addParameter(new Parameter(prefix + p.getName(), p.getDimension()));
-		//}
-		
-		for (Exposure ex : ct0.getExposures()) {
-		//	ctNew.addExposure(new Exposure(prefix + ex.getName(), ex.getDimension()));
-		}
-
-		Dynamics b = ctNew.getDynamics();
-		if (b == null) {
-			ctNew.addBehavior(new Dynamics());
-			b = ctNew.getDynamics();
-		}
-		
-		/*
-		for (StateVariable sv : ct0.getDynamics().getStateVariables()) {
-			StateVariable svNew = new StateVariable(prefix + sv.getName(), sv.getDimension());
-			if (sv.getExposure() != null) {
-				svNew = new StateVariable(prefix + sv.getName(), sv.getDimension(), sv.r_exposure);
-			}
-			b.addStateVariable(svNew);
-		}
-		*/
-		
-		for (OnStart os : ct0.getDynamics().getOnStarts()) {
-			if (b.getOnStarts() == null || b.getOnStarts().isEmpty()) {
-				b.addOnStart(new OnStart());
-			}
-			OnStart osNew = b.getOnStarts().first();
-			for (StateAssignment sa : os.stateAssignments) {
-				osNew.stateAssignments.add(sa);
-			}
-		}
-		for (OnEvent oe : ct0.getDynamics().getOnEvents()) {
-			b.addOnEvent(oe);
-		}
-		for (EventPort ep : ct0.getEventPorts()) {
-			ctNew.addEventPort(ep);
-		}
-		for (OnCondition oc : ct0.getDynamics().getOnConditions()) {
-			b.addOnCondition(oc);
-		}
-
-		if (b.derivedVariables == null) {
-			b.derivedVariables = new LemsCollection<DerivedVariable>();
-		}
-	//	for (DerivedVariable dv : ct0.getDynamics().getDerivedVariables()) {
-	//		b.addDerivedVariable(new DerivedVariable(prefix + dv.getName(), dv.getDimension(), dv.getEvalString(),
-	//				dv.exposure));
-	//	}
-		for (TimeDerivative td : ct0.getDynamics().getTimeDerivatives()) {
-			b.addTimeDerivative(new TimeDerivative(prefix + td.getStateVariable().getName(), td.getEvaluable()
-					.toString()));
-		}
-
-		if (compNew.paramValues == null) {
-			compNew.paramValues = new LemsCollection<ParamValue>();
-		}
-		// System.out.println("-pv0: "+comp0.paramValues);
-
-		for (ParamValue pv : comp0.getParamValues()) {
-			String newName = prefix + pv.getName();
-			// System.out.println("-------------------- pv name: "+newName+", comp0: "+comp0);
-			// /compNew.paramValues.add(new ParamValue(new FinalParam(newName,
-			// pv.r_finalParam.getDimension())));
-
-			compNew.setParameter(newName, comp0.getAttributes().getByName(pv.getName()).getValue());
-		}
-		// System.out.println("-pv: "+compNew.paramValues);
-
+	public ComponentFlattener(Lems l, Component c) {
+		lems = l;
+		srcComponent = c;
+	}
 	
-		// System.out.println("Childz: "+comp0.getAllChildren());
-		for (Component childComp : comp0.getAllChildren()) {
-			String newPrefix = prefix + childComp.getID() + "_";
-			if (childComp.getID() == null) {
-				newPrefix = prefix + childComp.getName() + "_";
-			}
-			parseAndAdd(compNew, childComp, ctNew, childComp.getComponentType(), newPrefix);
+	
+	public void checkBuilt() throws ContentError, ParseError, ConnectionError {
+		if (cbuilder == null) {
+			buildFlat();
 		}
 	}
 	
+	
+	public Component getFlatComponent() throws ContentError, ParseError, ConnectionError {
+		checkBuilt();
+		return cbuilder.getTarget();
+	}
+	
+	public ComponentType getFlatType() throws ContentError, ParseError, ConnectionError {
+		checkBuilt();
+		return typeB.getTarget();
+	}
+	
+	
+
+	public void buildFlat() throws ContentError, ParseError, ConnectionError {
+		ComponentType srcCt = srcComponent.getComponentType();
+	 
+		typeB = new ComponentTypeBuilder();
+		String typeName = srcCt.getName() + "_flat";
+		typeB.setName(typeName);
+
+		cbuilder = new ComponentBuilder();
+		cbuilder.setID(srcComponent.getID() + "_flat");
+		cbuilder.setType(typeName);
+		
+		importFlattened(srcComponent, "");
+	}
+	
+ 
+	
+	
+	
+	
+	private void importFlattened(Component cpt, String prefix) throws ContentError, ParseError, ConnectionError {
+
+		HashMap<String, String> varHM = new HashMap<String, String>();
+
+		ComponentType typ = cpt.getComponentType();
+
+		for (Text t : typ.getTexts()) {
+			String newText = flatName(t.getName(), prefix);
+			typeB.addText(newText);
+		}
+
+		for (FinalParam p : typ.getFinalParams()) {
+	 		String fname = flatName(p.getName(), prefix, varHM);
+			typeB.addParameter(fname, p.getDimension());
+		}
+
+		for (Exposure ex : typ.getExposures()) {
+			String fname = flatName(ex.getName(), prefix);
+			typeB.addExposure(fname, ex.getDimension());
+		}
+
+		for (Requirement req : typ.getRequirements()) {
+			typeB.ensureHasRequirement(req.getName(), req.getDimension());
+		}
+
+		
+		Dynamics dyn = typ.getDynamics();
+		for (StateVariable sv : dyn.getStateVariables()) {
+			String fname = flatName(sv.getName(), prefix, varHM);
+			typeB.addStateVariable(fname, sv.getDimension());
+
+			if (sv.getExposure() != null) {
+				String enm = flatName(sv.getExposureName(), prefix);
+				typeB.setStateExposure(fname, enm);
+			}
+		}
+
+		for (OnEvent oe : dyn.getOnEvents()) {
+			typeB.addOnEvent(oe.makeCopy());
+		}
+
+		for (EventPort ep : typ.getEventPorts()) {
+			typeB.addEventPort(ep.makeCopy());
+		}
+
+		for (OnCondition oc : dyn.getOnConditions()) {
+			typeB.addOnCondition(oc.makeCopy());
+		}
+
+		for (ParamValue pv : cpt.getParamValues()) {
+	 		String fname = flatName(pv.getName(), prefix);
+			// TODO
+			String val = cpt.getAttributes().getByName(pv.getName()).getValue();
+			cbuilder.addParameter(fname, val);
+		}
+
+		
+		for (Component child : cpt.getAllChildren()) {
+			String cid = "";
+			if (child.getID() != null) {
+				cid = child.getID();
+			} else {
+				cid = child.getName();
+			}
+			
+			String childPrefix = flatName(cid, prefix);
+			importFlattened(child, childPrefix);
+		}
+
+		
+		for (DerivedVariable dv : dyn.getDerivedVariables()) {
+
+			String fname = flatName(dv.getName(), prefix, varHM);
+		 
+			String val = dv.getValueExpression();
+			String sel = dv.getSelect();
+
+			
+			if (val != null) {
+				val = replaceAll(val, varHM);
+				typeB.addDerivedVariable(fname, dv.getDimension(), val);
+				
+			} else if (sel != null) {
+				String red = dv.getReduce();
+				String selval = sel;
+				if (red != null) {
+					String op = " ? ";
+					String dflt = "";
+					if (red.equals("add")) {
+						op = " + ";
+						dflt = "0";
+					} else if (red.equals("multiply")) {
+						op = " * ";
+						dflt = "1";
+					} else {
+						throw new ContentError("Unrecognized reduce: " + red);
+					}
+				
+					int iwc = sel.indexOf("[*]");
+					String rt = sel.substring(0, iwc);
+					String var = sel.substring(iwc + 4, sel.length());
+					
+					ArrayList<String> items = new ArrayList<String>();
+					items.add(dflt);
+					for (Component c : cpt.getChildrenAL(rt)) {
+						items.add(flatName(c.getID() + "_" + var, prefix));
+					}
+					selval = StringUtil.join(items, op);
+				}
+				
+				for (Child child : typ.getChilds()) {
+					String sp = child.getName();
+					String fp = flatName(sp, prefix);
+					selval = selval.replace(sp + "/", fp + "_");
+				}
+
+				for (ComponentReference compRef : typ.getComponentReferences()) {
+					String sp = compRef.getName();
+					String refid = cpt.getRefComponents().get(compRef.getName()).getID();
+					String fp = flatName(refid, prefix);
+					selval = selval.replace(sp + "/", fp + "_");
+				}
+			 
+				
+				typeB.addDerivedVariable(fname, dv.getDimension(), selval);
+			}
+			 
+
+			if (dv.exposure != null) {
+				String enm = flatName(dv.exposure, prefix);
+				typeB.setDerivedVariableExposure(fname, enm);
+			}
+		}
+
+		for (TimeDerivative td : dyn.getTimeDerivatives()) {
+
+			String val = replaceAll(td.getValueExpression(), varHM);
+			
+			String varnm = flatName(td.getVariable(), prefix);
+			typeB.addTimeDerivative(varnm, val);
+		}
+		
+
+		for (OnStart os : dyn.getOnStarts()) {
+			for (StateAssignment sa : os.stateAssignments) {
+
+				String vnm = flatName(sa.getVariable(), prefix);
+				String val = replaceAll(sa.getValueExpression(), varHM);
+				typeB.addOnStart(vnm, val);
+			}
+		}
+	}
+	
+	
+
+	private String flatName(String nm, String pfx, HashMap<String, String> varmap) {
+		String ret = flatName(nm, pfx);
+		if (nm.equals(ret)) {
+			// no need to add it
+		} else {
+			varmap.put(nm, ret);
+		}
+		return ret;
+	}
+
+	private String flatName(String nm, String pfx) {
+		String ret = nm;
+		if (pfx.length() > 0) {
+			ret = pfx + "_" + nm;
+		}
+ 		return ret;
+	}
+	
+	
+	
+	
+
+	private static String replaceAll(String expr, HashMap<String, String> varHM) {
+		String exprNew = expr;
+		for (String orig : varHM.keySet()) {
+			String newName = varHM.get(orig);
+			exprNew = replaceInFunction(exprNew, orig, newName);
+		}
+		return exprNew;
+	}
+
+	/*
+	 * A bit of a roundabout way of doing it...
+	 */
+	public static String replaceInFunction(String expr, String oldVar, String newVar) {
+		String orig = new String(expr);
+
+		if (expr.trim().equals(oldVar)) {
+			return newVar;
+		}
+
+		// String new_ = toReplace.get(old);
+		String[] pres = new String[] { "\\(", "\\+", "-", "\\*", "/", "\\^", " ", "<", ">" };
+		String[] posts = new String[] { "\\)", "\\+", "-", "\\*", "/", "\\^", " ", "<", ">" };
+
+		// E.info("----------  Changing |"+ expr+"|");
+		for (String pre : pres) {
+			for (String post : posts) {
+
+				String o = pre + oldVar + post;
+				String n = pre + " " + newVar + " " + post;
+				// E.info("1 Replacing |"+o+"| with |"+n+"| in: |"+expr+"|");
+				expr = expr.replaceAll(o, n);
+			}
+		}
+		expr = expr.trim();
+
+		// E.info("----------  Changing |"+ expr+"|");
+
+		for (String pre : pres) {
+			if (pre.equals("\\^"))
+				pre = "^";
+			String o = pre + oldVar;
+			String n = pre + " " + newVar;
+			if (expr.endsWith(o)) {
+				// E.info("2 Replacing |"+o+"| with |"+n+"| in: |"+expr+"|");
+				expr = expr.substring(0, expr.length() - o.length()) + n;
+			}
+		}
+		for (String post : posts) {
+			if (post.equals("\\^"))
+				post = "^";
+			String o = oldVar + post;
+			String n = newVar + " " + post;
+			if (expr.startsWith(o)) {
+				// E.info("3 Replacing |"+o+"| with |"+n+"| in: |"+expr+"|");
+				expr = n + expr.substring(o.length());
+			}
+		}
+
+		expr = expr.replaceAll("  ", " ");
+
+		if (!expr.equals(orig)) {
+			// E.info("----------  Changed |"+orig+"| to |"+
+			// expr+"| for old: "+oldVar+", new: "+newVar);
+		}
+		return expr;
+	}
 
 }

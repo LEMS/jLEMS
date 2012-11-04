@@ -16,7 +16,7 @@ import org.lemsml.jlems.type.LemsCollection;
 @ModelElement(info="Event handler block")
 public class OnEvent extends PointResponse {
  
-	@ModelProperty(info="the port to lesten on")
+	@ModelProperty(info="the port to listen on")
 	public String port;
 	
 	EventPort eventPort;
@@ -34,6 +34,15 @@ public class OnEvent extends PointResponse {
 
 	public String getPortName() {
 		return eventPort.getName();
+	}
+
+
+
+
+	public OnEvent makeCopy() {
+		OnEvent oe = new OnEvent();
+		oe.port=  port;
+		return oe;
 	}
 
 

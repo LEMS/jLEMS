@@ -51,5 +51,14 @@ public class Parameter implements Named {
         return r_dimension;
     }
 
+
+
+	protected void setName(String s) {
+		 name = s;
+	}
+
+	protected void setDimension(String sd) {
+		dimension = sd;
+	}
      
 }

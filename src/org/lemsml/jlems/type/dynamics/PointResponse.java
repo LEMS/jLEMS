@@ -35,6 +35,12 @@ public class PointResponse {
 		}
 	
 	}
+ 
+	public void addStateAssignment(String vnm, String val) {
+		StateAssignment sa = new StateAssignment();
+		sa.setVariable(vnm);
+		sa.setValue(val);
+	}
 	
 	
 	public LemsCollection<StateAssignment> getStateAssignments() {

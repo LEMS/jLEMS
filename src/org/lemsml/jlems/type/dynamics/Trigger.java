@@ -16,6 +16,14 @@ public class Trigger extends ExpressionValued {
 		}
 		return value;
 	}
+
+
+
+	public Trigger makeCopy() {
+		Trigger ret = new Trigger();
+		ret.value = value;
+		return ret;
+	}
 	
 	
 }

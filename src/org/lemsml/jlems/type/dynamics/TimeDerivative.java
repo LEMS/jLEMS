@@ -12,16 +12,7 @@ public class TimeDerivative extends StateChange {
 		super();
 	}
 	
-    public TimeDerivative(String vnm) {
-    	super(vnm);
-    }
-
-    
-    public TimeDerivative(String vnm, String value) {
-        this(vnm);
-        this.value = value;
-    }
-
+  
 
 	 
 	public Dimension getStateVariableDimensionMultiplier() {
@@ -29,6 +20,7 @@ public class TimeDerivative extends StateChange {
 		 ret.setT(-1);
 		 return ret;
 	}
+ 
 
 	
 }

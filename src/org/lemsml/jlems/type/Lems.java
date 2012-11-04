@@ -60,7 +60,8 @@ public class Lems {
     
     private static Random randomGenerator = new Random();
 
-   
+    private boolean resolved = false;
+    
      
     
     public Lems() {
@@ -92,6 +93,25 @@ public class Lems {
         return randomGenerator;
     }
 
+    
+    public void resolve(ComponentType ct) throws ParseError, ContentError {
+    	if (!resolved) {
+    		resolve();
+    	}
+    	ct.checkResolve(this, parser);
+    }
+    
+    
+    public void resolve(Component c) throws ParseError, ContentError {
+    	if (!resolved) {
+    		resolve();
+    	}
+    	c.checkResolve(this, null);
+    }
+    
+    
+    
+    
     
     public void resolve() throws ContentError, ParseError {
           
@@ -149,13 +169,13 @@ public class Lems {
 
             }
         }
+        resolved = true;
     }
 
-    
-    
-    public void addComponentClass(ComponentType ct) {
-    	addComponentType(ct);
+    public void addComponent(Component c) {
+         components.add(c);
     }
+
     
     public void addComponentType(ComponentType ct) {
         E.info("Adding component type: " + ct);

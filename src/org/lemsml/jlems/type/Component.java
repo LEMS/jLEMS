@@ -104,6 +104,11 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	public String getName() {
 		return name;
 	}
+	
+	
+	public void setType(String s) {
+		type = s;
+	}
 
 	 
 	@Override
@@ -721,8 +726,10 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	
 	public ArrayList<Component> getStrictChildren() {
 		ArrayList<Component> comps = new ArrayList<Component>();
-		for (ArrayList<Component> compList : childrenHM.values()) {
-			comps.addAll(compList);
+		if (childrenHM != null) {
+			for (ArrayList<Component> compList : childrenHM.values()) {
+				comps.addAll(compList);
+			}
 		}
 		return comps;
 	}
@@ -924,6 +931,9 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	public LemsCollection<Component> getComponents() {
 		return components;
 	}
+
+
+
 
 
 	 
