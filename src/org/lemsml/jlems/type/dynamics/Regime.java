@@ -3,13 +3,12 @@ package org.lemsml.jlems.type.dynamics;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import org.lemsml.jlems.eval.BBase;
-import org.lemsml.jlems.eval.DBase;
-import org.lemsml.jlems.expression.BooleanEvaluable;
+import org.lemsml.jlems.eval.BooleanEvaluator;
+import org.lemsml.jlems.eval.DoubleEvaluator;
 import org.lemsml.jlems.expression.Dimensional;
-import org.lemsml.jlems.expression.DoubleEvaluable;
 import org.lemsml.jlems.expression.ExprDimensional;
 import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.expression.ParseTree;
 import org.lemsml.jlems.expression.Parser;
 import org.lemsml.jlems.expression.Valued;
 import org.lemsml.jlems.logging.E;
@@ -235,9 +234,9 @@ public class Regime implements Named {
  	 
 		 for (DerivedVariable dv : derivedVariables) {
 			 if (dv.hasExpression()) {
-			 DoubleEvaluable dev = dv.getEvaluable();
-			 DBase db = new DBase(dev.makeFixed(fixedHM));
-			 ret.addExpressionDerived(dv.getName(), db);
+				 ParseTree pt = dv.getParseTree();
+				 DoubleEvaluator db = pt.makeFloatFixedEvaluator(fixedHM);
+				 ret.addExpressionDerived(dv.getName(), db);
 			 } else if (dv.hasSelection()) {
 				 
 				 ret.addPathDerived(dv.getName(), dv.getPath(), dv.getFunc(), dv.isRequired(), dv.getReduce());
@@ -247,8 +246,9 @@ public class Regime implements Named {
 		 for (TimeDerivative sd : timeDerivatives) {
 			 StateVariable sv = sd.getStateVariable();
 			 varHS.remove(sv);
-			 DoubleEvaluable dev = sd.getEvaluable();
-			 DBase db = new DBase(dev.makeFixed(fixedHM));
+			 ParseTree pt = sd.getParseTree();
+			 DoubleEvaluator db = pt.makeFloatFixedEvaluator(fixedHM);
+			 
 			 ret.addRate(sv.getName(), db);
 		 }
 		 
@@ -274,8 +274,11 @@ public class Regime implements Named {
 		 }
 		 
 		 for (OnCondition oc : onConditions) {
-			 BooleanEvaluable bev = oc.getEvaluable();
-			 BBase bb = new BBase(bev.makeFixed(fixedHM));
+			 
+			 ParseTree pt = oc.getParseTree();
+			 BooleanEvaluator bb = pt.makeBooleanFixedEvaluator(fixedHM);
+			 
+			
 			 ConditionAction cr = new ConditionAction(bb);
 			 ActionBlock ea = oc.makeEventAction(fixedHM);
 			 cr.setAction(ea);
@@ -366,7 +369,9 @@ public class Regime implements Named {
 		for (FinalParam fp : typ.getFinalParams()) {
 			dimHM.put(fp.getName(), fp.getDimensionality());
 		}
-		dimHM.put("t", new ExprDimensional(0, 0, 1, 0));
+		ExprDimensional tdim = new ExprDimensional();
+		tdim.setT(1);
+		dimHM.put("t", tdim);
 		
 	 	
 		

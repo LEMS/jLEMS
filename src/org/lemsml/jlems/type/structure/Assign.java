@@ -1,6 +1,6 @@
 package org.lemsml.jlems.type.structure;
 
-import org.lemsml.jlems.expression.DoubleEvaluable;
+import org.lemsml.jlems.eval.DoubleEvaluator;
 
 public class Assign {
 
@@ -9,7 +9,7 @@ public class Assign {
 	
 	public String exposeAs;
 	
-	DoubleEvaluable doubleEvaluable;
+	DoubleEvaluator doubleEvaluator;
 	
 	
 	public String getProperty() {
@@ -24,17 +24,17 @@ public class Assign {
 		return value;
 	}
 
-	public void setDoubleEvaluable(DoubleEvaluable de) {
-		doubleEvaluable = de;
+	public void setDoubleEvaluator(DoubleEvaluator de) {
+		doubleEvaluator = de;
 	}
 
-	public DoubleEvaluable getDoubleEvaluable() {
-		return doubleEvaluable;
+	public DoubleEvaluator getDoubleEvaluator() {
+		return doubleEvaluator;
 	}
 
     @Override
     public String toString() {
-        return "Assign{" + "property=" + property + ", value=" + value + ", exposeAs=" + exposeAs + ", doubleEvaluable=" + doubleEvaluable + '}';
+        return "Assign{" + "property=" + property + ", value=" + value + ", exposeAs=" + exposeAs + ", doubleEvaluator=" + doubleEvaluator + '}';
     }
 
 	

@@ -17,9 +17,7 @@ import org.lemsml.jlems.type.EventPort;
 import org.lemsml.jlems.type.Exposure;
 import org.lemsml.jlems.type.FinalParam;
 import org.lemsml.jlems.type.Lems;
-import org.lemsml.jlems.type.LemsCollection;
 import org.lemsml.jlems.type.ParamValue;
-import org.lemsml.jlems.type.Parameter;
 import org.lemsml.jlems.type.Requirement;
 import org.lemsml.jlems.type.Text;
 import org.lemsml.jlems.type.dynamics.DerivedVariable;
@@ -164,7 +162,7 @@ public class ComponentFlattener {
 
 			
 			if (val != null) {
-				val = replaceAll(val, varHM);
+				val = substituteVariables(val, varHM);
 				typeB.addDerivedVariable(fname, dv.getDimension(), val);
 				
 			} else if (sel != null) {
@@ -221,7 +219,7 @@ public class ComponentFlattener {
 
 		for (TimeDerivative td : dyn.getTimeDerivatives()) {
 
-			String val = replaceAll(td.getValueExpression(), varHM);
+			String val = substituteVariables(td.getValueExpression(), varHM);
 			
 			String varnm = flatName(td.getVariable(), prefix);
 			typeB.addTimeDerivative(varnm, val);
@@ -232,7 +230,7 @@ public class ComponentFlattener {
 			for (StateAssignment sa : os.stateAssignments) {
 
 				String vnm = flatName(sa.getVariable(), prefix);
-				String val = replaceAll(sa.getValueExpression(), varHM);
+				String val = substituteVariables(sa.getValueExpression(), varHM);
 				typeB.addOnStart(vnm, val);
 			}
 		}
@@ -262,13 +260,16 @@ public class ComponentFlattener {
 	
 	
 
-	private static String replaceAll(String expr, HashMap<String, String> varHM) {
-		String exprNew = expr;
+	private static String substituteVariables(String expr, HashMap<String, String> varHM) {
+		String ret = expr;
+		String src = expr;
 		for (String orig : varHM.keySet()) {
-			String newName = varHM.get(orig);
-			exprNew = replaceInFunction(exprNew, orig, newName);
+			String replacement = varHM.get(orig);
+			ret = replaceInFunction(ret, orig, replacement);
 		}
-		return exprNew;
+		E.info("Substitution from " + src);
+		E.info("Substitution to    " + ret);
+		return ret;
 	}
 
 	/*

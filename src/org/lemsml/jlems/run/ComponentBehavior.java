@@ -5,8 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
 
-import org.lemsml.jlems.eval.BBase;
-import org.lemsml.jlems.eval.DBase;
+import org.lemsml.jlems.eval.DoubleEvaluator;
 import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.sim.ComponentBehaviorVisitor;
 import org.lemsml.jlems.sim.ContentError;
@@ -512,17 +511,13 @@ public class ComponentBehavior {
 	}
 
 
-	public void addExpressionDerived(String snm, DBase db) {
+	public void addExpressionDerived(String snm, DoubleEvaluator db) {
 		ExpressionDerivedVariable edv = new ExpressionDerivedVariable(snm, db);
         //E.info("Adding: "+edv);
 		exderiveds.add(edv);
 	}
 
-	public void addConditionDerived(String snm, DBase db, BBase cond, DBase ifFalse) {
-		ConditionDerivedVariable cdv = new ConditionDerivedVariable(snm, db, cond, ifFalse);
-        //E.info("Adding: "+cdv);
-		exderiveds.add(cdv);
-	} 
+	 
 	
 	public PathDerivedVariable addPathDerived(String snm, String path, String rf, 
 			boolean reqd, String reduce) {
@@ -544,8 +539,8 @@ public class ComponentBehavior {
 		}
  	}
 
-	public void addRate(String name, DBase db) {
-		rates.add(new VariableROC(name, db));
+	public void addRate(String name, DoubleEvaluator de) {
+		rates.add(new VariableROC(name, de));
 	}
 
 	public void addEventResponse(EventAction er) {

@@ -178,19 +178,7 @@ public class ComponentBehaviorWriter {
 			return ret;
  	}
 
- 
-	private String join(ArrayList<String> als, String sep) {
-		String ret = "";
-		boolean first = true;
-		for (String s : als) {
-			if (!first) {
-				ret += sep;
-			}
-			ret += s;
-			first = false;
-		}
-		return ret;
-	}
+  
 	
 	
 	

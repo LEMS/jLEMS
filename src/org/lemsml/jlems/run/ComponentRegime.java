@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import org.lemsml.jlems.eval.DBase;
+import org.lemsml.jlems.eval.DoubleEvaluator;
 import org.lemsml.jlems.logging.E;
 
 public class ComponentRegime {
@@ -148,7 +148,7 @@ public class ComponentRegime {
 	}
 	
 
-	public void addExpressionDerived(String snm, DBase db) {
+	public void addExpressionDerived(String snm, DoubleEvaluator db) {
 		ExpressionDerivedVariable edv = new ExpressionDerivedVariable(snm, db);
 		exderiveds.add(edv);
 	}
@@ -167,7 +167,7 @@ public class ComponentRegime {
 		indeps.add(vnm);
 	}
 
-	public void addRate(String name, DBase db) {
+	public void addRate(String name, DoubleEvaluator db) {
 		rates.add(new VariableROC(name, db));
 	}
 

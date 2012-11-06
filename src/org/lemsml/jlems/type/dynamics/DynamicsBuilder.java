@@ -3,7 +3,6 @@ package org.lemsml.jlems.type.dynamics;
 import java.util.HashMap;
 
 import org.lemsml.jlems.type.Dimension;
-import org.lemsml.jlems.type.EventPort;
 
 public class DynamicsBuilder {
 	

@@ -2,17 +2,17 @@ package org.lemsml.jlems.run;
  
 import java.util.HashMap;
 
-import org.lemsml.jlems.eval.BBase;
+import org.lemsml.jlems.eval.BooleanEvaluator;
 
 public class ConditionAction {
  
 	
-	BBase condition;
+	BooleanEvaluator condition;
 	
 	ActionBlock action;
 	
 	
-	public ConditionAction(BBase bb) {
+	public ConditionAction(BooleanEvaluator bb) {
 		 condition = bb;
 	}
 
@@ -37,7 +37,7 @@ public class ConditionAction {
 
 
 	public Boolean eval(HashMap<String, Double> varHM) {
-		return condition.eval(varHM);
+		return condition.evalB(varHM);
 	}
 
 

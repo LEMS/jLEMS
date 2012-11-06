@@ -13,8 +13,6 @@ public class MinusNode extends FloatResultNode {
 		super("-");
 	}
 
-   
-	
 	public MinusNode copy() {
 		return new MinusNode();
 	}

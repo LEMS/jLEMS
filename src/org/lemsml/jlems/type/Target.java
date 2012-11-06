@@ -1,7 +1,7 @@
 package org.lemsml.jlems.type;
 
-import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.annotation.ModelElement;
+import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.sim.ContentError;
 
 @ModelElement(info="A lems file can contain many component definitions. " +

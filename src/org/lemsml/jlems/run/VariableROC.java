@@ -3,14 +3,14 @@ package org.lemsml.jlems.run;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import org.lemsml.jlems.eval.DBase;
+import org.lemsml.jlems.eval.DoubleEvaluator;
 
 public class VariableROC {
 
 	String varname;
-	DBase rateexp;
+	DoubleEvaluator rateexp;
 	
-	public VariableROC(String name, DBase das) {
+	public VariableROC(String name, DoubleEvaluator das) {
 		varname = name;
 		rateexp = das;
 	}
@@ -19,14 +19,14 @@ public class VariableROC {
 		return varname;
 	}
 
-        public DBase getRateexp() {
+        public DoubleEvaluator getRateexp() {
             return rateexp;
         }
 
 
 
 	public double eval(HashMap<String, Double> varHM) {
-		return rateexp.eval(varHM);
+		return rateexp.evalD(varHM);
 	}
 
 	public double evalptr(HashMap<String, DoublePointer> varHM) throws RuntimeError {

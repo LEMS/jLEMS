@@ -1,7 +1,7 @@
 package org.lemsml.jlems.type;
 
-import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.annotation.ModelElement;
+import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.sim.ContentError;
 
 @ModelElement(info="Holds textual information that does not change the model but is needed for other purposes such as " +

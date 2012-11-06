@@ -2,11 +2,11 @@ package org.lemsml.jlems.type;
 
 import java.util.HashMap;
 
-import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.annotation.ModelElement;
+import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.expression.Dimensional;
-import org.lemsml.jlems.expression.Evaluable;
 import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.expression.ParseTree;
 import org.lemsml.jlems.expression.Parser;
 import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.sim.ContentError;
@@ -48,9 +48,9 @@ public class Assertion {
 		 }
 		 
 	 
-			 Evaluable ev = parser.parse(matches);
+			 ParseTree pt = parser.parse(matches);
 			 
-			 Dimensional dm = ev.evaluateDimensional(adml);
+			 Dimensional dm = pt.evaluateDimensional(adml);
 			 
 			 if (dm.matches(r_about)) {
 			//	 E.info("OK (dimension check): " + dimension + " matches " + matches);

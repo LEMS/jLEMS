@@ -1,7 +1,7 @@
 package org.lemsml.jlems.type.structure;
 
-import org.lemsml.jlems.expression.DoubleEvaluable;
 import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.expression.ParseTree;
 import org.lemsml.jlems.run.BuilderElement;
 import org.lemsml.jlems.run.ComponentBehavior;
 import org.lemsml.jlems.run.MultiBuilder;
@@ -38,8 +38,8 @@ public class MultiInstantiate extends BuildElement {
 			r_component.resolve(lems, null);
 		}
 		for (Assign ass : assigns) {
-			DoubleEvaluable de = lems.getParser().parseExpression(ass.getExpression());
-			ass.setDoubleEvaluable(de);
+			ParseTree pt = lems.getParser().parseExpression(ass.getExpression());
+			ass.setDoubleEvaluator(pt.makeFloatEvaluator());
 		}
 	}
 	
@@ -68,7 +68,7 @@ public class MultiInstantiate extends BuildElement {
 				cea = cpt.getTextParam(ea);
 			}
 			
-			mb.addAssignment(ass.getProperty(), ass.getDoubleEvaluable(), cea);
+			mb.addAssignment(ass.getProperty(), ass.getDoubleEvaluator(), cea);
 		}
 		
 		return mb;

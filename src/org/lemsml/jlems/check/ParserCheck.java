@@ -3,8 +3,7 @@ package org.lemsml.jlems.check;
  
 import java.util.HashMap;
 
-import org.lemsml.jlems.expression.BooleanEvaluable;
-import org.lemsml.jlems.expression.DoubleEvaluable;
+import org.lemsml.jlems.expression.ParseTree;
 import org.lemsml.jlems.expression.Parser;
 import org.lemsml.jlems.logging.E;
 
@@ -40,9 +39,9 @@ public class ParserCheck {
         	 for (String expr: expressions) {
         		
         		 try {
-        			 DoubleEvaluable res = p.parseExpression(expr);
+        			 ParseTree pt = p.parseExpression(expr);
 
-        			 E.info("Parsed " + expr + " to: " + res.toString() + ", (" + res.getClass() + ")");
+        			 E.info("Parsed " + expr + " to: " + pt.toString());
         		 } catch (Exception ex) {
         			 ok = false;
         			 E.error("Failed to parse " + expr);
@@ -58,7 +57,7 @@ public class ParserCheck {
     	try {
         Parser p = new Parser();
         String src = "3 + (1.3e-4 + 5) + (3 *4)+ 4/(4.*45) + 34.2E-2 + sin(a + b) / cos(b + c)";
-        DoubleEvaluable root = p.parseExpression(src);
+        ParseTree pt = p.parseExpression(src);
 
         E.info("parsing " + src);
   
@@ -72,7 +71,7 @@ public class ParserCheck {
         valHM.put("b", b);
         valHM.put("c", c);
         valHM.put("d", d);
-        double eval = root.evalD(valHM);
+        double eval = pt.makeFloatEvaluator().evalD(valHM);
         double res = 3 + (1.3e-4 + 5) + (3 *4)+ 4/(4.*45) + 34.2E-2 + Math.sin(a + b) / Math.cos(b + c);
         
         if (Math.abs(res - eval) > 1.e-6) {
@@ -93,13 +92,13 @@ public class ParserCheck {
     	Parser p = new Parser();
 
         String src= "ln(c)";
-        DoubleEvaluable dev = p.parseExpression(src);
+        ParseTree pt = p.parseExpression(src);
          
         HashMap<String, Double> valHM = new HashMap<String, Double>();
         double c = 3.456e3;
         valHM.put("c", c);
         
-        double val = dev.evalD(valHM);
+        double val = pt.makeFloatEvaluator().evalD(valHM);
       
         double res = Math.log(c);
 
@@ -136,8 +135,8 @@ public class ParserCheck {
         for (int i = 0; i < conditions.length; i++) {
         	String src = conditions[i];
         	try {
-        	BooleanEvaluable bev = p.parseCondition(src); 
-        	boolean res = bev.evalB(valHM);
+        	ParseTree pt = p.parseCondition(src); 
+        	boolean res = pt.makeBooleanEvaluator().evalB(valHM);
         	if (res == results[i]) {
         		E.info("OK " + src + " " + res + " as expected");
         	} else {

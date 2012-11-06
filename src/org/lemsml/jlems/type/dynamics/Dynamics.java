@@ -5,13 +5,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import org.lemsml.jlems.annotation.ModelElement;
-import org.lemsml.jlems.eval.BBase;
-import org.lemsml.jlems.eval.DBase;
-import org.lemsml.jlems.expression.BooleanEvaluable;
+import org.lemsml.jlems.eval.BooleanEvaluator;
+import org.lemsml.jlems.eval.DoubleEvaluator;
 import org.lemsml.jlems.expression.Dimensional;
-import org.lemsml.jlems.expression.DoubleEvaluable;
 import org.lemsml.jlems.expression.ExprDimensional;
 import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.expression.ParseTree;
 import org.lemsml.jlems.expression.Parser;
 import org.lemsml.jlems.expression.Valued;
 import org.lemsml.jlems.logging.E;
@@ -284,9 +283,7 @@ public class Dynamics  {
 			valHM.put(vin.getName(), vin);
 		}
 	}
-	
 	 
-	
 
 	public ComponentBehavior makeComponentBehavior(Component cpt, HashMap<String, Double> fixedHM) throws ContentError, ParseError {
  		
@@ -340,28 +337,13 @@ public class Dynamics  {
 		 
 		 for (DerivedVariable dv : derivedVariables) {
 			 if (dv.hasExpression()) {
-
-                 if (dv instanceof ConditionalDerivedVariable) {
-                	 ConditionalDerivedVariable cdv = (ConditionalDerivedVariable)dv;
-                     DoubleEvaluable dev = cdv.getEvaluable();
-                     BooleanEvaluable be = cdv.getEvaluableCondition();
-                     DoubleEvaluable devIfFalse = cdv.getEvaluableIfFalse();
-                     DBase v = new DBase(dev.makeFixed(fixedHM));
-                     DBase vif = new DBase(devIfFalse.makeFixed(fixedHM));
-                     BBase cond = new BBase(be.makeFixed(fixedHM));
-                     ret.addConditionDerived(dv.getName(), v, cond, vif);
-                
-                 } else {
-                     DoubleEvaluable dev = dv.getEvaluable();
-                     DBase db = new DBase(dev.makeFixed(fixedHM));
-                     ret.addExpressionDerived(dv.getName(), db);
-                 }
+		 			 
+				 DoubleEvaluator db = dv.getParseTree().makeFloatFixedEvaluator(fixedHM);
 				 
-			 } else if (dv.hasSelection()) {
-				 
+				 ret.addExpressionDerived(dv.getName(), db);
+             	 
+			 } else if (dv.hasSelection()) {	 
 				 ret.addPathDerived(dv.getName(), dv.getPath(), dv.getFunc(), dv.isRequired(), dv.getReduce());
-				 
-				 
 				 
 			 } else {
 				 throw new ContentError("Derived variable needs as selection or an expression");
@@ -376,8 +358,9 @@ public class Dynamics  {
 		 for (TimeDerivative sd : timeDerivatives) {
 			 StateVariable sv = sd.getStateVariable();
 			 varHS.remove(sv);
-			 DoubleEvaluable dev = sd.getEvaluable();
-			 DBase db = new DBase(dev.makeFixed(fixedHM));
+			 
+			 ParseTree pt = sd.getParseTree();
+			 DoubleEvaluator db = pt.makeFloatFixedEvaluator(fixedHM);
 			 ret.addRate(sv.getName(), db);
 		 }
 		 
@@ -410,8 +393,10 @@ public class Dynamics  {
 		 
 		 
 		 for (OnCondition oc : onConditions) {
-			 BooleanEvaluable bev = oc.getEvaluable();
-			 BBase bb = new BBase(bev.makeFixed(fixedHM));
+		
+			 ParseTree pt = oc.getParseTree();
+			 BooleanEvaluator bb = pt.makeBooleanFixedEvaluator(fixedHM);
+			
 			 ConditionAction cr = new ConditionAction(bb);
 			 ActionBlock ea = oc.makeEventAction(fixedHM);
 			 cr.setAction(ea);
@@ -501,7 +486,9 @@ public class Dynamics  {
 			dimHM.put(ip.getName(), ip.getDimensionality());
         }
 
-		dimHM.put("t", new ExprDimensional(0, 0, 1, 0));
+        ExprDimensional tdim = new ExprDimensional();
+        tdim.setT(1);
+		dimHM.put("t", tdim);
 		
 	  
 		

@@ -2,10 +2,10 @@ package org.lemsml.jlems.type;
 
 import java.util.HashMap;
 
-import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.annotation.ModelElement;
-import org.lemsml.jlems.expression.DoubleEvaluable;
+import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.expression.ParseTree;
 import org.lemsml.jlems.expression.Parser;
 import org.lemsml.jlems.expression.Valued;
 import org.lemsml.jlems.sim.ContentError;
@@ -58,8 +58,8 @@ public class Constant implements Named, Valued  {
 		}		
 		
 		if (value.indexOf("*") > 0 || value.indexOf("/") > 0) {
-			DoubleEvaluable evaluable = parser.parseExpression(value);
-			p_value = evaluable.evalD(valHM);
+			ParseTree pt = parser.parseExpression(value);
+			p_value = pt.makeFloatEvaluator().evalD(valHM);
 			
 		} else {
 			if (units != null) {

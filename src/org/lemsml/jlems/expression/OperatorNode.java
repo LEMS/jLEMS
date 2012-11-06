@@ -4,7 +4,7 @@ import java.util.HashMap;
  
  
 
-public abstract class OperatorNode extends UnaryNode implements Cloneable, Evaluable {
+public abstract class OperatorNode extends UnaryNode implements Cloneable, ParseTreeNode {
 
     public Node left;
     String symbol;

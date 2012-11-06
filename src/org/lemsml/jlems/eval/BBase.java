@@ -7,7 +7,7 @@ import java.util.HashMap;
 import org.lemsml.jlems.run.DoublePointer;
 import org.lemsml.jlems.run.RuntimeError;
 
-public class BBase {
+public class BBase implements BooleanEvaluator {
 
 	BVal root;
 	
@@ -34,7 +34,7 @@ public class BBase {
     }
 
 	
-	public boolean eval(HashMap<String, Double> valHM) {
+	public boolean evalB(HashMap<String, Double> valHM) {
 		for (int i = 0; i < vars.length; i++) {
 			vars[i].set(valHM);
 		}

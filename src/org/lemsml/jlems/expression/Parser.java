@@ -78,24 +78,22 @@ public class Parser {
 	}
 	
 
-	public BooleanEvaluable parseCondition(String e) throws ParseError {
-		Evaluable ev = parse(e);
-		BooleanEvaluable ret = null;
-		if (ev instanceof BooleanEvaluable) {
-			ret = (BooleanEvaluable)ev;
+	public ParseTree parseCondition(String e) throws ParseError {
+		ParseTree ret = null;
+		ParseTree ev = parse(e);
+		if (ev.isBoolean()) {
+			ret = ev;
 		} else {
 			E.error("not a condition: " + e);
 		}
 		return ret;
 	}
 	
-	public DoubleEvaluable parseExpression(String e) throws ParseError {
-
-		DoubleEvaluable ret = null;
-         
-		Evaluable ev = parse(e);
-		if (ev instanceof DoubleEvaluable) {
-			ret = (DoubleEvaluable)ev;
+	public ParseTree parseExpression(String e) throws ParseError {
+		ParseTree ret = null;
+	 	ParseTree ev = parse(e);
+		if (ev.isFloat()) {
+			ret = ev;
         	} else {
            		E.error("not a condition: " + e);
            }
@@ -106,7 +104,7 @@ public class Parser {
 	
 	
 	
-	public Evaluable parse(String ea) throws ParseError {
+	public ParseTree parse(String ea) throws ParseError {
 
 		String e = ea;
 		if (verbose) {
@@ -182,11 +180,11 @@ public class Parser {
 			gn.supplantByChild();
 		}
 		
-		Evaluable root = null;
+		ParseTreeNode root = null;
 		if (groot.children().size() == 1) {
 			Node fc = groot.children().get(0);
-			if (fc instanceof Evaluable) {
-				root = (Evaluable)fc;
+			if (fc instanceof ParseTreeNode) {
+				root = (ParseTreeNode)fc;
 			} else {
 				throw new ParseError("root node is not evaluable " + fc);
 			}
@@ -201,8 +199,8 @@ public class Parser {
 			throw new ParseError(sb.toString());
 		}
 	 
-		root.evaluablize();
-		return root;
+		ParseTree ret = new ParseTree(root);
+		return ret;
 	}
 	
 	
@@ -382,12 +380,12 @@ public class Parser {
             
             p.setVerbose();
             String s1 = "V * -59";
-            DoubleEvaluable de = p.parseExpression(s1);
-            E.info("Parsed " + s1 + " to: " + de);
+            ParseTree pt = p.parseExpression(s1);
+            E.info("Parsed " + s1 + " to: " + pt);
 		
             String s2 = "1.2 * 5 * 5.0e-3 * 6e34";
-            DoubleEvaluable de2 = p.parseExpression(s2);
-            E.info("Parsed " + s2 + " to: " + de2);
+            ParseTree pt2 = p.parseExpression(s2);
+            E.info("Parsed " + s2 + " to: " + pt2);
 		 
 			
 		} catch (Exception ex) {

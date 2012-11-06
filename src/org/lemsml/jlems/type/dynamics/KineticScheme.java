@@ -3,8 +3,8 @@ package org.lemsml.jlems.type.dynamics;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.annotation.ModelElement;
+import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.run.KScheme;
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Children;

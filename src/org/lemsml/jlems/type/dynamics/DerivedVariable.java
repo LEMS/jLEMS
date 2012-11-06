@@ -2,11 +2,11 @@ package org.lemsml.jlems.type.dynamics;
 
 import java.util.HashMap;
 
-import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.annotation.ModelElement;
+import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.expression.Dimensional;
-import org.lemsml.jlems.expression.DoubleEvaluable;
 import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.expression.ParseTree;
 import org.lemsml.jlems.expression.Parser;
 import org.lemsml.jlems.expression.Valued;
 import org.lemsml.jlems.sim.ContentError;
@@ -44,8 +44,8 @@ public class DerivedVariable extends ExpressionValued implements Valued {
 	public String exposure;   
 	public Exposure r_exposure;
 
-	DoubleEvaluable evaluable;
-
+	ParseTree parseTree;
+ 
 	 
 	@ModelProperty(info="Set to true if it OK for this variable to be absent. " +
 			"See 'reduce' for what happens in this case")
@@ -93,9 +93,8 @@ public class DerivedVariable extends ExpressionValued implements Valued {
         }
 
         if (value != null) {
-        	evaluable = parser.parseExpression(value);
-        	evaluable.setValues(valHM);
-        }
+        	parseTree = parser.parseExpression(value);
+         }
 
         if (select != null && select.trim().length() > 0) {
         	// TODO - could parse the select expression here into something that 
@@ -134,11 +133,7 @@ public class DerivedVariable extends ExpressionValued implements Valued {
 		}
 		return ret;
 	}
-	
 
-	public DoubleEvaluable getEvaluable() {
-		 return evaluable;
-	}
 
 	public void fillFrom(Object obj) {
 		DerivedVariable dsrc = (DerivedVariable)obj;
@@ -153,8 +148,8 @@ public class DerivedVariable extends ExpressionValued implements Valued {
 	public Dimensional getDimensionality(HashMap<String, Dimensional> dimHM) throws ContentError {
 		Dimensional ret = null;
 		
-		if (evaluable != null) {
-			ret = evaluable.getDimensionality(dimHM);
+		if (parseTree != null) {
+			ret = parseTree.getDimensionality(dimHM);
 
 		} else if (r_dimension != null) {
 			ret = r_dimension;
@@ -220,6 +215,10 @@ public class DerivedVariable extends ExpressionValued implements Valued {
 
 	public void setExposure(String s) {
 		exposure = s;
+	}
+
+	public ParseTree getParseTree() {
+		return parseTree;
 	}
 
 }

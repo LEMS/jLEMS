@@ -7,11 +7,8 @@ import org.junit.Test;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.flatten.ComponentFlattener;
 import org.lemsml.jlems.logging.E;
- 
-import org.lemsml.jlems.run.ComponentBehavior;
 import org.lemsml.jlems.run.ConnectionError;
 import org.lemsml.jlems.run.RuntimeError;
-import org.lemsml.jlems.run.StateInstance;
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.sim.ParseException;
 import org.lemsml.jlems.sim.Sim;
@@ -22,7 +19,6 @@ import org.lemsml.jlems.type.Lems;
 import org.lemsml.jlems.xml.XMLException;
 import org.lemsml.jlemsio.logging.DefaultLogger;
 import org.lemsml.jlemsio.reader.FileInclusionReader;
-import org.lemsml.jlemsio.util.FileUtil;
 import org.lemsml.jlemsio.xmlio.XMLSerializer;
 
 
@@ -46,8 +42,7 @@ public class ComponentFlatteningTest {
 	 
     public static void main(String[] args) throws ContentError, ParseError, ConnectionError, RuntimeError, IOException {
     	DefaultLogger.initialize();
-    	File f1 = new File("examples/example1.xml");
-     
+       
     	try {
     		ComponentFlatteningTest cft = new ComponentFlatteningTest();
     		cft.runExample1();

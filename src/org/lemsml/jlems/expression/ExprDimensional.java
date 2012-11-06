@@ -9,7 +9,7 @@ public class ExprDimensional implements Dimensional {
 	int t;
 	int i;
 	int k;
-	int c;
+	int n;
 	
 	boolean isZero = false;
 	
@@ -21,37 +21,37 @@ public class ExprDimensional implements Dimensional {
 		t = 0;
 		i = 0;
 		k = 0;
-		c = 0;
+		n = 0;
 	}
 
-	public ExprDimensional(int am, int al, int at, int ai) {
-		m = am;
-		l = al;
-		t = at;
-		i = ai;
-        k = 0;
-        c = 0;
-	}
-
-	public ExprDimensional(int am, int al, int at, int ai, int ak, int ac) {
-		m = am;
-		l = al;
-		t = at;
-		i = ai;
-		k = ak;
-		c = ac;
-	}
-	
+ 
     @Override
 	public String toString() {
-		return "ExprDim["+ (m != 0 ? " m=" + m : "") + (l != 0 ? " l=" + l : "") + (t != 0 ? " t=" + t : "")
-                + (i != 0 ? " i=" + i : "") + (k != 0 ? " k=" + k : "") + (c != 0 ? " c=" + c : "")+ 
-                (m==0&&l==0&&t==0&&i==0&&k==0&&c== 0 ? " dimensionless" : "")+"]";
-	}
-	
+    	String[] lbls = {"m", "l", "t", "i", "k", "n"};
+    	int[] vals = {m, l, t, i, k, n};
+     	String sd = "";
+    	for (int i = 0; i < lbls.length; i++) {
+    		if (vals[i] != 0) {
+    			if (sd.length() > 0) {
+    				sd += ", ";
+    			}
+    			sd += lbls[i] + "=" + vals[i];
+    		}
+    	}
+    	String ret = "ExprDimensional[" + (sd.length() > 0 ? sd : "dimensionless") + "]";
+    	return ret;
+    }
+     
 	
 	public Dimensional getDivideBy(Dimensional d) {
-		return new ExprDimensional(m - d.getM(), l - d.getL(), t - d.getT(), i - d.getI(), k - d.getK(), c - d.getN());
+		ExprDimensional ret = new ExprDimensional();
+		ret.m = m - d.getM();
+		ret.l = l - d.getL();
+		ret.t = t - d.getT();
+		ret.i = i - d.getI();
+		ret.k = k - d.getK();
+		ret.n = n - d.getN();
+		return ret;
 	}
 
  
@@ -78,18 +78,25 @@ public class ExprDimensional implements Dimensional {
 	}
 
 	public int getN() {
-		return c;
+		return n;
 	}
 
  
-	public Dimensional getTimes(Dimensional d) {
-		return new ExprDimensional(m + d.getM(), l + d.getL(), t + d.getT(), i + d.getI(), k + d.getK(), c + d.getN());
-	}
-
 	 
+
+	public Dimensional getTimes(Dimensional d) {
+		ExprDimensional ret = new ExprDimensional();
+		ret.m = m + d.getM();
+		ret.l = l + d.getL();
+		ret.t = t + d.getT();
+		ret.i = i + d.getI();
+		ret.k = k + d.getK();
+		ret.n = n + d.getN();
+		return ret;
+	}
 	public boolean isDimensionless() {
 		boolean ret = false;
-		if (m == 0 && l == 0 && t == 0 && i == 0 && k == 0 && c == 0) {
+		if (m == 0 && l == 0 && t == 0 && i == 0 && k == 0 && n == 0) {
 			ret = true;
 		}
 		return ret;
@@ -98,7 +105,7 @@ public class ExprDimensional implements Dimensional {
  
 	public boolean matches(Dimensional d) {
 		boolean ret = false;
-		if (m == d.getM() && l == d.getL() && t == d.getT() && i == d.getI() && k == d.getK() && c == d.getN()) {
+		if (m == d.getM() && l == d.getL() && t == d.getT() && i == d.getI() && k == d.getK() && n == d.getN()) {
 			ret = true;
 		}
 		return ret;
@@ -109,8 +116,14 @@ public class ExprDimensional implements Dimensional {
 		Dimensional ret = null;
 		if (dbl - Math.round(dbl) < 1.e-6) {
 			int id = (int)(Math.round(dbl));
-			ret = new ExprDimensional(id * m, id * l, id * t, id * i, id * k, id * c);
-			
+			ExprDimensional re = new ExprDimensional();
+			re.m = id * m;
+			re.l = id * l;
+			re.t = id * t;
+			re.i = id * i;
+			re.k = id * k;
+			re.n = id * n;
+			ret = re;
 		} else {
 			E.missing("Can't work with fractional dimensions yet");
 		}
@@ -132,6 +145,11 @@ public class ExprDimensional implements Dimensional {
 	}
 	public double getDoubleValue() {
 		return doubleValue;
+	}
+
+
+	public void setT(int j) {
+		t = j;
 	}
 	
 }

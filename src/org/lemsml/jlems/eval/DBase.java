@@ -8,7 +8,7 @@ import java.util.HashSet;
 import org.lemsml.jlems.run.DoublePointer;
 import org.lemsml.jlems.run.RuntimeError;
 
-public class DBase {
+public class DBase implements DoubleEvaluator {
 
 	DVal root;
 	
@@ -36,7 +36,7 @@ public class DBase {
  		return root.toString();
 	}
 	
-	public double eval(HashMap<String, Double> valHM) {
+	public double evalD(HashMap<String, Double> valHM) {
 		for (int i = 0; i < vars.length; i++) {
 			vars[i].set(valHM);
 		}

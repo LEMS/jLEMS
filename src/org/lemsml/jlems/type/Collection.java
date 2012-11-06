@@ -1,7 +1,7 @@
 package org.lemsml.jlems.type;
 
-import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.annotation.ModelElement;
+import org.lemsml.jlems.annotation.ModelProperty;
 
 
 @ModelElement(info="Specifies that instances of components based on this class can containe a named collection of other instances. " +

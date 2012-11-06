@@ -9,13 +9,13 @@ import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Lems;
 
 
-public class FunctionNode extends UnaryNode implements DoubleEvaluable {
+public class FunctionNode extends UnaryNode implements DoubleParseTreeNode {
 
 	String fname = null;
 
 	GroupNode args;
 
-	DoubleEvaluable argEvaluable;
+	DoubleParseTreeNode argEvaluable;
 
 	public FunctionNode(String sf) {
 		super();
@@ -43,19 +43,13 @@ public class FunctionNode extends UnaryNode implements DoubleEvaluable {
 		}
 	}
 
+	/*
 	public double evalD(HashMap<String, Double> valHS) throws ParseError {
 		return call(argEvaluable.evalD(valHS));
 	}
-
-	// TODO multiple args
-	public void evaluablize() throws ParseError {
-		if (right instanceof DoubleEvaluable) {
-			argEvaluable = (DoubleEvaluable) right;
-			argEvaluable.evaluablize();
-		} else {
-			throw new ParseError("non evaluable function arg " + right);
-		}
-	}
+*/
+	
+ 
 
 	public double call(double arg) {
 		double ret = Double.NaN;
@@ -89,13 +83,7 @@ public class FunctionNode extends UnaryNode implements DoubleEvaluable {
 		}
 		return ret;
 	}
-
-	public void setValues(HashMap<String, Valued> valHM) throws ContentError {
-		if (argEvaluable != null) {
-			argEvaluable.setValues(valHM);
-		}
-	}
-
+ 
 	public DVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
 		return new DFunc(fname, argEvaluable.makeFixed(fixedHM));
 	}

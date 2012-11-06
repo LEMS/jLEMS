@@ -1,7 +1,7 @@
 package org.lemsml.jlems.type.dynamics;
 
-import org.lemsml.jlems.expression.DoubleEvaluable;
 import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.expression.ParseTree;
 import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.BuilderElement;
 import org.lemsml.jlems.run.EventConnectionBuilder;
@@ -33,8 +33,8 @@ public class EventConnection extends BuildElement {
 	@Override
 	public void resolveLocal(Lems lems, ComponentType ct) throws ContentError, ParseError {
 		for (Assign ass : assigns) {
-			DoubleEvaluable de = lems.getParser().parseExpression(ass.getExpression());
-			ass.setDoubleEvaluable(de);
+			ParseTree pt = lems.getParser().parseExpression(ass.getExpression());
+			ass.setDoubleEvaluator(pt.makeFloatEvaluator());
 		}
 	}
 	
@@ -65,7 +65,7 @@ public class EventConnection extends BuildElement {
                 if (ea != null) {
                     E.warning("Expose as in EventConnection is not used");
                  }
-                ret.addAssignment(ass.getProperty(), ass.getDoubleEvaluable());
+                ret.addAssignment(ass.getProperty(), ass.getDoubleEvaluator());
             }
 		}
 		if (receiverContainer != null && cpt.hasAttribute(receiverContainer)) {

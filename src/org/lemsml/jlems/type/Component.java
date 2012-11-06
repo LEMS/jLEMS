@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.lemsml.jlems.annotation.ModelProperty;
- 
-import org.lemsml.jlems.expression.DoubleEvaluable;
 import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.expression.ParseTree;
 import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.ComponentBehavior;
 import org.lemsml.jlems.sim.ContentError;
@@ -529,9 +528,9 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 
 				} else if (dfp.isValue()) {
 					// TODO this can be done in the class, not here
-					DoubleEvaluable evaluable = lems.getParser().parseExpression(dfp.getValueString());
+					ParseTree pt = lems.getParser().parseExpression(dfp.getValueString());
 
-					qv = evaluable.evalD(valHM);
+					qv = pt.makeFloatEvaluator().evalD(valHM);
 				}
 
 				if (paramValues.hasName(dfp.getName())) {

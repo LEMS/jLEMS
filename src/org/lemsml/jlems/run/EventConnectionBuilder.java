@@ -3,8 +3,7 @@ package org.lemsml.jlems.run;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.lemsml.jlems.eval.DBase;
-import org.lemsml.jlems.expression.DoubleEvaluable;
+import org.lemsml.jlems.eval.DoubleEvaluator;
 import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.sim.ContentError;
 
@@ -167,8 +166,9 @@ public class EventConnectionBuilder extends PostBuilder {
         this.delay = delay;
     }
 
-	public void addAssignment(String property, DoubleEvaluable de) throws ContentError {
-		ExpressionDerivedVariable edv = new ExpressionDerivedVariable(property, new DBase(de.makeFixed(null)));
+	public void addAssignment(String property, DoubleEvaluator de) throws ContentError {
+		// TOOD - de, or de.makeCopy() ?
+		ExpressionDerivedVariable edv = new ExpressionDerivedVariable(property, de);
 		edvAL.add(edv);
 	}
 

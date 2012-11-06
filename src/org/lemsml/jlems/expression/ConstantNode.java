@@ -6,7 +6,7 @@ import org.lemsml.jlems.eval.DCon;
 import org.lemsml.jlems.eval.DVal;
 import org.lemsml.jlems.sim.ContentError;
  
-public class ConstantNode extends Node implements DoubleEvaluable {
+public class ConstantNode extends Node implements DoubleParseTreeNode {
 	
 	String sval = null;
 
@@ -32,10 +32,7 @@ public class ConstantNode extends Node implements DoubleEvaluable {
 		 return dval;
 	}
  
-	public void evaluablize() {
-	 
-		
-	}
+ 
 
 	 
 	public void setValues(HashMap<String, Valued> valHM) {

@@ -2,14 +2,14 @@ package org.lemsml.jlems.run;
 
 import java.util.HashMap;
 
-import org.lemsml.jlems.eval.DBase;
+import org.lemsml.jlems.eval.DoubleEvaluator;
 
 public class VariableAssignment {
 
 	String varname;
-	DBase valexp;
+	DoubleEvaluator valexp;
 	
-	public VariableAssignment(String name, DBase das) {
+	public VariableAssignment(String name, DoubleEvaluator das) {
 		varname = name;
 		valexp = das;
 	}
@@ -18,12 +18,12 @@ public class VariableAssignment {
 		return varname;
 	}
 
-    public DBase getValexp() {
+    public DoubleEvaluator getValexp() {
             return valexp;
     }
 
 	public double eval(HashMap<String, Double> varHM) {
-		return valexp.eval(varHM);
+		return valexp.evalD(varHM);
 	}
 	
 	public double evalptr(HashMap<String, DoublePointer> varHM) throws RuntimeError {

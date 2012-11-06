@@ -1,8 +1,7 @@
 package org.lemsml.jlems.type;
 
-import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.annotation.ModelElement;
- 
+import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.expression.Dimensional;
 import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.sim.ContentError;

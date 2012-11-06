@@ -1,7 +1,5 @@
 package org.lemsml.jlemstests;
- 
-import static org.junit.Assert.assertTrue;
-
+  
 import java.io.File;
 import java.io.IOException;
 
@@ -13,7 +11,6 @@ import org.lemsml.jlems.sim.ParseException;
 import org.lemsml.jlems.type.BuildException;
 import org.lemsml.jlems.xml.TextElementReader;
 import org.lemsml.jlems.xml.XMLElement;
-import org.lemsml.jlems.xml.XMLElementReader;
 import org.lemsml.jlems.xml.XMLException;
 import org.lemsml.jlemsio.logging.DefaultLogger;
 import org.lemsml.jlemsio.util.FileUtil;

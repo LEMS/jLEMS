@@ -7,7 +7,7 @@ import org.lemsml.jlems.eval.DVal;
 import org.lemsml.jlems.eval.DVar;
 import org.lemsml.jlems.sim.ContentError;
 
-public class VariableNode extends Node implements DoubleEvaluable {
+public class VariableNode extends Node implements DoubleParseTreeNode {
 
 	String svar;
 	
@@ -36,11 +36,7 @@ public class VariableNode extends Node implements DoubleEvaluable {
 		return ret;
 	}
 
-	 
-	public void evaluablize() {
-	 
-	}
-
+ 
  
 	public void setValues(HashMap<String, Valued> valHM) throws ContentError {
 		if (valHM.containsKey(svar)) {

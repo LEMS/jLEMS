@@ -1,7 +1,7 @@
 package org.lemsml.jlems.type;
 
-import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.annotation.ModelElement;
+import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.sim.ContentError;
 
 @ModelElement(info="Duplicates some functionality of PathParameter - the two should be merged.")

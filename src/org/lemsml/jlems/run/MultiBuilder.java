@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.lemsml.jlems.eval.DBase;
-import org.lemsml.jlems.expression.DoubleEvaluable;
+import org.lemsml.jlems.eval.DoubleEvaluator;
+import org.lemsml.jlems.expression.DoubleParseTreeNode;
 import org.lemsml.jlems.sim.ContentError;
 
 public class MultiBuilder extends AbstractChildBuilder {
@@ -53,13 +54,14 @@ public class MultiBuilder extends AbstractChildBuilder {
 
  
 
-	public void addAssignment(String property, DoubleEvaluable de) throws ContentError {
+	public void addAssignment(String property, DoubleParseTreeNode de) throws ContentError {
 		ExpressionDerivedVariable edv = new ExpressionDerivedVariable(property, new DBase(de.makeFixed(null)));
 		edvAL.add(edv);
 	}
 
-	public void addAssignment(String property, DoubleEvaluable de, String exposeAs) throws ContentError {
-		ExpressionDerivedVariable edv = new ExpressionDerivedVariable(property, new DBase(de.makeFixed(null)));
+	public void addAssignment(String property, DoubleEvaluator de, String exposeAs) throws ContentError {
+		// TODO copy de?
+		ExpressionDerivedVariable edv = new ExpressionDerivedVariable(property, de);
 		edv.setInstanceExposeAs(exposeAs);
 		edvAL.add(edv);
 	}

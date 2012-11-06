@@ -1,7 +1,7 @@
 package org.lemsml.jlems.type;
 
-import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.annotation.ModelElement;
+import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.sim.ContentError;
 
 @ModelElement(info="A Unit asociates a symbol with a dimension and a power of ten. For non-metric units a " +
@@ -39,24 +39,14 @@ public class Unit implements PseudoNamed, Summaried, DataMatchable {
     public Unit() {
     }
 
-    public Unit(String name, String symbol, Dimension dimension) {
-        this(name, symbol, dimension, 0, 1);
+    public Unit(String nm, String sb, Dimension dim) {
+    	name = nm;
+        symbol = sb;
+        r_dimension = dim;
+        dimension = dim.getName();
     }
 
-    public Unit(String name, String symbol, Dimension dimension, int powTen, double scale) {
-    	this(name, symbol, dimension, powTen, scale, 0);
-    }
-    
-    
-    public Unit(String name, String symbol, Dimension dimension, int pt, double scale, double offset) {
-        this.name = name;
-        this.symbol = symbol;
-        this.dimension = dimension.getName();
-        this.r_dimension= dimension;
-         this.power = pt;
-        this.scale = scale;
-        this.offset = offset;
-    }
+   
 
     
     

@@ -150,11 +150,7 @@ public class TextElementReader {
 		return ret;
 	}
 	
-	
-	
 	 
-	 
-	
 	
 	private String printLine() {
 		int ilin = bisectFind(lineOffsets, iwk);

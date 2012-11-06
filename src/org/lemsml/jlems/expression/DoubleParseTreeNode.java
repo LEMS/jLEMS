@@ -5,12 +5,8 @@ import java.util.HashMap;
 import org.lemsml.jlems.eval.DVal;
 import org.lemsml.jlems.sim.ContentError;
 
-public interface DoubleEvaluable extends Evaluable {
-
-	public double evalD(HashMap<String, Double> valHS) throws ParseError;
-
+public interface DoubleParseTreeNode extends ParseTreeNode {
+ 
 	public DVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError;
 
-	
-	
 }

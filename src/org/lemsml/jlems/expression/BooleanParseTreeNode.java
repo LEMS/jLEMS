@@ -5,10 +5,9 @@ import java.util.HashMap;
 import org.lemsml.jlems.eval.BVal;
 import org.lemsml.jlems.sim.ContentError;
 
-public interface BooleanEvaluable extends Evaluable {
+public interface BooleanParseTreeNode extends ParseTreeNode {
 	
-	public boolean evalB(HashMap<String, Double> valHS) throws ParseError;
-
+ 
 	public BVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError;
 
 	public void checkDimensions(HashMap<String, Dimensional> dimHM) throws ContentError;

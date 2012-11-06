@@ -3,7 +3,7 @@ package org.lemsml.jlems.run;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.lemsml.jlems.eval.DBase;
+import org.lemsml.jlems.eval.DoubleEvaluator;
 import org.lemsml.jlems.sim.ContentError;
 
 public class ActionBlock {
@@ -17,7 +17,7 @@ public class ActionBlock {
 	public String transitionTo;
 	
 	
-	public void addAssignment(String name, DBase das) {	
+	public void addAssignment(String name, DoubleEvaluator das) {	
 		assignments.add(new VariableAssignment(name, das));	
 	}
 

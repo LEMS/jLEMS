@@ -3,8 +3,8 @@ package org.lemsml.jlems.type.dynamics;
 import java.util.HashMap;
 
 import org.lemsml.jlems.expression.Dimensional;
-import org.lemsml.jlems.expression.DoubleEvaluable;
 import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.expression.ParseTree;
 import org.lemsml.jlems.expression.Parser;
 import org.lemsml.jlems.expression.Valued;
 import org.lemsml.jlems.logging.E;
@@ -18,10 +18,9 @@ public abstract class StateChange extends ExpressionValued {
 	
 	private StateVariable r_variable;
 	 
-
-	DoubleEvaluable evaluable;
+	ParseTree parseTree; 
+ 
 	
-
 	public StateChange() {
 		
 	}
@@ -52,33 +51,23 @@ public abstract class StateChange extends ExpressionValued {
 			}
 			throw new ContentError(error.toString());
 		}
-		
-		boolean ok = true;
-		try {
-			evaluable = parser.parseExpression(value);
-			evaluable.setValues(valHM);
-
-		} catch (ContentError ce) {
-			ok = false;
-		}
-		
-		if (!ok) {
-			throw new ContentError("Parsing failed for " + variable + ", source expression is: \"" + value + "\"");
-		}
+		parseTree = parser.parseExpression(value);
 	}
+	
 	
 	public StateVariable getStateVariable() {
 		return r_variable;
 	}
-	
-	public DoubleEvaluable getEvaluable() {
-		 return evaluable;
+	 
+ 
+	public ParseTree getParseTree() {
+		 return parseTree;
 	}
 	
     public void checkDimensions(HashMap<String, Dimensional> dimHM) throws ContentError {
         try {
-
-            Dimensional drhs = evaluable.getDimensionality(dimHM);
+        	 
+            Dimensional drhs = parseTree.getDimensionality(dimHM);
             if (drhs.isAny()) {
                 // fine - zero can be assigned to anything
             } else {

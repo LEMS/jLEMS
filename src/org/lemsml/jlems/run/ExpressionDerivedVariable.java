@@ -3,12 +3,12 @@ package org.lemsml.jlems.run;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import org.lemsml.jlems.eval.DBase;
+import org.lemsml.jlems.eval.DoubleEvaluator;
  
 
 public class ExpressionDerivedVariable {
 	String varname;
-	DBase rateexp;
+	DoubleEvaluator rateexp;
 	
 	String exposeAs;
 
@@ -22,9 +22,9 @@ public class ExpressionDerivedVariable {
 
 
 
-	public ExpressionDerivedVariable(String snm, DBase db) {
+	public ExpressionDerivedVariable(String snm, DoubleEvaluator de) {
 		varname = snm;
-		rateexp = db;
+		rateexp = de;
 	}
 
 	public ExpressionDerivedVariable makeFlat(String pfx, HashSet<String> indHS) {
@@ -47,14 +47,14 @@ public class ExpressionDerivedVariable {
 		return varname;
 	}
 
-    public DBase getRateexp() {
+    public DoubleEvaluator getRateexp() {
             return rateexp;
     }
 
         
 
 	public double eval(HashMap<String, Double> varHM) {
-		return rateexp.eval(varHM);
+		return rateexp.evalD(varHM);
 	}
 
 	public double evalptr(HashMap<String, DoublePointer> varHM) throws RuntimeError {

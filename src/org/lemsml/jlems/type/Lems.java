@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.annotation.ModelElement;
 import org.lemsml.jlems.expression.Dimensional;
 import org.lemsml.jlems.expression.ParseError;

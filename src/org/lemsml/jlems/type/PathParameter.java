@@ -1,8 +1,7 @@
 package org.lemsml.jlems.type;
 
-import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.annotation.ModelElement;
- 
+import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.sim.ContentError;
 
 @ModelElement(info="A parameter of which the value is a path expression. When a ComponentType declares a PathParameter, " +

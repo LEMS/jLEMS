@@ -1,9 +1,6 @@
 package org.lemsml.jlems.codger;
 
-import org.lemsml.jlems.expression.DoubleEvaluable;
 import org.lemsml.jlems.expression.ParseError;
-import org.lemsml.jlems.expression.Parser;
-import org.lemsml.jlems.logging.E;
 
 public class MathMLGenerator {
 	
@@ -12,7 +9,8 @@ public class MathMLGenerator {
 // need to generalize such generators with a visitor 
 	 
 	    public void testMathML() throws ParseError {
-
+	    	
+	    	/*
 	        Parser p = new Parser();
 	        String src = "3 + (1.3e-4 + 5) + (3 *4)+ 4/(4.*45) + 34.2E-2 + sin(a + b) / cos(b + c)";
 	        DoubleEvaluable root = p.parseExpression(src);
@@ -22,6 +20,7 @@ public class MathMLGenerator {
 
 	       // TODO need a mechanism to generate MathML that doesn't involve embedding it deeply in executable components
 	       // E.info("\n" + root.getMathML("    ", "  "));
+	    */
 	    }
 
 	    /*

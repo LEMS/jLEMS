@@ -2,10 +2,10 @@ package org.lemsml.jlems.type.dynamics;
 
 import java.util.HashMap;
 
-import org.lemsml.jlems.eval.DBase;
+import org.lemsml.jlems.eval.DoubleEvaluator;
 import org.lemsml.jlems.expression.Dimensional;
-import org.lemsml.jlems.expression.DoubleEvaluable;
 import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.expression.ParseTree;
 import org.lemsml.jlems.expression.Parser;
 import org.lemsml.jlems.expression.Valued;
 import org.lemsml.jlems.run.ActionBlock;
@@ -61,9 +61,12 @@ public class PointResponse {
 	public ActionBlock makeEventAction(HashMap<String, Double> fixedHM) throws ContentError {
 		 ActionBlock ret = new ActionBlock();
 		 for (StateAssignment sa : stateAssignments) {
-			 DoubleEvaluable dase = sa.getEvaluable();
-			 DBase das = new DBase(dase.makeFixed(fixedHM));
-			 ret.addAssignment(sa.getStateVariable().getName(), das);
+			 
+			 ParseTree pt = sa.getParseTree();
+			 
+			 DoubleEvaluator dase = pt.makeFloatFixedEvaluator(fixedHM); 
+			 
+			 ret.addAssignment(sa.getStateVariable().getName(), dase);
 		 } 
 		 for (EventOut eout : eventOuts) {
 			 ret.addEventOut(eout.getPortName());

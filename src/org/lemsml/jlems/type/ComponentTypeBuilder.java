@@ -1,11 +1,9 @@
 package org.lemsml.jlems.type;
 
 import org.lemsml.jlems.sim.ContentError;
-import org.lemsml.jlems.type.dynamics.Dynamics;
 import org.lemsml.jlems.type.dynamics.DynamicsBuilder;
 import org.lemsml.jlems.type.dynamics.OnCondition;
 import org.lemsml.jlems.type.dynamics.OnEvent;
-import org.lemsml.jlems.type.dynamics.StateVariable;
 
 
 public class ComponentTypeBuilder {

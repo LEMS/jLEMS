@@ -31,6 +31,8 @@ public class PlusNode extends FloatResultNode {
 		return new Plus(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
 	}
 
+	
+	
 	 
 	public Dimensional dimop(Dimensional dl, Dimensional dr) throws ContentError {
 		Dimensional ret = null;
