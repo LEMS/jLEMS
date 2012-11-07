@@ -18,8 +18,12 @@ public class VariableNode extends Node implements DoubleParseTreeNode {
 		svar = s;
 	}
 	
-        @Override
+     
 	public String toString() {
+		return "{Variable: " + svar + "}";
+	}
+	
+	public String toExpression() {
 		return svar;
 	}
 

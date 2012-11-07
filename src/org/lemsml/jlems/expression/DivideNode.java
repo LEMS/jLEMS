@@ -30,6 +30,7 @@ public class DivideNode extends FloatResultNode {
 	}
 	
 	public DVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
+		checkLeftRight();
 		return new Divide(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
 	}
 

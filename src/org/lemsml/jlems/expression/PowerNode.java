@@ -29,6 +29,7 @@ public class PowerNode extends FloatResultNode {
 	}
 	
 	public DVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
+		checkLeftRight();
 		return new Power(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
 	}
 

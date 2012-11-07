@@ -28,6 +28,7 @@ public class TimesNode extends FloatResultNode {
 	}
 	
 	public DVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
+		checkLeftRight();
 		return new Times(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
 	}
 	

@@ -84,11 +84,24 @@ public class FunctionNode extends UnaryNode implements DoubleParseTreeNode {
 		return ret;
 	}
  
+	private void checkArg() throws ContentError {
+		if (argEvaluable == null) {
+			if (right instanceof DoubleParseTreeNode) {
+				argEvaluable = (DoubleParseTreeNode) right;		
+			} else {
+				throw new ContentError("Wrong node type in function " + right);
+			}
+		}
+	}
+	
+	
 	public DVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
+		checkArg();
 		return new DFunc(fname, argEvaluable.makeFixed(fixedHM));
 	}
 
 	public Dimensional getDimensionality(HashMap<String, Dimensional> dimHM) throws ContentError {
+		checkArg();
 		Dimensional ret = null;
 		Dimensional diml = argEvaluable.getDimensionality(dimHM);
 		if (diml.isDimensionless()) {

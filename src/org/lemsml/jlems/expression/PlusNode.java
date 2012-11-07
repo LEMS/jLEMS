@@ -28,6 +28,8 @@ public class PlusNode extends FloatResultNode {
 
 	
 	public DVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
+		checkLeftRight();
+		
 		return new Plus(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
 	}
 

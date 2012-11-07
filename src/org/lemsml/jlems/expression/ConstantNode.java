@@ -20,8 +20,12 @@ public class ConstantNode extends Node implements DoubleParseTreeNode {
 		dval = Double.parseDouble(s);
 	}
 	
-        @Override
 	public String toString() {
+		return "{Constant: " + sval + "}";
+	}
+	
+       
+	public String toExpression() {
 		return sval;
 	}
 

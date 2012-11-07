@@ -28,6 +28,7 @@ public class GreaterThanNode extends ComparisonNode {
 	}
 
 	public BComp makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
+		checkLeftRight();
 		return new GTComp(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
 	}
 

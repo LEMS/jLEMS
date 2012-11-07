@@ -64,7 +64,7 @@ fall back to using the distal point of the parent segment -->
 </ComponentType>
  
  
- <ComponentType name"PointConductance">
+ <ComponentType name="PointConductance">
  	<Exposure name="e" dimension="voltage"/>
  	<Exposure name="g" dimension="conductance"/>
 	<!-- a point conductance has a path parameter, which contains an XPath-like reference 
@@ -147,7 +147,7 @@ fall back to using the distal point of the parent segment -->
 <SegmentCell id="sc1">
 	<Segment id="a">
 		<Proxmial x="0um" y="0um" z="0um" r="1um"/>
-		<Distal ="x="50um" y="0ym" z="0um" r="1um"/>
+		<Distal x="50um" y="0um" z="0um" r="1um"/>
     </Segment>
     <Segment parent="a">
     	<Distal x="100um" y="50um" z="0um" r="1um"/>
@@ -167,6 +167,7 @@ fall back to using the distal point of the parent segment -->
 
 
 <SimulationSet id="simset">
+	<Display id="disp1"/>
  	<!--  display and simulation stuff... -->
 </SimulationSet>
 

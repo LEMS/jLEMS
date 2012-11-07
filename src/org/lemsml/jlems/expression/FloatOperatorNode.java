@@ -13,12 +13,30 @@ public abstract class FloatOperatorNode extends OperatorNode {
 		super(s);
 	}
 
-
-	 
-	
  
+	protected void checkLeftRight() throws ContentError {
+		if (leftEvaluable == null) {
+			if (left instanceof DoubleParseTreeNode) {
+				leftEvaluable = (DoubleParseTreeNode)left;
+			} else {
+				throw new ContentError("Wrong node type in float operator: " + left);
+			}
+		}
+		
+		if (rightEvaluable == null) {
+			if (right instanceof DoubleParseTreeNode) {
+				rightEvaluable = (DoubleParseTreeNode)right;
+			} else {
+				throw new ContentError("Wrong node type in float operator: " + right);
+			}
+		}
+	}
+	
+	
 
 	public Dimensional getDimensionality(HashMap<String, Dimensional> dimHM) throws ContentError {
+		checkLeftRight();
+		
 		Dimensional dl = leftEvaluable.getDimensionality(dimHM);
 		Dimensional dr = rightEvaluable.getDimensionality(dimHM);
 		Dimensional ret = null;

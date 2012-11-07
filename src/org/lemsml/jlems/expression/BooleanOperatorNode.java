@@ -16,7 +16,24 @@ public abstract class BooleanOperatorNode extends OperatorNode implements Boolea
 	
 	public abstract boolean bool(boolean x, boolean y);
 	
-	 
+	
+	protected void checkLeftRight() throws ContentError {
+		if (leftEvaluable == null) {
+			if (left instanceof BooleanParseTreeNode) {
+				leftEvaluable = (BooleanParseTreeNode)left;
+			} else {
+				throw new ContentError("Wrong node type in float operator: " + left);
+			}
+		}
+		if (rightEvaluable == null) {
+			if (right instanceof BooleanParseTreeNode) {
+				rightEvaluable = (BooleanParseTreeNode)right;	
+			} else {
+				throw new ContentError("Wrong node type in float operator: " + right);
+			}
+		}
+	}
+	
 
 	public Dimensional getDimensionality(HashMap<String, Dimensional> dimHM) throws ContentError {
 		Dimensional dl = leftEvaluable.getDimensionality(dimHM);

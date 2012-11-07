@@ -30,6 +30,7 @@ public class ModuloNode extends FloatResultNode {
 
 	
 	public DVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
+		checkLeftRight();
 		return new Mod(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
 	}
 

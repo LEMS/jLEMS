@@ -28,6 +28,7 @@ public class LessThanOrEqualsNode extends ComparisonNode {
 	}
 
 	public BComp makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
+		checkLeftRight();
 		return new LEQComp(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
 	}
 

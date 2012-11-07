@@ -37,18 +37,25 @@ public class DimensionTest {
 		assertFalse(current.matches(temp));
 		assertEquals(Dimension.getSIUnit(temp), "K");
 
-		Unit kelv = new Unit("kelvin", "K", temp, 0, 1);
-		Unit celc = new Unit("celsius", "degC", temp, 0, 1, -273.15);
-		Unit farn = new Unit("farenheit", "degF", temp, 0, 5 / 9., -459.67);
+		Unit kelv = new Unit("kelvin", "K", temp);
+		Unit celc = new Unit("celsius", "degC", temp);
+		celc.setOffset(-273.15);
+
+		Unit farn = new Unit("farenheit", "degF", temp);
+		farn.setScaleFactor(5 / 9.);
+		farn.setOffset(-459.67);
+		
 		Dimension l = new Dimension("length");
 		l.setL(1);
 		Dimension l2 = new Dimension("area");
 		l.setL(2);
 		Unit m = new Unit("meter", "m", l);
-		Unit f = new Unit("foot", "f", l, 0, 0.3048);
-		Unit m2 = new Unit("meter2", "m2", l2, 0, 1);
-		Unit cm2 = new Unit("centimeter2", "cm2", l2, -4, 1);
-
+		Unit f = new Unit("foot", "f", l);
+		f.setScaleFactor(0.3048);
+		Unit m2 = new Unit("meter2", "m2", l2);
+		Unit cm2 = new Unit("centimeter2", "cm2", l2);
+		cm2.setPower(-4);
+		
 		LemsCollection<Unit> units = new LemsCollection<Unit>();
 		units.add(kelv);
 		units.add(celc);

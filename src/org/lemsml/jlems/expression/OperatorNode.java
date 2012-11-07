@@ -18,8 +18,14 @@ public abstract class OperatorNode extends UnaryNode implements Cloneable, Parse
         return symbol;
     }
 
-    @Override
     public String toString() {
+    	String ret = "{Operator " + symbol + ": left=" + left + "; right=" + right + "}";
+    	return ret;
+    }
+    
+    
+   
+    public String toExpression() {
         return "(" + str(left) + " " + symbol + " " + str(right) + ")";
     }
 

@@ -32,6 +32,7 @@ public class EqualsNode extends ComparisonNode {
  
 
 	public BComp makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
+		checkLeftRight();
 		return new EQComp(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
 	}
 

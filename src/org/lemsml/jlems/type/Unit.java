@@ -47,8 +47,17 @@ public class Unit implements PseudoNamed, Summaried, DataMatchable {
     }
 
    
-
+    public void setOffset(double d) {
+    	offset = d;
+    }
     
+    public void setScaleFactor(double f) {
+    	scale = f;
+    }
+    
+    public void setPower(int p) {
+    	power = p;
+    }
     
     
     public boolean dataMatches(Object obj) {
