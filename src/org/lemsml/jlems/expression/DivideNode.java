@@ -29,9 +29,9 @@ public class DivideNode extends FloatResultNode {
 		return (Double.isNaN(x) ? 1 : x) / y;
 	}
 	
-	public DVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
+	public DVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
 		checkLeftRight();
-		return new Divide(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
+		return new Divide(leftEvaluable.makeEvaluable(fixedHM), rightEvaluable.makeEvaluable(fixedHM));
 	}
 
  

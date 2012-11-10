@@ -27,9 +27,9 @@ public class TimesNode extends FloatResultNode {
 		return x * y;
 	}
 	
-	public DVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
+	public DVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
 		checkLeftRight();
-		return new Times(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
+		return new Times(leftEvaluable.makeEvaluable(fixedHM), rightEvaluable.makeEvaluable(fixedHM));
 	}
 	
 	public Dimensional dimop(Dimensional dl, Dimensional dr) {

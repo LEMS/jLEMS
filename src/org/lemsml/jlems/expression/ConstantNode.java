@@ -38,7 +38,7 @@ public class ConstantNode extends Node implements DoubleParseTreeNode {
  
   
 
-	public DVal makeFixed(HashMap<String, Double> fixedHM) {
+	public DVal makeEvaluable(HashMap<String, Double> fixedHM) {
 		return new DCon(dval);
 	}
 

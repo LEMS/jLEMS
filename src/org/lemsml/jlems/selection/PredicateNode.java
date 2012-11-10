@@ -50,7 +50,7 @@ public class PredicateNode extends Node {
 				double eps = 1.e-6;
 				if (Math.abs(dleft - ileft) < eps && Math.abs(dright - iright) < eps) {
 					ret = cn.compareInts(ileft, iright);
-				} else {					
+				} else {		
 					ret = cn.compare(dleft, dright);
 				}
 				

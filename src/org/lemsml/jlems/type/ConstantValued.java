@@ -26,11 +26,6 @@ public class ConstantValued implements Valued {
 	public double getValue() {
 		return value;
 	}
-
-
-	@Override
-	public boolean isFixed() {
-		return true;
-	}
+ 
 	
 }

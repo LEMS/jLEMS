@@ -55,7 +55,7 @@ public class MultiBuilder extends AbstractChildBuilder {
  
 
 	public void addAssignment(String property, DoubleParseTreeNode de) throws ContentError {
-		ExpressionDerivedVariable edv = new ExpressionDerivedVariable(property, new DBase(de.makeFixed(null)));
+		ExpressionDerivedVariable edv = new ExpressionDerivedVariable(property, new DBase(de.makeEvaluable(null)));
 		edvAL.add(edv);
 	}
 

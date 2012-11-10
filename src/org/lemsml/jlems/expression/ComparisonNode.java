@@ -2,6 +2,7 @@ package org.lemsml.jlems.expression;
 
 import java.util.HashMap;
 
+import org.lemsml.jlems.run.RuntimeError;
 import org.lemsml.jlems.sim.ContentError;
 
 public abstract class ComparisonNode extends FloatOperatorNode implements BooleanParseTreeNode {
@@ -10,17 +11,9 @@ public abstract class ComparisonNode extends FloatOperatorNode implements Boolea
 	public ComparisonNode(String s) {
 		super(s);
 	}
-
-/*
-	public boolean evalB(HashMap<String, Double> valHS) throws ParseError {
- 		 double x = (leftEvaluable != null ? leftEvaluable.evalD(valHS) : Double.NaN);
-		 double y = (rightEvaluable != null ? rightEvaluable.evalD(valHS) : Double.NaN);
-		 boolean ret = compare(x, y);
-		 return ret;
-	}
- */
+ 
 	
-	public abstract boolean compare(double x, double y);
+	public abstract boolean compare(double x, double y) throws RuntimeError;
 	
 	 
 	public Dimensional dimop(Dimensional dl, Dimensional dr) throws ContentError {

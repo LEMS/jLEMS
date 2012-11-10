@@ -1,6 +1,5 @@
 package org.lemsml.jlems.eval;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Mod extends DOp {
@@ -24,12 +23,9 @@ public class Mod extends DOp {
 	}
 
         @Override
-        public String toString() {
-                return "(" + left + " % " + right + ")";
+        public String toExpression() {
+                return "(" + left.toExpression() + " % " + right.toExpression() + ")";
         }
-
-        public String coditionalPrefixedToString(String prefix, ArrayList<String> ignore) {
-                return "("+left.coditionalPrefixedToString(prefix, ignore) + " % " + right.coditionalPrefixedToString(prefix, ignore) +")";
-        }
+ 
 	
 }

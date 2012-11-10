@@ -6,7 +6,6 @@ import org.lemsml.jlems.eval.DCon;
 import org.lemsml.jlems.eval.DVal;
 import org.lemsml.jlems.eval.DVar;
 import org.lemsml.jlems.sim.ContentError;
-import org.lemsml.jlemsviz.plot.E;
 
 public class VariableNode extends Node implements DoubleParseTreeNode {
 
@@ -46,23 +45,10 @@ public class VariableNode extends Node implements DoubleParseTreeNode {
 	}
 
  
-  
-	
-	private String printMap(HashMap<String, Valued> valHM) {
-		String ret = "";
-		for (String s : valHM.keySet()) {
-			String sp = s;
-			if (sp.length() < 20) {
-				sp = (sp + "                          ").substring(0, 20);
-			}
-			ret += sp + " =\t" + valHM.get(s) + "\n";
-		}
-		return ret;
-	}
+   
 	
 	
-	
-	public DVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
+	public DVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
 		DVal ret = null;
 	 
  			if (fixedHM != null && fixedHM.containsKey(svar)) {

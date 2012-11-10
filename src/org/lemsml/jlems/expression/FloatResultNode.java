@@ -26,7 +26,7 @@ public abstract class FloatResultNode extends FloatOperatorNode implements Doubl
  
 
 	public DBase makeEvaluator(HashMap<String, Double> fixedHM) throws ContentError {
-		return new DBase(makeFixed(fixedHM));
+		return new DBase(makeEvaluable(fixedHM));
 	}
 	
 	

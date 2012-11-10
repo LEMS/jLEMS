@@ -6,7 +6,6 @@ import java.util.HashMap;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.expression.ParseTree;
 import org.lemsml.jlems.expression.Parser;
-import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.ConnectionError;
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Child;

@@ -32,9 +32,9 @@ public class UnaryMinusNode extends FloatResultNode {
 	}
 
 	
-	public DVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
+	public DVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
 		checkLeftRight();
-		return new Minus(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
+		return new Minus(leftEvaluable.makeEvaluable(fixedHM), rightEvaluable.makeEvaluable(fixedHM));
 	}
 
 	 

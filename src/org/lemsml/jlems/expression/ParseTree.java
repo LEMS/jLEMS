@@ -42,7 +42,7 @@ public class ParseTree {
 	public BooleanEvaluator makeBooleanEvaluator() throws ContentError {
 		BBase ret = null;
 		if (root instanceof BooleanParseTreeNode) {
-			ret= new BBase(((BooleanParseTreeNode) root).makeFixed(null));
+			ret= new BBase(((BooleanParseTreeNode) root).makeEvaluable(null));
 		}
 		return ret;
 	}
@@ -52,7 +52,7 @@ public class ParseTree {
 	public BooleanEvaluator makeBooleanFixedEvaluator(HashMap<String, Double> fixedHM) throws ContentError {
 		BBase ret = null;
 		if (root instanceof BooleanParseTreeNode) {
-			ret = new BBase(((BooleanParseTreeNode) root).makeFixed(fixedHM));
+			ret = new BBase(((BooleanParseTreeNode) root).makeEvaluable(fixedHM));
 		}
 		return ret;
 	}
@@ -62,7 +62,7 @@ public class ParseTree {
 	public DoubleEvaluator makeFloatEvaluator() throws ContentError {
 		DBase ret = null;
 		if (root instanceof DoubleParseTreeNode) {
-			ret = new DBase(((DoubleParseTreeNode) root).makeFixed(null));
+			ret = new DBase(((DoubleParseTreeNode) root).makeEvaluable(null));
 		}
 		return ret;
 	}
@@ -71,7 +71,7 @@ public class ParseTree {
 	public DoubleEvaluator makeFloatFixedEvaluator(HashMap<String, Double> fixedHM) throws ContentError {
 		DBase ret = null;
 		if (root instanceof DoubleParseTreeNode) {
-			ret = new DBase(((DoubleParseTreeNode) root).makeFixed(fixedHM));
+			ret = new DBase(((DoubleParseTreeNode) root).makeEvaluable(fixedHM));
 		}
 		return ret;
 	}

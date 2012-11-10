@@ -99,9 +99,9 @@ public class FunctionNode extends UnaryNode implements DoubleParseTreeNode {
 	}
 	
 	
-	public DVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
+	public DVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
 		checkArg();
-		return new DFunc(fname, argEvaluable.makeFixed(fixedHM));
+		return new DFunc(fname, argEvaluable.makeEvaluable(fixedHM));
 	}
 
 	public Dimensional getDimensionality(HashMap<String, Dimensional> dimHM) throws ContentError {

@@ -86,12 +86,7 @@ public class Constant implements Named, Valued  {
 	public Dimension getDimension() {
 		return r_dimension;
 	}
-
-	@Override
-	public boolean isFixed() {
-		return true;
-	}
-
+ 
 	public String getSymbol() {
 		 return symbol;
 	}

@@ -26,7 +26,7 @@ public class DCon extends DVal {
 	}
 
         @Override
-        public String toString() {
+        public String toExpression() {
         	return "" + val;
         }
         

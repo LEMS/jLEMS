@@ -33,7 +33,7 @@ public class DBase implements DoubleEvaluator {
 
     
     public String getExpressionString() {
- 		return root.toString();
+ 		return root.toExpression();
 	}
 	
 	public double evalD(HashMap<String, Double> valHM) {

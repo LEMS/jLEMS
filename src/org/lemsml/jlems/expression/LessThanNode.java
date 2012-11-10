@@ -28,9 +28,9 @@ public class LessThanNode extends ComparisonNode {
 		return (x < y);
 	}
 
-	public BComp makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
+	public BComp makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
 		checkLeftRight();
-		return new LTComp(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
+		return new LTComp(leftEvaluable.makeEvaluable(fixedHM), rightEvaluable.makeEvaluable(fixedHM));
 	}
 	
 	@Override

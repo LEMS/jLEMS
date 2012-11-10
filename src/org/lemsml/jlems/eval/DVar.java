@@ -48,7 +48,7 @@ public class DVar extends DVal {
 
 
     @Override
-    public String toString() {
+    public String toExpression() {
             return varname;
     }
  

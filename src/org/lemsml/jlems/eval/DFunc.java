@@ -29,14 +29,11 @@ public class DFunc extends DVal {
 	
 	
         @Override
-        public String toString() {
+        public String toExpression() {
                 return fname + "(" + arg  + ")";
         }
 
-        public String coditionalPrefixedToString(String prefix, ArrayList<String> ignore) {
-                return fname + "(" + arg.coditionalPrefixedToString(prefix, ignore) + ")";
-        }
-
+     
 
 	 
 	public double eval() {

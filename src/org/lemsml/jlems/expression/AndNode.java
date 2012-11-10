@@ -30,9 +30,9 @@ public class AndNode extends BooleanOperatorNode {
 	}
 
 	
-	public BVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
+	public BVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
 		checkLeftRight();
-		return new And(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
+		return new And(leftEvaluable.makeEvaluable(fixedHM), rightEvaluable.makeEvaluable(fixedHM));
 	}
 
 	 

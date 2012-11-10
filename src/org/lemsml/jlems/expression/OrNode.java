@@ -30,9 +30,9 @@ public class OrNode extends BooleanOperatorNode {
 	}
 
 	
-	public BVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError {
+	public BVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
 		checkLeftRight();
-		return new Or(leftEvaluable.makeFixed(fixedHM), rightEvaluable.makeFixed(fixedHM));
+		return new Or(leftEvaluable.makeEvaluable(fixedHM), rightEvaluable.makeEvaluable(fixedHM));
 	}
 
 	 
