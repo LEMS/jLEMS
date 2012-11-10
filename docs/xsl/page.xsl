@@ -45,6 +45,8 @@
 
 			<body>
                             <div id="left">
+                            <div><a href="https://github.com/robertcannon/jLEMS">Github Repository</a></div>
+                            <div><span>&nbsp;</span></div>
                             <div><a href="index.html">About</a></div>
                             <div><a href="introduction.html">Introduction</a></div>
                             <div><a href="elements.html">Elements</a></div>

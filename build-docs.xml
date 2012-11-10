@@ -47,6 +47,13 @@
 	    </target>
 
 		
+		<target name="copyToPages" depends="html">
+			<copy todir="/home/rcc/git/jLEMSPagesBranch">
+				<fileset dir="build/site" includes="*.*"/>
+			</copy>
+		</target>
+		
+		
 		
 		<target name="site" depends="pdfdocs, html"/>
 		

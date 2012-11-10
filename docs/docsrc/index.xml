@@ -1,27 +1,45 @@
 <page title="LEMS - Low Entropy Model Specification">
 
 
-<h1>Compact model specification with user-defined types</h1>
- <h2 class="sub">A proposal for supporting models of synapses and other user-definable component types in NeuroML</h2>
+<h1>LEMS - Low Entropy Model Specification</h1>
+ <h2 class="sub">A language for specifying hierarchical models based on core physical relationships</h2>
 
 
  <p class="version">Current version: <versioninfo/>  &#160;&#160; <a href="lems.pdf">These pages as a single PDF</a></p>	
- 
- 
- <h2>LEMS - Low Entropy Model Specification</h2>
- 
+   
+   
+   <p>
+   	LEMS is being developed to provide a compact, minimally redundant, human-readable and 
+   	human-writable, declarative way of expressing models of biological systems. 
+   </p>
+   <p>
+   	It differs from other systems such as CellML or SBML in its requirement to be human writable
+   	and the inclusion of basic physical concepts such as dimensionality and physical nesting as 
+   	part of the language.
+   </p>
+   <p>
+   	The examples shown here use XML as the model description format, but LEMS is not an 
+   	XML language (the preferred format doesn't support a schema for example). You can also use 
+   	a bracket-free indentation-based layout for models.
+   </p>
+   <p>
+   	The main goal is to enable model developers to write declarative models in LEMS in
+   	much the same way as software developers write software applications computer languages 
+   	such as in c, Java or Python. 
+   </p>
+   
+   
+   
+   <h2>Contents</h2>
  <p>
- This proposal consists of:
  <ul>
  <li>A <a href="introduction.html">An overview</a> of how types and models are declared</li>
     <li>A <a href="elements.html">set of XML elements</a> for defining and using user-defined types</li>
    
     <li>A proof-of-concept <a href="interpreter.html">interpreter</a> for processing and running models built with these elements</li>
        <li>Some examples (left menu)
-      illustrating how elements can be defined and used.</li>
-       <li>A summary of the <a href="canonical.html">canonical form</a> for a model that corresponds to the elements presented here</li>
-      
-    <li>Miscellaneous <a href="discussion">discussion</a> of the objectives, design issues, benefits and weaknesses of this approach</li>
+      illustrating how elements can be defined and used.</li>     
+    <li>Some <a href="discussion">discussion</a> of the objectives, design issues, benefits and weaknesses of this approach</li>
      
  </ul>
  </p>
