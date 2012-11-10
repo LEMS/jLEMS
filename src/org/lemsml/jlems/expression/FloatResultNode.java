@@ -29,4 +29,5 @@ public abstract class FloatResultNode extends FloatOperatorNode implements Doubl
 		return new DBase(makeFixed(fixedHM));
 	}
 	
+	
 }

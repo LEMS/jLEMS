@@ -26,6 +26,12 @@ public class VariableNode extends Node implements DoubleParseTreeNode {
 		return svar;
 	}
 
+	
+	public void substituteVariables(HashMap<String, String> varHM) {
+		if (varHM.containsKey(svar)) {
+			svar = varHM.get(svar);
+		}
+	}
     
    
 	 

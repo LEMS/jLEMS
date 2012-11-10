@@ -9,4 +9,6 @@ public interface DoubleParseTreeNode extends ParseTreeNode {
  
 	public DVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError;
 
+	public String toExpression() throws ContentError;
+	
 }

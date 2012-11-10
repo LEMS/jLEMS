@@ -24,6 +24,7 @@ public class MainTest {
 				org.lemsml.jlemstests.XMLExamplesReaderTest.class,
 				org.lemsml.jlemstests.LemsExamplesReaderTest.class,
 				org.lemsml.jlemstests.ExamplesTest.class,
+				org.lemsml.jlemstests.ComponentFlatteningTest.class,
 				org.lemsml.jlemstests.CoreDependenciesTest.class);
 
 		Date now = new java.util.Date();

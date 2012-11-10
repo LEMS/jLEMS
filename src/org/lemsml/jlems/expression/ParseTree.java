@@ -95,5 +95,13 @@ public class ParseTree {
 		}
 	}
 
+	public void substituteVariables(HashMap<String, String> varHM) throws ContentError {
+		root.substituteVariables(varHM);
+	}
+
+	public String toExpression() throws ContentError {
+		return root.toExpression();
+	}
+
 
 }

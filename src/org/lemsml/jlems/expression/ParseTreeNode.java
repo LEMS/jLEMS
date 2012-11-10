@@ -10,4 +10,7 @@ public interface ParseTreeNode {
  
 	public Dimensional evaluateDimensional(HashMap<String, Dimensional> adml) throws ContentError;
 
+	public void substituteVariables(HashMap<String, String> varHM) throws ContentError;
+
+	public String toExpression() throws ContentError;
 }

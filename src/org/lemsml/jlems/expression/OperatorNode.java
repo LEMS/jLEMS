@@ -25,17 +25,9 @@ public abstract class OperatorNode extends UnaryNode implements Cloneable, Parse
     
     
    
-    public String toExpression() {
-        return "(" + str(left) + " " + symbol + " " + str(right) + ")";
-    }
-
+  
    
-
-    private String str(Node n) {
-        String ret = (n == null ? "_" : n.toString());
-        return ret;
-    }
-
+ 
     public abstract int getPrecedence();
 
     public abstract OperatorNode copy();

@@ -13,8 +13,8 @@ public abstract class BooleanOperatorNode extends OperatorNode implements Boolea
 		super(s);
 	}
  
-	
 	public abstract boolean bool(boolean x, boolean y);
+ 
 	
 	
 	protected void checkLeftRight() throws ContentError {
@@ -56,8 +56,19 @@ public abstract class BooleanOperatorNode extends OperatorNode implements Boolea
 		throw new ContentError("Can't apply boolean operations to dimensions");
 	}
 	
-
 	
+	@Override
+	public void substituteVariables(HashMap<String, String> varHM) throws ContentError {
+		checkLeftRight();
+		leftEvaluable.substituteVariables(varHM);
+		rightEvaluable.substituteVariables(varHM);
+	}
+ 
+	
+	public String toExpression() throws ContentError {
+		checkLeftRight();
+		return "(" + leftEvaluable.toExpression() + " " + symbol + " " + rightEvaluable.toExpression() + ")";
+	}
 	
 }
  

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.expression.ParseTree;
+import org.lemsml.jlems.expression.Parser;
 import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.ConnectionError;
 import org.lemsml.jlems.sim.ContentError;
@@ -33,19 +35,22 @@ import org.lemsml.jlems.util.StringUtil;
 public class ComponentFlattener {
 
 	Lems lems;
-
+	Parser parser;
+	
 	Component srcComponent;
- 
+	
 	ComponentBuilder cbuilder;
 	ComponentTypeBuilder typeB;
 
 	public ComponentFlattener(Lems l, Component c) {
 		lems = l;
 		srcComponent = c;
+	
 	}
 	
 	
 	public void checkBuilt() throws ContentError, ParseError, ConnectionError {
+		parser = lems.getParser();
 		if (cbuilder == null) {
 			buildFlat();
 		}
@@ -89,6 +94,7 @@ public class ComponentFlattener {
 
 		ComponentType typ = cpt.getComponentType();
 
+	 	
 		for (Text t : typ.getTexts()) {
 			String newText = flatName(t.getName(), prefix);
 			typeB.addText(newText);
@@ -257,77 +263,17 @@ public class ComponentFlattener {
 	}
 	
 	
-	
-	
-
-	private static String substituteVariables(String expr, HashMap<String, String> varHM) {
-		String ret = expr;
-		String src = expr;
-		for (String orig : varHM.keySet()) {
-			String replacement = varHM.get(orig);
-			ret = replaceInFunction(ret, orig, replacement);
-		}
-		E.info("Substitution from " + src);
-		E.info("Substitution to    " + ret);
+	private String substituteVariables(String expr, HashMap<String, String> varHM) throws ParseError, ContentError {
+		
+		ParseTree ptree = parser.parse(expr);
+		
+		ptree.substituteVariables(varHM);
+		
+		String ret = ptree.toExpression();
 		return ret;
 	}
 
-	/*
-	 * A bit of a roundabout way of doing it...
-	 */
-	public static String replaceInFunction(String expr, String oldVar, String newVar) {
-		String orig = new String(expr);
-
-		if (expr.trim().equals(oldVar)) {
-			return newVar;
-		}
-
-		// String new_ = toReplace.get(old);
-		String[] pres = new String[] { "\\(", "\\+", "-", "\\*", "/", "\\^", " ", "<", ">" };
-		String[] posts = new String[] { "\\)", "\\+", "-", "\\*", "/", "\\^", " ", "<", ">" };
-
-		// E.info("----------  Changing |"+ expr+"|");
-		for (String pre : pres) {
-			for (String post : posts) {
-
-				String o = pre + oldVar + post;
-				String n = pre + " " + newVar + " " + post;
-				// E.info("1 Replacing |"+o+"| with |"+n+"| in: |"+expr+"|");
-				expr = expr.replaceAll(o, n);
-			}
-		}
-		expr = expr.trim();
-
-		// E.info("----------  Changing |"+ expr+"|");
-
-		for (String pre : pres) {
-			if (pre.equals("\\^"))
-				pre = "^";
-			String o = pre + oldVar;
-			String n = pre + " " + newVar;
-			if (expr.endsWith(o)) {
-				// E.info("2 Replacing |"+o+"| with |"+n+"| in: |"+expr+"|");
-				expr = expr.substring(0, expr.length() - o.length()) + n;
-			}
-		}
-		for (String post : posts) {
-			if (post.equals("\\^"))
-				post = "^";
-			String o = oldVar + post;
-			String n = newVar + " " + post;
-			if (expr.startsWith(o)) {
-				// E.info("3 Replacing |"+o+"| with |"+n+"| in: |"+expr+"|");
-				expr = n + expr.substring(o.length());
-			}
-		}
-
-		expr = expr.replaceAll("  ", " ");
-
-		if (!expr.equals(orig)) {
-			// E.info("----------  Changed |"+orig+"| to |"+
-			// expr+"| for old: "+oldVar+", new: "+newVar);
-		}
-		return expr;
-	}
+		 
+	  
 
 }

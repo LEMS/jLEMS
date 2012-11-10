@@ -26,8 +26,17 @@ public class FunctionNode extends UnaryNode implements DoubleParseTreeNode {
 
 	@Override
 	public String toString() {
-		return fname + "(" + right + ")";
+		return "Function: " + fname + "(" + right + ")";
 	}
+	
+	
+	@Override
+	public String toExpression() throws ContentError {
+		checkArg();
+		return fname + "(" + argEvaluable.toExpression() + ")";
+	}
+	
+	
 
 	@Override
 	public void claim() throws ParseError {
@@ -43,12 +52,7 @@ public class FunctionNode extends UnaryNode implements DoubleParseTreeNode {
 		}
 	}
 
-	/*
-	public double evalD(HashMap<String, Double> valHS) throws ParseError {
-		return call(argEvaluable.evalD(valHS));
-	}
-*/
-	
+ 
  
 
 	public double call(double arg) {
@@ -113,12 +117,15 @@ public class FunctionNode extends UnaryNode implements DoubleParseTreeNode {
 		return ret;
 	}
 
-	
-
-
+	 
 	public Dimensional evaluateDimensional(HashMap<String, Dimensional> dhm) throws ContentError {
 		throw new ContentError("Can't apply function operations to dimensions");
 	}
 	
+	 
+	public void substituteVariables(HashMap<String, String> varHM) throws ContentError {
+		 checkArg();
+		 argEvaluable.substituteVariables(varHM);
+	}
 	
 }

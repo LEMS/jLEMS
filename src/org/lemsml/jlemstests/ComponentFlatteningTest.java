@@ -1,4 +1,4 @@
-package org.lemsml.jlemstests.dev;
+package org.lemsml.jlemstests;
 
 import java.io.File;
 import java.io.IOException;
@@ -84,15 +84,13 @@ public class ComponentFlatteningTest {
         Component cp = cf.getFlatComponent();
         
         String typeOut = XMLSerializer.serialize(ct);
-
         String cptOut = XMLSerializer.serialize(cp);
         
-        
-       E.info("Flat type: \n" + typeOut);
-       E.info("Flat cpt: \n" + cptOut);
+     
+        // E.info("Flat type: \n" + typeOut);
+        // E.info("Flat cpt: \n" + cptOut);
         
 		lems.addComponentType(ct);
-		
 		lems.addComponent(cp);
 	
 		lems.resolve(ct);

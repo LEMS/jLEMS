@@ -56,4 +56,16 @@ public abstract class FloatOperatorNode extends OperatorNode {
 	public abstract Dimensional dimop(Dimensional dl, Dimensional dr) throws ContentError;
 	
 	
+	public void substituteVariables(HashMap<String, String> varHM) throws ContentError {
+		checkLeftRight();
+		leftEvaluable.substituteVariables(varHM);
+		rightEvaluable.substituteVariables(varHM);
+	}
+	
+	
+	public String toExpression() throws ContentError {
+		checkLeftRight();
+		return "(" + leftEvaluable.toExpression() + " " + symbol + " " + rightEvaluable.toExpression() + ")";
+	}
+	
 }

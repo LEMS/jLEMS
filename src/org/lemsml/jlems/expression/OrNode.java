@@ -6,7 +6,7 @@ import org.lemsml.jlems.eval.BVal;
 import org.lemsml.jlems.eval.Or;
 import org.lemsml.jlems.sim.ContentError;
 
-public class OrNode extends BooleanResultNode {
+public class OrNode extends BooleanOperatorNode {
 
         public static final String SYMBOL = ".or.";
 
@@ -49,4 +49,8 @@ public class OrNode extends BooleanResultNode {
 	public void checkDimensions(HashMap<String, Dimensional> dimHM) throws ContentError {
 		getDimensionality(dimHM);
 	}
+
+
+
+
 }

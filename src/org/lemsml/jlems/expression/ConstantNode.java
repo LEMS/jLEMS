@@ -60,6 +60,14 @@ public class ConstantNode extends Node implements DoubleParseTreeNode {
 	public Dimensional evaluateDimensional(HashMap<String, Dimensional> dhm) throws ContentError {
 		throw new ContentError("Can't use constants with  dimensions");
 	}
+
+	@Override
+	public void substituteVariables(HashMap<String, String> varHM) throws ContentError {
+		if (varHM.containsKey(sval)) {
+			sval = varHM.get(sval);
+		}
+		
+	}
 	
 	
 	

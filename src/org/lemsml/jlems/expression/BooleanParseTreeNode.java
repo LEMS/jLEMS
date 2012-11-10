@@ -11,5 +11,7 @@ public interface BooleanParseTreeNode extends ParseTreeNode {
 	public BVal makeFixed(HashMap<String, Double> fixedHM) throws ContentError;
 
 	public void checkDimensions(HashMap<String, Dimensional> dimHM) throws ContentError;
-	
+
+	public String toExpression() throws ContentError;
+	     
 }

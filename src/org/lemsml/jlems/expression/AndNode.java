@@ -6,7 +6,7 @@ import org.lemsml.jlems.eval.And;
 import org.lemsml.jlems.eval.BVal;
 import org.lemsml.jlems.sim.ContentError;
 
-public class AndNode extends BooleanResultNode {
+public class AndNode extends BooleanOperatorNode {
 
         public static final String SYMBOL = ".and.";
 
