@@ -30,6 +30,7 @@ public class LemsFactoryGenerator {
 		sb.append("import org.lemsml.jlems.type.structure.*;\n");
 		sb.append("import org.lemsml.jlems.type.simulation.*;\n\n");
 		sb.append("import org.lemsml.jlems.type.procedure.*;\n\n");
+		sb.append("import org.lemsml.jlems.type.geometry.*;\n\n");
 		
 		sb.append("import org.lemsml.jlems.xml.XMLElement;\n");
 		sb.append("import org.lemsml.jlems.xml.XMLAttribute;\n");

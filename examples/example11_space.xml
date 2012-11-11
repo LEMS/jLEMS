@@ -2,6 +2,12 @@
  
 <Target component="simset"/> 
   
+<Dimension name="time" t="1"/>  
+<Dimension name="voltage" m="1" l="2" t="-3" i="-1"/>
+<Dimension name="conductance" m="-1" l="-2" t="3" i="2"/>
+<Dimension name="conductivity" m="-1" l="-3" t="3" i="2"/>
+    
+    
 <Dimension name="distance" l="1"/>  
 
 <!--  position and distance have the same dimensionality. we define both so we 
@@ -10,8 +16,8 @@ the interpreter is indifferent to the distinction -->
 <Dimension name="position" l="1"/>  
 
 <Dimension name="capacitance" m="-1" l="-2" t="4" i="2"/>
-<Dimenision name="capacitance_per_distance" m="-1" l="-3" t="4" i="2"/>
- 
+<Dimension name="capacitance_per_distance" m="-1" l="-3" t="4" i="2"/>
+<Dimension name="capacitance_per_area" m="-1" l="-4" t="4" i="2"/>
  
 <Assertion dimension="capacitance_per_distance" matches="capacitance / distance"/>
  	
@@ -26,10 +32,10 @@ the interpreter is indifferent to the distinction -->
 <!--  a point with a radius. At this stage there is nothing to say this is a 
 point in space - it is just a collection of a distance and three positions -->
 <ComponentType name="RPoint">
- 	<Paramater name="x" dimension="distance"/>
- 	<Paramater name="y" dimension="position"/>
- 	<Paramater name="z" dimension="position"/>
- 	<Paramater name="r" dimension="position"/>
+ 	<Parameter name="x" dimension="distance"/>
+ 	<Parameter name="y" dimension="position"/>
+ 	<Parameter name="z" dimension="position"/>
+ 	<Parameter name="r" dimension="position"/>
 </ComponentType>
  
 <!--  a segment is made of two RPoints for the two ends. Optionally you can supply
@@ -70,14 +76,16 @@ fall back to using the distal point of the parent segment -->
 	<!-- a point conductance has a path parameter, which contains an XPath-like reference 
 	 specifying where the conductance is on the parent solid -->
 
-	<!--  a point conductance can only be defined within a contest that defines a solid 
-	geometry for the conductance to be located on -->
-	<Requirement name="solid" type="solid"/>
-	<Path name="at"/>
-	
+	<!--  a point conductance can only be defined within a context that defines a solid 
+	geometry for the conductance to be located on. The 
+	presence of a Location child in a component type is a bit like a Requirement.
+	A component can only be defined in a context where a parent defines a solid -->
+	<Location name="at"/>
+	 
 	<Geometry>
-		<!--  this says that the "at" path actually defines where this conductance is on the solid -->
-		<Location path="at" on="solid"/>
+		<!--  Its not clear if we need anything here or not. We could have something 
+		here (or in Dynamics) to say the e and g exposures apply at the position set
+		by the Location property. -->
 	</Geometry>
  </ComponentType> 
 
@@ -106,10 +114,10 @@ fall back to using the distal point of the parent segment -->
 	the resulting skeleton based on properties of the original solid. 
 	-->
 	<Geometry>
-		<Skeletion name="skel" solid="morphology/tree">
+		<Skeleton name="skel" solid="morphology/tree">
 			<ScalarField name="r" dimension="length" value="radius()"/>
 			<ScalarField name="p" dimension="length" value="pathLength()"/>
-		</Skeletion>
+		</Skeleton>
 	</Geometry>
 	
 	

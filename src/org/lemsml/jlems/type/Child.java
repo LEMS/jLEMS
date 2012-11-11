@@ -18,7 +18,8 @@ public class Child implements Named {
 	public String type;
     public ComponentType r_type;
 	
-   
+    public String substitute;
+    
 
     @Override
     public String toString() {

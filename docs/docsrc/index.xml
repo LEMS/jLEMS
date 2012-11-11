@@ -2,14 +2,14 @@
 
 
 <h1>LEMS - Low Entropy Model Specification</h1>
- <h2 class="sub">A language for specifying hierarchical models based on core physical relationships</h2>
+ <h2 class="sub">A language for specifying hierarchical models based on fundamental physical relationships</h2>
 
 
  <p class="version">Current version: <versioninfo/>  &#160;&#160; <a href="lems.pdf">These pages as a single PDF</a></p>	
    
    
    <p>
-   	LEMS is being developed to provide a compact, minimally redundant, human-readable and 
+   	LEMS is being developed to provide a compact, minimally redundant, human-readable,
    	human-writable, declarative way of expressing models of biological systems. 
    </p>
    <p>
@@ -24,7 +24,7 @@
    </p>
    <p>
    	The main goal is to enable model developers to write declarative models in LEMS in
-   	much the same way as software developers write software applications computer languages 
+   	much the same way as software developers write software applications in computer languages 
    	such as in c, Java or Python. 
    </p>
    
@@ -39,7 +39,7 @@
     <li>A proof-of-concept <a href="interpreter.html">interpreter</a> for processing and running models built with these elements</li>
        <li>Some examples (left menu)
       illustrating how elements can be defined and used.</li>     
-    <li>Some <a href="discussion">discussion</a> of the objectives, design issues, benefits and weaknesses of this approach</li>
+    <li>A brief <a href="discussion">discussion</a> of the objectives, design issues, benefits and weaknesses of this approach</li>
      
  </ul>
  </p>
@@ -52,9 +52,7 @@
     After that, feel free to download the <a href="interpreter.html">interpreter</a>, run the examples, and try constructing
      your own.
  </p>
- <p>
-    A discussion of how LEMS is being used to specify <a href="../neuroml2.php">NeuroML v2.0 ComponentTypes</a> is available <a href="../neuroml2.php">here</a>.
- </p>
+  
   
  <h2>What it does so far</h2>
  

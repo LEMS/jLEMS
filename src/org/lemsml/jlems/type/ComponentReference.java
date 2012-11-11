@@ -14,15 +14,16 @@ public class ComponentReference implements Named  {
 
 	@ModelProperty(info="")
 	public String name;
+
 	@ModelProperty(info="Target type")
 	public String type;
-	
 	public ComponentType r_type;
 	
+	public String root;
+	
 	public boolean isAny = false;
-	
-	public String compClass;
-	
+
+	private boolean inResolve = false;
 	
 	public ComponentReference() {
 		
@@ -41,11 +42,9 @@ public class ComponentReference implements Named  {
 	
 	
 	public void resolve(Lems lems, Parser p) throws ContentError, ParseError {
-		LemsCollection<ComponentType> types = lems.getComponentTypes();
+		inResolve = true;
 		
-		if (type == null && compClass != null) {
-			type = compClass;
-		}
+		LemsCollection<ComponentType> types = lems.getComponentTypes();
 		
 		if (type == null) {
 			E.error("no type specified in component ref " + name);
@@ -54,6 +53,7 @@ public class ComponentReference implements Named  {
 			
 		} else {
 			ComponentType t = types.getByName(type);
+			
 		if (t != null) {
 			r_type = t;
 			r_type.checkResolve(lems, p);
@@ -62,7 +62,7 @@ public class ComponentReference implements Named  {
 			throw new ContentError("ComponentRef: No such typer: " + type + ", used by " + getName());
 		}
 		}
-		
+		inResolve = false;
 	}
 
 
@@ -90,6 +90,11 @@ public class ComponentReference implements Named  {
 
 	public boolean isLocal() {
 		return false;
+	}
+
+
+	public boolean resolving() {
+		return inResolve;
 	}
 
 

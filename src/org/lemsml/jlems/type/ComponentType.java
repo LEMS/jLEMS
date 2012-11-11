@@ -17,6 +17,7 @@ import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.dynamics.DerivedVariable;
 import org.lemsml.jlems.type.dynamics.Dynamics;
 import org.lemsml.jlems.type.dynamics.Equilibrium;
+import org.lemsml.jlems.type.geometry.Geometry;
 import org.lemsml.jlems.type.procedure.Procedure;
 import org.lemsml.jlems.type.simulation.Simulation;
 import org.lemsml.jlems.type.structure.Structure;
@@ -55,7 +56,10 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 
 	public LemsCollection<ComponentTypeReference> componentTypeReferences = new LemsCollection<ComponentTypeReference>();
 
-
+	
+	public LemsCollection<Location> locations = new LemsCollection<Location>();
+	
+	
 	public LemsCollection<Property> propertys = new LemsCollection<Property>();
  	
 	public LemsCollection<Dynamics> dynamicses = new LemsCollection<Dynamics>();
@@ -68,6 +72,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	
 	public LemsCollection<Procedure> procedures = new LemsCollection<Procedure>();
 	
+	public LemsCollection<Geometry> geometrys = new LemsCollection<Geometry>();
  	
 	
 	public LemsCollection<Fixed> fixeds = new LemsCollection<Fixed>();
@@ -286,7 +291,11 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		}
 
 		for (ComponentReference cr : componentReferences) {
-			cr.resolve(lems, p);
+			if (cr.resolving()) {
+				// OK - we must be a ref to self
+			} else {
+				cr.resolve(lems, p);
+			}
 		}
 
 		for (ComponentTypeReference tr : componentTypeReferences) {

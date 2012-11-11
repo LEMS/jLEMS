@@ -50,13 +50,21 @@ public class Dynamics  {
 	
 	public LemsCollection<KineticScheme> kineticSchemes = new LemsCollection<KineticScheme>();
 	
-	public LemsCollection <OnStart> onStarts = new LemsCollection<OnStart>();
+	public LemsCollection<OnStart> onStarts = new LemsCollection<OnStart>();
 	
-	public LemsCollection <OnEvent> onEvents = new LemsCollection<OnEvent>();
+	public LemsCollection<OnEvent> onEvents = new LemsCollection<OnEvent>();
 	
-	public LemsCollection <OnCondition> onConditions = new LemsCollection<OnCondition>();
+	public LemsCollection<OnCondition> onConditions = new LemsCollection<OnCondition>();
  
-	 
+	
+	public LemsCollection<StateScalarField> stateScalarFields = new LemsCollection<StateScalarField>();
+	
+	public LemsCollection<DerivedScalarField> derivedScalarFields = new LemsCollection<DerivedScalarField>();
+	
+	public LemsCollection<DerivedPunctateField> derivedPunctateFields = new LemsCollection<DerivedPunctateField>();
+	
+	
+	
 	
 	public LemsCollection <Regime> regimes = new LemsCollection<Regime>();
 	

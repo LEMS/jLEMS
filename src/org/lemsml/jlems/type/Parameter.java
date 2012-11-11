@@ -18,6 +18,8 @@ public class Parameter implements Named {
 	public Dimension r_dimension;
  
     public String description;
+    
+    public String exposure;
 
 
     public Parameter() {
