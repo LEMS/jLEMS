@@ -83,5 +83,8 @@ public class VariableNode extends Node implements DoubleParseTreeNode {
 		return ret;
 	}
 	
-	
+	@Override
+	public ExpressionVisitor visitAll(ExpressionVisitor ev) throws ContentError {
+			return ev.visitNode(null,  this,  null);
+	}
 }

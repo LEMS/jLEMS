@@ -13,4 +13,6 @@ public interface ParseTreeNode {
 	public void substituteVariables(HashMap<String, String> varHM) throws ContentError;
 
 	public String toExpression() throws ContentError;
+
+	public ExpressionVisitor visitAll(ExpressionVisitor ev) throws ContentError;
 }

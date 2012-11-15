@@ -128,4 +128,11 @@ public class FunctionNode extends UnaryNode implements DoubleParseTreeNode {
 		 argEvaluable.substituteVariables(varHM);
 	}
 	
+	
+	@Override
+	public ExpressionVisitor visitAll(ExpressionVisitor ev) throws ContentError {
+		checkArg();
+		return ev.visitNode(null,  this,  argEvaluable.visitAll(ev));
+	}
+	
 }

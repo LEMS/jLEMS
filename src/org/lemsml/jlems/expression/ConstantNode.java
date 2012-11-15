@@ -68,6 +68,11 @@ public class ConstantNode extends Node implements DoubleParseTreeNode {
 		}
 		
 	}
+
+	@Override
+	public ExpressionVisitor visitAll(ExpressionVisitor ev) throws ContentError {
+			return ev.visitNode(null,  this,  null);
+	}
 	
 	
 	

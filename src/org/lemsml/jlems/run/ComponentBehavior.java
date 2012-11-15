@@ -116,6 +116,10 @@ public class ComponentBehavior {
         return rates;
     }
 
+    public ArrayList<FixedQuantity> getFixed() {
+    	return fixeds;
+    }
+    
     public ArrayList<String> getVars() {
             return vars;
     }
@@ -124,7 +128,7 @@ public class ComponentBehavior {
             return indeps;
     }
 
-    public ArrayList<String> getSvars() {
+    public ArrayList<String> getStateVariables() {
             return svars;
     }
 

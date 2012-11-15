@@ -103,5 +103,9 @@ public class ParseTree {
 		return root.toExpression();
 	}
 
+	public void visitAll(ExpressionVisitor ev) throws ContentError {
+		root.visitAll(ev);
+	}
+
 
 }

@@ -24,7 +24,11 @@ public class VariableROC {
         }
 
 
-
+        public String getVariable() {
+        	return varname;
+        }
+        
+        
 	public double eval(HashMap<String, Double> varHM) {
 		return rateexp.evalD(varHM);
 	}

@@ -35,7 +35,9 @@ public class AndNode extends BooleanOperatorNode {
 		return new And(leftEvaluable.makeEvaluable(fixedHM), rightEvaluable.makeEvaluable(fixedHM));
 	}
 
+	
 	 
+	
 	public Dimensional dimop(Dimensional dl, Dimensional dr) throws ContentError {
 		Dimensional ret = null;
 		if (dl.matches(dr)) {

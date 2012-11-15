@@ -46,9 +46,9 @@ public class ComponentBehaviorWriter {
 			sb.append(makeList(cb.getVars()) + "\n");
 		}
 		
-		if (cb.getSvars().size() > 0) {
+		if (cb.getStateVariables().size() > 0) {
 			sb.append("State Variables");
-			sb.append(makeList(cb.getSvars()) + "\n");
+			sb.append(makeList(cb.getStateVariables()) + "\n");
 		}
 		
 		if (cb.getRates().size() > 0) {
