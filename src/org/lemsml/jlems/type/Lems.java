@@ -350,6 +350,10 @@ public class Lems {
         return componentTypes;
     }
     
+    public LemsCollection<Component> getComponents() {
+        return components;
+    }
+    
     
     public ArrayList<Component> getAllByType(ComponentType tgtct) throws ContentError {
     	ArrayList<Component> ret = new ArrayList<Component>();
@@ -405,6 +409,7 @@ public class Lems {
 	public void addDimension(Dimension d) {
 		dimensions.add(d);
 	}
+ 
 
 
 }

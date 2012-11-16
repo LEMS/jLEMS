@@ -9,6 +9,12 @@ public class Increment extends Operation {
 		variable = var;
 		value = val;
 	}
+
+	@Override
+	public String generateJava() {
+		String ret = "" + variable + " += " + value;
+		return ret;
+	}
 	
 	
 }

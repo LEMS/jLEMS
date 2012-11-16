@@ -43,6 +43,31 @@ public class MetaClass {
 		return mm;
 	}
 
+
+	public String generateJava() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("package org.lemsml.generated;\n");
+		sb.append("\n");
+		sb.append("public class " + name + " {\n\n");
+	
+		for (MetaField mf : metaFields) {
+			sb.append(mf.generateJava());
+		}
+		sb.append("\n");
+		
+		// empty constructor
+		sb.append("    public " + name + "() {\n    }\n\n");
+		
+		
+		for (MetaMethod mm : metaMethods) {
+			sb.append(mm.generateJava());
+			sb.append("\n");
+		}
+		
+		sb.append("}\n");
+		return sb.toString();
+	}
+
  
 	
 	

@@ -7,5 +7,8 @@ public class VariableMetaField extends MetaField {
 		super(nm);
 	}
  
+	public String generateJava() {
+		return "    private double " + name + " = 0.0;\n";
+	}
 	
 }

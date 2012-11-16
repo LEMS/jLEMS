@@ -2,6 +2,8 @@ package org.lemsml.jlems.codger;
 
 import java.util.HashMap;
 
+import org.lemsml.jlems.logging.E;
+
 public class MapConditionalAssignment extends Operation {
 
 	VarType varType;
@@ -15,6 +17,13 @@ public class MapConditionalAssignment extends Operation {
 		varname = vnm;
 		fname = fnm;
 		map = exposureMap;
+	}
+
+
+	@Override
+	public String generateJava() {
+		E.missing();
+		return "";
 	}
 
 }

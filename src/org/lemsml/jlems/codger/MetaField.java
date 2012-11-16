@@ -1,6 +1,6 @@
 package org.lemsml.jlems.codger;
 
-public class MetaField {
+public abstract class MetaField {
 
 	public enum Type {DOUBLE, INTEGER, STRING, VOID}
 	String name;
@@ -10,6 +10,7 @@ public class MetaField {
 		name = nm;
 	}
 	
+	public abstract String generateJava();
 	
 }
 

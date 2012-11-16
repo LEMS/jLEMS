@@ -7,5 +7,10 @@ public class MethodCall extends Operation {
 	public MethodCall(String str) {
 		methodName = str;
 	}
+
+	@Override
+	public String generateJava() {
+		return  "" + methodName + "();";
+	}
  
 }

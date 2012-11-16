@@ -1,6 +1,7 @@
 package org.lemsml.jlems.codger;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import org.lemsml.jlems.run.ComponentBehavior;
@@ -13,8 +14,13 @@ public class ComponentGenerator {
 	
 	ArrayList<ComponentBehavior> aCB = new ArrayList<ComponentBehavior>();
 	
-	ArrayList<MetaClass> aMC = new ArrayList<MetaClass>();
+ 	
 	
+	boolean mcUpToDate = false;
+	
+	
+	HashMap<String, MetaClass> metaClassHM = new HashMap<String, MetaClass>();
+ 	
 	
 	public ComponentGenerator() {
 		
@@ -27,6 +33,16 @@ public class ComponentGenerator {
 	}
 	
 	
+	public String getJavaSource(String cbid) {
+		if (!mcUpToDate) {
+			buildMetaCode();
+		}
+		MetaClass mc = metaClassHM.get(cbid);
+		return mc.generateJava();
+	}
+	
+	
+	
 	public void buildMetaCode() {
 		HashMap<String, ComponentBehavior> cbHM = new HashMap<String, ComponentBehavior>();
 		for (ComponentBehavior cb : aCB) {
@@ -36,11 +52,12 @@ public class ComponentGenerator {
 		
 		for (ComponentBehavior cb : aCB) {
 			MetaClass mc = makeMetaClass(cb);
-			aMC.add(mc);
+			metaClassHM.put(cb.getComponentID(), mc);
 		}
-		
-		
+		mcUpToDate = true;
 	}
+	
+	
 	
 	 
 	private MetaClass makeMetaClass(ComponentBehavior cb) {
@@ -87,6 +104,27 @@ public class ComponentGenerator {
 		}
 	
 		return ret;
+	}
+
+
+
+	public String getCombinedJavaSource() {
+		if (!mcUpToDate) {
+			buildMetaCode();
+		}
+		
+		ArrayList<String> aid = new ArrayList<String>();
+		aid.addAll(metaClassHM.keySet());
+		Collections.sort(aid);
+		 
+		
+		StringBuilder sb = new StringBuilder();
+		for (String s : aid) {
+			MetaClass mc = metaClassHM.get(s);
+			sb.append(mc.generateJava());
+			sb.append("\n\n");
+		}
+		return sb.toString();
 	}
 
 

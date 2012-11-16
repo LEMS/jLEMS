@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.lemsml.jlems.codger.MetaField.Type;
+import org.lemsml.jlemsviz.plot.E;
 
 public class MetaMethod {
 
@@ -51,5 +52,48 @@ public class MetaMethod {
 	}
 		
 	 
+	public String generateJava() {
+		String indent = "    ";
+		StringBuilder sb = new StringBuilder();
+		sb.append(indent + "public " + javaVarType(returnType) + " " + name + "(");
+		boolean first = true;
+		for (MethodArgument ma : arguments) {
+			if (!first) {
+				sb.append(", ");
+			}
+			first = false;
+			sb.append(ma.generateJava());
+		}
+		sb.append(") {\n");
+		
+		String opindent = indent + "    ";
+		for (Operation op : ops) {
+			sb.append(opindent + op.generateJava());
+			sb.append("\n");
+		}
+		
+		sb.append(indent + "}\n");
+		return sb.toString();
+	}
+
+
+	private String javaVarType(VarType vt) {
+		String ret = "";
+		if (vt.equals(VarType.DOUBLE)) {
+			ret = "double";
+		} else if (vt.equals(VarType.STRING)) {
+			ret = "string";
+		} else if (vt.equals(VarType.INTEGER)) {
+			ret = "int";
+		} else if (vt.equals(VarType.VOID)) {
+			ret = "void";
+		} else {
+			E.error("Unrecognized var type " + vt);
+		}
+		return ret;
+	}
+	
+	
+	
 
 }

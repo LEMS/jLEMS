@@ -6,6 +6,8 @@ public abstract class MethodArgument {
 	protected MethodArgument(String nm) {
 		name = nm;
 	}
-	
+
+	public abstract String generateJava();
+	 
 	
 }
