@@ -11,5 +11,11 @@ public class Product extends Expression {
 		b = sb;
 	}
 	
+	public String generateJava() {
+		String ret = "" + a + " * " + b;
+		// return "(" + a + ") * (" + b + ")";
+		return ret;
+	}
+	
 	
 }

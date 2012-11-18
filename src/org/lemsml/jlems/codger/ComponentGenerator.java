@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.ComponentBehavior;
+import org.lemsml.jlems.run.ExpressionDerivedVariable;
 import org.lemsml.jlems.run.FixedQuantity;
+import org.lemsml.jlems.run.MultiComponentBehavior;
 import org.lemsml.jlems.run.PathDerivedVariable;
 import org.lemsml.jlems.run.VariableROC;
 
@@ -49,19 +52,62 @@ public class ComponentGenerator {
 			cbHM.put(cb.getComponentID(), cb);
 		}
 		
+		metaClassHM = new HashMap<String, MetaClass>();
+		
+		
+		GenPackage gp = new GenPackage("org.lemsml.generated");
 		
 		for (ComponentBehavior cb : aCB) {
-			MetaClass mc = makeMetaClass(cb);
-			metaClassHM.put(cb.getComponentID(), mc);
+			String cbid = cb.getComponentID();
+			recAdd(gp, cb, cbid);
 		}
 		mcUpToDate = true;
+	}
+		
+		
+	private void recAdd(GenPackage gp, ComponentBehavior cb, String cnm) {
+		MetaClass mc = makeMetaClass(gp, cb, cnm);
+		
+	 	
+		metaClassHM.put(gp.getFQClassName(cnm), mc);
+		
+		GenPackage cgp = new GenPackage(cnm, gp);
+		
+		HashMap<String, ComponentBehavior> chm = cb.getChildHM();
+		for (String s : chm.keySet()) {
+			ComponentBehavior ccb = chm.get(s);
+			E.info("Adding child cb " + cnm + " child=" + getCNM(ccb, s));
+			String chnm = getCNM(ccb, s);
+			recAdd(cgp, ccb, chnm);
+		}
+		
+		HashMap<String, MultiComponentBehavior> mchm = cb.getMultiHM();
+		for (String s : mchm.keySet()) {
+			// TODO create abstract type s that exposes properties we need
+			ArrayList<ComponentBehavior> acb = mchm.get(s).getCBs();
+		
+			int ctr = 0;
+			if (acb.size() > 0) {
+				for (ComponentBehavior ccb : acb) {
+					String acnm = getCNM(cb, s + ctr);
+					ctr += 1;
+					
+					E.info("Adding array child cb " + cnm + " child=" + acnm);
+					// TODO the ones we're adding here need to extend s
+					recAdd(cgp, ccb, acnm);
+				}	
+			}
+		}
+		
 	}
 	
 	
 	
 	 
-	private MetaClass makeMetaClass(ComponentBehavior cb) {
-		MetaClass ret = new MetaClass(cb.getComponentID());
+	private MetaClass makeMetaClass(GenPackage gp, ComponentBehavior cb, String cnm) {
+		
+		
+		MetaClass ret = new MetaClass(gp, cnm);
 			
 		for (FixedQuantity fq : cb.getFixed()) {
 			ret.addConstant(fq.getName(), fq.getValue());
@@ -71,11 +117,46 @@ public class ComponentGenerator {
 			ret.addVariable(s);
 		}
 		
+		HashMap<String, ComponentBehavior> chm = cb.getChildHM();
+		for (String s : chm.keySet()) {
+			ret.addObjectField(cnm, s, chm.get(s).getComponentID());
+		}
 		
-		MetaMethod mmex = ret.newMetaMethod(VarType.DOUBLE, "getExposed", "ret");
-		mmex.addFloatArgument("str");
-		mmex.addMapConditionalAssignment(VarType.DOUBLE, "ret", "str", cb.getExposureMap());
+		HashMap<String, MultiComponentBehavior> mchm = cb.getMultiHM();
+		for (String s : mchm.keySet()) {
+			ArrayList<ComponentBehavior> acb = mchm.get(s).getCBs();
+			if (acb.size() > 0) {
+				ret.addObjectArrayField(cnm, arrayName(s), s);				
+			}
+		}
 		
+		
+		
+		
+		
+		MetaConstructor mc = ret.addMetaConstructor();
+		for (String s : chm.keySet()) {
+			String scnm = getCNM(chm.get(s), s);
+			mc.addInstantiation(s, scnm);	
+		}
+		
+		for (String s : mchm.keySet()) {
+			ArrayList<ComponentBehavior> acb = mchm.get(s).getCBs();
+			int ctr = 0;
+			for (ComponentBehavior scb : acb) {
+				String acnm = getCNM(scb, s + ctr);
+				ctr += 1;
+				mc.addObjectToArrayInstantiator(acnm, arrayName(s), scb.getComponentID());
+			}
+			
+		}
+		
+	 	
+		HashMap<String, String> ehm = cb.getExposureMap();
+		for (String s : ehm.keySet()) {
+			ret.addFloatGetter(s, ehm.get(s));
+		}
+	 	
 		
 		MetaMethod mm = ret.newMetaMethod("eval");
 		for (String s : cb.getIndeps()) {
@@ -84,11 +165,22 @@ public class ComponentGenerator {
 		
 		// sort path deriveds, add to eval method
 		for (PathDerivedVariable pdv : cb.getPathderiveds()) {
-			
+			// TODO path needs to be converted to calls to get methods
+			mm.addFloatAssignment(pdv.getVarName(), pdv.getPath());
 		}
-		// sort expression deriveds, add to eval method
+	
+		// TODO
+//		cb.sortExpressions();
+		for (ExpressionDerivedVariable edv : cb.getExderiveds()) {
+			mm.addFloatAssignment(edv.getVarName(), edv.getExpressionString());
+		}
 		
-		// add rates to eval
+		for (VariableROC vroc : cb.getRates()) {
+			String vnm = vroc.getVarName();
+			String rnm = makeRateVar(vnm);
+		 
+			mm.addFloatAssignment(rnm, vroc.getTextExpression());
+		}
 		
 		
 		
@@ -96,17 +188,39 @@ public class ComponentGenerator {
 		
 		MetaMethod mmfe = ret.newMetaMethod("forwardEuler");
 		mmfe.addFloatArgument("dt");
-		MethodCall mc = mmfe.newMethodCall("eval");
+		MethodCall evmc = mmfe.newMethodCall("eval");
 		
 		for (VariableROC vroc : cb.getRates()) {
 			String vnm = vroc.getVariable();
-			mmfe.addIncrement(vnm, new Product(vnm, "dt"));
+			mmfe.addIncrement(vnm, new Product(makeRateVar(vnm), "dt"));
 		}
 	
 		return ret;
 	}
 
 
+
+	private String getCNM(ComponentBehavior cb, String ka) {
+		String ret = cb.getComponentID();
+		if (ret == null) {
+			ret = ka; 
+		}
+		if (ret == null || ret.length() == 0) {
+			E.error("No name for cpt? + cb");
+		}
+		return ret;
+	}
+	
+	
+	private String makeRateVar(String vnm) {
+		String ret = "d_" + vnm + "_dt";
+		return ret;
+	}
+
+	private String arrayName(String vnm) {
+		String ret = "arr_" + vnm;
+		return ret;
+	}
 
 	public String getCombinedJavaSource() {
 		if (!mcUpToDate) {

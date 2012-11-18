@@ -46,6 +46,11 @@ public class StringUtil {
 		return ret;
 	}
 
+	public static String capitalize(String s) {
+		String ret = s.substring(0, 1).toUpperCase() + s.substring(1, s.length());
+		return ret;
+	}
+
 	 
 	
 	

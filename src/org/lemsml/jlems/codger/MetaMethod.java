@@ -44,18 +44,12 @@ public class MetaMethod {
 		ops.add(inc);
 	}
 
-
-	public void addMapConditionalAssignment(VarType d, String vnm, String fnm,
-			HashMap<String, String> exposureMap) {
-		MapConditionalAssignment mca = new MapConditionalAssignment(d, vnm, fnm, exposureMap);
-		ops.add(mca);
-	}
+ 
 		
 	 
 	public String generateJava() {
-		String indent = "    ";
-		StringBuilder sb = new StringBuilder();
-		sb.append(indent + "public " + javaVarType(returnType) + " " + name + "(");
+ 		StringBuilder sb = new StringBuilder();
+		sb.append("public " + javaVarType(returnType) + " " + name + "(");
 		boolean first = true;
 		for (MethodArgument ma : arguments) {
 			if (!first) {
@@ -66,13 +60,13 @@ public class MetaMethod {
 		}
 		sb.append(") {\n");
 		
-		String opindent = indent + "    ";
+		String opindent = "    ";
 		for (Operation op : ops) {
 			sb.append(opindent + op.generateJava());
 			sb.append("\n");
 		}
 		
-		sb.append(indent + "}\n");
+		sb.append("}\n");
 		return sb.toString();
 	}
 
@@ -91,6 +85,12 @@ public class MetaMethod {
 			E.error("Unrecognized var type " + vt);
 		}
 		return ret;
+	}
+
+
+	public void addFloatAssignment(String varName, String expr) {
+		FloatAssignment fa = new FloatAssignment(varName, expr);
+		ops.add(fa);
 	}
 	
 	

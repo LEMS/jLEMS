@@ -12,7 +12,7 @@ public class Increment extends Operation {
 
 	@Override
 	public String generateJava() {
-		String ret = "" + variable + " += " + value;
+		String ret = "" + variable + " += " + value.generateJava() + ";";
 		return ret;
 	}
 	

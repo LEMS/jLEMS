@@ -12,7 +12,7 @@ public class FixedMetaField extends MetaField {
 	
 	
 	public String generateJava() {
-		return "    private final static double " + name + " = " + value + ";\n";
+		return "private final static double " + name + " = " + value + ";";
 	}
 	
 	

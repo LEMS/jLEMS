@@ -22,8 +22,16 @@ public class MapConditionalAssignment extends Operation {
 
 	@Override
 	public String generateJava() {
-		E.missing();
-		return "";
+		StringBuilder sb = new StringBuilder();
+		sb.append(MetaField.defaultDeclare(varType, varname));
+		sb.append("\n");
+		sb.append("if (" + fname + ".equals(\"NONE\") {\n" + "}");
+		for (String s : map.keySet()) {
+			sb.append(" else if (" + fname + ".equals(" + s + ")) {\n" + "   " + varname + " = " + map.get(s) + ";\n");
+			sb.append("}");
+		}
+		 
+		return sb.toString();
 	}
 
 }
