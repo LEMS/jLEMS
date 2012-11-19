@@ -1,0 +1,6 @@
+Instance variables - channel populations that change a property of a channel (vshift) from place to place.
+
+Possibility of inheriting behaviors between component types? Not sure - why? Only case so far is 
+if extension type adds a param that children need but not self.
+
+ 
