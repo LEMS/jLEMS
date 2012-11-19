@@ -9,7 +9,10 @@
     <path id="junit.classpath">
         <pathelement location="lib/junit-4.8.1.jar"/>
     </path>
-	
+
+    <path id="jarrun.classpath">
+        <pathelement location="builtjars/lems-${version.number}.jar"/>
+    </path>
 	
     <target name="initdirs">
         <mkdir dir="build"/>
@@ -48,7 +51,6 @@
             <fileset dir="build" includes="org/lemsml/jlems/**"/>
            	<fileset dir="build" includes="org/lemsml/jlemsio/**"/>
         	<fileset dir="build" includes="org/lemsml/jlemsviz/**"/>
-        	
         	<fileset dir="src" includes="org/lemsml/jlems/**"/>
             <fileset dir="src" includes="org/lemsml/jlemsio/**"/>
             <manifest>
@@ -105,4 +107,37 @@
 	 	<xslt basedir="examples" destdir="build/compact-text-examples"
 		     	extension=".txt"  style="xsl/compacttext.xsl"/>
 	</target>
+
+
+    <target name="ex1" depends="jar"
+            description="Tests the LEMS example: example1.xml">
+
+        <java classname="org.lemsml.jlemsviz.examples.Example1" fork="true">
+            <jvmarg value="-Xmx100M" />
+
+            <arg value="${examples.dir}/example1.xml"/>
+
+            <classpath>
+                <pathelement location="builtjars/lems.jar"/>
+            </classpath>
+        </java>
+
+    </target>
+
+    <!--
+    <target name="exN" depends="jar"
+            description="Tests the LEMS example: XXX">
+
+        <java classname="org.lemsml.jlemsviz.Main" fork="true">
+            <jvmarg value="-Xmx100M" />
+
+            <arg value="/home/padraig/neuroConstruct/NeuroML2/NeuroML2CoreTypesTest/test/LEMS_NML2_Ex0.xml"/>
+
+            <classpath>
+                <pathelement location="builtjars/lems.jar"/>
+            </classpath>
+        </java>
+
+    </target>-->
+
 </project>

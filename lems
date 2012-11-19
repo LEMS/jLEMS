@@ -1,0 +1,7 @@
+export VERSION=0.8.3
+
+export CLASSPATH=.:./builtjars/lems.jar:$LEMS_HOME/lems.jar
+
+echo Running the LEMS application...
+
+java -Xmx400M -classpath $CLASSPATH org.lemsml.jlemsviz.Main $1 $2 $3 $4
