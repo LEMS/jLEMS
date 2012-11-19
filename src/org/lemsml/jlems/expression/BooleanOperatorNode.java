@@ -41,19 +41,19 @@ public abstract class BooleanOperatorNode extends OperatorNode implements Boolea
 	
 
 	public Dimensional getDimensionality(HashMap<String, Dimensional> dimHM) throws ContentError {
+		checkLeftRight();
 		Dimensional dl = leftEvaluable.getDimensionality(dimHM);
 		Dimensional dr = rightEvaluable.getDimensionality(dimHM);
 		Dimensional ret = null;
-		if (dl != null && dr != null) {
-			ret = dimop(dl, dr);
+		if (dl != null && dr != null && dl.isDimensionless() && dr.isDimensionless()) {
+			ret = dl;
 		} else {
 			throw new ContentError("Null dimension in operator: " + dl + " " + dr + " operator: " + symbol);
 		}
 		return ret;
 	}
 
-	public abstract Dimensional dimop(Dimensional dl, Dimensional dr) throws ContentError;
-	
+	 
 	 
  
 

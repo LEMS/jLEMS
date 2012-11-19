@@ -35,16 +35,7 @@ public class OrNode extends BooleanOperatorNode {
 		return new Or(leftEvaluable.makeEvaluable(fixedHM), rightEvaluable.makeEvaluable(fixedHM));
 	}
 
-	 
-	public Dimensional dimop(Dimensional dl, Dimensional dr) throws ContentError {
-		Dimensional ret = null;
-		if (dl.matches(dr)) {
-			ret = dl;
-		} else {
-			throw(new ContentError("Dimensions do not match in plus: " + dl + " " + dr));
-		}
-		return ret;
-	}
+	  
 
 	public void checkDimensions(HashMap<String, Dimensional> dimHM) throws ContentError {
 		getDimensionality(dimHM);

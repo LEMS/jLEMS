@@ -25,9 +25,7 @@ import org.lemsml.jlemsio.xmlio.XMLSerializer;
 public class ComponentFlatteningTest {
 
 	
-	
-	
-	
+	 
 /*
     public static void main(String[] args) {
     	DefaultLogger.initialize();

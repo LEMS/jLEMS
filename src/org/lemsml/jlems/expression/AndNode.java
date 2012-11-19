@@ -8,7 +8,7 @@ import org.lemsml.jlems.sim.ContentError;
 
 public class AndNode extends BooleanOperatorNode {
 
-        public static final String SYMBOL = ".and.";
+   public static final String SYMBOL = ".and.";
 
 	public AndNode() {
 		super(SYMBOL);
@@ -36,18 +36,7 @@ public class AndNode extends BooleanOperatorNode {
 	}
 
 	
-	 
-	
-	public Dimensional dimop(Dimensional dl, Dimensional dr) throws ContentError {
-		Dimensional ret = null;
-		if (dl.matches(dr)) {
-			ret = dl;
-		} else {
-			throw(new ContentError("Dimensions do not match in plus: " + dl + " " + dr));
-		}
-		return ret;
-	}
-
+	  
 	public void checkDimensions(HashMap<String, Dimensional> dimHM) throws ContentError {
 		getDimensionality(dimHM);
 
