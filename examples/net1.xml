@@ -1,7 +1,7 @@
 <Lems>
 
-	<DefaultRun component="sim1" />
-
+<Target component="simset"/> 
+  
 	<Dimension name="length" l="1" />
 	<Dimension name="time" t="1" />
 	<Unit symbol="ms" dimension="time" power="-3" />
@@ -29,15 +29,14 @@
 			value="(max - min) / step" />
 		<Text name="quantity" />
 
-		<Behavior>
-			<Build>
+		<Structure>
 				<MultiInstantiate componentType="GridPoint1D"
 					number="n">
 					<Assign property="position" value="min + step * index"
 						exposeAs="quantity" />
 				</MultiInstantiate>
-			</Build>
-		</Behavior>
+		</Structure>
+		 
 	</ComponentType>
 
 
@@ -50,14 +49,12 @@
 
 
 	<ComponentType name="Group">
-		<ComponentTypeRef name="of" />
+		<ComponentTypeReference name="of" />
 		<PathParameter name="select" />
 		<Collection name="elements" />
-		<Behavior>
-			<Build>
-				<Gather pathParameter="select" collection="elements" />
-			</Build>
-		</Behavior>
+		<Structure>
+			<Gather pathParameter="select" collection="elements" />
+		</Structure>
 	</ComponentType>
 
 
@@ -75,14 +72,14 @@
             <Parameter name="period" dimension="time"/>
             <EventPort name="a" direction="out"/>
             <Exposure name="tsince" dimension="time"/>
-            <Behavior>
+            <Dynamics>
                 <StateVariable name="tsince" exposure="tsince" dimension="time"/>
                 <TimeDerivative variable="tsince" value="1"/>
                 <OnCondition test="tsince .gt. period">
                     <StateAssignment variable="tsince" value="0"/>
                     <EventOut port="a"/>
                 </OnCondition>
-            </Behavior>
+            </Dynamics>
         </ComponentType>
 
 	<ComponentType name="Cell">
@@ -91,7 +88,7 @@
 
                 <Exposure name="n" dimension="none" />
 
-		<Behavior>
+		<Dynamics>
 			<StateVariable name="n" exposure="n" dimension="none" />
 			<OnEvent port="spikes-in">
 				<StateAssignment variable="n" value="n + 1" />
@@ -100,7 +97,7 @@
 			<OnCondition test="n .eq. 100">
 				<EventOut port="spikes-out" />
 			</OnCondition>
-		</Behavior>
+		</Dynamics>
 
 	</ComponentType>
 
@@ -115,11 +112,9 @@
 	<ComponentType name="PointBasedPopulation" extends="Population">
 		<Link type="Group" name="points" />
 
-		<Behavior>
-			<Build>
-				<CoInstantiate at="points" component="component" />
-			</Build>
-		</Behavior>
+		<Structure>
+			<CoInstantiate at="points" component="component" />
+		</Structure>
 	</ComponentType>
 
 
@@ -133,13 +128,11 @@
 		<Children name="selectors" type="PairSelector" />
 		<Link name="from" type="Population" />
 		<Link name="to" type="Population" />
-		<Behavior>
-			<Build>
+		<Structure>
 				<Apply components="selectors">
 					<PairsEventConnection pairs="pairs" />
 				</Apply>
-			</Build>
-		</Behavior>
+		</Structure>
 	</ComponentType>
 
 
@@ -149,13 +142,11 @@
 		<Text name="fromQuantity" />
 		<Text name="toQuantity" />
 
-		<Behavior>
-			<Build>
+		<Structure>
 				<GatherPairs collection="pairs" pFrom="../from" qFrom="../to">
 					<PairFilter select="x[abs(p:fromQuantity - q:toQuantity) .lt. range]" />
 				</GatherPairs>
-			</Build>
-		</Behavior>
+		</Structure>
 
 	</ComponentType>
 
@@ -164,17 +155,15 @@
 
 	<ComponentType name="RandomPairs" extends="PairSelector">
 		<Parameter name="probability" dimension="none" />
-		<Behavior>
-			<Build>
-				<ForEach instances="../from" as="src">
+		<Structure>
+			<ForEach instances="../from" as="src">
 					<ForEach instances="../to" as="tgt">
 						<If test="random() .lt. prob">
 							<IncludePair collection="pairs" />
 						</If>
 					</ForEach>
 				</ForEach>
-			</Build>
-		</Behavior>
+		</Structure>
 	</ComponentType>
 
 
@@ -186,7 +175,7 @@
 	</spikeGenerator>
 
 
-	<Component type="GridBasedNetwork" id="net2">
+	<Component type="GridBasedNetwork" id="net1">
 		<PosGrid1D id="line" min="0um" max="20um" step="2um"
 			quantity="distance" />
 
@@ -210,25 +199,22 @@
 
 
 
-
-	<GridBasedNetwork id="net1">
-		<PosGrid1D id="line" min="0um" max="20um" step="2um" />
-	</GridBasedNetwork>
+	<Include file="MultiRunSimulation.xml" />
+ 
 
 
-	<Include file="SimpleSimulation.xml" />
-
-	<Simulation id="sim1" length="200ms" step="0.05ms" target="net2">
-		<Display id="d0" timeScale="1ms" title="Network example: excitatory cells">
-                        <Line id="ve0" quantity="pe[0]/n" scale="1" color="#0000f0" save="pe0.dat"/>
-                        <Line id="ve1" quantity="pe[1]/n" scale="1" color="#00f0f0" save="pe1.dat"/>
-                        <Line id="ve2" quantity="pe[2]/n" scale="1" color="#f0f0f0" save="pe2.dat"/>
-		</Display>
-		<Display id="d2" timeScale="1ms" title="Network example: inhibitory cells">
-                        <Line id="vi0" quantity="pi[0]/tsince" scale="1ms" color="#0000f0" save="pi0.dat"/>
-                        <Line id="vi1" quantity="pi[1]/tsince" scale="1ms" color="#00f0f0" save="pi1.dat"/>
-		</Display>
+<SimulationSet id="simset">
+	<Display id="disp1" title="Net1" xmin="0" xmax="80" ymin="-80" ymax="50"/>
+	
+    <Simulation id="sim1" length="200ms" step="0.05ms" target="net1" display="disp1">
+		<DisplayList timeScale="1ms" title="Network example: excitatory cells">
+              <Line id="ve0"  timeScale="1ms" quantity="pe[0]/n" scale="1" color="#0000f0"/>
+              <Line id="ve1"  timeScale="1ms" quantity="pe[1]/n" scale="1" color="#00f0f0"/>
+              <Line id="ve2"  timeScale="1ms" quantity="pe[2]/n" scale="1" color="#f0f0f0"/>
+              <Line id="vi0"  timeScale="1ms" quantity="pi[0]/tsince" scale="1ms" color="#0000f0"/>
+              <Line id="vi1"  timeScale="1ms" quantity="pi[1]/tsince" scale="1ms" color="#00f0f0"/>
+		</DisplayList>
 	</Simulation>
-
+</SimulationSet>
 
 </Lems>

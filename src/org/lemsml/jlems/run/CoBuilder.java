@@ -2,6 +2,7 @@ package org.lemsml.jlems.run;
 
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Component;
+import org.lemsml.jlemsviz.plot.E;
 
 public class CoBuilder extends AbstractChildBuilder {
 
@@ -22,6 +23,8 @@ public class CoBuilder extends AbstractChildBuilder {
 		MultiInstance mi = new MultiInstance(componentBehavior.typeName, "");
 		 
 		StateInstance si = par.getScopeInstance(ctr.getID());
+		
+		E.info("getting instance set par=" + par + " si=" + si);
 		
 		InstanceSet<StateInstance> iset = si.getUniqueInstanceSet();
 		

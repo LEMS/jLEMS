@@ -21,4 +21,8 @@ public class Target   {
 	public Component getComponent() {
 		return r_component;
 	}
+
+	public void setComponentID(String id) {
+		component = id;
+	}
 }

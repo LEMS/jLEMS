@@ -172,6 +172,7 @@ public class Lems {
     }
 
     public void addComponent(Component c) {
+    	E.info("Added cpt " + c.getID());
          components.add(c);
     }
 
@@ -408,6 +409,16 @@ public class Lems {
 
 	public void addDimension(Dimension d) {
 		dimensions.add(d);
+	}
+
+
+	public void setTargetComponent(Component cp) throws ContentError {
+		targets = new LemsCollection<Target>();
+		Target t = new Target();
+		t.setComponentID(cp.getID());
+		t.resolve(this);
+		targets.add(t);
+		
 	}
  
 

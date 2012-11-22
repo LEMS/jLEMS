@@ -1,4 +1,4 @@
-package org.lemsml.jlems.type.dynamics;
+package org.lemsml.jlems.type.structure;
 
 import java.util.ArrayList;
 
@@ -11,7 +11,6 @@ import org.lemsml.jlems.type.Children;
 import org.lemsml.jlems.type.Component;
 import org.lemsml.jlems.type.ComponentType;
 import org.lemsml.jlems.type.Lems;
-import org.lemsml.jlems.type.structure.BuildElement;
 
 public class Apply extends BuildElement {
 

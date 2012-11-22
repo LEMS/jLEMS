@@ -925,6 +925,8 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		}
 
 		for (String s : cpt.childrenNames) {
+			E.info("proc children name " + s + " in " + this);
+			
 			ArrayList<Component> cpts = cpt.childrenHM.get(s);
 			ArrayList<ComponentBehavior> cba = new ArrayList<ComponentBehavior>();
 			for (Component c : cpts) {

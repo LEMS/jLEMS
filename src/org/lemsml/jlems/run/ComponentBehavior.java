@@ -229,7 +229,10 @@ public class ComponentBehavior {
 	
 	
 	public void build(StateInstance uin) throws ContentError, ConnectionError, RuntimeError {
+		E.info("building " + this + " si=" + uin);
 		if (hasBuilds) {
+			
+			
 			for (Builder be : builders) { 
 				if (be.isChildInstantiator()) {
 					be.childInstantiate(uin);
@@ -627,6 +630,8 @@ public class ComponentBehavior {
 	}
 
 	public void addMultiComponentBehavior(String s, MultiComponentBehavior mcb) {
+		E.info("Adding multhm name " + s + " " + mcb);
+		
  		multiHMNames.add(s);
 		multiHM.put(s, mcb);
 		if (s == null) {

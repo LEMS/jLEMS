@@ -500,7 +500,9 @@ public class StateInstance implements StateRunnable {
 	}
 
 	public void addMultiInstance(MultiInstance mi) {
-		if (!hasMulti) {
+//		String msg = ("adding mi " + mi + " to " + this);
+		
+		if (!hasMulti) {		 
 			hasMulti = true;
 			multiA = new ArrayList<MultiInstance>();
 			multiHM = new HashMap<String, MultiInstance>();
@@ -905,7 +907,8 @@ public class StateInstance implements StateRunnable {
 			ret = is;
 		}
 		if (ret == null) {
-			throw new ContentError("Can't get single instance set from " + this);
+			String msg = " singleIS=" + singleIS + ", singleAMI=" + singleAMI;
+			throw new ContentError("Can't get single instance set from " + this + " " + msg);
 		}
 		return ret;
 	}

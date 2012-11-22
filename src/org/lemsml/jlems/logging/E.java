@@ -259,7 +259,9 @@ public class E {
    }
 
 
-
+   public static void stackTrace(String msg) {
+	      (new Exception(msg)).printStackTrace();
+   }
 
    public static void showSource() {
       showSource(10);

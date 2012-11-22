@@ -10,6 +10,7 @@ import org.lemsml.jlems.type.Collection;
 import org.lemsml.jlems.type.Component;
 import org.lemsml.jlems.type.ComponentType;
 import org.lemsml.jlems.type.Lems;
+import org.lemsml.jlemsviz.plot.E;
 
 public class Gather extends BuildElement {
 
@@ -24,6 +25,9 @@ public class Gather extends BuildElement {
 		String sel = cpt.getPathParameterPath(pathParameter);
 		SelectionParser sp = new SelectionParser();
 		SelectionExpression selexp = sp.parse(sel);
+		
+		E.info("making a gather builder " + selexp + " collection=" + collection);
+		
 		return new GatherBuilder(selexp, collection);
 		
 	}

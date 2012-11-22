@@ -24,9 +24,20 @@ public class LemsCollection<T> implements Iterable<T> {
 		nameHM = null;
 		pseudoNameHM = null;
 		contents.add(arg);	
-	 
+		
+		clearMaps();
+		
 		return true;
 	}
+	
+	
+	private void clearMaps() {
+		nameHM = null;
+		pseudoNameHM = null;
+		idHM = null;
+	}
+	
+	
 	
 	public void addIfNew(final T arg) throws ContentError {
 		if (arg instanceof Named) {

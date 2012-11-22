@@ -3,6 +3,7 @@ package org.lemsml.jlems.run;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.selection.SelectionExpression;
 import org.lemsml.jlems.sim.ContentError;
 
@@ -28,7 +29,7 @@ SelectionExpression selexp;
 			InstanceSet<StateInstance> iset = tgt.getInstanceSet(col);
 			iset.setItems(matches);
 			
-			// E.info("GATHER BUILDER set " + tgt.id + " " + iset.size() + " from " + selexp);
+			E.info("GATHER BUILDER set " + tgt.id + " " + iset.size() + " from " + selexp);
 	}
 
 	@Override

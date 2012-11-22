@@ -6,8 +6,10 @@ import org.lemsml.jlems.type.Assertion;
 import org.lemsml.jlems.type.Attachments;
 import org.lemsml.jlems.type.Child;
 import org.lemsml.jlems.type.Children;
+import org.lemsml.jlems.type.Collection;
 import org.lemsml.jlems.type.ComponentReference;
 import org.lemsml.jlems.type.ComponentType;
+import org.lemsml.jlems.type.ComponentTypeReference;
 import org.lemsml.jlems.type.Constant;
 import org.lemsml.jlems.type.DerivedParameter;
 import org.lemsml.jlems.type.Dimension;
@@ -19,8 +21,11 @@ import org.lemsml.jlems.type.IntegerParameter;
 import org.lemsml.jlems.type.Lems;
 import org.lemsml.jlems.type.Link;
 import org.lemsml.jlems.type.Location;
+import org.lemsml.jlems.type.PairCollection;
 import org.lemsml.jlems.type.Parameter;
 import org.lemsml.jlems.type.Path;
+import org.lemsml.jlems.type.PathParameter;
+import org.lemsml.jlems.type.Property;
 import org.lemsml.jlems.type.Requirement;
 import org.lemsml.jlems.type.Target;
 import org.lemsml.jlems.type.Text;
@@ -55,11 +60,19 @@ import org.lemsml.jlems.type.simulation.DataDisplay;
 import org.lemsml.jlems.type.simulation.Record;
 import org.lemsml.jlems.type.simulation.Run;
 import org.lemsml.jlems.type.simulation.Simulation;
+import org.lemsml.jlems.type.structure.Apply;
+import org.lemsml.jlems.type.structure.Assign;
 import org.lemsml.jlems.type.structure.ChildInstance;
 import org.lemsml.jlems.type.structure.Choose;
 import org.lemsml.jlems.type.structure.CoInstantiate;
 import org.lemsml.jlems.type.structure.ForEach;
+import org.lemsml.jlems.type.structure.Gather;
+import org.lemsml.jlems.type.structure.GatherPairs;
+import org.lemsml.jlems.type.structure.If;
+import org.lemsml.jlems.type.structure.IncludePair;
 import org.lemsml.jlems.type.structure.MultiInstantiate;
+import org.lemsml.jlems.type.structure.PairFilter;
+import org.lemsml.jlems.type.structure.PairsEventConnection;
 import org.lemsml.jlems.type.structure.Structure;
 import org.lemsml.jlems.type.structure.With;
 
@@ -145,11 +158,19 @@ public class LemsClasses {
 		ret.add(new LemsClass(Structure.class, section));
 		ret.add(new LemsClass(MultiInstantiate.class, section));
 		ret.add(new LemsClass(CoInstantiate.class, section));
+		ret.add(new LemsClass(Assign.class, section));
 		ret.add(new LemsClass(Choose.class, section));
 	 	ret.add(new LemsClass(ChildInstance.class, section));	
 	 	ret.add(new LemsClass(ForEach.class, section));
 	 	ret.add(new LemsClass(EventConnection.class, section));
+		ret.add(new LemsClass(PairsEventConnection.class, section));
+		ret.add(new LemsClass(PairFilter.class, section));
+		ret.add(new LemsClass(IncludePair.class, section));
 	 	ret.add(new LemsClass(With.class, section));
+		ret.add(new LemsClass(If.class, section));
+		ret.add(new LemsClass(Apply.class, section));
+		ret.add(new LemsClass(Gather.class, section));
+		ret.add(new LemsClass(GatherPairs.class, section));
 		return ret;
 	}
 
@@ -160,6 +181,9 @@ public class LemsClasses {
 		String section = "componenttypes";
 		ret.add(new LemsClass(ComponentType.class, section));
 		ret.add(new LemsClass(Parameter.class, section));
+		ret.add(new LemsClass(PathParameter.class, section));
+		
+		ret.add(new LemsClass(Property.class, section));
 		ret.add(new LemsClass(DerivedParameter.class, section));
 		ret.add(new LemsClass(Fixed.class, section));
 		ret.add(new LemsClass(Requirement.class, section));
@@ -170,6 +194,9 @@ public class LemsClasses {
 		// link elts in the right list. TODO - make same with different scope parameter
 		ret.add(new LemsClass(Link.class, section));
  		ret.add(new LemsClass(ComponentReference.class, section));
+ 		ret.add(new LemsClass(ComponentTypeReference.class, section));
+ 		ret.add(new LemsClass(Collection.class, section));
+ 		ret.add(new LemsClass(PairCollection.class, section));
 		ret.add(new LemsClass(EventPort.class, section));
 		ret.add(new LemsClass(Text.class, section));
 		ret.add(new LemsClass(Path.class, section));
