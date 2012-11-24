@@ -585,6 +585,10 @@ public class StateInstance implements StateRunnable {
 	}
 
 	public MultiInstance getMultiInstance(String snm) {
+                if (multiHM == null)
+                {
+                    return null;
+                }
 		MultiInstance mi = multiHM.get(snm);
 		if (mi == null) {
 			// E.error("Failed to get MultiInstance: " + snm + "\n" +

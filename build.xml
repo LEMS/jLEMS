@@ -108,7 +108,7 @@
 		     	extension=".txt"  style="xsl/compacttext.xsl"/>
 	</target>
 
-
+    <!-- One example just for testing purposes... -->
     <target name="ex1" depends="jar"
             description="Tests the LEMS example: example1.xml">
 
@@ -123,21 +123,5 @@
         </java>
 
     </target>
-
-    <!--
-    <target name="exN" depends="jar"
-            description="Tests the LEMS example: XXX">
-
-        <java classname="org.lemsml.jlemsviz.Main" fork="true">
-            <jvmarg value="-Xmx100M" />
-
-            <arg value="/home/padraig/neuroConstruct/NeuroML2/NeuroML2CoreTypesTest/test/LEMS_NML2_Ex0.xml"/>
-
-            <classpath>
-                <pathelement location="builtjars/lems.jar"/>
-            </classpath>
-        </java>
-
-    </target>-->
 
 </project>
