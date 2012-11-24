@@ -82,11 +82,10 @@ fall back to using the distal point of the parent segment -->
 	A component can only be defined in a context where a parent defines a solid -->
 	<Location name="at"/>
 	 
-	<Geometry>
-		<!--  Its not clear if we need anything here or not. We could have something 
+		<!--  Its not clear if we need any Geometry element here or not. We could have something 
 		here (or in Dynamics) to say the e and g exposures apply at the position set
 		by the Location property. -->
-	</Geometry>
+ 
  </ComponentType> 
 
   

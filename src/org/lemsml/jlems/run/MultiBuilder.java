@@ -24,7 +24,9 @@ public class MultiBuilder extends AbstractChildBuilder {
 	
 	public void childInstantiate(StateInstance par) throws ContentError, ConnectionError, RuntimeError {
  		
-		MultiInstance mi = new MultiInstance(componentBehavior.typeName, "");
+		String tnm = componentBehavior.typeName;
+		
+		// MultiInstance mi = new MultiInstance(componentBehavior.typeName, "");
 		for (int i = 0; i < number; i++) {
 			StateInstance sr = componentBehavior.newInstance();
  			sr.setNewVariable("index", i);
@@ -42,10 +44,11 @@ public class MultiBuilder extends AbstractChildBuilder {
 				//	E.info("set new var " + ea + " " + d);
 				}
 			}
+			par.addListChild(tnm, "", sr);
 			
-			mi.add(sr);
+//			mi.add(sr);
 		}
-		par.addMultiInstance(mi);
+		// par.addMultiInstance(mi);
 	}
 	
 	public boolean isInstantiator() {

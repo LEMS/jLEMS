@@ -201,7 +201,7 @@ public class Flattener {
 		for (String vnm : avn) {
 			if (vnm.startsWith(sa) && vnm.endsWith(sb)) {
 				String inner = vnm.substring(sa.length(), vnm.length() - sb.length());
-				E.info("match " + sa + " * " + sb + " from " + vnm + " leaves " + inner);
+//				E.info("match " + sa + " * " + sb + " from " + vnm + " leaves " + inner);
 					
 				if (isNumeric(inner)) {
 					wk.add(vnm);

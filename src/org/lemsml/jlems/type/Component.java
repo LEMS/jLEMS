@@ -48,18 +48,12 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 			"is not necessary: LEMS does not use the body text of XML elements itself, so this is free for the " +
 			"modeler to include descriptive text or other markup of thier own.")
 	public LemsCollection<About> abouts = new LemsCollection<About>();
-
-	
-
+ 
 	@ModelProperty(info="Structured metadata can be put in Meta elements. The content is read into a generic xml data structure. " +
 			"Other tools can then do their own thing with it. Each Meta element should set the context attribute, so " +
 			"tools can use the getMeta(context) method to retrieve elements that match a particular context.")
 	public LemsCollection<Meta> metas;
-	
-
-	
-	
-	
+	 
 	public double xPosition;
 	public double yPosition;
 	
@@ -70,11 +64,12 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 
      HashMap<String, Component> refHM;
 
+     
+     ArrayList<Component> freeChildren;
+     
 	ArrayList<String> childrenNames;
 	 HashMap<String, ArrayList<Component>> childrenHM;
-
-	
-	
+ 
 	
 	private boolean resolved = false;
 
@@ -427,6 +422,12 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 			}
 
 			if (!done) {
+				if (freeChildren == null) {
+					freeChildren = new ArrayList<Component>();
+				}
+				freeChildren.add(cpt);
+				
+				
 				Children children = r_type.getChildren(cpt.getComponentType());
 				if (children != null) {
 					String st = children.getName();
@@ -487,6 +488,23 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		// ": attributes: "+attributes);
 	}
 
+	
+	
+	public String getListName(Component cpt) throws ContentError {
+		Children children = r_type.getChildren(cpt.getComponentType());
+		String ret = null;
+		if (children != null) {
+			ret = children.getName();
+		}
+		if (ret == null) {
+			throw new ContentError("No containing lis for " + cpt);
+		}
+		return ret;
+	}
+	
+	
+	
+	
 	public void addToChildren(String childrenName, Component c) throws ContentError {
 
 		if (childrenHM == null)

@@ -25,6 +25,9 @@ public class StateInstance implements StateRunnable {
 	ArrayList<StateInstance> childA;
 	HashMap<String, StateInstance> childHM;
 	
+	
+	ArrayList<StateListChild> stateListChildren;
+	
 	boolean hasMulti = false;
 	ArrayList<MultiInstance> multiA;
 	
@@ -85,7 +88,7 @@ public class StateInstance implements StateRunnable {
 
 	@Override
 	public String toString() {
-		return (uclass != null ? "StateInstance of " + uclass.toString() : "dummy instance");
+		return (uclass != null ? "StateInstance " + uclass.getID() + ":" + uclass.getTypeName() : "dummy instance");
 	}
 
 	public double getCurrentTime() {
@@ -498,8 +501,45 @@ public class StateInstance implements StateRunnable {
 			childHM.put(s, newInstance);
 		}
 	}
-
-	public void addMultiInstance(MultiInstance mi) {
+	
+	
+	
+	// TODO - not sure we need type name tnm here?
+	public void addListChild(String tnm, String sid, StateInstance newInstance) {
+		if (stateListChildren == null) {
+			stateListChildren = new ArrayList<StateListChild>();
+		}
+		newInstance.setParent(this);
+		stateListChildren.add(new StateListChild(sid, newInstance));
+ 		
+		if (!hasMulti) {		 
+			hasMulti = true;
+			multiA = new ArrayList<MultiInstance>();
+			multiHM = new HashMap<String, MultiInstance>();
+		}
+		if (multiHM.containsKey(sid)) {
+			multiHM.get(sid).add(newInstance);
+		} else {
+			MultiInstance mi = new MultiInstance(tnm, sid);
+			mi.setParent(this);
+			mi.add(newInstance);
+			multiA.add(mi);
+			multiHM.put(sid,  mi);
+		}
+		countMIs();
+	}
+	
+	private void countMIs() {
+		singleAMI = false;
+		onlyAMI = null;
+		if (multiA.size() == 1) {
+			onlyAMI = multiA.get(0);
+			singleAMI = true;
+		}
+	}
+	
+	// TODO - can delete?
+	private void addMultiInstance(MultiInstance mi) {
 //		String msg = ("adding mi " + mi + " to " + this);
 		
 		if (!hasMulti) {		 
@@ -527,8 +567,14 @@ public class StateInstance implements StateRunnable {
 		// children
 		// which to do????
 		StateInstance ret = null;
-		
-		
+		try {
+			checkBuilt();
+		} catch (RuntimeError er) {
+			throw new ContentError("Can't build " + this, er);
+		} catch (ConnectionError er) {
+			throw new ContentError("Can't build " + this, er);
+		}
+			
 		if (childHM != null && childHM.containsKey(snm)) {
 			ret = childHM.get(snm);
 		
@@ -776,6 +822,7 @@ public class StateInstance implements StateRunnable {
 	}
 
 	public ArrayList<StateInstance> quietGetStateInstances(String path) throws ConnectionError, ContentError, RuntimeError {
+ 		
 		ArrayList<StateInstance> ret = null;
 		if (hasChildren && childHM.containsKey(path)) {
 			E.info("QUERY - using path twice?");
@@ -783,28 +830,32 @@ public class StateInstance implements StateRunnable {
 
 		} else if (hasMulti && multiHM.containsKey(path)) {
 			ret = multiHM.get(path).getStateInstances();
+			
 		} else {
 			if (multiA != null) {
 				for (MultiInstance mi : multiA) {
-					if (mi.hasID(path)) {
+ 					if (mi.hasID(path)) {
 						ret = mi.getChildByID(path).getStateInstances();
+ 					}
+					if (ret != null) {
+						break;
 					}
 				}
 			}
 		}
 
 		if (ret == null && parent != null) {
-			ret = parent.quietGetStateInstances(path);
-		}
+ 			ret = parent.quietGetStateInstances(path);
+		}  
 		return ret;
 	}
 
 	public ArrayList<StateInstance> getStateInstances() throws ConnectionError, ContentError, RuntimeError {
 		checkBuilt();
 		ArrayList<StateInstance> ret = null;
-		if (singleAMI) {
+ 		if (singleAMI) {
 			ret = onlyAMI.getStateInstances();
-
+ 
 		} else if (singleIS) {
 			ret = onlyIS.getItems();
 
@@ -826,6 +877,14 @@ public class StateInstance implements StateRunnable {
 			}
 		}
 
+		
+		if (stateListChildren != null) {
+ 			for (StateListChild slc : stateListChildren) {
+ 				slc.getInstance().checkBuilt();
+			}
+		}
+		
+		/*
 		if (multiA != null) {
  			for (MultiInstance mi : multiA) {
  				for (StateInstance si : mi.getStateInstances()) {
@@ -834,6 +893,7 @@ public class StateInstance implements StateRunnable {
 			}
 
 		}
+		*/
 	}
 
 	public int getMultiInstanceCount() {

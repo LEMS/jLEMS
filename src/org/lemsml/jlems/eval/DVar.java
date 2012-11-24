@@ -77,8 +77,7 @@ public class DVar extends DVal {
 	public void substituteVariableWith(String var, String sub) {
 		if (varname.equals(var)) {
 			varname = sub;
-			E.info("SUB: replaced " + var + " with " + sub + " in dval ");
-		}
+ 		}
 	}
 
 

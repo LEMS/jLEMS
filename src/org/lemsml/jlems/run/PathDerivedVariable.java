@@ -151,14 +151,9 @@ public class PathDerivedVariable {
         StateInstance wkinst = uin;
         String[] bits = path.split("/");
         for (int i = 0; i < bits.length - 1; i++) {
-            try {
-                wkinst = wkinst.getChildInstance(bits[i]);
-            } catch (ContentError e) {
-                throw new ContentError("Problem getting Child instance",e);
-            }
+        	wkinst = wkinst.getChildInstance(bits[i]);
         }
         ret = wkinst;
-
         return ret;
     }
 
@@ -300,7 +295,7 @@ public class PathDerivedVariable {
     			String ba = path.substring(0, iwc);
     			String bb = path.substring(iwc + wc.length(), path.length());
     			ret = pfx + ba + "*_" + bb;
-    			E.info("Partially flattened " + path + " to " + ret);
+//    			E.info("Partially flattened " + path + " to " + ret);
     		} else {
     			E.missing("Cant flattten " + path);
     		}

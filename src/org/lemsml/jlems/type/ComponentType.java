@@ -924,9 +924,21 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 			ret.addChildComponentBehavior(s, chb);
 		}
 
-		for (String s : cpt.childrenNames) {
-			E.info("proc children name " + s + " in " + this);
+		
+		if (cpt.freeChildren != null) {
+			for (Component fc : cpt.freeChildren) {
+				ComponentBehavior chb = fc.getComponentBehavior();
+				ret.addListComponentBehavior(cpt.getListName(fc), chb);
+			}
+		}
 			
+		
+		// This is wrong - if the children contain some A's then some B's and then some A's, we 
+		// want to preserve that order in the CB because it might implement their dependencies 
+		
+		/*
+		for (String s : cpt.childrenNames) {
+			E.info("proc children name " + s + " in " + this);	
 			ArrayList<Component> cpts = cpt.childrenHM.get(s);
 			ArrayList<ComponentBehavior> cba = new ArrayList<ComponentBehavior>();
 			for (Component c : cpts) {
@@ -934,7 +946,11 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 			}
 			ret.addMultiComponentBehavior(s, new MultiComponentBehavior(cba));
 		}
-
+		*/
+		
+		
+		
+		
 		for (Attachments ats : getAttachmentss()) {
  			ret.addAttachmentSet(ats.getName(), ats.getComponentType().getName());
 		}

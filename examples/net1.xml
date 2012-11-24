@@ -8,8 +8,7 @@
 	<Unit symbol="um" dimension="length" power="-6" />
 
 
-	<ComponentType name="GridPoint">
-	</ComponentType>
+	<ComponentType name="GridPoint"/>
 
 
 	<ComponentType name="GridPoint1D" extends="GridPoint">
@@ -17,8 +16,7 @@
 	</ComponentType>
 
 
-	<ComponentType name="Grid">
-	</ComponentType>
+	<ComponentType name="Grid"/>
 
 
 	<ComponentType name="PosGrid1D" extends="Grid">
@@ -167,12 +165,11 @@
 	</ComponentType>
 
 
-	<Cell id="excit_cell">
-	</Cell>
+	<Cell id="excit_cell"/>
 
 
-	<spikeGenerator id="inhib_cell" period="10ms">
-	</spikeGenerator>
+
+	<spikeGenerator id="inhib_cell" period="10ms"/>
 
 
 	<Component type="GridBasedNetwork" id="net1">

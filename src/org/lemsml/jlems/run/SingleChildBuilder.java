@@ -1,6 +1,8 @@
 package org.lemsml.jlems.run;
 
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.sim.ContentError;
+
 
  
 
@@ -18,9 +20,8 @@ public class SingleChildBuilder extends BuilderElement implements ChildInstantia
 	
 	
 	public void childInstantiate(StateInstance parent) throws ContentError, ConnectionError, RuntimeError {
- 
 		StateInstance sr = componentBehavior.newInstance();
-		sr.setParent(parent);
+ 		sr.setParent(parent);
 		parent.addChild(name, (StateInstance)sr);
 	}
  

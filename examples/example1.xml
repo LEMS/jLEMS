@@ -1,21 +1,13 @@
-
 <Lems>
   
 <Target component="simset"/> 
  
- 
 <Dimension name="voltage" m="1" l="2" t="-3" i="-1"/>
-
 <Dimension name="time" t="1"/>
-
 <Dimension name="per_time" t="-1"/>
-
 <Dimension name="conductance" m="-1" l="-2" t="3" i="2"/>
-
 <Dimension name="capacitance" m="-1" l="-2" t="4" i="2"/>
-
 <Dimension name="current" i="1"/>
-
 
 
 <ComponentType name="iaf1">
@@ -211,14 +203,13 @@
     <Exposure name="current" dimension="current"/>
    
     <Dynamics>
-          <DerivedVariable name="channelg" dimension="conductance" select="channel/g"/>
+        <DerivedVariable name="channelg" dimension="conductance" select="channel/g"/>
         <DerivedVariable name="geff" value="channelg * number"/>
         <DerivedVariable name="current" exposure="current" value="geff * (erev - v)"/>
     </Dynamics>
     
-    
     <Structure>
-            <ChildInstance component="channel"/>    
+         <ChildInstance component="channel"/>    
     </Structure>
 </ComponentType>
 

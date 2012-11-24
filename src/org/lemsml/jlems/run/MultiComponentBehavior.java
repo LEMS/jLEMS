@@ -10,10 +10,18 @@ public class MultiComponentBehavior {
 	ArrayList<ComponentBehavior> cba;
 	
 	
-	public MultiComponentBehavior(ArrayList<ComponentBehavior> a) {
-		cba = a;
+	public MultiComponentBehavior() {
+		cba = new ArrayList<ComponentBehavior>();
 	}
+	
+	
+	 
 
+	
+	public void add(ComponentBehavior cb) {
+		cba.add(cb);
+	}
+	
 	public ArrayList<ComponentBehavior> getCBs() {
 		return cba;
 	}
@@ -29,15 +37,6 @@ public class MultiComponentBehavior {
 	}
 
 	
-	public MultiComponentBehavior makeCopy() {
-		ArrayList<ComponentBehavior> ccba = new ArrayList<ComponentBehavior>();
-		for (ComponentBehavior cb : cba) {
-			ccba.add(cb.makeShallowCopy());
-		}
-		MultiComponentBehavior ret = new MultiComponentBehavior(ccba);
-		return ret;
-	}
-
 	public void visitAll(ComponentBehaviorVisitor v) {
 		for (ComponentBehavior cb : cba) {
 			cb.visitAll(v);

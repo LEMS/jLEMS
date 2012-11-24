@@ -48,7 +48,11 @@ public class ComponentBehavior {
 	
 	HashMap<String, ComponentBehavior> childHM = new HashMap<String, ComponentBehavior>();
 	
-	ArrayList<String> multiHMNames = new ArrayList<String>();
+	
+	ArrayList<ListChild> listChildren = new ArrayList<ListChild>();
+ 
+	
+	// TODO get rid of these entirely
 	HashMap<String, MultiComponentBehavior> multiHM = new HashMap<String, MultiComponentBehavior>();
 	
 	HashMap<String, String> attSetHM = new HashMap<String, String>();
@@ -176,11 +180,20 @@ public class ComponentBehavior {
 		}
 	 	
 		
+		
+		for (ListChild lc : listChildren) {
+			StateInstance si = lc.getComponentBehavior().newInstance();
+			uin.addListChild(lc.getTypeName(), lc.getListName(), si);
+		}
+		
+		/*
 		for (String s : multiHMNames) {
 			MultiInstance mi = multiHM.get(s).newInstance();
 			mi.setKnownAs(s);
 			uin.addMultiInstance(mi);
 		}
+		*/
+		
 		
 		for (String s : attSetHM.keySet()) {
  			uin.addAttachmentSet(s, new MultiInstance(attSetHM.get(s), s));
@@ -229,10 +242,8 @@ public class ComponentBehavior {
 	
 	
 	public void build(StateInstance uin) throws ContentError, ConnectionError, RuntimeError {
-		E.info("building " + this + " si=" + uin);
-		if (hasBuilds) {
-			
-			
+ 		if (hasBuilds) {
+		
 			for (Builder be : builders) { 
 				if (be.isChildInstantiator()) {
 					be.childInstantiate(uin);
@@ -629,6 +640,8 @@ public class ComponentBehavior {
 		childHM.put(s, chb);
 	}
 
+	
+	/*
 	public void addMultiComponentBehavior(String s, MultiComponentBehavior mcb) {
 		E.info("Adding multhm name " + s + " " + mcb);
 		
@@ -638,7 +651,30 @@ public class ComponentBehavior {
 			E.stackTrace();
 		}
 	}
-
+*/
+	
+	public void addListComponentBehavior(String s, ComponentBehavior cb) {
+		listChildren.add(new ListChild(s, cb));
+		addMulti(s, cb);
+	}
+	
+	
+	private void clearMultis() {
+		multiHM = new HashMap<String, MultiComponentBehavior>();
+	}
+	
+		
+	private void addMulti(String s, ComponentBehavior cb) {	
+		if (multiHM.containsKey(s)) {
+			multiHM.get(s).add(cb);
+		} else {
+			MultiComponentBehavior mcb = new MultiComponentBehavior();
+			mcb.add(cb);
+			multiHM.put(s, mcb);
+		}
+ 	}
+	
+	
 	public void addAttachmentSet(String name, String typeName) {
  		attSetHM.put(name, typeName);
 	}
@@ -794,6 +830,15 @@ public class ComponentBehavior {
 			childHM.put(sch,  fcbch);
 		}
 		
+		
+		
+		clearMultis();
+		for (ListChild lc : listChildren) {
+			String lnm = lc.getListName();
+			addMulti(lnm, lc.getComponentBehavior().getConsolidatedComponentBehavior(lnm));
+		}
+		
+		/*
 		for (String sm : multiHM.keySet()) {
 			// E.info("multi child " + sm);
 			MultiComponentBehavior mcb = multiHM.get(sm);
@@ -805,6 +850,8 @@ public class ComponentBehavior {
 			MultiComponentBehavior fmcb = new MultiComponentBehavior(af);
 			multiHM.put(sm, fmcb);
 		}
+		*/
+		
 		
 		for (String sm : refHM.keySet()) {
  			ComponentBehavior cbr = refHM.get(sm);
@@ -957,9 +1004,14 @@ public class ComponentBehavior {
 			ret.addRefComponentBehavior(s, refHM.get(s)); // .makeShallowCopy());
 		}
 		
-		for (String s : multiHM.keySet()) {
-			ret.addMultiComponentBehavior(s, multiHM.get(s)); // .makeCopy());
+	 
+		for (ListChild lc : listChildren) {
+			ret.addListComponentBehavior(lc.getListName(), lc.getComponentBehavior());
 		}
+		
+		//for (String s : multiHM.keySet()) {
+		//	ret.addMultiComponentBehavior(s, multiHM.get(s)); // .makeCopy());
+		//}
 		
 		for (String s : exposedMap.keySet()) {
 			ret.addExposureMapping(s, exposedMap.get(s));
@@ -1084,5 +1136,11 @@ public class ComponentBehavior {
 		return runtimeRecorders;
 	}
 
+	public String getID() {
+		return cptid;
+	}
 
+	public String getTypeName() {
+		return typeName;
+	}
 }

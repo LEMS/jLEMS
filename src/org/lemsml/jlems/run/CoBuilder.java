@@ -20,7 +20,7 @@ public class CoBuilder extends AbstractChildBuilder {
 	
 	public void childInstantiate(StateInstance par) throws ContentError, ConnectionError, RuntimeError {
   		
-		MultiInstance mi = new MultiInstance(componentBehavior.typeName, "");
+		// MultiInstance mi = new MultiInstance(componentBehavior.typeName, "");
 		 
 		StateInstance si = par.getScopeInstance(ctr.getID());
 		
@@ -33,10 +33,14 @@ public class CoBuilder extends AbstractChildBuilder {
 		for (StateInstance psi : iset.getItems()) {
 			StateInstance sr = componentBehavior.newInstance();
 			sr.coCopy(psi);
-			mi.add(sr);
+			par.addListChild(componentBehavior.getTypeName(), sr.getID(), sr);
+		//	mi.add(sr);
 		}
-		par.addMultiInstance(mi);
+		// par.addMultiInstance(mi);
 	}
+	
+	
+	
 	
 	public boolean isInstantiator() {
 		return true;
