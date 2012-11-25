@@ -81,11 +81,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 
 	private ComponentBehavior componentBehavior;
  	
-	
-	public Component() {
-	}
-
- 
+	 
 
 	public void setID(String s) {
 		id = s;
@@ -179,7 +175,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		// MUSTDO - all a bit adhoc
 		if (attributes.hasName(paramName)) {
 			Attribute att = attributes.getByName(paramName);
-			ret = (att.getValue());
+			ret = att.getValue();
 		} else if (paramName.indexOf("../") == 0) {
 			ret = getParent().getPathParameterPath(paramName.substring(3, paramName.length()));
 		}
@@ -331,7 +327,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 
 			if (attributes.hasName(pvn)) {
 				Attribute att = attributes.getByName(pvn);
-				atval = (att.getValue());
+				atval = att.getValue();
 				att.setFlag();
 
 			} else if (gotFromProto) {

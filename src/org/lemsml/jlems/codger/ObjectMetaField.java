@@ -1,6 +1,6 @@
 package org.lemsml.jlems.codger;
 
-public class ObjectMetaField extends MetaField {
+public class ObjectMetaField extends AbstractMetaField {
 
 	String type;
 	

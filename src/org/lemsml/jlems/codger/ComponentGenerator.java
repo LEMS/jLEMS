@@ -24,11 +24,7 @@ public class ComponentGenerator {
 	
 	HashMap<String, MetaClass> metaClassHM = new HashMap<String, MetaClass>();
  	
-	
-	public ComponentGenerator() {
-		
-	}
-	
+	 
 	
 	
 	public void addComponentBehavior(ComponentBehavior cb) {
@@ -87,7 +83,7 @@ public class ComponentGenerator {
 			ArrayList<ComponentBehavior> acb = mchm.get(s).getCBs();
 		
 			int ctr = 0;
-			if (acb.size() > 0) {
+			if (!acb.isEmpty()) {
 				for (ComponentBehavior ccb : acb) {
 					String acnm = getCNM(cb, s + ctr);
 					ctr += 1;
@@ -125,7 +121,7 @@ public class ComponentGenerator {
 		HashMap<String, MultiComponentBehavior> mchm = cb.getMultiHM();
 		for (String s : mchm.keySet()) {
 			ArrayList<ComponentBehavior> acb = mchm.get(s).getCBs();
-			if (acb.size() > 0) {
+			if (!acb.isEmpty()) {
 				ret.addObjectArrayField(cnm, arrayName(s), s);				
 			}
 		}
@@ -188,7 +184,8 @@ public class ComponentGenerator {
 		
 		MetaMethod mmfe = ret.newMetaMethod("forwardEuler");
 		mmfe.addFloatArgument("dt");
-		MethodCall evmc = mmfe.newMethodCall("eval");
+		// MethodCall evmc = 
+		mmfe.newMethodCall("eval");
 		
 		for (VariableROC vroc : cb.getRates()) {
 			String vnm = vroc.getVariable();

@@ -1,11 +1,12 @@
 package org.lemsml.jlems.codger;
 
-public class Increment extends Operation {
+public class Increment extends AbstractOperation {
 
 	String variable;
-	Expression value;
+	AbstractExpression value;
 	
-	public Increment(String var, Expression val) {
+	public Increment(String var, AbstractExpression val) {
+		super();
 		variable = var;
 		value = val;
 	}

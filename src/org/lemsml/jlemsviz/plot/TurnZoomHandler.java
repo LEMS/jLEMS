@@ -4,7 +4,7 @@ package org.lemsml.jlemsviz.plot;
 
 
 
-public class TurnZoomHandler extends MouseHandler {
+public class TurnZoomHandler extends BaseMouseHandler {
 
    private int xc;
    private int yc;

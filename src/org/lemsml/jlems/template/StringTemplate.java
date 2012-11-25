@@ -14,7 +14,7 @@ public class StringTemplate {
 
 	String srcExpression;
 	
-	ArrayList<TemplateElement> elements = null;
+	ArrayList<AbstractTemplateElement> elements = null;
 	
 	
 	
@@ -28,7 +28,7 @@ public class StringTemplate {
 			E.info("No template elements");
 		} else {
 			int idx = 0;
-			for (TemplateElement te : elements) {
+			for (AbstractTemplateElement te : elements) {
 				
 				E.info("elt: " + idx + " "  + te);
 				idx += 1;
@@ -38,7 +38,7 @@ public class StringTemplate {
 	
 	
 	public void parse(Lems lems) throws ContentError {
-		elements = new ArrayList<TemplateElement>();
+		elements = new ArrayList<AbstractTemplateElement>();
 		
 		String rest = srcExpression;
 		while (rest.indexOf("${") >= 0) {
@@ -62,8 +62,8 @@ public class StringTemplate {
 
 	
 	
-	private TemplateElement makeVariableElement(String str, Lems lems) throws ContentError {
-		TemplateElement ret = new FixedTemplateElement("Error");
+	private AbstractTemplateElement makeVariableElement(String str, Lems lems) throws ContentError {
+		AbstractTemplateElement ret = new FixedTemplateElement("Error");
 		
 		int ia = str.indexOf("[");
 		if (ia > 0) {
@@ -94,7 +94,7 @@ public class StringTemplate {
 	public String eval(HashMap<String, String> vmap) throws TemplateException {
 		 
 		String ret = "";
-		for (TemplateElement te : elements) {
+		for (AbstractTemplateElement te : elements) {
 			ret += te.eval(vmap);
 		}
 		return ret;
@@ -104,7 +104,7 @@ public class StringTemplate {
 	public String eval(StateInstance so, HashMap<String, StateInstance> context) throws ContentError, RuntimeError {
 		 
 		String ret = "";
-		for (TemplateElement te : elements) {
+		for (AbstractTemplateElement te : elements) {
 			ret += te.eval(so, context);
 		}
 		return ret;

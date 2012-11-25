@@ -3,10 +3,10 @@ package org.lemsml.jlems.expression;
 import java.util.HashMap;
 
 import org.lemsml.jlems.eval.And;
-import org.lemsml.jlems.eval.BVal;
+import org.lemsml.jlems.eval.AbstractBVal;
 import org.lemsml.jlems.sim.ContentError;
 
-public class AndNode extends BooleanOperatorNode {
+public class AndNode extends AbstractBooleanOperatorNode {
 
    public static final String SYMBOL = ".and.";
 
@@ -30,7 +30,7 @@ public class AndNode extends BooleanOperatorNode {
 	}
 
 	
-	public BVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
+	public AbstractBVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
 		checkLeftRight();
 		return new And(leftEvaluable.makeEvaluable(fixedHM), rightEvaluable.makeEvaluable(fixedHM));
 	}

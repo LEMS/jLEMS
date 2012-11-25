@@ -204,7 +204,7 @@ public class LemsCollection<T> implements Iterable<T> {
 	
 	public String listAsText(String sep) {
 		StringBuilder sb = new StringBuilder();
-		if (contents.size() > 0) {
+		if (!contents.isEmpty()) {
 			String scn = contents.get(0).getClass().getName();
 			scn = scn.substring(scn.lastIndexOf(".") + 1, scn.length());
 			sb.append(scn + "s:\n");

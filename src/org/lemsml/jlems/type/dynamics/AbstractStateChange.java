@@ -12,7 +12,7 @@ import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Dimension;
 import org.lemsml.jlems.type.LemsCollection;
 
-public abstract class StateChange extends ExpressionValued {
+public abstract class AbstractStateChange extends ExpressionValued {
 
 	public String variable;
 	
@@ -21,11 +21,12 @@ public abstract class StateChange extends ExpressionValued {
 	ParseTree parseTree; 
  
 	
-	public StateChange() {
-		
+	public AbstractStateChange() {
+		super();
 	}
 	
-   public StateChange(String vnm) {
+   public AbstractStateChange(String vnm) {
+	   super();
 	   variable = vnm;
    }
    
@@ -65,8 +66,7 @@ public abstract class StateChange extends ExpressionValued {
 	}
 	
     public void checkDimensions(HashMap<String, Dimensional> dimHM) throws ContentError {
-        try {
-        	 
+       	 
             Dimensional drhs = parseTree.getDimensionality(dimHM);
             if (drhs.isAny()) {
                 // fine - zero can be assigned to anything
@@ -85,13 +85,7 @@ public abstract class StateChange extends ExpressionValued {
                     E.info("All:" + dimHM);
                 }
             }
-        } catch (ContentError ex) {
-            E.oneLineError("Error checking dimensions in equation for " + variable + ", " + value + ":\n" + ex);
-            //ex.printStackTrace();
-        } catch (Exception ex) {
-            E.info("Error parsing " + variable + "    " + value + " ");
-            ex.printStackTrace();
-        }
+       
 
     }
 

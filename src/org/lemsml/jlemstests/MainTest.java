@@ -2,14 +2,20 @@ package org.lemsml.jlemstests;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import org.lemsml.jlems.logging.E;
 import org.lemsml.jlemsio.logging.DefaultLogger;
 
-public class MainTest {
+public final class MainTest {
 
+	
+	private MainTest() {
+		
+	}
+	
 	public static void main(String[] args) {
 		DefaultLogger.initialize();
 		
@@ -28,7 +34,7 @@ public class MainTest {
 				org.lemsml.jlemstests.CoreDependenciesTest.class);
 
 		Date now = new java.util.Date();
-		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss, EEE dd-MMM-yyyy");
+		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss, EEE dd-MMM-yyyy", Locale.ENGLISH);
 
 		E.info("Finished tests at " + formatter.format(now) + ".");
 

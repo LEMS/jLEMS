@@ -19,7 +19,7 @@ public class XMLSerializer {
 
 	static HashMap<String, String> defaultAttributeMap = new HashMap<String, String>();
 
-	{
+	static {
 		defaultAttributeMap.put("eXtends", "extends");
 	}
 

@@ -1,18 +1,13 @@
 package org.lemsml.jlems.codger;
 
 import java.util.ArrayList;
-
-import org.lemsml.jlems.run.ComponentBehavior;
-
+ 
 public class MetaConstructor {
 
 	 
 	ArrayList<Instantiation> instantiations = new ArrayList<Instantiation>();
 	
-	
-	public MetaConstructor() {
 	 
-	}
 	
 	public String generateJava(String cnm) {
 		StringBuilder sb = new StringBuilder();

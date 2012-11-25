@@ -2,12 +2,13 @@ package org.lemsml.jlems.eval;
 
 import java.util.ArrayList;
 
-public abstract class BOp extends BVal {
+public abstract class AbstractBOp extends AbstractBVal {
 	
-	public BVal left;
-	public BVal right;
+	public AbstractBVal left;
+	public AbstractBVal right;
 	
-	public BOp(BVal dvl, BVal dvr) {
+	public AbstractBOp(AbstractBVal dvl, AbstractBVal dvr) {
+		super();
 		left = dvl;
 		right = dvr;
 	}

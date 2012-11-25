@@ -1,5 +1,7 @@
 package org.lemsml.jlems.reader;
 
+import java.util.Locale;
+
 import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.About;
@@ -145,7 +147,7 @@ public abstract class AbstractLemsFactory {
 	protected boolean parseBoolean(String s) {
 		boolean ret = false;
 		if (s.length() > 0) {
-			String sl = s.toLowerCase();
+			String sl = s.toLowerCase(Locale.ENGLISH);
 			if (sl.equals("0") || sl.equals("false")) {
 				ret = false;
 			} else if (sl.equals("1") || s.equals("true")) {

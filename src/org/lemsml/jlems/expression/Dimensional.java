@@ -3,23 +3,23 @@ package org.lemsml.jlems.expression;
 
 public interface Dimensional {
 
-	public int getM();
-	public int getL();
-	public int getT();
-	public int getI();
+	int getM();
+	int getL();
+	int getT();
+	int getI();
 	
-	public int getK();
+	int getK();
 	
-	public int getN();
+	int getN();
 	
-	public Dimensional getTimes(Dimensional d);
-	public Dimensional getDivideBy(Dimensional d);
+	Dimensional getTimes(Dimensional d);
+	Dimensional getDivideBy(Dimensional d);
 	
 	 
 	
-	public boolean matches(Dimensional dr);
-	public boolean isDimensionless();
-	public Dimensional power(double doubleValue);
-	public boolean isAny();
-	public double getDoubleValue();
+	boolean matches(Dimensional dr);
+	boolean isDimensionless();
+	Dimensional power(double doubleValue);
+	boolean isAny();
+	double getDoubleValue();
 }

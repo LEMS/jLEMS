@@ -7,6 +7,6 @@ package org.lemsml.jlemsviz.plot;
 
 public interface DComponent {
    
-   public void setTooltip(String s);
+   void setTooltip(String s);
 
 }

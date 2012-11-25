@@ -4,7 +4,11 @@ package org.lemsml.jlems.xml;
 public final class StringEncoder {
 
 
+	private StringEncoder() {
+		
+	}
 
+	
    public static String xmlEscape(String sin) {
 	   String s = sin;
       s = s.replaceAll("&", "&amp;");

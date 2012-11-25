@@ -5,8 +5,12 @@ package org.lemsml.jlems.run;
 
 public final class SMatrix {
 
+	
+	private SMatrix() {
+		
+	}
 
-
+	
    public static double[][] transpose(double[][] a) {
       int nx = a.length;
       int ny = a[0].length;

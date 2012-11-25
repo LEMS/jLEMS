@@ -9,10 +9,7 @@ public class Solid {
 	
 	public String topologyConstraint;
 	
-	
-	public Solid() {
-		
-	}
+	 
 	
 	
 }

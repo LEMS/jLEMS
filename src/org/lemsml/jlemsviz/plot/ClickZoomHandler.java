@@ -4,7 +4,7 @@ package org.lemsml.jlemsviz.plot;
 
 
 
-final class ClickZoomHandler extends MouseHandler {
+final class ClickZoomHandler extends BaseMouseHandler {
 
    private int xc;
    private int yc;
@@ -23,7 +23,8 @@ final class ClickZoomHandler extends MouseHandler {
    boolean dragging = false;
 
    public ClickZoomHandler() {
-      xfac = 1.0;
+	   super();
+	   xfac = 1.0;
       yfac = 1.0;
    }
 

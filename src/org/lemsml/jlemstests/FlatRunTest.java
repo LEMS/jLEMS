@@ -27,16 +27,14 @@ public class FlatRunTest {
 	
 	  
 	 
-    public static void main(String[] args) throws ContentError, ParseError, ConnectionError, RuntimeError, IOException {
+    public static void main(String[] args) throws ContentError, ParseError, ConnectionError, RuntimeError, IOException, ParseException, BuildException, XMLException {
     	DefaultLogger.initialize();
        
-    	try {
+     
     		FlatRunTest cft = new FlatRunTest();
     		cft.runExample1();
     		
-    	} catch (Exception ex) {
-    		ex.printStackTrace();
-    	}
+     
     }
     
     @Test

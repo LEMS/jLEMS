@@ -11,9 +11,9 @@ import org.lemsml.jlems.sim.ContentError;
 public class SelectionExpression {
 
 	String src;
-	SelectionNode root;
+	AbstractSelectionNode root;
 	
-	public SelectionExpression(String s, SelectionNode rn) {
+	public SelectionExpression(String s, AbstractSelectionNode rn) {
 		src = s;
 		root = rn;
 	}

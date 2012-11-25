@@ -4,15 +4,18 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 
 
-public class MouseUtil {
+public final class MouseUtil {
    
    public final static int LEFT = 1;
    public final static int MIDDLE = 2;
    public final static int RIGHT = 3;
     
    
+   private MouseUtil() {
+	   
+   }
    
-   public final static int getButton(MouseEvent e) {   
+   public static int getButton(MouseEvent e) {   
       int modif = e.getModifiers();
       int rbutton = 0;
 

@@ -1,9 +1,7 @@
 package org.lemsml.jlems.codger;
 
-public abstract class Getter {
+public abstract class AbstractOperation {
 
-	
 	public abstract String generateJava();
-	
-	
+	 
 }

@@ -3,11 +3,14 @@ package org.lemsml.jlems.eval;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class DCon extends DVal {
+import org.lemsml.viz.E;
+
+public class DCon extends AbstractDVal {
 	
 	double val;
 	
 	public DCon(double d) {
+		super();
 		val = d;
 	}
 	
@@ -17,7 +20,7 @@ public class DCon extends DVal {
 	}
 
 	@Override
-	public DVal makePrefixedCopy(String pfx, HashSet<String> stetHS) {
+	public AbstractDVal makePrefixedCopy(String pfx, HashSet<String> stetHS) {
 		return makeCopy();
 	}
 	
@@ -38,13 +41,13 @@ public class DCon extends DVal {
 
  
 	public void recAdd(ArrayList<DVar> val) {
-		 
+		 // default is to ignore
 	}
 
 
 	@Override
 	public void substituteVariableWith(String vnm, String pth) {
-	 
+		 // default is to ignore
 	}
 
 

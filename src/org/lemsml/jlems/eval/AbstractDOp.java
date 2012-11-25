@@ -3,12 +3,13 @@ package org.lemsml.jlems.eval;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public abstract class DOp extends DVal {
+public abstract class AbstractDOp extends AbstractDVal {
 	
-	public DVal left;
-	public DVal right;
+	public AbstractDVal left;
+	public AbstractDVal right;
 	
-	public DOp(DVal dvl, DVal dvr) {
+	public AbstractDOp(AbstractDVal dvl, AbstractDVal dvr) {
+		super();
 		left = dvl;
 		right = dvr;
 	}

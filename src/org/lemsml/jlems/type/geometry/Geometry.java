@@ -13,11 +13,7 @@ public class Geometry {
 	public LemsCollection<Solid> solids = new LemsCollection<Solid>();
  	
 	public LemsCollection<Skeleton> skeletons = new LemsCollection<Skeleton>();
-	
-	
-	public Geometry() {
-		
-	}
+	 
 	
 	
 }

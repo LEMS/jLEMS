@@ -10,11 +10,11 @@ import org.lemsml.jlems.run.RuntimeError;
 
 public class DBase implements DoubleEvaluator {
 
-	DVal root;
+	AbstractDVal root;
 	
 	DVar[] vars;
 	
-	public DBase(DVal dv) {
+	public DBase(AbstractDVal dv) {
 		root = dv;
 		ArrayList<DVar> val = new ArrayList<DVar>();
 		root.recAdd(val);
@@ -22,7 +22,7 @@ public class DBase implements DoubleEvaluator {
 		vars = val.toArray(new DVar[val.size()]);
 	}
 
-    public DVal getRoot() {
+    public AbstractDVal getRoot() {
             return root;
     }
 
@@ -71,7 +71,7 @@ public class DBase implements DoubleEvaluator {
 
 	public void substituteVariableWith(String vnm, String pth) {
 		root.substituteVariableWith(vnm, pth);
-		for (DVal dv : vars) {
+		for (AbstractDVal dv : vars) {
 			dv.substituteVariableWith(vnm, pth);
 		}
 		

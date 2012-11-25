@@ -20,8 +20,8 @@ public class Builder {
 		BuildContext bc = new BuildContext();
 		
 		for (BuilderElement be : builderElements) {
-			if (be instanceof PostBuilder) {
-				PostBuilder pb = (PostBuilder)be;
+			if (be instanceof AbstractPostBuilder) {
+				AbstractPostBuilder pb = (AbstractPostBuilder)be;
 				pb.postBuild(si, siHM, bc);
 				
 			}
@@ -38,7 +38,7 @@ public class Builder {
 	public boolean isPostBuilder() {
 		boolean ret = false;
 		for (BuilderElement be : builderElements) {
-			if (be instanceof PostBuilder) {
+			if (be instanceof AbstractPostBuilder) {
 				ret = true;
 			}
 		}

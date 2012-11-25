@@ -4,7 +4,7 @@ import java.util.HashSet;
 
 import org.lemsml.jlems.logging.E;
 
-public abstract class InclusionReader {
+public abstract class AbstractInclusionReader {
 
 	HashSet<String> included = new HashSet<String>();
  	

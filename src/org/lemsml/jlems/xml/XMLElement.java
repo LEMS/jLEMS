@@ -76,19 +76,19 @@ public class XMLElement {
 			sb.append(att.name + "=\"" + att.value +"\"");
 		}
 		
-		if ((body == null || body.length() == 0) && children.size() == 0) {
+		if ((body == null || body.length() == 0) && children.isEmpty()) {
 			sb.append("/>\n");
 			
 		} else {
 			sb.append(">");
-			if (children.size() > 0 || attributes.size() > 0) {
+			if (!children.isEmpty() || !attributes.isEmpty()) {  
 				sb.append("\n");
 				sameLine = false;
 			}
 			
 			if (body != null) {
 				sb.append(body);
-				if (children.size() > 0) {
+				if (!children.isEmpty()) {
 					sb.append("\n");
 				}   
 			}

@@ -6,7 +6,7 @@ import org.lemsml.jlems.expression.Node;
 import org.lemsml.jlems.expression.ParseError;
 
 
-public abstract class SelectionOperatorNode extends SelectionNode implements Cloneable {
+public abstract class AbstractSelectionOperatorNode extends AbstractSelectionNode implements Cloneable {
  
 	String symbol;
  
@@ -16,7 +16,7 @@ public abstract class SelectionOperatorNode extends SelectionNode implements Clo
 
 	double fpos;
 	
-	public SelectionOperatorNode(String s) {
+	public AbstractSelectionOperatorNode(String s) {
 		super();
 		symbol = s;
 	}
@@ -68,13 +68,13 @@ public abstract class SelectionOperatorNode extends SelectionNode implements Clo
 		return 1. + fpos;
 	}
 	
-	public abstract SelectionOperatorNode copy();
+	public abstract AbstractSelectionOperatorNode copy();
 	
 	
 	public void replaceChild(Node nold, Node nnew) throws ParseError {
-		if (left == nold) {
+		if (left.equals(nold)) {
 			left = nnew;
-		} else if (right == nold) {
+		} else if (right.equals(nold)) {
 			right = nnew;
 		} else {
 			throw new ParseError("can't replace - not present " + nold);

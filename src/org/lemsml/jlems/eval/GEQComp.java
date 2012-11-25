@@ -1,9 +1,9 @@
 package org.lemsml.jlems.eval;
 
-public class GEQComp extends BComp {
+public class GEQComp extends AbstractBComp {
 
 	
-	public GEQComp(DVal dvl, DVal dvr) {
+	public GEQComp(AbstractDVal dvl, AbstractDVal dvr) {
 		super(dvl, dvr);
 	}
 

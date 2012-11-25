@@ -1,7 +1,7 @@
 package org.lemsml.jlemsviz.plot;
 
  
-public abstract class Formatter {
+public abstract class AbstractFormatter {
 
  
    public final static float trim(double a, int itr) {

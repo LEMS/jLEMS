@@ -2,7 +2,11 @@ package org.lemsml.jlemsviz.examples;
 
  
 
-public class ExampleConditions {
+public final class ExampleConditions {
+	
+	private ExampleConditions() {
+		
+	}
 	
 	public static void main(String[] argv) {
 	

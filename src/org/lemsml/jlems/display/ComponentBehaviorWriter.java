@@ -12,12 +12,7 @@ import org.lemsml.jlems.run.PathDerivedVariable;
 import org.lemsml.jlems.run.VariableROC;
 
 public class ComponentBehaviorWriter {
-
-	
-	public ComponentBehaviorWriter() {
-		
-	}
-	
+ 
 	
 	
 	public void print(ComponentBehavior cb) {

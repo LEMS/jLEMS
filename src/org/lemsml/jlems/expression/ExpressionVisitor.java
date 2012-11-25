@@ -4,7 +4,7 @@ public interface ExpressionVisitor {
 
 	
 	
-	public ExpressionVisitor visitNode(ExpressionVisitor evl, ParseTreeNode ptn, ExpressionVisitor evr);
+	ExpressionVisitor visitNode(ExpressionVisitor evl, ParseTreeNode ptn, ExpressionVisitor evr);
 	
 	
 }

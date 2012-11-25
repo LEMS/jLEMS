@@ -8,10 +8,6 @@ public class StateScalarField {
 	
 	public String region;
 	
-	
-	public StateScalarField() {
-		
-	}
-	
+	 
 	
 }

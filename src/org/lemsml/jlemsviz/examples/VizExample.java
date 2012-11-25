@@ -6,9 +6,12 @@ import org.lemsml.jlemsio.examples.RunFileExample;
 import org.lemsml.jlemsio.logging.DefaultLogger;
 import org.lemsml.jlemsviz.datadisplay.SwingDataViewerFactory;
 
-public class VizExample {
+public final class VizExample {
 	
 	
+	private VizExample() {
+		
+	}
 	
 	public static void run(String s) {
 		SwingDataViewerFactory.initialize();

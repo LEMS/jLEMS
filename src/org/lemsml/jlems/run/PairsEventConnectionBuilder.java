@@ -5,7 +5,7 @@ import java.util.HashMap;
 import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.sim.ContentError;
 
-public class PairsEventConnectionBuilder extends PostBuilder {
+public class PairsEventConnectionBuilder extends AbstractPostBuilder {
 
 	String pairs;
 	
@@ -14,6 +14,7 @@ public class PairsEventConnectionBuilder extends PostBuilder {
 	String destAttachments;
 	
 	public PairsEventConnectionBuilder(String sp) {
+		super();
 		pairs = sp;
 	}
 

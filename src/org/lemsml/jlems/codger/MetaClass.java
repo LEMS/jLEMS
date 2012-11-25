@@ -3,8 +3,6 @@ package org.lemsml.jlems.codger;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import org.lemsml.jlems.run.ComponentBehavior;
-
 
 public class MetaClass {
 
@@ -16,14 +14,14 @@ public class MetaClass {
 	
 	public HashSet<String> pkgHS = new HashSet<String>();
 
-	public ArrayList<MetaField> metaFields = new ArrayList<MetaField>();
+	public ArrayList<AbstractMetaField> metaFields = new ArrayList<AbstractMetaField>();
 	
 	public ArrayList<MetaConstructor> constructors = new ArrayList<MetaConstructor>();
 	
 	public ArrayList<MetaMethod> metaMethods = new ArrayList<MetaMethod>();
 	
  
-	public ArrayList<Getter> getters = new ArrayList<Getter>();
+	public ArrayList<AbstractGetter> getters = new ArrayList<AbstractGetter>();
 	
 	
 	public MetaClass(GenPackage gp, String s) {
@@ -73,7 +71,7 @@ public class MetaClass {
 		sb.append("\n");
 		sb.append("public class " + name + " {\n\n");
 	
-		for (MetaField mf : metaFields) {
+		for (AbstractMetaField mf : metaFields) {
 			appendIndented(mf.generateJava(), sb, 1);
 			sb.append("\n");
 		}
@@ -90,7 +88,7 @@ public class MetaClass {
 		
 
 	
-		for (Getter g : getters) {
+		for (AbstractGetter g : getters) {
 			appendIndented(g.generateJava(), sb, 1);
 			sb.append("\n");
 		}

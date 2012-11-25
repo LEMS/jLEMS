@@ -20,9 +20,7 @@ import org.lemsml.jlemsio.logging.DefaultLogger;
  * @author padraig
  */
 public class DimensionTest {
-
-	public DimensionTest() {
-	}
+ 
 
 	@Test
 	public void testDimensions() throws ParseError, ContentError {
@@ -30,12 +28,12 @@ public class DimensionTest {
 		current.setI(1);
 		Dimension current2 = new Dimension("current2");
 		current2.setI(1);
-		assertTrue(current.matches(current2));
+		assertTrue("Dimensions match", current.matches(current2));
 
 		Dimension temp = new Dimension("temperature");
 		temp.setK(1);
-		assertFalse(current.matches(temp));
-		assertEquals(Dimension.getSIUnit(temp), "K");
+		assertFalse("Current != temp", current.matches(temp));
+		assertEquals("Temp unit K", Dimension.getSIUnit(temp), "K");
 
 		Unit kelv = new Unit("kelvin", "K", temp);
 		Unit celc = new Unit("celsius", "degC", temp);

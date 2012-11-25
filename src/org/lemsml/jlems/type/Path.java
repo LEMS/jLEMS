@@ -10,6 +10,7 @@ public class Path implements Named  {
 	public String name;
 
     public Path() {
+    	// TODO - only one
     }
 
     public Path(String name) {
@@ -20,7 +21,7 @@ public class Path implements Named  {
 
 
 	public void resolve(LemsCollection<Dimension> dimensions) throws ContentError {
-	 	
+	 		// nothing to do
 	}
 
 

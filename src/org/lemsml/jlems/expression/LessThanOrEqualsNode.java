@@ -2,11 +2,11 @@ package org.lemsml.jlems.expression;
 
 import java.util.HashMap;
 
-import org.lemsml.jlems.eval.BComp;
+import org.lemsml.jlems.eval.AbstractBComp;
 import org.lemsml.jlems.eval.LEQComp;
 import org.lemsml.jlems.sim.ContentError;
 
-public class LessThanOrEqualsNode extends ComparisonNode {
+public class LessThanOrEqualsNode extends AbstractComparisonNode {
 
 
 	
@@ -27,7 +27,7 @@ public class LessThanOrEqualsNode extends ComparisonNode {
 		return (x <= y);
 	}
 
-	public BComp makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
+	public AbstractBComp makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
 		checkLeftRight();
 		return new LEQComp(leftEvaluable.makeEvaluable(fixedHM), rightEvaluable.makeEvaluable(fixedHM));
 	}

@@ -3,11 +3,7 @@ package org.lemsml.jlems.api;
 public class BuildExample {
 
 	
-	
-	
-	public BuildExample() {
-		
-	}
+	 
 	
 	
 	public void buildExample1() {

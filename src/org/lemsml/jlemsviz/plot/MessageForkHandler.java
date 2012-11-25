@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class MessageForkHandler implements MessageHandler {
 
 
-	private ArrayList<MessageHandler> handlers;
+	private final ArrayList<MessageHandler> handlers;
 
 
 	public MessageForkHandler() {

@@ -1,4 +1,6 @@
 package org.lemsml.jlemsviz.plot;
+
+import org.lemsml.jlems.logging.E;
  
 
 
@@ -32,7 +34,7 @@ public final class WorldTransform {
 
    private final static int IBIG = 20000;
    private final static double SMALL = 1.e-7;
-   private final double DBIG = 1.e9;
+   private final static double DBIG = 1.e9;
 
    private boolean recordRange;
 
@@ -75,7 +77,7 @@ public final class WorldTransform {
 
    private RotationListener rotationListener;
 
-   private Size p_pixelSize;
+   private final Size p_pixelSize;
 
 
    public WorldTransform() {
@@ -120,7 +122,7 @@ public final class WorldTransform {
 	   return bottomMargin;
    }
 
-   public final void setMargins(int l, int r, int b, int t) {
+   public void setMargins(int l, int r, int b, int t) {
       leftMargin = l;
       rightMargin = r;
       topMargin = t;
@@ -175,8 +177,8 @@ public final class WorldTransform {
 
 
    public void setPixelScalingFromTop(double d) {
-      p_setXRange(0., d * getCanvasWidth());
-      p_setYRange(-1. * d * getCanvasHeight(), 0.);
+      pSetXRange(0., d * getCanvasWidth());
+      pSetYRange(-1. * d * getCanvasHeight(), 0.);
    }
 
 
@@ -351,27 +353,27 @@ public final class WorldTransform {
    }
 
 
-   protected final double wopx(int x) {
+   protected double wopx(int x) {
       return wcx + (x - pcx) / dpdwx;
    }
 
 
-   protected final double wopy(int y) {
+   protected double wopy(int y) {
       return wcy + (height - y - pcy) / dpdwy;
    }
 
 
    
-   protected final int xpix(double xr) {
+   protected int xpix(double xr) {
 	   return (int)(Math.round(dpdwx * xr));
    }
 
-   protected final int ypix(double yr) {
+   protected int ypix(double yr) {
 	   return (int)(Math.round(dpdwy * yr));
    }
    
 
-   protected final int powx(double xr) {
+   protected int powx(double xr) {
       double f = dpdwx * (xr - wcx);
       if (f > IBIG) {
          f = IBIG;
@@ -397,7 +399,7 @@ public final class WorldTransform {
    }
 
 
-   protected final int powy(double yr) {
+   protected int powy(double yr) {
       double f = dpdwy * (yr - wcy);
       if (f > IBIG) {
          f = IBIG;
@@ -425,108 +427,108 @@ public final class WorldTransform {
 
 
    
-   protected final float fpowx(double xr) {
+   protected float fpowx(double xr) {
 	      float f = (float)(dpdwx * (xr - wcx));
 	      return pcx + f;
    }
    
-   protected final float fpowy(double yr) {
+   protected float fpowy(double yr) {
 	      float f = (float)(dpdwy * (yr - wcy));
 	      float ret = (height - (pcy + f));
 	      return ret;
 }
    
-   private final int qpowx(double xr) {
+   private int qpowx(double xr) {
       return (int)(pcx + dpdwx * (xr - wcx));
    }
 
 
-   private final int qpowy(double yr) {
+   private int qpowy(double yr) {
       return (int)(height - (pcy + dpdwy * (yr - wcy)));
    }
 
 
 
-   public final int pubPowx(double xr) {
+   public int pubPowx(double xr) {
       return powx(xr);
    }
 
 
-   public final int pubPowy(double yr) {
+   public int pubPowy(double yr) {
       return powy(yr);
    }
 
 
-   public final Position getWorldPosition(int x, int y) {
+   public Position getWorldPosition(int x, int y) {
       return new Position(wopx(x), wopy(y));
    }
 
 
-   public final double pubWopx(int x) {
+   public double pubWopx(int x) {
       return wopx(x);
    }
 
 
-   public final double pubWopy(int y) {
+   public double pubWopy(int y) {
       return wopy(y);
    }
 
 
 
-   public final int pubPixDx(double dxr) {
+   public int pubPixDx(double dxr) {
       return (int)(dpdwx * dxr);
    }
 
 
-   public final int pubPixDy(double dyr) {
+   public int pubPixDy(double dyr) {
       return (int)(dpdwy * dyr);
    }
 
 
-   public final double dPdX() {
+   public double dPdX() {
       return dpdwx;
    }
 
 
-   public final double dPdY() {
+   public double dPdY() {
       return dpdwy;
    }
 
 
 
-   public final double pubDyDpix() {
+   public double pubDyDpix() {
       return 1. / dpdwy;
    }
 
 
-   public final double pubDxDpix() {
+   public double pubDxDpix() {
       return 1. / dpdwx;
    }
 
 
 
-   public final double wxLeft() {
+   public double wxLeft() {
       return wcx - hx / dpdwx;
    }
 
 
-   public final double wxRight() {
+   public double wxRight() {
       return wcx + hx / dpdwx;
    }
 
 
-   public final double wyBottom() {
+   public double wyBottom() {
       return wcy - hy / dpdwy;
    }
 
 
-   public final double wyTop() {
+   public double wyTop() {
       return wcy + hy / dpdwy;
    }
 
 
 
-   private final void enforceAspectRatioY() {
+   private void enforceAspectRatioY() {
       if (xRescalable) {
          dpdwx = 1. / aspectRatio * dpdwy;
       } else if (yRescalable) {
@@ -535,7 +537,7 @@ public final class WorldTransform {
    }
 
 
-   private final void enforceAspectRatioX() {
+   private void enforceAspectRatioX() {
       if (yRescalable) {
          dpdwy = aspectRatio * dpdwx;
       } else if (xRescalable) {
@@ -662,17 +664,17 @@ public final class WorldTransform {
 
 
    public void setXRange(double xl, double xh) {
-      p_setXRange(xl, xh);
+      pSetXRange(xl, xh);
    }
 
 
    public void setYRange(double yl, double yh) {
-      p_setYRange(yl, yh);
+      pSetYRange(yl, yh);
    }
 
 
 
-   private void p_setXRange(double xlin, double xhin) {
+   private void pSetXRange(double xlin, double xhin) {
 	   double xl = xlin;
 	   double xh = xhin;
       if (xh < xl) {
@@ -705,17 +707,17 @@ public final class WorldTransform {
    public void ensureCovers(double xl, double yl, double xh, double yh) {
       // set tighter constraint last; other first to get center
       if ((xh - xl) * hy >  (yh - yl) * hx) {
-         p_setYRange(yl, yh);
-         p_setXRange(xl, xh);
+         pSetYRange(yl, yh);
+         pSetXRange(xl, xh);
 
       } else {
-         p_setXRange(xl, xh);
-         p_setYRange(yl, yh);
+         pSetXRange(xl, xh);
+         pSetYRange(yl, yh);
       }
    }
 
 
-   private void p_setYRange(double ylin, double yhin) {
+   private void pSetYRange(double ylin, double yhin) {
 	   double yl = ylin;
 	   double yh = yhin;
       if (yh < yl) {
@@ -745,7 +747,7 @@ public final class WorldTransform {
 
 
 
-   public final double[] getXYXYLimits() {
+   public double[] getXYXYLimits() {
       double[] range = new double[4];
       range[0] = wxLeft();
       range[1] = wyBottom();
@@ -767,23 +769,23 @@ public final class WorldTransform {
    }
 
 
-   public final void setXYXYLimits(double xl, double yl, double xh, double yh) {
+   public void setXYXYLimits(double xl, double yl, double xh, double yh) {
       if (constantAspectRatio) {
          // assume axect ratio is 1 for now!!! ---------- TODO;
          if ((xh - xl) / (width - leftMargin - rightMargin) > (yh - yl)
                / (height - topMargin - bottomMargin)) {
 
-            p_setYRange(yl, yh);
-            p_setXRange(xl, xh);
+            pSetYRange(yl, yh);
+            pSetXRange(xl, xh);
 
          } else {
-            p_setXRange(xl, xh);
-            p_setYRange(yl, yh);
+            pSetXRange(xl, xh);
+            pSetYRange(yl, yh);
          }
 
       } else {
-         p_setXRange(xl, xh);
-         p_setYRange(yl, yh);
+         pSetXRange(xl, xh);
+         pSetYRange(yl, yh);
       }
    }
 
@@ -810,8 +812,8 @@ public final class WorldTransform {
    // default mouse coanvas ignores these - subclasses should
    // do something more useful
    void boxSelected(int x0, int y0, int x1, int y1) {
-      p_setXRange(wopx(x0), wopx(x1));
-      p_setYRange(wopy(y0), wopy(y1));
+      pSetXRange(wopx(x0), wopx(x1));
+      pSetYRange(wopy(y0), wopy(y1));
 
    }
 
@@ -871,15 +873,15 @@ public final class WorldTransform {
    // 3D transforms and mouse manipulation
 
 
-   protected final double xProj (double x, double y, double z) {
+   protected double xProj (double x, double y, double z) {
       return w2cx + m3xx * (x - w3cx) + m3xy * (y - w3cy) + m3xz * (z - w3cz);
    }
 
-   protected final double yProj (double x, double y, double z) {
+   protected double yProj (double x, double y, double z) {
       return w2cy + m3yx * (x - w3cx) + m3yy * (y - w3cy) + m3yz * (z - w3cz);
    }
 
-   protected final double zProj (double x, double y, double z) {
+   protected double zProj (double x, double y, double z) {
       return w2cz + m3zx * (x - w3cx) + m3zy * (y - w3cy) + m3zz * (z - w3cz);
    }
 
@@ -963,7 +965,7 @@ public final class WorldTransform {
    }
 
 
-   final void applyRotation(double[][] mr) {
+   void applyRotation(double[][] mr) {
       double[][] m3C = new double[3][3];
       for (int i = 0; i < 3; i++) {
 	 for (int j = 0; j < 3; j++) {
@@ -982,7 +984,7 @@ public final class WorldTransform {
    }
 
 
-   final void axisRotate (double thax, double thr) {
+   void axisRotate (double thax, double thr) {
       // rotate through angle thr about the line in the x-y plane making
       // angle thax with the line y = 0;
 
@@ -1020,18 +1022,20 @@ public final class WorldTransform {
    }
 
    public void dragZRotate (int idx, int idy) {
-      if (m3B == null) return;
+      if (m3B != null) {
       double theta = idy / 60.; // ***
       zRotate (theta);
+      }
    }
 
 
    public void dragRollRotate (int idx, int idy) {
-      if (m3B == null) return;
+      if (m3B != null) {
 
       double thax = Math.atan2(idx, idy);
       double thar =  Math.sqrt (idx*idx + idy*idy) / 60.; // ***
       axisRotate (thax, thar);
+      }
    }
 
 

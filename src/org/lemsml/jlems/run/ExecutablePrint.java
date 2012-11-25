@@ -14,6 +14,7 @@ public class ExecutablePrint extends ExecutableStatement {
 	StringTemplate tpl;
 	
 	public ExecutablePrint(String tem, Lems lems) throws ContentError {
+		super();
 		template = tem;
 		tpl = new StringTemplate(tem);
 		tpl.parse(lems);

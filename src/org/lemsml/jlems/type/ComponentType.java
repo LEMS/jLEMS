@@ -12,7 +12,6 @@ import org.lemsml.jlems.expression.Valued;
 import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.ComponentBehavior;
 import org.lemsml.jlems.run.Constants;
-import org.lemsml.jlems.run.MultiComponentBehavior;
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.dynamics.DerivedVariable;
 import org.lemsml.jlems.type.dynamics.Dynamics;
@@ -95,13 +94,13 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	public LemsCollection<AnalogPort> analogPorts = new LemsCollection<AnalogPort>();
 	
 	
-	private LemsCollection<Component> cpts = new LemsCollection<Component>();
+	private final LemsCollection<Component> cpts = new LemsCollection<Component>();
 
-	private LemsCollection<FinalParam> finalParams = new LemsCollection<FinalParam>();
+	private final LemsCollection<FinalParam> finalParams = new LemsCollection<FinalParam>();
 	
-	private LemsCollection<InstanceProperty> instancePropertys = new LemsCollection<InstanceProperty>();
+	private final LemsCollection<InstanceProperty> instancePropertys = new LemsCollection<InstanceProperty>();
 
-	private LemsCollection<FinalExposed> finalExposeds = new LemsCollection<FinalExposed>();
+	private final LemsCollection<FinalExposed> finalExposeds = new LemsCollection<FinalExposed>();
 	
 	
 	@ModelProperty(info="Metadata about a component type can be included anywhere by wrapping it in an About element, though this " +
@@ -118,9 +117,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	
 	boolean resolved = false;
 
-	public ComponentType() {
-
-	}
+ 
 	
 	protected void setName(String s) {
 		name = s;
@@ -138,8 +135,9 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	public String summary() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(name);
-		if (description != null)
+		if (description != null) {
 			sb.append(" (" + description + ")");
+		}
 		if (r_extends != null) {
 			sb.append(" extends " + r_extends.getName() + " ");
 		}
@@ -203,7 +201,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		} else {
 			ComponentType ext = this.r_extends;
 			while (ext != null) {
-				if (ext == ct) {
+				if (ext.equals(ct)) {
 					ret = true;
 				}
 				ext = ext.r_extends;
@@ -240,7 +238,11 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 
 		for (AnalogPort ap : analogPorts) {
 			if (ap.mode.equals("send")) {
-				exposures.add(new Exposure(ap.name, ap.dimension));
+				Exposure ex = new Exposure();
+				ex.setName(ap.name);
+				ex.setDimension(ap.dimension);
+				
+				exposures.add(ex);
 			
 			} else if (ap.mode.equals("reduce")) {
 				if (ap.reduce_op.equals("+")) {

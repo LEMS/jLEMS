@@ -62,17 +62,17 @@ public class ZoneDemo implements BuildPaintInstructor, PickListener {
 
 
    public void backgroundPressed(int i, int x, int y) {
-
+	   // ignore
    }
 
 
    // for PickListener
    public void pickPressed(Pickable pbl, int button, int ix, int iy) {
-
+	   // ignore
    }
 
    public void pickReleased(Pickable pbl, int button) {
-
+	   // ignore
    }
 
    public void pickDragged(Pickable pbl, Position pos, int button, int ix, int iy) {
@@ -85,12 +85,15 @@ public class ZoneDemo implements BuildPaintInstructor, PickListener {
    }
 
    public void pickEnteredTrash(Pickable pbl) {
+	   // do nothing
    }
 
     public void pickLeftTrash(Pickable pbl) {
+    	// do nothing
     }
 
     public void pickTrashed(Pickable pbl) {
+    	// do nothing
     }
 
 

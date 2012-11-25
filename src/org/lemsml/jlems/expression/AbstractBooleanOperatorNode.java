@@ -4,12 +4,12 @@ import java.util.HashMap;
 
 import org.lemsml.jlems.sim.ContentError;
 
-public abstract class BooleanOperatorNode extends OperatorNode implements BooleanParseTreeNode {
+public abstract class AbstractBooleanOperatorNode extends AbstractOperatorNode implements BooleanParseTreeNode {
 
 	BooleanParseTreeNode leftEvaluable;
 	BooleanParseTreeNode rightEvaluable;
 	
-	public BooleanOperatorNode(String s) {
+	public AbstractBooleanOperatorNode(String s) {
 		super(s);
 	}
  

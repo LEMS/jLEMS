@@ -2,7 +2,7 @@ package org.lemsml.jlems.expression;
 
 import java.util.HashMap;
  
-public abstract class UnaryNode extends Node {
+public abstract class AbstractUnaryNode extends Node {
 
 	public Node right;
 

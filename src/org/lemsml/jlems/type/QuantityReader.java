@@ -6,7 +6,7 @@ import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.sim.ContentError;
 
-public class QuantityReader {
+public final class QuantityReader {
 
 
 	// static Pattern pat = Pattern.compile("(^[\\d\\.\\+-]*(?:[Ee][\\+-]?[\\d]+)?)(.*?)$");
@@ -17,15 +17,20 @@ public class QuantityReader {
 	static QuantityReader instance;
 	
 	
+	static {
+		 numHS = new HashSet<String>();
+			for (int i = 0; i <= 9; i++) {
+				numHS.add("" + i);
+			}
+			numHS.add(".");
+			numHS.add("+");
+			numHS.add("-");
+	}
+	
+	
 	
 	private QuantityReader() {
-		 numHS = new HashSet<String>();
-		for (int i = 0; i <= 9; i++) {
-			numHS.add("" + i);
-		}
-		numHS.add(".");
-		numHS.add("+");
-		numHS.add("-");
+	 
 	}
 	
 	/*

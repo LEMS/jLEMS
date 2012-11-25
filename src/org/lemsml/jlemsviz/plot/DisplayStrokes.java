@@ -2,6 +2,8 @@ package org.lemsml.jlemsviz.plot;
  
 
 import java.awt.BasicStroke;
+
+import org.lemsml.jlems.logging.E;
  
 public class DisplayStrokes {
 

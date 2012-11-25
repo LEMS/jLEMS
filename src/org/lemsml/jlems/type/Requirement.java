@@ -24,9 +24,6 @@ public class Requirement implements Named {
     public Dimension r_dimension;
     
     public String description;
-
-    public Requirement() {
-    }
  
 
     public void resolve(LemsCollection<Dimension> dimensions) throws ContentError {

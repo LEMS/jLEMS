@@ -6,13 +6,13 @@ import org.lemsml.jlems.sim.ContentError;
 
 public interface ParseTreeNode {
   
-	public Dimensional getDimensionality(HashMap<String, Dimensional> dimHM) throws ContentError;
+	Dimensional getDimensionality(HashMap<String, Dimensional> dimHM) throws ContentError;
  
-	public Dimensional evaluateDimensional(HashMap<String, Dimensional> adml) throws ContentError;
+	Dimensional evaluateDimensional(HashMap<String, Dimensional> adml) throws ContentError;
 
-	public void substituteVariables(HashMap<String, String> varHM) throws ContentError;
+	void substituteVariables(HashMap<String, String> varHM) throws ContentError;
 
-	public String toExpression() throws ContentError;
+	String toExpression() throws ContentError;
 
-	public ExpressionVisitor visitAll(ExpressionVisitor ev) throws ContentError;
+	ExpressionVisitor visitAll(ExpressionVisitor ev) throws ContentError;
 }

@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.lemsml.jlems.sim.ContentError;
+import org.lemsml.viz.E;
 
 
-public class ApplyBuilder extends PostBuilder {
+public class ApplyBuilder extends AbstractPostBuilder {
  
 	String listName;
  	
 	public ApplyBuilder(String mnm, ArrayList <ComponentBehavior> a) {
+		super();
 		listName = mnm;
  	}
 
@@ -25,7 +27,7 @@ public class ApplyBuilder extends PostBuilder {
  	 
 		MultiInstance mi = tgt.getMultiInstance(listName);
  
-		for (StateInstance si : mi.instances) {		
+		for (StateInstance si : mi.getInstances()) {		
 			si.checkBuilt();
 			postChildren(si, null, bc);
 		}
@@ -33,7 +35,7 @@ public class ApplyBuilder extends PostBuilder {
 
 	@Override
 	public void consolidateComponentBehaviors() {
-	 
+		E.missing();
 	}
  
  

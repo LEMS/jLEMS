@@ -3,7 +3,7 @@ package org.lemsml.jlemsviz.datadisplay;
 import org.lemsml.jlems.display.DataViewer;
 import org.lemsml.jlems.display.DataViewerFactory;
 
-public class SwingDataViewerFactory extends DataViewerFactory {
+public final class SwingDataViewerFactory extends DataViewerFactory {
 
 	static SwingDataViewerFactory instance;
 	

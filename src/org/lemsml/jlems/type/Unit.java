@@ -37,6 +37,7 @@ public class Unit implements PseudoNamed, Summaried, DataMatchable {
     
     
     public Unit() {
+    	// TODO - only one
     }
 
     public Unit(String nm, String sb, Dimension dim) {
@@ -67,7 +68,7 @@ public class Unit implements PseudoNamed, Summaried, DataMatchable {
             if (symbol.equals(u.symbol) && power == u.power && dimension.equals(u.dimension)) {
                 if (Math.abs(scale - u.scale) / (scale + u.scale) < 1.e-9) {
                     if (offset == 0 && u.offset == 0) {
-                        ret =true;
+                        ret = true;
                     }
                     else if(Math.abs(offset - u.offset) / (offset + u.offset) < 1.e-9) {
                         ret = true;

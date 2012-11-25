@@ -19,20 +19,21 @@ GraphColors gcols;
 
 
    public static ComponentUI createUI(JComponent jcomponent) {
-         return (new AboveBelowSplitPanelUI(null));
+         return new AboveBelowSplitPanelUI(null);
    }
 
    public BasicSplitPaneDivider createDefaultDivider() {
-      return (new HorizontalAxisGraphDivider(this, gcols));
+      return new HorizontalAxisGraphDivider(this, gcols);
    }
 
 
    public void paint(Graphics graphics, JComponent jcomponent) {
-
+	   // nothing to do
    }
 
 
    protected void uninstallDefaults() {
+	   // ignore
    }
 
 }

@@ -72,7 +72,7 @@ public abstract class FileUtil {
       String sdat = "null";
       if (f != null) {
       
-            boolean dogz = (f.getName().endsWith(".gz"));
+            boolean dogz = f.getName().endsWith(".gz");
             InputStream ins = new FileInputStream(f);
             if (dogz) {
                ins = new GZIPInputStream(ins);
@@ -98,7 +98,7 @@ public abstract class FileUtil {
       String fnm = f.getName();
       boolean ok = false;
       if (f != null) {
-         boolean dogz = (fnm.endsWith(".gz"));
+         boolean dogz = fnm.endsWith(".gz");
        
             OutputStream fos = new FileOutputStream(f);
             if (dogz) {
@@ -232,11 +232,11 @@ public abstract class FileUtil {
       return ret;
    }
 
-   public static String readNLinesFromFile(File f, int n) {
+   public static String readNLinesFromFile(File f, int n) throws IOException {
 	   StringBuffer sb = new StringBuffer();
 
 	      if (f != null) {
-	         try {
+	        
 	            InputStream ins = new FileInputStream(f);
 	            InputStreamReader insr = new InputStreamReader(ins);
 	            BufferedReader fr = new BufferedReader(insr);
@@ -248,10 +248,7 @@ public abstract class FileUtil {
 	            }
 	            fr.close();
 
-	         } catch (IOException ex) {
-	            E.error("file read error ");
-	            ex.printStackTrace();
-	         }
+	          
 	      }
 	      return sb.toString();
 	   }
@@ -378,7 +375,7 @@ public abstract class FileUtil {
 
 
 	public static String absoluteRoot(File rootFile) {
-		 return (new File(rootFile.getParentFile(), getRootName(rootFile)).getAbsolutePath());
+		 return new File(rootFile.getParentFile(), getRootName(rootFile)).getAbsolutePath();
 	}
 
 
@@ -394,8 +391,8 @@ public abstract class FileUtil {
 
 
 
-	public static void writeJarFile(ArrayList<File> tojar, File fout, HashMap<String, String> mats) {
-	      try {
+	public static void writeJarFile(ArrayList<File> tojar, File fout, HashMap<String, String> mats) throws IOException {
+	     
 	    	  Manifest m = new Manifest();
 	    	  if (mats != null) {
 	    		  for (String s : mats.keySet()) {
@@ -422,10 +419,7 @@ public abstract class FileUtil {
 
 	          byte[] ba= baos.toByteArray();
  	          writeByteArrayToFile(ba, fout);
-	       } catch (Exception ex) {
-	          E.error("custom jar writing error " + ex);
-	          ex.printStackTrace();
-	       }
+	      
 	   }
 
 

@@ -53,12 +53,12 @@ public enum ColorNames {
    SPATCHCANVAS("#d4d4c1"),
    BACKGROUND("-1");
 
-
+   
    private String hexval;
-
-   private ColorNames(String hv) {
-     hexval = hv;
-   }
+   
+  private ColorNames(String s) {
+	  hexval = s;
+  }
 
    public static String getHexValue(String sin) {
 	   String s = sin;

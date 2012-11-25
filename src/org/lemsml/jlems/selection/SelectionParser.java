@@ -18,7 +18,7 @@ import org.lemsml.jlems.expression.MinusNode;
 import org.lemsml.jlems.expression.ModuloNode;
 import org.lemsml.jlems.expression.Node;
 import org.lemsml.jlems.expression.OpenNode;
-import org.lemsml.jlems.expression.OperatorNode;
+import org.lemsml.jlems.expression.AbstractOperatorNode;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.expression.Parser;
 import org.lemsml.jlems.expression.PlusNode;
@@ -30,9 +30,9 @@ import org.lemsml.jlems.util.StringUtil;
 public class SelectionParser {
 
 	
-	static HashMap<String, OperatorNode> mathOPHM = new HashMap<String, OperatorNode>();
+	static HashMap<String, AbstractOperatorNode> mathOPHM = new HashMap<String, AbstractOperatorNode>();
   
-	static HashMap<String, SelectionOperatorNode> selOPHM = new HashMap<String, SelectionOperatorNode>();	
+	static HashMap<String, AbstractSelectionOperatorNode> selOPHM = new HashMap<String, AbstractSelectionOperatorNode>();	
 
 	static HashSet<String> funcHS = new HashSet<String>();
 	
@@ -47,7 +47,7 @@ public class SelectionParser {
 	
 	Parser expressionParser = new Parser();
 	
-	{
+	static {
 		for (int i = 0; i <= 9; i++) {
 			numberHS.add("" + i);
 		}
@@ -77,12 +77,7 @@ public class SelectionParser {
 	 
 	boolean verbose = false;
 	
-
-	
-	public SelectionParser() {
-		 
-	}
-
+ 
  
   
 	public void setVerbose() {
@@ -110,9 +105,9 @@ public class SelectionParser {
 		
 		// some nodes will get replaced, but the operators remain throughout and will be needed later 
 		// to claim their operands. Use a list here so we can sort by precedence.
-		ArrayList<OperatorNode> ops = new ArrayList<OperatorNode>();
+		ArrayList<AbstractOperatorNode> ops = new ArrayList<AbstractOperatorNode>();
 		
-		ArrayList<SelectionOperatorNode> selops = new ArrayList<SelectionOperatorNode>();
+		ArrayList<AbstractSelectionOperatorNode> selops = new ArrayList<AbstractSelectionOperatorNode>();
 	
 		ArrayList<PredicateNode> pnodes = new ArrayList<PredicateNode>();
 		ArrayList<GroupNode> gnodes = new ArrayList<GroupNode>();
@@ -120,14 +115,14 @@ public class SelectionParser {
 		
 		
 		for (Node n : nodes) {
-			if (n instanceof SelectionOperatorNode) {
-				SelectionOperatorNode sn = (SelectionOperatorNode)n;
+			if (n instanceof AbstractSelectionOperatorNode) {
+				AbstractSelectionOperatorNode sn = (AbstractSelectionOperatorNode)n;
 				sn.setSequencePosition(selops.size());
 				selops.add(sn);
 			}
 			
-			if (n instanceof OperatorNode) {
-				ops.add((OperatorNode)n);
+			if (n instanceof AbstractOperatorNode) {
+				ops.add((AbstractOperatorNode)n);
 			}
 			if (n instanceof PredicateNode) {
 				PredicateNode pn = (PredicateNode)n;
@@ -176,11 +171,11 @@ public class SelectionParser {
 			fn.claim();
 		}
 		
-		for (SelectionOperatorNode selop : selops) {
+		for (AbstractSelectionOperatorNode selop : selops) {
 			selop.claim();
 		}
 		
-		for (OperatorNode op : ops) {
+		for (AbstractOperatorNode op : ops) {
 			op.claim();
 		}
 		
@@ -188,19 +183,19 @@ public class SelectionParser {
 			gn.supplantByChild();
 		}
 		
-		SelectionNode root = null;
+		AbstractSelectionNode root = null;
 		if (groot.size() == 1) {
 			Node fc = groot.first();
-			if (fc instanceof SelectionNode) {
-				root = (SelectionNode)fc;
+			if (fc instanceof AbstractSelectionNode) {
+				root = (AbstractSelectionNode)fc;
 			} else {
 				throw new ParseError("root node is not evaluable " + fc);
 			}
 		} else {
 			StringBuilder sb = new StringBuilder();
-			sb.append(" too many children left in container: " + groot.children().size());
+			sb.append(" too many children left in container: " + groot.getChildren().size());
 			sb.append("\n");
-			for (Node n : groot.children()) {
+			for (Node n : groot.getChildren()) {
 				sb.append("Node: " + n + "\n");
 			}
 			
@@ -383,8 +378,7 @@ public class SelectionParser {
 				E.info(sep);
 		
 			} catch (ParseError pe) {
-				E.info("can't parse " + s + " " + pe);
-				pe.printStackTrace();
+				E.report("can't parse " + s + " ", pe);
 			}
 		}
 		

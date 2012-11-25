@@ -79,10 +79,12 @@ public class AboveBelowSplitPanel extends BasePanel implements ComponentListener
 
 
    public void componentHidden(ComponentEvent e) {
+	   // ignore
    }
 
 
    public void componentMoved(ComponentEvent e) {
+	   // ignore
    }
 
 
@@ -96,6 +98,7 @@ public class AboveBelowSplitPanel extends BasePanel implements ComponentListener
 
 
    public void componentShown(ComponentEvent e) {
+	   // ignore
    }
 
 

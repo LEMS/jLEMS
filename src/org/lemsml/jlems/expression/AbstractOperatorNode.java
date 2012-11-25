@@ -4,12 +4,12 @@ import java.util.HashMap;
  
  
 
-public abstract class OperatorNode extends UnaryNode implements Cloneable, ParseTreeNode {
+public abstract class AbstractOperatorNode extends AbstractUnaryNode implements Cloneable, ParseTreeNode {
 
     public Node left;
     String symbol;
 
-    public OperatorNode(String s) {
+    public AbstractOperatorNode(String s) {
         super();
         symbol = s;
     }
@@ -30,13 +30,13 @@ public abstract class OperatorNode extends UnaryNode implements Cloneable, Parse
  
     public abstract int getPrecedence();
 
-    public abstract OperatorNode copy();
+    public abstract AbstractOperatorNode copy();
 
     @Override
     public void replaceChild(Node nold, Node nnew) throws ParseError {
-        if (left == nold) {
+        if (left.equals(nold)) {
             left = nnew;
-        } else if (right == nold) {
+        } else if (right.equals(nold)) {
             right = nnew;
         } else {
             throw new ParseError("can't replace - not present " + nold);

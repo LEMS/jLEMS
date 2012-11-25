@@ -1,11 +1,12 @@
 package org.lemsml.jlems.codger;
 
-public class FloatAssignment extends Operation {
+public class FloatAssignment extends AbstractOperation {
 
 	String varName;
 	String expr;
 	
 	public FloatAssignment(String vnm, String ex) {
+		super();
 		varName = vnm;
 		expr = ex;
 	}

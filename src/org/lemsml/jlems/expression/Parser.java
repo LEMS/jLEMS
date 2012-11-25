@@ -12,7 +12,7 @@ public class Parser {
 	static String[] sf = {"sin", "cos", "tan", "exp", "sqrt", "sum", "product", "ln", "log", "random"};
 	static HashSet<String> stdFuncs = new HashSet<String>();
 	
-	static HashMap<String, OperatorNode> opHM = new HashMap<String, OperatorNode>();	
+	static HashMap<String, AbstractOperatorNode> opHM = new HashMap<String, AbstractOperatorNode>();	
 	
 	static HashSet<String> numberHS = new HashSet<String>();
 	
@@ -21,7 +21,7 @@ public class Parser {
 //	static Pattern numpat = Pattern.compile("([\\d\\.]*[Ee]([\\+-]?)[\\d]+)");
  
 	
-	{
+	static {
 		for (int i = 0; i <= 9; i++) {
 			numberHS.add("" + i);
 		}
@@ -50,7 +50,7 @@ public class Parser {
 	}
 
 	
-	static void addOperator(OperatorNode op) {
+	static void addOperator(AbstractOperatorNode op) {
 		opHM.put(op.getSymbol(), op);
 	}
 	
@@ -134,13 +134,13 @@ public class Parser {
 		
 		// some nodes will get replaced, but the operators remain throughout and will be needed later 
 		// to claim their operands. Use a list here so we can sort by precedence.
-		ArrayList<OperatorNode> ops = new ArrayList<OperatorNode>();
+		ArrayList<AbstractOperatorNode> ops = new ArrayList<AbstractOperatorNode>();
 		ArrayList<GroupNode> gnodes = new ArrayList<GroupNode>();
 		ArrayList<FunctionNode> fnodes = new ArrayList<FunctionNode>();
 		
 		for (Node n : nodes) {
-			if (n instanceof OperatorNode) {
-				ops.add((OperatorNode)n);
+			if (n instanceof AbstractOperatorNode) {
+				ops.add((AbstractOperatorNode)n);
 			}
 			if (n instanceof GroupNode) {
 				gnodes.add((GroupNode)n);
@@ -164,7 +164,7 @@ public class Parser {
 			E.info("Root group: " + groot.toString());
 		}
 		
-		OperatorNode[] aops = ops.toArray(new OperatorNode[ops.size()]);
+		AbstractOperatorNode[] aops = ops.toArray(new AbstractOperatorNode[ops.size()]);
 		Arrays.sort(aops, new PrecedenceComparator());
 		
 		
@@ -172,7 +172,7 @@ public class Parser {
 			fn.claim();
 		}
 		
-		for (OperatorNode op : aops) {
+		for (AbstractOperatorNode op : aops) {
 			op.claim();
 		}
 		
@@ -181,8 +181,8 @@ public class Parser {
 		}
 		
 		ParseTreeNode root = null;
-		if (groot.children().size() == 1) {
-			Node fc = groot.children().get(0);
+		if (groot.getChildren().size() == 1) {
+			Node fc = groot.getChildren().get(0);
 			if (fc instanceof ParseTreeNode) {
 				root = (ParseTreeNode)fc;
 			} else {
@@ -190,9 +190,9 @@ public class Parser {
 			}
 		} else {
 			StringBuilder sb = new StringBuilder();
-			sb.append(" too many children left in container: " + groot.children().size());
+			sb.append(" too many children left in container: " + groot.getChildren().size());
 			sb.append("\n");
-			for (Node n : groot.children()) {
+			for (Node n : groot.getChildren()) {
 				sb.append("Node: " + n + "\n");
 			}
 			
@@ -251,7 +251,7 @@ public class Parser {
 			
 			} else if (opHM.containsKey(stok)) {
 				n = opHM.get(stok).copy();  
-				if (n instanceof MinusNode && pretok instanceof OperatorNode) {
+				if (n instanceof MinusNode && pretok instanceof AbstractOperatorNode) {
 					n = new UnaryMinusNode();
 				}
 				
@@ -368,31 +368,6 @@ public class Parser {
 		return ret;
 	}
 	
-	   //Moved to org.lemsml.test.expression.ParserTest
-	public static void main(String[] argv) {
-		try {
-            
-            Parser p = new Parser();
-            
-          //  String s0 = "a + 1.2e3 + 3.4e-2 + 45E+4 + 1.234E-56 + ee + ff + e6 - e2";
-          //  E.info("Disambigiation " + s0 + " yields " + p.disambiguate(s0));
-            
-            
-            p.setVerbose();
-            String s1 = "V * -59";
-            ParseTree pt = p.parseExpression(s1);
-            E.info("Parsed " + s1 + " to: " + pt);
-		
-            String s2 = "1.2 * 5 * 5.0e-3 * 6e34";
-            ParseTree pt2 = p.parseExpression(s2);
-            E.info("Parsed " + s2 + " to: " + pt2);
-		 
-			
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		 
-		}
-		
-	}
+	 
  
 }

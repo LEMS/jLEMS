@@ -2,9 +2,9 @@ package org.lemsml.jlems.eval;
 
 import java.util.HashSet;
 
-public class Power extends DOp {
+public class Power extends AbstractDOp {
 
-	public Power(DVal dvl, DVal dvr) {
+	public Power(AbstractDVal dvl, AbstractDVal dvr) {
 		super(dvl, dvr);
 	}
 

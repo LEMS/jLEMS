@@ -21,6 +21,7 @@ public class EventPort implements Named {
     private int dir = 0;
 
     public EventPort() {
+    	// TODO - only one constructor
     }
 
     public EventPort(String sn) {

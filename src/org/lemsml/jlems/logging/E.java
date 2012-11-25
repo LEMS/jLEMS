@@ -5,7 +5,7 @@ import org.lemsml.jlems.sim.ContentError;
 
 
 
-public class E {
+public final class E {
 
    private static boolean debug = true;
 
@@ -23,15 +23,14 @@ public class E {
    static MessageForkHandler handler = new MessageForkHandler();
 
    
-   
+   private E() {
+	   
+   }
 
    public static void setDebug(boolean b) {
 	   debug = b;
    }
-   
-   public static boolean getDebug() {
-	   return debug;
-   }
+  
    
    private static long getTime() {
       return System.currentTimeMillis();
@@ -272,7 +271,7 @@ public class E {
    }
 
    public static void showSource(int n) {
-      StackTraceElement[] stea = (new Exception()).getStackTrace();
+      StackTraceElement[] stea = new Exception().getStackTrace();
       for (int i = 2; i < 2 + n && i < stea.length; i++) {
        handler.msg("  at " + stea[i].toString());
  
@@ -281,7 +280,7 @@ public class E {
 
 
    public static String getShortSource() {
-	   StackTraceElement[] stea = (new Exception()).getStackTrace();
+	   StackTraceElement[] stea = new Exception().getStackTrace();
 	   int iel = 0;
 	   String ss = stea[iel].toString();
 	   while (ss.indexOf(".E.") > 0 && iel < stea.length - 1) {
@@ -388,6 +387,12 @@ public static void typeError(Object obj) throws ContentError {
 
 	public static void setMessageHandler(MessageHandler mh) {
  		handler.setHandler(mh);
+	}
+
+	public static void report(String msg, Exception ex) {
+		E.error(msg);
+		ex.printStackTrace();
+		
 	}
 
 	

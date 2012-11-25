@@ -2,10 +2,10 @@ package org.lemsml.jlems.eval;
 
 import java.util.ArrayList;
 
-public class And extends BOp {
+public class And extends AbstractBOp {
 
 	
-	public And(BVal dvl, BVal dvr) {
+	public And(AbstractBVal dvl, AbstractBVal dvr) {
 		super(dvl, dvr);
 	}
 	

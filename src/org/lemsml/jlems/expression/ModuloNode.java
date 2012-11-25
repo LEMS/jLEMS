@@ -2,11 +2,11 @@ package org.lemsml.jlems.expression;
 
 import java.util.HashMap;
 
-import org.lemsml.jlems.eval.DVal;
+import org.lemsml.jlems.eval.AbstractDVal;
 import org.lemsml.jlems.eval.Mod;
 import org.lemsml.jlems.sim.ContentError;
 
-public class ModuloNode extends FloatResultNode {
+public class ModuloNode extends AbstractFloatResultNode {
 
 
 	public ModuloNode() {
@@ -29,7 +29,7 @@ public class ModuloNode extends FloatResultNode {
 	}
 
 	
-	public DVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
+	public AbstractDVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
 		checkLeftRight();
 		return new Mod(leftEvaluable.makeEvaluable(fixedHM), rightEvaluable.makeEvaluable(fixedHM));
 	}
@@ -40,7 +40,7 @@ public class ModuloNode extends FloatResultNode {
 		if (dl.matches(dr)) {
 			ret = dl;
 		} else {
-			throw(new ContentError("Dimensions do not match in plus: " + dl + " " + dr));
+			throw new ContentError("Dimensions do not match in plus: " + dl + " " + dr);
 		}
 		return ret;
 	}

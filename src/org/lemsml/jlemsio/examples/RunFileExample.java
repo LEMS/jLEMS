@@ -2,6 +2,7 @@ package org.lemsml.jlemsio.examples;
 
 import java.io.File;
 
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.sim.Sim;
 import org.lemsml.jlemsio.reader.FileInclusionReader;
 
@@ -34,11 +35,11 @@ public class RunFileExample {
 	 
 		
 	public void run() {
-		try {
+		 
 			FileInclusionReader fir = new FileInclusionReader(getSrcFile());
  			
 			
-			
+			try {
 			Sim sim = new Sim(fir.read());
 	 
 			sim.readModel();	
@@ -46,10 +47,9 @@ public class RunFileExample {
 		
 		    sim.build();
 	        sim.run();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		  
+			} catch (Exception ex) {
+				E.report("Failed to run " + filename, ex);
+			}
 		}
 	
 	
@@ -67,7 +67,7 @@ public class RunFileExample {
 		
 		sim.runTree();
          } catch (Exception ex) {
-        	 ex.printStackTrace();
+        	 E.report("Failed to run " + filename, ex);
          }
 		 
 	}
@@ -85,7 +85,8 @@ public class RunFileExample {
 			sim.build();
 			sim.printFirstConsolidated();
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			E.report("Failed to consolidate" + filename, ex);
+			 
 		}
 	}
 	

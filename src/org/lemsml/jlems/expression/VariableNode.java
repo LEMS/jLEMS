@@ -3,7 +3,7 @@ package org.lemsml.jlems.expression;
 import java.util.HashMap;
 
 import org.lemsml.jlems.eval.DCon;
-import org.lemsml.jlems.eval.DVal;
+import org.lemsml.jlems.eval.AbstractDVal;
 import org.lemsml.jlems.eval.DVar;
 import org.lemsml.jlems.sim.ContentError;
 
@@ -13,6 +13,7 @@ public class VariableNode extends Node implements DoubleParseTreeNode {
  	
 	
 	public VariableNode(String s) {
+		super();
 		svar = s;
 	}
 	
@@ -48,8 +49,8 @@ public class VariableNode extends Node implements DoubleParseTreeNode {
    
 	
 	
-	public DVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
-		DVal ret = null;
+	public AbstractDVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
+		AbstractDVal ret = null;
 	 
  			if (fixedHM != null && fixedHM.containsKey(svar)) {
 				ret = new DCon(fixedHM.get(svar));

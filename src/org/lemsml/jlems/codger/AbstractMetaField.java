@@ -2,13 +2,13 @@ package org.lemsml.jlems.codger;
 
 import org.lemsml.jlems.logging.E;
 
-public abstract class MetaField {
+public abstract class AbstractMetaField {
 
 	public enum Type {DOUBLE, INTEGER, STRING, VOID}
 	String name;
 	
 	
-	public MetaField(String nm) {
+	public AbstractMetaField(String nm) {
 		name = nm;
 	}
 	

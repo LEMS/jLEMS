@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 
 
 
-abstract class MouseHandler {
+public class BaseMouseHandler {
 
    final static int NONE = 0;
    final static int BUFFERED = 1;
@@ -24,7 +24,7 @@ abstract class MouseHandler {
 
 
 
-   MouseHandler() {
+   BaseMouseHandler() {
       active = true;
       setClaimUndecided();
    }
@@ -45,15 +45,13 @@ abstract class MouseHandler {
 
 
 
-   boolean motionAware() {
+   public boolean motionAware() {
+	   return false;
+   }
+   
+   public boolean motionChange(Mouse m) {
       return false;
    }
-   boolean motionChange(Mouse m) {
-      return false;
-   }
-
-
-
 
    int getRepaintStatus() {
       return repaintStatus;
@@ -71,7 +69,7 @@ abstract class MouseHandler {
 
 
 
-   void setClaimUndecided() {
+   final void setClaimUndecided() {
       claimStatus = UNDECIDED;
    }
 
@@ -104,15 +102,19 @@ abstract class MouseHandler {
    // used to decide whether it has control
 
    void clear() {
+	   // ignore
    }
 
    void init(Mouse m) {
+	   // ignore
    }
 
    void advance(Mouse m) {
+	   // ignore
    }
 
    void release(Mouse m) {
+	   // ignore
    }
 
 
@@ -120,6 +122,7 @@ abstract class MouseHandler {
 
 
    void echoPaint(Graphics2D g) {
+	   // ignore
    }
 
 
@@ -127,14 +130,19 @@ abstract class MouseHandler {
 
    // if handler has won control, then the following are called
    void missedPress(Mouse m) {
-
+	   // ignore
    }
+   
    void applyOnDown(Mouse m) {
+	   // ignore
    }
 
    void applyOnDrag(Mouse m) {
+	   // ignore
    }
+
    void applyOnRelease(Mouse m) {
+	   // ingore
    }
 
 }

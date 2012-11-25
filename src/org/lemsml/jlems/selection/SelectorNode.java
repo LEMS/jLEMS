@@ -8,13 +8,14 @@ import org.lemsml.jlems.run.RuntimeError;
 import org.lemsml.jlems.run.StateInstance;
 import org.lemsml.jlems.sim.ContentError;
 
-public class SelectorNode extends SelectionNode {
+public class SelectorNode extends AbstractSelectionNode {
 
 	
 	String sel;
 	
 	
 	public SelectorNode(String stok) {
+		super();
 		sel = stok; 
 	}
 

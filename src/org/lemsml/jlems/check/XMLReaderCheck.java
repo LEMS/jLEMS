@@ -1,5 +1,5 @@
 package org.lemsml.jlems.check;
-  
+   
 import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.reader.LemsFactory;
 import org.lemsml.jlems.type.Lems;
@@ -8,17 +8,14 @@ import org.lemsml.jlems.xml.XMLElementReader;
  
 public class XMLReaderCheck {
 
-	public XMLReaderCheck() {
-	}
-
  
-	public void testReadFromString() {
-		try {
+	public void checkReadFromString() {
 		String testString = "<Lems>"
 				+ "<Dimension name=\"voltage\" m=\"1\" l=\"2\" t=\"-3\" i=\"-1\"/>"
 				+ "<Unit symbol=\"mV\" dimension=\"voltage\" powTen=\"-3\"/>"
 				+ "</Lems>";
 
+		try {
 		XMLElementReader elementReader = new XMLElementReader(testString);
 	       
 		XMLElement xel = elementReader.getRootElement();
@@ -31,13 +28,13 @@ public class XMLReaderCheck {
 		
 		E.info("Read:  " + lems);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			E.report("can't read " + testString, ex);
 		}
 	}
 
 	public static void main(String[] args) {
 		XMLReaderCheck ct = new XMLReaderCheck();
-		ct.testReadFromString();
+		ct.checkReadFromString();
 
 	}
 

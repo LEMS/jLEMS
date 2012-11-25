@@ -44,7 +44,8 @@ public class CoInstantiate extends BuildElement {
 		if (component != null) {
 			Component c = cpt.getChild(component);
 			cb = c.getComponentBehavior();
-		} else if (component != null) {
+			
+		} else if (r_component != null) {
 			cb = r_component.getComponentBehavior();
 		}
 		

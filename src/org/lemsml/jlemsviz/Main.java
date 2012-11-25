@@ -8,15 +8,20 @@ import org.lemsml.jlemsio.logging.DefaultLogger;
 import org.lemsml.jlemsio.reader.FileInclusionReader;
 import org.lemsml.jlemsviz.datadisplay.SwingDataViewerFactory;
 
-public class Main {
+public final class Main {
 
 	 static String usage = "USAGE: java -jar lems-0.X.X.jar model-file [-options]\n";
 	
 
+	 private Main() {
+		 
+	 }
+	 
+	 
 	 public static void showUsage() {
 		 E.info(usage);
 	 }
-	 
+	
 	 
 	
     public static void main(String[] argv) {        

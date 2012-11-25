@@ -160,9 +160,7 @@ public class RegimeStateInstance implements StateRunnable  {
  
 
 	public void postBuild(RegimeStateInstance root) throws ConnectionError {
-	 
-		
-		
+		E.missing();
 	}
 
 	public ComponentRegime getComponentRegime() {
@@ -170,7 +168,7 @@ public class RegimeStateInstance implements StateRunnable  {
 	}
 
  
-	public void addPostBuilder(PostBuilder be) {
+	public void addPostBuilder(AbstractPostBuilder be) {
 		E.missing();
 	}
 

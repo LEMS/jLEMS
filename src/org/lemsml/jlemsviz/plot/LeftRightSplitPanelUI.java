@@ -26,19 +26,21 @@ final class LeftRightSplitPanelUI extends BasicSplitPaneUI {
 
 
    public static ComponentUI createUI(JComponent jcomponent) {
-         return (new LeftRightSplitPanelUI(null, null));
+         return new LeftRightSplitPanelUI(null, null);
    }
 
    public BasicSplitPaneDivider createDefaultDivider() {
-      return (new VerticalAxisGraphDivider(this, absp, gcols));
+      return new VerticalAxisGraphDivider(this, absp, gcols);
    }
 
 
    public void paint(Graphics graphics, JComponent jcomponent) {
+	   // nothing to do
    }
 
 
    protected void uninstallDefaults() {
+	   // nothing to do
    }
 
 }

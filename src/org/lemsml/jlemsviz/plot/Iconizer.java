@@ -15,11 +15,11 @@ import java.util.StringTokenizer;
 
 import javax.imageio.ImageIO;
  
-public class Iconizer {
+public final class Iconizer {
 
 
    // args: poly file, dim, r, g, b, outfile
-   public static void main(String[] argv) {
+   public static void main(String[] argv) throws IOException {
       File fin = new File(argv[0]);
       int dim = Integer.parseInt(argv[1]);
       int r = Integer.parseInt(argv[2]);
@@ -42,16 +42,16 @@ public class Iconizer {
       bim.getGraphics().drawImage(bimc, 0, 0, null);
 
 
-      try {
+     
 	 ImageIO.write(bim, "png", fout);
-      } catch(Exception ex) {
-	 ex.printStackTrace();
-      }
+     
       
    }
 
 
-
+   private Iconizer() {
+	   
+   }
 
 
    public static BufferedImage filledPolygonImage(double[] xp, double[] yp, 
@@ -265,8 +265,8 @@ public class Iconizer {
      double[][] sy = new double[2][n];
      
      for (int i = 0; i < n; i++) {
-	sy[0][i] = (new Double(st.nextToken())).doubleValue();
-	sy[1][i] = (new Double(st.nextToken())).doubleValue();
+	sy[0][i] = new Double(st.nextToken()).doubleValue();
+	sy[1][i] = new Double(st.nextToken()).doubleValue();
      }
      return sy;
   }
@@ -276,9 +276,9 @@ public class Iconizer {
 
 
 
-   public static String readStringFromFile (File f) {
+   public static String readStringFromFile (File f) throws IOException {
       String sdat = "";
-      try {
+      
 	 InputStream ins = new FileInputStream(f);
 	 InputStreamReader insr = new InputStreamReader(ins);
 	 BufferedReader fr = new BufferedReader (insr);
@@ -289,10 +289,7 @@ public class Iconizer {
 	    }
 	 fr.close();
 	 sdat = sb.toString();
-      } catch (IOException ex) {
-	  E.error ("file read error ");
-	 ex.printStackTrace();
-      }
+       
       return sdat;
    }
    

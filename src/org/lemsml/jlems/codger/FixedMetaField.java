@@ -1,6 +1,6 @@
 package org.lemsml.jlems.codger;
 
-public class FixedMetaField extends MetaField {
+public class FixedMetaField extends AbstractMetaField {
 
 	
 	double value;

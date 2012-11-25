@@ -11,9 +11,7 @@ public class DataDisplay {
 	
 	public String dataRegion;
 
- 	public DataDisplay() {
-		
-	}
+  
 
 	public RuntimeOutput getRuntimeOutput(Component cpt) throws ContentError {
 		RuntimeOutput ret = new RuntimeOutput();

@@ -9,7 +9,7 @@ import org.lemsml.jlems.run.RuntimeError;
 import org.lemsml.jlems.run.StateInstance;
 import org.lemsml.jlems.sim.ContentError;
 
-public class SlashNode extends SelectionOperatorNode {
+public class SlashNode extends AbstractSelectionOperatorNode {
 
  
 	 
@@ -33,12 +33,12 @@ public class SlashNode extends SelectionOperatorNode {
 		E.info("slash node get matches: left=" + left + " right=" + right);
 		
 		Node nl = getLeft();
-		if (nl instanceof SelectionNode) {
-			ArrayList<StateInstance> wka = ((SelectionNode)nl).getMatches(baseSI);
+		if (nl instanceof AbstractSelectionNode) {
+			ArrayList<StateInstance> wka = ((AbstractSelectionNode)nl).getMatches(baseSI);
 			Node nr = getRight();
-			if (nr instanceof  SelectionNode) {
+			if (nr instanceof  AbstractSelectionNode) {
 				ret = new ArrayList<StateInstance>();
-				SelectionNode rsn = (SelectionNode)nr;
+				AbstractSelectionNode rsn = (AbstractSelectionNode)nr;
 				for (StateInstance si : wka) {
 					ret.addAll(rsn.getMatches(si));
 				}
@@ -64,8 +64,8 @@ public class SlashNode extends SelectionOperatorNode {
 		Node nr = getRight();
 		
 		if (nr instanceof SelectorNode) {
-			if (nl instanceof SelectionNode) {
-				ArrayList<StateInstance> msia = ((SelectionNode)nr).getMatches(si);
+			if (nl instanceof AbstractSelectionNode) {
+				ArrayList<StateInstance> msia = ((AbstractSelectionNode)nr).getMatches(si);
 				if (msia.size() == 1) {
 					ret = ((SelectorNode)nr).getFloat(msia.get(0));
 					

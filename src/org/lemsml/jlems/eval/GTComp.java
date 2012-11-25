@@ -1,9 +1,9 @@
 package org.lemsml.jlems.eval;
 
-public class GTComp extends BComp {
+public class GTComp extends AbstractBComp {
 
 	
-	public GTComp(DVal dvl, DVal dvr) {
+	public GTComp(AbstractDVal dvl, AbstractDVal dvr) {
 		super(dvl, dvr);
 	}
 

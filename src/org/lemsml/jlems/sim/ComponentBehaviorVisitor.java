@@ -5,7 +5,7 @@ import org.lemsml.jlems.run.ComponentBehavior;
 public interface ComponentBehaviorVisitor {
 
 	
-	public void visit(ComponentBehavior cb);
+	void visit(ComponentBehavior cb);
 	
 	
 }

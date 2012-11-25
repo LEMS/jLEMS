@@ -6,6 +6,8 @@ package org.lemsml.jlemsviz.plot;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+
+import org.lemsml.jlems.logging.E;
  
 
 public class YAxisCanvas extends BaseCanvas

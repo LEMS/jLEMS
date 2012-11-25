@@ -6,7 +6,7 @@ import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.StateInstance;
  
 
-public class TupleSliceTemplateElement extends TemplateElement {
+public class TupleSliceTemplateElement extends AbstractTemplateElement {
 
 	
 	String listName;
@@ -16,6 +16,7 @@ public class TupleSliceTemplateElement extends TemplateElement {
 	 
 	
 	public TupleSliceTemplateElement(String lnm, String tnm, String itnm) {
+		super();
 		listName = lnm;
 	 
 		tupleName = tnm;

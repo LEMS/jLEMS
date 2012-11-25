@@ -14,6 +14,7 @@ public class ExecutableForEach extends ExecutableStatement {
 	ArrayList<ExecutableStatement> statements = new ArrayList<ExecutableStatement>();
 	
 	public ExecutableForEach(String sel, String a) {
+		super();
 		select = sel;
 		as = a;
 		 

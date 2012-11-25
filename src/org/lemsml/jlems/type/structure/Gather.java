@@ -1,6 +1,7 @@
 package org.lemsml.jlems.type.structure;
 
 import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.BuilderElement;
 import org.lemsml.jlems.run.GatherBuilder;
 import org.lemsml.jlems.selection.SelectionExpression;
@@ -10,7 +11,7 @@ import org.lemsml.jlems.type.Collection;
 import org.lemsml.jlems.type.Component;
 import org.lemsml.jlems.type.ComponentType;
 import org.lemsml.jlems.type.Lems;
-import org.lemsml.jlemsviz.plot.E;
+ 
 
 public class Gather extends BuildElement {
 

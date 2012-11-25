@@ -9,7 +9,7 @@ import org.lemsml.jlems.logging.MessageHandler;
 import org.lemsml.jlems.logging.MessageType;
  
 
-public class DefaultLogger implements MessageHandler {
+public final class DefaultLogger implements MessageHandler {
 
  
 	private static final Logger errorLogger = Logger.getLogger("errors");

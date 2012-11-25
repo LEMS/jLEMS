@@ -2,7 +2,7 @@ package org.lemsml.jlemsviz.plot;
 
 
 
-final class PanHandler extends MouseHandler {
+final class PanHandler extends BaseMouseHandler {
 
    private int xc;
    private int yc;
@@ -16,11 +16,7 @@ final class PanHandler extends MouseHandler {
 
    int actionMode = NORMAL;
 
-
-
-   public PanHandler() {
-     // continuous = false;
-   }
+ 
 
 
    public void init(Mouse m) {

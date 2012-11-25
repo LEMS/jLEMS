@@ -1,4 +1,6 @@
 package org.lemsml.jlemsviz.plot;
+
+import org.lemsml.jlems.logging.E;
  
 
 public final class Position implements XYLocation {

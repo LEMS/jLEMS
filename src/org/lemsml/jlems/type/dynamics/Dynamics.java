@@ -70,9 +70,9 @@ public class Dynamics  {
 	
 	
 	// not declared in xml - acquired from class signature
-	private LemsCollection <RequiredVar> p_requiredVars = new LemsCollection<RequiredVar>();
+	private final LemsCollection <RequiredVar> p_requiredVars = new LemsCollection<RequiredVar>();
 	
-	private LemsCollection <ExposedVar> p_exposedVars = new LemsCollection<ExposedVar>();
+	private final LemsCollection <ExposedVar> p_exposedVars = new LemsCollection<ExposedVar>();
 	
 	
 	private ComponentType r_type;
@@ -470,9 +470,6 @@ public class Dynamics  {
 	public void checkEquations(HashMap<String, Dimensional> cdimHM) throws ContentError {
 		HashMap<String, Dimensional> dimHM = new HashMap<String, Dimensional>();
 
-		for (String s : cdimHM.keySet()) {
-			Dimensional d = cdimHM.get(s);
-		}
 	 
 		dimHM.putAll(cdimHM);
 		

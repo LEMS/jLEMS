@@ -10,7 +10,7 @@ import javax.swing.JRadioButton;
 
 
 
-public class IconButton extends JRadioButton implements ActionListener {
+public final class IconButton extends JRadioButton implements ActionListener {
    static final long serialVersionUID = 1001;
    IntActor intActor;
    int action;

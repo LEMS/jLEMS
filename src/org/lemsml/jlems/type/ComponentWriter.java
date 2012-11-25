@@ -1,7 +1,13 @@
 package org.lemsml.jlems.type;
 
 
-public class ComponentWriter {
+public final class ComponentWriter {
+	
+	
+	private ComponentWriter() {
+		
+	}
+	
 	
 	
 	public static String summarize(Component cpt) {

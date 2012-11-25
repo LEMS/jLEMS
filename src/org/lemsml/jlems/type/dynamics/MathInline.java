@@ -11,7 +11,7 @@ public class MathInline implements BodyValued {
 	
 	static HashMap<String, String> importHM;
 	
-	{
+	static {
 		importHM = new HashMap<String, String>();
 		importHM.put("&gt;", ".gt.");
 		importHM.put("&lt;", ".lt.");

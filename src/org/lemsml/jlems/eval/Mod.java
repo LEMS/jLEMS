@@ -2,10 +2,10 @@ package org.lemsml.jlems.eval;
 
 import java.util.HashSet;
 
-public class Mod extends DOp {
+public class Mod extends AbstractDOp {
 
 	
-	public Mod(DVal dvl, DVal dvr) {
+	public Mod(AbstractDVal dvl, AbstractDVal dvr) {
 		super(dvl, dvr);
 	}
 	

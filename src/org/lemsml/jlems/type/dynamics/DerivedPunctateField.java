@@ -10,10 +10,6 @@ public class DerivedPunctateField {
 	
 	public String select;
 	
-	
-	public DerivedPunctateField() {
-		
-	}
-	
+ 
 	
 }

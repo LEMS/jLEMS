@@ -25,7 +25,7 @@ import org.lemsml.jlemsviz.plot.DisplayListPainter;
 import org.lemsml.jlemsviz.plot.PaintInstructor;
 import org.lemsml.jlemsviz.plot.WorldCanvas;
 
-public class StandaloneViewer implements ActionListener, DataViewer, DataViewPort {
+public final class StandaloneViewer implements ActionListener, DataViewer, DataViewPort {
 	JFrame frame;
 
 	DataDisplay dataDisplay;
@@ -70,7 +70,7 @@ public class StandaloneViewer implements ActionListener, DataViewer, DataViewPor
 		jp.setLayout(new FlowLayout(FlowLayout.CENTER));
 
 		ButtonGroup group = new ButtonGroup();
-		String[] modes = { WorldCanvas.PAN, WorldCanvas.ZOOM, WorldCanvas.BOX, WorldCanvas.MULTI };
+		String[] modes = { WorldCanvas.PAN, WorldCanvas.EZOOM, WorldCanvas.BOX, WorldCanvas.MULTI };
 		String[] lbls = { "Pan", "Zoom", "Box", "Multi" };
 		for (int i = 0; i < modes.length; i++) {
 			JRadioButton jrb = new JRadioButton(lbls[i]);

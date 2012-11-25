@@ -5,20 +5,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.lemsml.jlems.sim.ContentError;
-import org.lemsml.jlems.sim.InclusionReader;
+import org.lemsml.jlems.sim.AbstractInclusionReader;
 import org.lemsml.jlemsio.util.FileUtil;
 
 
-public class FileInclusionReader extends InclusionReader {
+public class FileInclusionReader extends AbstractInclusionReader {
 
-    private File rootFile;
-    private File rootDir;
+    private final File rootFile;
+    
     private static ArrayList<File> searchDirs = new ArrayList<File>();
-    private File prefDir;
+    private final File prefDir;
 
     public FileInclusionReader(File f) {
-        rootFile = f;
-        rootDir = rootFile.getParentFile();
+    	super();
+    	rootFile = f;
+        File rootDir = rootFile.getParentFile();
         
         if (rootDir != null) {
             searchDirs.add(rootDir);
@@ -72,7 +73,7 @@ public class FileInclusionReader extends InclusionReader {
                 searchDirs.add(0, fpar);
             }
         } else {
-        	StringBuffer sb = new StringBuffer();
+        	final StringBuilder sb = new StringBuilder();
         	sb.append("Can't find file at path: " + s + "\n");
         	sb.append("Search directories are: " + searchDirs + "\n");
          	throw new ContentError(sb.toString());
@@ -84,6 +85,7 @@ public class FileInclusionReader extends InclusionReader {
             ret = FileUtil.readStringFromFile(f);
             readOK = true;
         } catch (IOException ex) {
+        	readOK = false;
         	// not readable - readOK remains false and will be reported later
         }
         

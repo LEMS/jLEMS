@@ -5,10 +5,10 @@ import java.util.HashMap;
 import org.lemsml.jlems.run.RuntimeError;
 import org.lemsml.jlems.sim.ContentError;
 
-public abstract class ComparisonNode extends FloatOperatorNode implements BooleanParseTreeNode {
+public abstract class AbstractComparisonNode extends AbstractFloatOperatorNode implements BooleanParseTreeNode {
 
 
-	public ComparisonNode(String s) {
+	public AbstractComparisonNode(String s) {
 		super(s);
 	}
  

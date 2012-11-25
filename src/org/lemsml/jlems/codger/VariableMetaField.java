@@ -1,6 +1,6 @@
 package org.lemsml.jlems.codger;
 
-public class VariableMetaField extends MetaField {
+public class VariableMetaField extends AbstractMetaField {
 
 	
 	public VariableMetaField(String nm) {

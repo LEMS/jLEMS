@@ -1,7 +1,5 @@
 package org.lemsml.jlems.xml;
 
-import org.lemsml.jlems.logging.E;
-
 
 // read XMLElements from compact text
 
@@ -25,7 +23,7 @@ public class TextElementReader {
 	}
 	
 	
-	public XMLElement getRootElement() {
+	public XMLElement getRootElement() throws XMLException {
 		if (rootElement == null) {
 			parseSrc();
 		}
@@ -44,17 +42,14 @@ public class TextElementReader {
 	}
 	
 	
-	private void parseSrc() {
+	private void parseSrc() throws XMLException {
 		readLineOffsets();
 		XMLElement container = new XMLElement("Lems");
 		
 		iwk = 0;
-		try {
+	 
 			readChildren(0, container);
-		} catch (Exception ex) {
-			E.info("Failed to read " + ex);
-			ex.printStackTrace();
-		}
+		 
 		rootElement = container;
 	}
 

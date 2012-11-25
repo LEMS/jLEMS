@@ -37,7 +37,7 @@ public class EventManager {
 	// 	E.info("event manager adding event with delay " + delay);
 		PendingEvent pe = new PendingEvent(port, time + delay);
 		
-		if (events.size() == 0) {
+		if (events.isEmpty()) {
 			events.add(pe);
 		
 		} else if (pe.after(events.get(events.size() - 1))) {

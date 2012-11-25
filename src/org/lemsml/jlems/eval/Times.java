@@ -2,9 +2,9 @@ package org.lemsml.jlems.eval;
 
 import java.util.HashSet;
 
-public class Times extends DOp {
+public class Times extends AbstractDOp {
 
-	public Times(DVal dvl, DVal dvr) {
+	public Times(AbstractDVal dvl, AbstractDVal dvr) {
 		super(dvl, dvr);
 	}
 	

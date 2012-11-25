@@ -26,10 +26,7 @@ public class Children implements Named  {
 //    @Mat(info="Maximum number of children")
 //    public int max = Integer.MAX_VALUE;
 
-    
-    public Children() {
-    }
-
+   
      
     @Override
     public String toString() {

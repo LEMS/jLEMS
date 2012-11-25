@@ -53,10 +53,12 @@ public class DerivedVariable extends ExpressionValued implements Valued {
 	
 	
 	public DerivedVariable() {
+		super();
     }
 
     public DerivedVariable(String s) {
-    	this.name = s;
+    	super();
+    	name = s;
     }
     
      

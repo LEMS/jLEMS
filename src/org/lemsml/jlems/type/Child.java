@@ -26,9 +26,7 @@ public class Child implements Named {
         return "Child {" + name + ", type=" + type + "}";
     }
 
-    public Child() {
-    }
-
+   
     
     public void resolve(Lems lems, Parser p) throws ContentError, ParseError {
         LemsCollection<ComponentType> types = lems.getComponentTypes();

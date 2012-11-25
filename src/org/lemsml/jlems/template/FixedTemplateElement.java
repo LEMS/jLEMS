@@ -5,13 +5,14 @@ import java.util.HashMap;
 import org.lemsml.jlems.run.StateInstance;
  
 
-public class FixedTemplateElement extends TemplateElement {
+public class FixedTemplateElement extends AbstractTemplateElement {
 
 	
 	public String val;
 	
 	
 	public FixedTemplateElement(String sv) {
+		super();
 		val = sv;
 	}
 	

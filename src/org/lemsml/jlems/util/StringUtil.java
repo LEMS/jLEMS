@@ -2,8 +2,13 @@ package org.lemsml.jlems.util;
 
 import java.util.ArrayList;
 
-public class StringUtil {
+public final class StringUtil {
 
+		
+	private StringUtil() {
+		
+	}
+	
 	
 	public static String[] splitWords(String src) {
 		String[] bits = src.split(" ");

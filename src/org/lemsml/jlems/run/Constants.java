@@ -2,8 +2,13 @@ package org.lemsml.jlems.run;
 
 import java.util.HashMap;
 
-public class Constants {
+public final class Constants {
 
+	
+	private Constants() {
+		
+	}
+	
 	
 	public static HashMap<String, Double> constantsHM = null;
 	

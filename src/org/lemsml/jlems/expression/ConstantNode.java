@@ -3,7 +3,7 @@ package org.lemsml.jlems.expression;
 import java.util.HashMap;
 
 import org.lemsml.jlems.eval.DCon;
-import org.lemsml.jlems.eval.DVal;
+import org.lemsml.jlems.eval.AbstractDVal;
 import org.lemsml.jlems.sim.ContentError;
  
 public class ConstantNode extends Node implements DoubleParseTreeNode {
@@ -38,7 +38,7 @@ public class ConstantNode extends Node implements DoubleParseTreeNode {
  
   
 
-	public DVal makeEvaluable(HashMap<String, Double> fixedHM) {
+	public AbstractDVal makeEvaluable(HashMap<String, Double> fixedHM) {
 		return new DCon(dval);
 	}
 

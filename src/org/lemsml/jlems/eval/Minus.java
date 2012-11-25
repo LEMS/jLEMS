@@ -2,9 +2,9 @@ package org.lemsml.jlems.eval;
 
 import java.util.HashSet;
 
-public class Minus extends DOp {
+public class Minus extends AbstractDOp {
 
-	public Minus(DVal dvl, DVal dvr) {
+	public Minus(AbstractDVal dvl, AbstractDVal dvr) {
 		super(dvl, dvr);
 	}
 

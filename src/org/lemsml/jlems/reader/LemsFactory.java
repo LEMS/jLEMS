@@ -236,17 +236,6 @@ public class LemsFactory extends AbstractLemsFactory {
         }
 
 
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
         return ret;
     }
 
@@ -270,17 +259,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.dimension = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
             }
         }
 
@@ -318,17 +296,6 @@ public class LemsFactory extends AbstractLemsFactory {
         }
 
 
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
         return ret;
     }
 
@@ -358,17 +325,6 @@ public class LemsFactory extends AbstractLemsFactory {
         }
 
 
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
         return ret;
     }
 
@@ -386,17 +342,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.matches = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
             }
         }
 
@@ -522,17 +467,6 @@ public class LemsFactory extends AbstractLemsFactory {
         }
 
 
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
         return ret;
     }
 
@@ -548,17 +482,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.name = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
             }
         }
 
@@ -580,17 +503,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.dimension = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
             }
         }
 
@@ -620,17 +532,6 @@ public class LemsFactory extends AbstractLemsFactory {
         }
 
 
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
         return ret;
     }
 
@@ -648,17 +549,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.value = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
             }
         }
 
@@ -686,17 +576,6 @@ public class LemsFactory extends AbstractLemsFactory {
         }
 
 
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
         return ret;
     }
 
@@ -716,17 +595,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.description = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
             }
         }
 
@@ -754,17 +622,6 @@ public class LemsFactory extends AbstractLemsFactory {
         }
 
 
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
         return ret;
     }
 
@@ -782,17 +639,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.type = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
             }
         }
 
@@ -822,17 +668,6 @@ public class LemsFactory extends AbstractLemsFactory {
         }
 
 
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
         return ret;
     }
 
@@ -858,17 +693,6 @@ public class LemsFactory extends AbstractLemsFactory {
         }
 
 
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
         return ret;
     }
 
@@ -884,17 +708,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.name = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
             }
         }
 
@@ -918,17 +731,6 @@ public class LemsFactory extends AbstractLemsFactory {
         }
 
 
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
         return ret;
     }
 
@@ -944,17 +746,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.name = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
             }
         }
 
@@ -982,17 +773,6 @@ public class LemsFactory extends AbstractLemsFactory {
         }
 
 
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
         return ret;
     }
 
@@ -1012,17 +792,6 @@ public class LemsFactory extends AbstractLemsFactory {
         }
 
 
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
         return ret;
     }
 
@@ -1038,17 +807,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.name = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
             }
         }
 
@@ -1076,17 +834,6 @@ public class LemsFactory extends AbstractLemsFactory {
         }
 
 
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
         return ret;
     }
 
@@ -1102,17 +849,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.component = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
             }
         }
 
@@ -1138,17 +874,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.exposure = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
             }
         }
 
@@ -1230,17 +955,6 @@ public class LemsFactory extends AbstractLemsFactory {
         }
 
 
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
         return ret;
     }
 
@@ -1262,17 +976,6 @@ public class LemsFactory extends AbstractLemsFactory {
         }
 
 
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
         return ret;
     }
 
@@ -1290,17 +993,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.value = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
             }
         }
 
@@ -1332,17 +1024,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.value = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
             }
         }
 
@@ -1472,17 +1153,6 @@ public class LemsFactory extends AbstractLemsFactory {
         }
 
 
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
         return ret;
     }
 
@@ -1516,17 +1186,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.step = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
             }
         }
 
@@ -1634,17 +1293,6 @@ public class LemsFactory extends AbstractLemsFactory {
         }
 
 
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
         return ret;
     }
 
@@ -1664,17 +1312,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.region = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
             }
         }
 
@@ -1704,17 +1341,6 @@ public class LemsFactory extends AbstractLemsFactory {
         }
 
 
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
         return ret;
     }
 
@@ -1736,17 +1362,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.select = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
             }
         }
 
@@ -1878,17 +1493,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.exposeAs = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
             }
         }
 
@@ -2374,17 +1978,6 @@ public class LemsFactory extends AbstractLemsFactory {
         }
 
 
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
         return ret;
     }
 
@@ -2402,17 +1995,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.dataRegion = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
             }
         }
 
@@ -2438,17 +2020,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.total = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
             }
         }
 
@@ -2496,17 +2067,6 @@ public class LemsFactory extends AbstractLemsFactory {
             if (xn.equals("UNUSED")) {
             } else {
                 E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
             }
         }
 
@@ -2560,17 +2120,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.template = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
             }
         }
 
@@ -2644,17 +2193,6 @@ public class LemsFactory extends AbstractLemsFactory {
         }
 
 
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
         return ret;
     }
 
@@ -2678,17 +2216,6 @@ public class LemsFactory extends AbstractLemsFactory {
         }
 
 
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
-            }
-        }
-
-
         return ret;
     }
 
@@ -2708,17 +2235,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.on = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
             }
         }
 
@@ -2776,17 +2292,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.value = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
-            }
-        }
-
-
-        for (XMLElement cel : xel.getXMLElements()) {
-            String xn = cel.getTag();
-
-            Object obj = instantiateFromXMLElement(cel);
-            if (xn.equals("UNUSED")) {
-            } else {
-                E.warning("unrecognized element " + cel);
             }
         }
 

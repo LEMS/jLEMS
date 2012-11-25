@@ -5,6 +5,6 @@ import org.lemsml.jlems.sim.ContentError;
 
 public interface ChildInstantiator {
 
-	public void childInstantiate(StateInstance si) throws ContentError, ConnectionError, RuntimeError;
+	void childInstantiate(StateInstance si) throws ContentError, ConnectionError, RuntimeError;
 	
 }

@@ -3,12 +3,11 @@ package org.lemsml.jlems.eval;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-
-import org.lemsml.jlems.logging.E;
+ 
 import org.lemsml.jlems.run.DoublePointer;
 import org.lemsml.jlems.run.RuntimeError;
 
-public class DVar extends DVal {
+public class DVar extends AbstractDVal {
 
 	String varname;
 	
@@ -16,6 +15,7 @@ public class DVar extends DVal {
 	
 	
 	public DVar(String s) {
+		super();
 		varname = s;
 	}
 	

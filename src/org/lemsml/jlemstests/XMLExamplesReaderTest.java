@@ -1,6 +1,6 @@
 package org.lemsml.jlemstests;
- 
-import static org.junit.Assert.assertTrue;
+  
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,9 +21,7 @@ import org.lemsml.jlemsio.util.FileUtil;
 
 
 public class XMLExamplesReaderTest {
-
-	public XMLExamplesReaderTest() {
-	}
+ 
 
 	@Test
 	public void testReadFromString() throws ParseException, BuildException,
@@ -53,7 +51,7 @@ public class XMLExamplesReaderTest {
 				"'<Element a=\"val\"/>' and not '<Element a=\"val\"></Element>'");
 			}
 	 		
-			assertTrue(sns.length() == tns.length());
+			assertEquals("Rewrite matches", sns.length(), tns.length());
 		}
 	}
 	

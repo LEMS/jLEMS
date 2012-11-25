@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+
+import org.lemsml.jlems.logging.E;
  
 
 public class WorldCanvas extends BaseCanvas implements ModeSettable {
@@ -13,10 +15,10 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
 
 
    public static final String PAN = "pan";
-   public static final String ZOOM = "zoom";
+   public static final String EZOOM = "zoom";
    public static final String BOX = "box";
    public static final String ROLL = "roll";
-   public static final String TURN = "turn";
+   public static final String ETURN = "turn";
    public static final String MULTI = "all";
    
    public static final String ZOOMIN = "zoomIn";
@@ -36,7 +38,7 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
    private RollHandler rollHandler;
    private TurntableHandler turntableHandler;
 
-   private MouseHandler[] handlers;
+   private BaseMouseHandler[] handlers;
 
    private boolean antialias = false;
    private boolean tooltips = true;
@@ -88,7 +90,7 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
    public void setMode(String dom, String mod) {
 
       if (dom.equals("antialias")) {
-         antialias = (mod.equals("true"));
+         antialias = mod.equals("true");
          userAntialias = antialias;
     
          
@@ -194,7 +196,7 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
    }
 
 
-   public void prependHandler(MouseHandler mhandler) {
+   public void prependHandler(BaseMouseHandler mhandler) {
       mouse.prependHandler(mhandler);
    }
 
@@ -209,7 +211,7 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
 
 
 
-   public void addWorldHandlers() {
+   private final void addWorldHandlers() {
       panHandler = new PanHandler();
       addHandler(panHandler);
 
@@ -230,14 +232,14 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
       addHandler(turntableHandler);
 
 
-      MouseHandler[] ha = { panHandler, clickZoomHandler, boxSelectionHandler,
+      BaseMouseHandler[] ha = { panHandler, clickZoomHandler, boxSelectionHandler,
     		  			   turnZoomHandler, rollHandler, turntableHandler };
       handlers = ha;
    }
 
 
 
-   public void setMouseMode(String s) {
+   public final void setMouseMode(String s) {
       for (int i = 0; i < handlers.length; i++) {
          handlers[i].deactivate();
       }
@@ -253,7 +255,7 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
       } else if (s.equals(PAN)) {
          panHandler.simpleActivate();
 
-      } else if (s.equals(ZOOM)) {
+      } else if (s.equals(EZOOM)) {
          clickZoomHandler.activateInOut();
 
       } else if (s.equals(BOX)) {
@@ -262,7 +264,7 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
       } else if (s.equals(ROLL)) {
     	  rollHandler.simpleActivate();
 
-      } else if (s.equals(TURN)) {
+      } else if (s.equals(ETURN)) {
           turntableHandler.simpleActivate();
 
       } else if (s.equals(ZOOMIN)) {
@@ -329,7 +331,7 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
 
 
 
-   public void addHandler(MouseHandler mh) {
+   public final void addHandler(BaseMouseHandler mh) {
       mouse.addHandler(mh);
    }
 
@@ -368,11 +370,11 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
 
 
    public void prePaint(Graphics2D g) {
-
+	   // nothing to do
    }
 
    public void postPaint(Graphics2D g) {
-
+	   // nothing to do
    }
 
 

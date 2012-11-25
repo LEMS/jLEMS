@@ -2,6 +2,7 @@ package org.lemsml.jlemsio.doc;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -25,7 +26,7 @@ public class DocExtractor {
 
  	
 	
-	public static void main(String[] argv) {
+	public static void main(String[] argv) throws IOException {
 		DefaultLogger.initialize();
 		
 		DocExtractor de = new DocExtractor();
@@ -35,7 +36,7 @@ public class DocExtractor {
 	 
 	
 	
-	public void extract(String[] argv) {
+	public void extract(String[] argv) throws IOException {
 		
 		ArrayList<DocItem> items = new ArrayList<DocItem>();
 		
@@ -54,12 +55,10 @@ public class DocExtractor {
 		if (argv.length > 0) {
 			String sf = argv[0];
 			File f = new File(sf);
-			try {
+		 
 				FileUtil.writeStringToFile(stxt, f);
 				E.info("Written file " + f.getAbsolutePath());
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
+			 
 		} else {
 			E.info("Got docs xml: " + stxt);
 		}

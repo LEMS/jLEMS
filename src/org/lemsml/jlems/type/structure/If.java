@@ -19,7 +19,8 @@ public class If extends BuildElement {
 
 	@Override
 	public void resolveLocal(Lems lems, ComponentType ct) throws ContentError, ParseError {
- 	}
+		// nothing to do
+	}
 
 	
 	

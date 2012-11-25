@@ -1,7 +1,7 @@
 package org.lemsml.jlemsviz.plot;
  
 
-public abstract class Geom {
+public abstract class AbstractGeom {
 
 
 

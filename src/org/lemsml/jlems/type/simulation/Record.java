@@ -23,17 +23,8 @@ public class Record {
 	
 	public String display;
  
-
-    public Record() {
-    }
-
-    public Record(String quantity, String scale, String color, String d) {
-        this.quantity = quantity;
-        this.scale = scale;
-        this.color = color;
-        this.display = d;
-    }
-
+ 
+ 
     public String toString() {
     	return "Recorder q=" + quantity + ", scale=" + scale + ", display=" + display + ", color=" + color;
     }

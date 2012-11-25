@@ -2,12 +2,12 @@ package org.lemsml.jlems.expression;
 
 import java.util.HashMap;
 
-import org.lemsml.jlems.eval.DVal;
+import org.lemsml.jlems.eval.AbstractDVal;
 import org.lemsml.jlems.eval.Power;
 import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.sim.ContentError;
 
-public class PowerNode extends FloatResultNode {
+public class PowerNode extends AbstractFloatResultNode {
 
 	public PowerNode() {
 		super("^");
@@ -28,7 +28,7 @@ public class PowerNode extends FloatResultNode {
 		return Math.pow(x, y);
 	}
 	
-	public DVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
+	public AbstractDVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
 		checkLeftRight();
 		return new Power(leftEvaluable.makeEvaluable(fixedHM), rightEvaluable.makeEvaluable(fixedHM));
 	}

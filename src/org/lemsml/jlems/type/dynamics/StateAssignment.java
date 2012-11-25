@@ -5,7 +5,7 @@ import org.lemsml.jlems.type.Dimension;
  
 
 @ModelElement(info="Has 'variable' and 'value' fields")
-public class StateAssignment extends StateChange {
+public class StateAssignment extends AbstractStateChange {
 
 	
 	public StateAssignment() {

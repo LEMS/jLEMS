@@ -7,7 +7,7 @@ import org.lemsml.jlems.run.StateInstance;
 import org.lemsml.jlems.sim.ContentError;
  
 
-public abstract class TemplateElement {
+public abstract class AbstractTemplateElement {
 
 	
 	 

@@ -76,18 +76,19 @@ import org.lemsml.jlems.type.structure.PairsEventConnection;
 import org.lemsml.jlems.type.structure.Structure;
 import org.lemsml.jlems.type.structure.With;
 
-public class LemsClasses {
+public final class LemsClasses {
 
 	
 	public static LemsClasses instance;
 	
-	
-	ArrayList<LemsClass> classList;
+	private final ArrayList<LemsClass> classList;
 	
 	
 	public static LemsClasses getInstance() {
+		synchronized(LemsClasses.class) {
 		if (instance == null) {
 			instance = new LemsClasses();
+		}
 		}
 		return instance;
 	}

@@ -1,5 +1,7 @@
 
 package org.lemsml.jlemsviz.plot;
+
+import org.lemsml.jlems.logging.E;
  
 
 
@@ -60,7 +62,7 @@ public final class PickableRegion implements Pickable {
 
 
    public boolean contains(double xq, double yq) {
-      return Geom.pointIsInside(xb, yb, xq, yq);
+      return AbstractGeom.pointIsInside(xb, yb, xq, yq);
    }
    
 

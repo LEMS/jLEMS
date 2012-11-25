@@ -11,7 +11,7 @@ import org.lemsml.jlems.sim.ContentError;
 
 
 
-public abstract class SelectionNode extends Node {
+public abstract class AbstractSelectionNode extends Node {
 
 	public abstract String getEvaluationProcessDescription();
 

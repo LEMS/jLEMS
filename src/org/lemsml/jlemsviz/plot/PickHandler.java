@@ -3,9 +3,11 @@ package org.lemsml.jlemsviz.plot;
  
 
 import java.awt.Color;
+
+import org.lemsml.jlems.logging.E;
  
 
-public class PickHandler extends MouseHandler {
+public class PickHandler extends BaseMouseHandler {
 
    int xoff = 0;
    int yoff = 0;
@@ -25,7 +27,7 @@ public class PickHandler extends MouseHandler {
    Pickable hoverItem;
 
 
-   boolean inTrash;
+   boolean pickInTrash;
 
 
    public PickHandler(PickStore ps, WorldTransform wt) {
@@ -43,12 +45,12 @@ public class PickHandler extends MouseHandler {
 
 
 
-   boolean motionAware() {
+   public boolean motionAware() {
       return true;
    }
 
 
-   boolean motionChange(Mouse m) {
+   public boolean motionChange(Mouse m) {
       int xc = m.getX();
       int yc = m.getY();
 
@@ -74,7 +76,7 @@ public class PickHandler extends MouseHandler {
             changed = true;
 
 
-            if (pei == echoItem) {
+            if (pei.equals(echoItem)) {
                E.error(" - same claimant but failed to claim");
             }
          }
@@ -108,7 +110,7 @@ public class PickHandler extends MouseHandler {
             p.setColor(Color.white);
             p.drawPolygon(pr.getXPts(), pr.getYPts());
 
-            if (tips || (hoverItem == echoItem)) {
+            if (tips || (hoverItem.equals(echoItem))) {
                String s = pr.getRegionTag();
                if (s != null) {
                   p.drawOffsetCenteredLabel(s, pr.getXReference(), pr.getYReference());
@@ -144,7 +146,7 @@ public class PickHandler extends MouseHandler {
          setClaimIn();
       }
 
-      inTrash = false;
+      pickInTrash = false;
    }
 
 
@@ -197,15 +199,15 @@ public void missedPress(Mouse m) {
 
 
          if (inTrash(ix, iy)) {
-            if (inTrash) {
+            if (pickInTrash) {
                // as ist;
             } else {
-               inTrash = true;
+               pickInTrash = true;
                pickListener.pickEnteredTrash(activePick);
             }
          } else {
-            if (inTrash) {
-               inTrash = false;
+            if (pickInTrash) {
+               pickInTrash = false;
                pickListener.pickLeftTrash(activePick);
             }
          }
@@ -227,7 +229,7 @@ public void missedPress(Mouse m) {
       if (pickListener != null) {
          pickListener.pickReleased(activePick, m.getButton());
 
-         if (inTrash) {
+         if (pickInTrash) {
             pickListener.pickTrashed(activePick);
          }
       }

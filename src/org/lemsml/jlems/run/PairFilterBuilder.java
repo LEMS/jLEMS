@@ -7,15 +7,15 @@ import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.selection.SelectionExpression;
 import org.lemsml.jlems.sim.ContentError;
 
-public class PairFilterBuilder extends PostBuilder {
+public class PairFilterBuilder extends AbstractPostBuilder {
 
 	
 	SelectionExpression selexp;
 	
 	 
 	public PairFilterBuilder(SelectionExpression ex) {
+		super();
 		selexp = ex;
-	 
 	}
 
  

@@ -26,11 +26,7 @@ public class StateVariable implements Valued  {
 			"defined in the ComponentType.")
 	public String exposure;
 	private Exposure r_exposure;
-
-    public StateVariable() {
-    }
-
-    
+ 
    
 	
 	public String getName() {

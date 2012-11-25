@@ -3,7 +3,7 @@ package org.lemsml.jlemsviz.plot;
 
 
 
-final class TurntableHandler extends MouseHandler {
+final class TurntableHandler extends BaseMouseHandler {
 
    private int xc;
    private int yc;
@@ -18,11 +18,7 @@ final class TurntableHandler extends MouseHandler {
    int actionMode = NORMAL;
 
 
-
-   public TurntableHandler() {
-     // continuous = false;
-   }
-
+ 
 
    public void init(Mouse m) {
       xc = m.getX();

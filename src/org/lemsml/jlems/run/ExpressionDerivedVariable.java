@@ -13,6 +13,7 @@ public class ExpressionDerivedVariable {
 	String exposeAs;
 
 	public ExpressionDerivedVariable() {
+		// should remove other constructor and then this one.
 	}
 
     @Override

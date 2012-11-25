@@ -17,15 +17,8 @@ public class Exposure implements Named {
     public String description;
     public Dimension r_dimension;
 
-    public Exposure() {
-    }
- 
-    
-    protected Exposure(String nm, String dm) {
-    	name = nm;
-    	dimension = dm;
-    }
    
+    
      
 
     public void resolve(LemsCollection<Dimension> dimensions) throws ContentError {

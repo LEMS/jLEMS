@@ -3,7 +3,10 @@ package org.lemsml.jlems.serial;
 
 public final class StringEncoder {
 
-
+	
+	private StringEncoder() {
+		
+	}
 
    static String xmlEscape(String sin) {
 	   String s = sin;

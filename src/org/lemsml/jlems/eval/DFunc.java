@@ -7,13 +7,14 @@ import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.type.Lems;
 
 
-public class DFunc extends DVal {
+public class DFunc extends AbstractDVal {
 	
 	String fname; 
 	
-	public DVal arg;
+	public AbstractDVal arg;
 	
-	public DFunc(String fnm, DVal dva) {
+	public DFunc(String fnm, AbstractDVal dva) {
+		super();
 		fname = fnm;
 		arg = dva;
 	}
@@ -23,7 +24,7 @@ public class DFunc extends DVal {
 	}
 
 	@Override
-	public DVal makePrefixedCopy(String pfx, HashSet<String> stetHS) {
+	public AbstractDVal makePrefixedCopy(String pfx, HashSet<String> stetHS) {
 		return new DFunc(fname, arg.makePrefixedCopy(pfx, stetHS));
 	}
 	

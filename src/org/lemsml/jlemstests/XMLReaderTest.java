@@ -18,9 +18,7 @@ import org.lemsml.jlemsio.logging.DefaultLogger;
  * @author Padraig
  */
 public class XMLReaderTest {
-
-	public XMLReaderTest() {
-	}
+ 
 
 	@Test
 	public void testReadFromString() throws ParseException, BuildException,

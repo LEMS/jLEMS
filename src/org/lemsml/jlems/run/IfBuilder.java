@@ -11,6 +11,7 @@ public class IfBuilder extends BuilderElement {
 	
 	
 	public IfBuilder(String s) {
+		super();
 		test = s;
 	}
 	

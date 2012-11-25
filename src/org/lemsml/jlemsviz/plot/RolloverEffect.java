@@ -14,7 +14,7 @@ import javax.swing.border.Border;
 
 
 
-public class RolloverEffect extends MouseAdapter {
+public final class RolloverEffect extends MouseAdapter {
 
    JComponent button;
 
@@ -45,7 +45,8 @@ public class RolloverEffect extends MouseAdapter {
 
 
    public RolloverEffect(JComponent buttonIn, int norm, int active) {
-      hasPadding = false;
+	   super();
+	  hasPadding = false;
       bgColor = buttonIn.getBackground();
       
       inormal = norm;

@@ -6,6 +6,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
+
+import org.lemsml.jlems.logging.E;
  
 
 public class DataDisplay extends BasePanel implements ModeSettable, RangeListener, Repaintable {
@@ -267,7 +269,7 @@ public class DataDisplay extends BasePanel implements ModeSettable, RangeListene
       pwCanvas.syncSize();
    }
 
-   public void setPrefSize(int w, int h) {
+   public final void setPrefSize(int w, int h) {
 
       prefDim = new Dimension(w, h);
       setPreferredSize(prefDim);

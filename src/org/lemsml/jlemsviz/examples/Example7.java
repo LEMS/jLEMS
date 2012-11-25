@@ -2,7 +2,12 @@ package org.lemsml.jlemsviz.examples;
 
  
 
-public class Example7 {
+public final class Example7 {
+	
+	private Example7() {
+		
+	}
+	
 	
 	public static void main(String[] argv) {
 	

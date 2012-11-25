@@ -38,16 +38,14 @@ public class ComponentFlatteningTest {
 */
 	
 	 
-    public static void main(String[] args) throws ContentError, ParseError, ConnectionError, RuntimeError, IOException {
+    public static void main(String[] args) throws ContentError, ParseError, ConnectionError, RuntimeError, IOException, ParseException, BuildException, XMLException {
     	DefaultLogger.initialize();
        
-    	try {
+     
     		ComponentFlatteningTest cft = new ComponentFlatteningTest();
     		cft.runExample1();
     		
-    	} catch (Exception ex) {
-    		ex.printStackTrace();
-    	}
+    	 
     }
     
     @Test

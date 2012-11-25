@@ -7,7 +7,7 @@ import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.selection.SelectionExpression;
 import org.lemsml.jlems.sim.ContentError;
 
-public class GatherBuilder extends PostBuilder {
+public class GatherBuilder extends AbstractPostBuilder {
 
 	
 SelectionExpression selexp;
@@ -15,6 +15,7 @@ SelectionExpression selexp;
 	String col;
 	
 	public GatherBuilder(SelectionExpression ex, String c) {
+		super();
 		selexp = ex;
 		col = c;
 	}

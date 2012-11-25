@@ -1,6 +1,7 @@
 package org.lemsml.jlemsio.reader;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
@@ -10,11 +11,7 @@ import org.lemsml.jlemsio.util.FileUtil;
 
 public class LemsFactoryGenerator {
 
-	
-	
-	public LemsFactoryGenerator() {
-		
-	}
+	 
 	
 
 	private String generateJava() {
@@ -118,29 +115,11 @@ public class LemsFactoryGenerator {
 		sb.append("        }\n\n\n");
 		
 		
-		sb.append("        for (XMLElement cel : xel.getXMLElements()) {\n");
-		sb.append("            String xn = cel.getTag();\n\n");
-		sb.append("            Object obj = instantiateFromXMLElement(cel);\n");
 		
-		sb.append("            if (xn.equals(\"UNUSED\")) {\n");
+		if (hasListFields(c)) {
+			appendListItemInstantiation(sb, c);
+		}
 		
-		for (Field f : c.getFields()) {
-			if (java.lang.reflect.Modifier.isPublic(f.getModifiers())) {
-				if (f.getType() == LemsCollection.class) {
-					
-					String ccnm = getListClassName(f.getName());
-					
-					sb.append("            } else if (obj instanceof " + ccnm + ") {\n");
-					sb.append("                ret." + f.getName() + ".add((" + ccnm + ")obj);\n");
-					
-				}
-			}
-		}	
-	 
-		sb.append("            } else {\n");
-		sb.append("                E.warning(\"unrecognized element \" + cel);\n");
-		sb.append("            }\n");
-		sb.append("        }\n\n\n");
 		
 		
 		sb.append("        return ret;\n");
@@ -169,20 +148,57 @@ public class LemsFactoryGenerator {
 	}
 	
 	
+	private boolean hasListFields(Class<?> c) {
+		boolean ret = false;
+		for (Field f : c.getFields()) {
+			if (java.lang.reflect.Modifier.isPublic(f.getModifiers())) {
+				if (f.getType() == LemsCollection.class) {
+					ret = true;
+					break;
+				}
+			}
+		}
+		return ret;
+	}
 	
 	
-	public static void main(String[] argv) {
+	private void appendListItemInstantiation(StringBuilder sb, Class<?> c) {
+	sb.append("        for (XMLElement cel : xel.getXMLElements()) {\n");
+	sb.append("            String xn = cel.getTag();\n\n");
+	sb.append("            Object obj = instantiateFromXMLElement(cel);\n");
+	
+	sb.append("            if (xn.equals(\"UNUSED\")) {\n");
+	
+	for (Field f : c.getFields()) {
+		if (java.lang.reflect.Modifier.isPublic(f.getModifiers())) {
+			if (f.getType() == LemsCollection.class) {
+				
+				String ccnm = getListClassName(f.getName());
+				
+				sb.append("            } else if (obj instanceof " + ccnm + ") {\n");
+				sb.append("                ret." + f.getName() + ".add((" + ccnm + ")obj);\n");
+				
+			}
+		}
+	}	
+ 
+	sb.append("            } else {\n");
+	sb.append("                E.warning(\"unrecognized element \" + cel);\n");
+	sb.append("            }\n");
+	sb.append("        }\n\n\n");
+	}
+	
+	
+	public static void main(String[] argv) throws IOException {
 		LemsFactoryGenerator lfg = new LemsFactoryGenerator();
 		
 		String txt = lfg.generateJava();
  		
 		File f = new File("src/org/lemsml/jlems/reader/LemsFactory.java");
-		try {
+	 
 			FileUtil.writeStringToFile(txt, f);
 			E.info("Written " + f.getAbsolutePath());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		 
 	}
 
 	

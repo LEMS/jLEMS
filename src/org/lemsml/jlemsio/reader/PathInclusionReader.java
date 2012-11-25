@@ -1,10 +1,10 @@
 package org.lemsml.jlemsio.reader;
 
 import org.lemsml.jlems.sim.ContentError;
-import org.lemsml.jlems.sim.InclusionReader;
+import org.lemsml.jlems.sim.AbstractInclusionReader;
 import org.lemsml.jlemsio.util.JUtil;
 
-public class PathInclusionReader extends InclusionReader {
+public class PathInclusionReader extends AbstractInclusionReader {
  
 	
 	Class<?> root;
@@ -13,6 +13,7 @@ public class PathInclusionReader extends InclusionReader {
 	
 	
 	public PathInclusionReader(Class<?> cr, String crf) {
+		super();
 		root = cr;
 		rootFnm = crf;
 	}

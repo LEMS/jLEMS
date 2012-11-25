@@ -21,7 +21,7 @@ import org.lemsml.jlems.ResourceRoot;
 import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.sim.ContentError;
  
-public class JUtil {
+public final class JUtil {
 
    static Class<?> rootClass = ResourceRoot.class;
 
@@ -36,6 +36,10 @@ public class JUtil {
    }
 
 
+   private JUtil() {
+	   
+   }
+   
 
    public static String getRelativeResource(Object obj, String path) throws ContentError {
       return getRelativeResource(obj.getClass(), path);

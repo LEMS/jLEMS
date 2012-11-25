@@ -10,7 +10,8 @@ public class Link extends ComponentReference {
 
 	
 	public Link() {
-		
+		super();
+		// TODO - only one
 	}
 	
 	public Link(String name, String typeName, ComponentType t) {

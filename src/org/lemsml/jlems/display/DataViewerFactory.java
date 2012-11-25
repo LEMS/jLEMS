@@ -9,8 +9,10 @@ public class DataViewerFactory {
 
 	
 	public static DataViewerFactory getFactory() {
-		if (instance == null) {
+		synchronized(DataViewerFactory.class) {
+ 		if (instance == null) {
 			instance = new DataViewerFactory();
+		}
 		}
 		return instance;
 	}

@@ -8,11 +8,7 @@ import java.util.logging.SimpleFormatter;
 public class OneLineFormatter extends SimpleFormatter {
 
 	SimpleDateFormat date_format = new SimpleDateFormat("MMM dd,yyyy HH:mm");
-	
-	
-	public OneLineFormatter() {
-		super();
- 	}
+ 
  
 	  public String format(LogRecord rec) {
 	    StringBuffer buf = new StringBuffer(1000);

@@ -2,7 +2,13 @@ package org.lemsml.jlemsviz.examples;
 
  
 
-public class ExampleNet1 {
+public final class ExampleNet1 {
+	
+	
+	private ExampleNet1() {
+		
+	}
+	
 	
 	public static void main(String[] argv) {
 	

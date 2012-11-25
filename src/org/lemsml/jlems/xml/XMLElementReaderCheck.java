@@ -3,8 +3,12 @@ package org.lemsml.jlems.xml;
 import org.lemsml.jlems.logging.E;
  
  
-public class XMLElementReaderCheck {
+public final class XMLElementReaderCheck {
 
+	
+	private XMLElementReaderCheck() {
+		
+	}
 	
 	
 	public static void main(String[] argv) {

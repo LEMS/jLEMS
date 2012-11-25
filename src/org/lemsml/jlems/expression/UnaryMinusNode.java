@@ -2,12 +2,12 @@ package org.lemsml.jlems.expression;
 
 import java.util.HashMap;
 
-import org.lemsml.jlems.eval.DVal;
+import org.lemsml.jlems.eval.AbstractDVal;
 import org.lemsml.jlems.eval.Minus;
 import org.lemsml.jlems.sim.ContentError;
  
 
-public class UnaryMinusNode extends FloatResultNode {
+public class UnaryMinusNode extends AbstractFloatResultNode {
 
 	public UnaryMinusNode() {
 		super("-");
@@ -32,7 +32,7 @@ public class UnaryMinusNode extends FloatResultNode {
 	}
 
 	
-	public DVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
+	public AbstractDVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
 		checkLeftRight();
 		return new Minus(leftEvaluable.makeEvaluable(fixedHM), rightEvaluable.makeEvaluable(fixedHM));
 	}

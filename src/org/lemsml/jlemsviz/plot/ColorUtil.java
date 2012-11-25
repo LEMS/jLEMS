@@ -4,9 +4,11 @@ package org.lemsml.jlemsviz.plot;
 
 
 import java.awt.Color;
+
+import org.lemsml.jlems.logging.E;
  
 
-public class ColorUtil {
+public final class ColorUtil {
  
 
    static String[] stdColorNames =  {"white", "black",
@@ -19,58 +21,64 @@ public class ColorUtil {
                                Color.orange, Color.pink, Color.gray};
 
 
-    public static final Color getSequentialColour(int colNumber)
-    {
-        if (colNumber<0) colNumber = colNumber*-1;
+   private ColorUtil() {
+	   
+   }
+   
+   
+    public static Color getSequentialColour(int cn) {
+    	int colNumber = cn;
+    	if (colNumber < 0) {
+        	colNumber = colNumber*-1;
+        }
         int neuCol = colNumber%stdColors.length;
-
         return stdColors[neuCol];
     }
 
-   public final static Color brighter(Color c) {
+   public static Color brighter(Color c) {
       return linMod(c, 30);
    }
 
 
-   public final static Color darker(Color c) {
+   public static Color darker(Color c) {
       return linMod(c, -30);
    }
 
 
-   public final static Color slightlyBrighter(Color c) {
+   public static Color slightlyBrighter(Color c) {
       return linMod(c, 16);
    }
 
 
-   public final static Color slightlyDarker(Color c) {
+   public static Color slightlyDarker(Color c) {
       return linMod(c, -16);
    }
 
 
-   public final static Color verySlightlyBrighter(Color c) {
+   public static Color verySlightlyBrighter(Color c) {
       Color ret = linMod(c, 8);
       return ret;
    }
 
 
 
-   public final static Color verySlightlyDarker(Color c) {
+   public static Color verySlightlyDarker(Color c) {
       Color ret = linMod(c, -8);
       return ret;
    }
 
 
-   public final static Color myBrighter(Color c) {
+   public static Color myBrighter(Color c) {
       return linMod(c, 35);
    }
 
 
-   public final static Color myDarker(Color c) {
+   public static Color myDarker(Color c) {
       return linMod(c, -35);
    }
 
 
-   public final static Color linMod(Color c, int d) {
+   public static Color linMod(Color c, int d) {
       int r = c.getRed();
       int g = c.getGreen();
       int b = c.getBlue();

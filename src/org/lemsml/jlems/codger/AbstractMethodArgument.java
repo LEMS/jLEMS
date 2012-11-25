@@ -1,9 +1,9 @@
 package org.lemsml.jlems.codger;
 
-public abstract class MethodArgument {
+public abstract class AbstractMethodArgument {
 	public String name;
 	
-	protected MethodArgument(String nm) {
+	protected AbstractMethodArgument(String nm) {
 		name = nm;
 	}
 

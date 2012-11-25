@@ -45,7 +45,7 @@ public class IconRadioButton extends JRadioButton implements ActionListener {
    
 
 
-   public void attachRollover() {
+   private final void attachRollover() {
       
 
       RolloverEffect rollover = new RolloverEffect(this, 

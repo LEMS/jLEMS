@@ -86,40 +86,40 @@ public class ParserTest {
 		valHM.put("a", 4.);
 		valHM.put("b", 5.);
 		boolean res = pt.makeBooleanEvaluator().evalB(valHM);
-		assertFalse(res);
+		assertFalse(src,res);
 
 		valHM.put("a", 1.);
 		valHM.put("b", 50.);
 		res = pt.makeBooleanEvaluator().evalB(valHM);
-		assertTrue(res);
+		assertTrue(src, res);
 
 		pt = p.parseCondition("a .geq. b");
-		assertFalse(pt.makeBooleanEvaluator().evalB(valHM));
+		assertFalse(src, pt.makeBooleanEvaluator().evalB(valHM));
 		pt = p.parseCondition("a .geq. a");
-		assertTrue(pt.makeBooleanEvaluator().evalB(valHM));
+		assertTrue(src, pt.makeBooleanEvaluator().evalB(valHM));
 		pt = p.parseCondition("b .neq. 33");
-		assertTrue(pt.makeBooleanEvaluator().evalB(valHM));
+		assertTrue(src, pt.makeBooleanEvaluator().evalB(valHM));
 		pt = p.parseCondition("b .leq. 33");
-		assertFalse(pt.makeBooleanEvaluator().evalB(valHM));
+		assertFalse(src, pt.makeBooleanEvaluator().evalB(valHM));
 
 		pt = p.parseCondition("b .geq. 33 " + AndNode.SYMBOL + " a .leq. b");
-		assertTrue(pt.makeBooleanEvaluator().evalB(valHM));
+		assertTrue(src, pt.makeBooleanEvaluator().evalB(valHM));
 		pt = p.parseCondition("b .leq. 33 " + AndNode.SYMBOL + " a .leq. b");
-		assertFalse(pt.makeBooleanEvaluator().evalB(valHM));
+		assertFalse(src, pt.makeBooleanEvaluator().evalB(valHM));
 		ParseTree ptOr = p.parseCondition("b .leq. 33 " + OrNode.SYMBOL + " a .leq. b");
-		assertTrue(ptOr.makeBooleanEvaluator().evalB(valHM));
+		assertTrue(src, ptOr.makeBooleanEvaluator().evalB(valHM));
 		ptOr = p.parseCondition("b .geq. 33 " + OrNode.SYMBOL + " a .geq. b");
-		assertTrue(ptOr.makeBooleanEvaluator().evalB(valHM));
+		assertTrue(src, ptOr.makeBooleanEvaluator().evalB(valHM));
 
 		ptOr = p.parseCondition("b .leq. 33 " + OrNode.SYMBOL + " a .geq. b");
-		assertFalse(ptOr.makeBooleanEvaluator().evalB(valHM));
+		assertFalse(src, ptOr.makeBooleanEvaluator().evalB(valHM));
 
 		src = "(X)  .gt.  (-0.046)";
 		pt = p.parseCondition(src);
 		valHM = new HashMap<String, Double>();
 		valHM.put("X", -0.2);
 		res = pt.makeBooleanEvaluator().evalB(valHM);
-		assertFalse(res);
+		assertFalse(src, res);
 	}
 
 	public static void main(String[] args) {

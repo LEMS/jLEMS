@@ -42,14 +42,17 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
     
     static Dimension timeDimension;
     
-    
+
     public Dimension() {
+    	// maybe only one constructor?
     }
+    
 
     public Dimension(String sn) {
         name = sn;
     }
 
+  
    
     public boolean dataMatches(Object obj) {
         boolean ret = false;

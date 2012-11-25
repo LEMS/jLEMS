@@ -6,7 +6,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 
-final class BoxSelectionHandler extends MouseHandler {
+final class BoxSelectionHandler extends BaseMouseHandler {
 
    private boolean vtl;
    private boolean vtr;
@@ -29,10 +29,11 @@ final class BoxSelectionHandler extends MouseHandler {
 
 
    public BoxSelectionHandler() {
+	   super();
       clear();
       actionMode = NORMAL;
       xyxy = new int[4];
-      setRepaintStatus(MouseHandler.NONE);
+      setRepaintStatus(BaseMouseHandler.NONE);
    }
 
 
@@ -75,7 +76,7 @@ final class BoxSelectionHandler extends MouseHandler {
       if (isUndecided()) {
 	 checkActivate(m.getX(), m.getY());
       }
-      setRepaintStatus(MouseHandler.BUFFERED);
+      setRepaintStatus(BaseMouseHandler.BUFFERED);
    }
 
 
@@ -97,14 +98,14 @@ final class BoxSelectionHandler extends MouseHandler {
 
 
    public void applyOnDown(Mouse m) {
-      
+      // ignore
    }
 
 
    public void applyOnDrag(Mouse m) {
       readPosition(m);
 
-      setRepaintStatus(MouseHandler.BUFFERED);
+      setRepaintStatus(BaseMouseHandler.BUFFERED);
    }
 
 

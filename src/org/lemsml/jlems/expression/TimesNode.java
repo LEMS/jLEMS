@@ -2,11 +2,11 @@ package org.lemsml.jlems.expression;
 
 import java.util.HashMap;
 
-import org.lemsml.jlems.eval.DVal;
+import org.lemsml.jlems.eval.AbstractDVal;
 import org.lemsml.jlems.eval.Times;
 import org.lemsml.jlems.sim.ContentError;
 
-public class TimesNode extends FloatResultNode {
+public class TimesNode extends AbstractFloatResultNode {
 
 	
 	public TimesNode() {
@@ -27,7 +27,7 @@ public class TimesNode extends FloatResultNode {
 		return x * y;
 	}
 	
-	public DVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
+	public AbstractDVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
 		checkLeftRight();
 		return new Times(leftEvaluable.makeEvaluable(fixedHM), rightEvaluable.makeEvaluable(fixedHM));
 	}

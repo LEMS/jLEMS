@@ -12,10 +12,7 @@ public class Frustum {
 	public String zb;
 	public String rb;
 	
-	
-	public Frustum() {
-		
-	}
+ 
 	
 	
 }

@@ -3,7 +3,7 @@ package org.lemsml.jlemsviz.plot;
 import java.awt.Color;
 
 
-public class Labellee {
+public final class Labellee {
 
    double[] xpts;
    double[] ypts;

@@ -5,7 +5,7 @@ import java.util.HashSet;
 
 import org.lemsml.jlems.eval.DBase;
 import org.lemsml.jlems.eval.DCon;
-import org.lemsml.jlems.eval.DVal;
+import org.lemsml.jlems.eval.AbstractDVal;
 import org.lemsml.jlems.eval.DVar;
 import org.lemsml.jlems.eval.Plus;
 import org.lemsml.jlems.eval.Times;
@@ -134,7 +134,7 @@ public class Flattener {
 					edvA.add(new ExpressionDerivedVariable(pdv.getVarName(), db));
 					
 				} else {
-					DVal wk = new DVar(elts[0]);
+					AbstractDVal wk = new DVar(elts[0]);
 				  
 					 for (int i = 1; i < elts.length; i++) {
 						 DVar dv = new DVar(elts[i]);

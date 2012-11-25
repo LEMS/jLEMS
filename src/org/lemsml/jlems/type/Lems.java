@@ -54,7 +54,7 @@ public class Lems {
 
     
     
-    private LemsCollection<Valued> globals = new LemsCollection<Valued>();
+    private final LemsCollection<Valued> globals = new LemsCollection<Valued>();
     private LemsCollection<Valued> constantValued = null;
     
     private static Random randomGenerator = new Random();

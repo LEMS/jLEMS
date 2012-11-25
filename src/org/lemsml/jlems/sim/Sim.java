@@ -190,7 +190,7 @@ public class Sim extends LemsProcess {
 	
 	public void printFirstConsolidated() throws ContentError, ParseError {
 		ComponentBehaviorWriter cbw = new ComponentBehaviorWriter();
-		if (runConfigs.size() > 0) {
+		if (!runConfigs.isEmpty()) {
 			RunConfig rc = runConfigs.get(0);
 			
 			ComponentBehavior cb = rc.getTarget().getConsolidatedComponentBehavior("root");

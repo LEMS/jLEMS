@@ -48,7 +48,7 @@ public class HoverTimer implements Runnable {
             Thread.sleep(500);
 
          } catch (Exception ex) {
-
+        	 
          }
       }
 

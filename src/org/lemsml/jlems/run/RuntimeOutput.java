@@ -6,10 +6,7 @@ public class RuntimeOutput {
 	String title;
 	
 	double[] box;
-	
-	public RuntimeOutput() {
-	 
-	}
+ 
 
 	public String toString() {
 		return "RuntimeOutput, id=" + id + " title=" + title;

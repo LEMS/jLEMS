@@ -9,10 +9,7 @@ public class Location {
 	
 	public String on;
 	
-	
-	public Location() {
-		
-	}
+	 
 	
 	
 }

@@ -1,8 +1,6 @@
 package org.lemsml.jlems.codger;
-
-import org.lemsml.jlems.util.StringUtil;
-
-public class FloatGetter extends Getter {
+ 
+public class FloatGetter extends AbstractGetter {
 
 	
 	String gnm;
@@ -10,6 +8,7 @@ public class FloatGetter extends Getter {
 	
 	
 	public FloatGetter(String s, String val) {
+		super();
 		gnm = s;
 		valName = val;
  	}

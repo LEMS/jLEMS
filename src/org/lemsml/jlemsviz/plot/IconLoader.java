@@ -5,10 +5,11 @@ package org.lemsml.jlemsviz.plot;
 import java.net.URL;
 import java.util.HashMap;
 
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlemsviz.plot.images.IconRoot;
   
 
-public class IconLoader {
+public final class IconLoader {
 
 //   static IconRoot iconRoot = new IconRoot();
 
@@ -19,6 +20,10 @@ public class IconLoader {
    }
 
 
+   private IconLoader() {
+	   
+   }
+   
    public static DImageIcon getImageIcon(String s) {
       DImageIcon ret = null;
       if (icons.containsKey(s)) {
@@ -41,13 +46,15 @@ public class IconLoader {
 
       URL imgURL = IconRoot.class.getResource(name);
 
+      
+      DImageIcon ret = null;
       if (imgURL != null) {
-         return new DImageIcon(imgURL);
+         ret = new DImageIcon(imgURL);
 
       } else {
          E.error("Couldn't find file: " + name);
-         return null;
       }
+      return ret;
    }
 
 

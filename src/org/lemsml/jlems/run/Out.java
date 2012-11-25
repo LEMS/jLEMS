@@ -1,7 +1,11 @@
 package org.lemsml.jlems.run;
 
-public class Out {
+public final class Out {
 
+	private Out() {
+		
+	}
+	
 	public static String formatDouble(double d) {
 
 		// String ret = String.format("%.4g", d);

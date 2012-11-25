@@ -17,7 +17,8 @@ public class MultiBuilder extends AbstractChildBuilder {
 	ArrayList<ExpressionDerivedVariable> edvAL = new ArrayList<ExpressionDerivedVariable>();
  	
 	public MultiBuilder(int n, ComponentBehavior cb) {
-		 number = n;
+		super();
+		number = n;
 		 componentBehavior = cb;
  	}
 	

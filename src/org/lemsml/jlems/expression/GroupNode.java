@@ -23,7 +23,7 @@ public class GroupNode extends Node {
 
     @Override
 	public String toString() {
-		return "Group[" + (children.size() > 0 ? first().siblingsToString() : "") + "]";
+		return "Group[" + (children.isEmpty() ?  "" : first().siblingsToString()) + "]";
 	}
 	
 	public void remove(Node n) {
@@ -33,9 +33,9 @@ public class GroupNode extends Node {
     
     @Override
     public void replaceChild(Node nold, Node nnew) throws ParseError {
-        for (int i=0;i<children.size();i++){
+        for (int i = 0; i < children.size(); i++) {
             Node child = children.get(i);
-            if (child == nold){
+            if (child.equals(nold)) {
                 children.set(i, nnew);
             }
         }
@@ -53,7 +53,7 @@ public class GroupNode extends Node {
 		}
 	}
 	
-	public ArrayList<Node> children() {
+	public ArrayList<Node> getChildren() {
 		return children;
 	}
 	

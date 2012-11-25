@@ -6,7 +6,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
  
 
-public class CornerPanel extends BasePanel { // implements IntActor {
+public final class CornerPanel extends BasePanel { // implements IntActor {
    static final long serialVersionUID = 1001;
 
    PickWorldCanvas pickWorldCanvas;

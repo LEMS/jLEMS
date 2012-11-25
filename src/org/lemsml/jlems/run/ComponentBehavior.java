@@ -301,8 +301,7 @@ public class ComponentBehavior {
 
         } catch (Exception e) {
             String err = "Error when initialising " + this + " " + e;
-            E.error(err);
-            e.printStackTrace();
+            E.report(err, e);
             for(PathDerivedVariable pdv : pathderiveds) {
             	E.info("" + pdv);
             }
@@ -962,10 +961,13 @@ public class ComponentBehavior {
 	public boolean hasPropertyString(String sp) {
         boolean ret = false;
 		if (refHM.containsKey(sp)) {
-            if (refHM.get(sp)!=null && refHM.get(sp).getComponentID()!=null)
+            // TODO check these cases how .get(sp) can be null?
+			if (refHM.get(sp) != null && refHM.get(sp).getComponentID() != null) {
                 ret = true;
+            }
+            
 		} else if (textParamHM.containsKey(sp)) {
-			ret = textParamHM.get(sp)!=null;
+			ret = true;
 		}
         return ret;
 	}

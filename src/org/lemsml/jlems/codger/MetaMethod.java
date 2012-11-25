@@ -1,10 +1,9 @@
 package org.lemsml.jlems.codger;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import org.lemsml.jlems.codger.MetaField.Type;
-import org.lemsml.jlemsviz.plot.E;
+import org.lemsml.jlems.logging.E;
+ 
 
 public class MetaMethod {
 
@@ -14,9 +13,9 @@ public class MetaMethod {
 	String returnName;
 	
 	
-	ArrayList<MethodArgument> arguments = new ArrayList<MethodArgument>();
+	ArrayList<AbstractMethodArgument> arguments = new ArrayList<AbstractMethodArgument>();
 	
-	ArrayList<Operation> ops = new ArrayList<Operation>();
+	ArrayList<AbstractOperation> ops = new ArrayList<AbstractOperation>();
 	
 	
 	public MetaMethod(VarType typ, String nm, String rnm) {
@@ -39,7 +38,7 @@ public class MetaMethod {
 	}
 
 
-	public void addIncrement(String vnm, Expression expr) {
+	public void addIncrement(String vnm, AbstractExpression expr) {
 		Increment inc = new Increment(vnm, expr);
 		ops.add(inc);
 	}
@@ -51,7 +50,7 @@ public class MetaMethod {
  		StringBuilder sb = new StringBuilder();
 		sb.append("public " + javaVarType(returnType) + " " + name + "(");
 		boolean first = true;
-		for (MethodArgument ma : arguments) {
+		for (AbstractMethodArgument ma : arguments) {
 			if (!first) {
 				sb.append(", ");
 			}
@@ -61,7 +60,7 @@ public class MetaMethod {
 		sb.append(") {\n");
 		
 		String opindent = "    ";
-		for (Operation op : ops) {
+		for (AbstractOperation op : ops) {
 			sb.append(opindent + op.generateJava());
 			sb.append("\n");
 		}

@@ -10,10 +10,6 @@ public class Skeleton {
 	public String solid;
 	
 	public LemsCollection<ScalarField> scalarFields = new LemsCollection<ScalarField>();
-	
-	public Skeleton() {
-		
-	}
-	
+ 
 	
 }

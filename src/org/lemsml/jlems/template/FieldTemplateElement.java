@@ -9,7 +9,7 @@ import org.lemsml.jlems.type.Lems;
 import org.lemsml.jlems.type.Unit;
  
 
-public class FieldTemplateElement extends TemplateElement {
+public class FieldTemplateElement extends AbstractTemplateElement {
 
 	String fieldName;
 	
@@ -20,6 +20,7 @@ public class FieldTemplateElement extends TemplateElement {
 	Unit unit;
 	
 	public FieldTemplateElement(String fnm, Lems lems) throws ContentError {
+		super();
 		String rest = fnm;
 		if (fnm.indexOf(".") > 0) {
  			int idot = fnm.indexOf(".");

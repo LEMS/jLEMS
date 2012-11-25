@@ -5,6 +5,8 @@ package org.lemsml.jlemsviz.plot;
 
 import java.awt.Color;
 
+import org.lemsml.jlems.logging.E;
+
 
 
 /*

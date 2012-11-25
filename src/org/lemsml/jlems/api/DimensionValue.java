@@ -7,10 +7,7 @@ import org.lemsml.jlems.type.Dimension;
 public class DimensionValue {
 
 	HashMap<BaseDimension, Integer> dims = new HashMap<BaseDimension, Integer>();
-	
-	public DimensionValue() {
-		
-	}
+ 
 	
 	public void add(BaseDimension bd, int i) {
 		if (dims.containsKey(bd)) {

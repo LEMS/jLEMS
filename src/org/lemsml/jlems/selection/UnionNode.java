@@ -7,7 +7,7 @@ import org.lemsml.jlems.run.RuntimeError;
 import org.lemsml.jlems.run.StateInstance;
 import org.lemsml.jlems.sim.ContentError;
 
-public class UnionNode extends SelectionOperatorNode {
+public class UnionNode extends AbstractSelectionOperatorNode {
 
 	public UnionNode(String s) {
 		super(s);
@@ -22,7 +22,7 @@ public class UnionNode extends SelectionOperatorNode {
 	}
 
 	@Override
-	public SelectionOperatorNode copy() {
+	public AbstractSelectionOperatorNode copy() {
 		return new UnionNode(symbol);
 	}
 
@@ -34,9 +34,9 @@ public class UnionNode extends SelectionOperatorNode {
 	@Override
 	public ArrayList<StateInstance> getMatches(StateInstance baseSI) throws ContentError, ConnectionError, RuntimeError {
 		ArrayList<StateInstance> ret = null;
-		if (left instanceof SelectionNode && right instanceof SelectionNode) {
-			ArrayList<StateInstance> ml = ((SelectionNode)left).getMatches(baseSI);
-			ArrayList<StateInstance> mr = ((SelectionNode)right).getMatches(baseSI);
+		if (left instanceof AbstractSelectionNode && right instanceof AbstractSelectionNode) {
+			ArrayList<StateInstance> ml = ((AbstractSelectionNode)left).getMatches(baseSI);
+			ArrayList<StateInstance> mr = ((AbstractSelectionNode)right).getMatches(baseSI);
 			
 			ret = new ArrayList<StateInstance>();
 			ret.addAll(ml);

@@ -7,6 +7,8 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+
+import org.lemsml.jlems.logging.E;
  
 
 
@@ -33,14 +35,14 @@ public final class Mouse implements MouseListener, MouseMotionListener {
  // private long periodDownToDown;
 
    private int nHandler;
-   private MouseHandler[] handlers;
+   private BaseMouseHandler[] handlers;
 
 
-   private MouseHandler activeHandler;
-   private MouseHandler motionHandler;
+   private BaseMouseHandler activeHandler;
+   private BaseMouseHandler motionHandler;
 
 
-   private WorldCanvas canvas;
+   private final WorldCanvas canvas;
 
 
    private ClickListener clickListener;
@@ -55,7 +57,7 @@ public final class Mouse implements MouseListener, MouseMotionListener {
          canvas.addMouseMotionListener(this);
       }
 
-      handlers = new MouseHandler[10];
+      handlers = new BaseMouseHandler[10];
    }
 
 
@@ -70,7 +72,7 @@ public final class Mouse implements MouseListener, MouseMotionListener {
    }
 
 
-   public void addHandler(MouseHandler h) {
+   public void addHandler(BaseMouseHandler h) {
       if (nHandler >= handlers.length) {
          E.error("Mouse handler array too small");
       } else {
@@ -79,7 +81,7 @@ public final class Mouse implements MouseListener, MouseMotionListener {
    }
 
 
-   public void prependHandler(MouseHandler h) {
+   public void prependHandler(BaseMouseHandler h) {
       if (nHandler >= handlers.length) {
          E.error("Mouse handler array too small");
       } else {
@@ -162,7 +164,7 @@ public final class Mouse implements MouseListener, MouseMotionListener {
 
 
       for (int i = 0; i < nHandler; i++) {
-         MouseHandler mh = handlers[i];
+         BaseMouseHandler mh = handlers[i];
          if (mh.isActive() && mh.motionAware()) {
             if (mh.motionChange(this)) {
 
@@ -196,7 +198,7 @@ public final class Mouse implements MouseListener, MouseMotionListener {
       activeHandler = null;
 
       for (int i = 0; i < nHandler; i++) {
-         MouseHandler mh = handlers[i];
+         BaseMouseHandler mh = handlers[i];
 
          if (mh.isActive()) {
 
@@ -214,7 +216,7 @@ public final class Mouse implements MouseListener, MouseMotionListener {
          activeHandler.applyOnDown(this);
       }
 
-      for (MouseHandler mh : handlers) {
+      for (BaseMouseHandler mh : handlers) {
             if (mh == activeHandler) {
 
             } else if (mh != null) {
@@ -234,7 +236,7 @@ public final class Mouse implements MouseListener, MouseMotionListener {
 
       if (activeHandler == null) {
          for (int i = 0; i < nHandler; i++) {
-            MouseHandler mh = handlers[i];
+            BaseMouseHandler mh = handlers[i];
 
             if (mh.isActive()) {
                if (mh.isOut()) {
@@ -254,10 +256,10 @@ public final class Mouse implements MouseListener, MouseMotionListener {
       if (activeHandler != null) {
          activeHandler.applyOnDrag(this);
 
-         if (activeHandler.getRepaintStatus() == MouseHandler.FULL) {
+         if (activeHandler.getRepaintStatus() == BaseMouseHandler.FULL) {
             requestRepaint();
 
-         } else if (activeHandler.getRepaintStatus() == MouseHandler.BUFFERED) {
+         } else if (activeHandler.getRepaintStatus() == BaseMouseHandler.BUFFERED) {
             // should do some ting more economical here EFF
             requestRepaint();
 
@@ -278,7 +280,7 @@ public final class Mouse implements MouseListener, MouseMotionListener {
 
       if (activeHandler == null) {
          for (int i = 0; i < nHandler; i++) {
-            MouseHandler mh = handlers[i];
+            BaseMouseHandler mh = handlers[i];
             if (mh.isActive()) {
                if (mh.isOut()) {
 
@@ -363,7 +365,7 @@ public final class Mouse implements MouseListener, MouseMotionListener {
 
          activeHandler.echoPaint(g);
 
-         activeHandler.setRepaintStatus(MouseHandler.NONE);
+         activeHandler.setRepaintStatus(BaseMouseHandler.NONE);
 
       } else if (motionHandler != null) {
          motionHandler.echoPaint(g);

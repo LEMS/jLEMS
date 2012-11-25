@@ -1,6 +1,6 @@
 package org.lemsml.jlemstests;
- 
-import static org.junit.Assert.assertTrue;
+  
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,14 +20,10 @@ import org.lemsml.jlemsio.logging.DefaultLogger;
 import org.lemsml.jlemsio.reader.FileInclusionReader;
 import org.lemsml.jlemsio.xmlio.XMLSerializer;
  
- 
 
 
 public class LemsExamplesReaderTest {
-
-	public LemsExamplesReaderTest() {
-	}
-
+ 
 	@Test
 	public void testReadFromString() throws ParseException, BuildException,
 			ContentError, XMLException, IOException, ParseError {
@@ -61,7 +57,7 @@ public class LemsExamplesReaderTest {
 					E.info("Reread failed on " + sout);
 				}
 	 		
-				assertTrue(sout.equals(sout2));
+				assertEquals("string read", sout, sout2);
 			}
 		}
 	}

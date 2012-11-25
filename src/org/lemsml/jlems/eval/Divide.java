@@ -2,9 +2,9 @@ package org.lemsml.jlems.eval;
 
 import java.util.HashSet;
 
-public class Divide extends DOp {
+public class Divide extends AbstractDOp {
 
-	public Divide(DVal dvl, DVal dvr) {
+	public Divide(AbstractDVal dvl, AbstractDVal dvr) {
 		super(dvl, dvr);
 	}
 

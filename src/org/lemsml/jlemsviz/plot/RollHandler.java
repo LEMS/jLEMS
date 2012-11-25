@@ -3,7 +3,7 @@ package org.lemsml.jlemsviz.plot;
 
 
 
-final class RollHandler extends MouseHandler {
+final class RollHandler extends BaseMouseHandler {
 
    private int xc;
    private int yc;
@@ -23,11 +23,7 @@ final class RollHandler extends MouseHandler {
    boolean aaCache;
 
 
-
-   public RollHandler() {
-     // continuous = false;
-   }
-
+ 
 
    public void init(Mouse m) {
       xc = m.getX();

@@ -8,10 +8,5 @@ public class ScalarField {
 	
 	public String value;
 	
-	
-	public ScalarField() {
-		
-	}
-	
-	
+ 	
 }

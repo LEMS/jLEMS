@@ -5,12 +5,7 @@ import org.lemsml.jlems.sim.ContentError;
 public class MathMLWriter implements ExpressionVisitor {
 
 	String wkText;
-	
-	public MathMLWriter() {
-		
-	}
-	
-
+	 
 	
 	public String generateMathML(ParseTree pt) throws ContentError {
 		pt.visitAll(this);

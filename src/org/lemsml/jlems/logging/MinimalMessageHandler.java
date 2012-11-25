@@ -16,10 +16,7 @@ public class MinimalMessageHandler implements MessageHandler {
 	private static final Logger infoLogger = Logger.getLogger("info");
 	 
 	
-	
-	public MinimalMessageHandler() {
-		
-	}
+	 
 	
 	
 	public void msg(MessageType type, String txt) {

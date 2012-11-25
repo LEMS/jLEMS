@@ -19,20 +19,21 @@ final class AboveBelowSplitAxisPanelUI extends BasicSplitPaneUI {
    }
  
    public static ComponentUI createUI(JComponent jcomponent, GraphColors gc) {
-         return (new AboveBelowSplitAxisPanelUI(gc));
+         return new AboveBelowSplitAxisPanelUI(gc);
    }
 
    public BasicSplitPaneDivider createDefaultDivider() {
-      return (new HorizontalAxisAxisDivider(this, gcols));
+      return new HorizontalAxisAxisDivider(this, gcols);
    }
 
 
    public void paint(Graphics graphics, JComponent jcomponent) {
-
+	   // ignore
    }
 
 
    protected void uninstallDefaults() {
+	   // ignore
    }
 
 }

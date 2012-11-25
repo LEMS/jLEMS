@@ -4,12 +4,12 @@ import java.util.HashMap;
 
 import org.lemsml.jlems.sim.ContentError;
 
-public abstract class FloatOperatorNode extends OperatorNode {
+public abstract class AbstractFloatOperatorNode extends AbstractOperatorNode {
 
 	protected DoubleParseTreeNode leftEvaluable;
 	protected DoubleParseTreeNode rightEvaluable;
 	
-	public FloatOperatorNode(String s) {
+	public AbstractFloatOperatorNode(String s) {
 		super(s);
 	}
 

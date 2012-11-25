@@ -2,12 +2,13 @@ package org.lemsml.jlems.eval;
 
 import java.util.ArrayList;
 
-public abstract class BComp extends BVal {
+public abstract class AbstractBComp extends AbstractBVal {
 	
-	public DVal left;
-	public DVal right;
+	public AbstractDVal left;
+	public AbstractDVal right;
 	
-	public BComp(DVal dvl, DVal dvr) {
+	public AbstractBComp(AbstractDVal dvl, AbstractDVal dvr) {
+		super();
 		left = dvl;
 		right = dvr;
 	}

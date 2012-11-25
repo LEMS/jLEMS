@@ -11,7 +11,8 @@ public class WhenBuilder extends BuilderElement {
 	
 	
 	public WhenBuilder(String t) {
-		 test = t;
+		super(); 
+		test = t;
 	}
 
 

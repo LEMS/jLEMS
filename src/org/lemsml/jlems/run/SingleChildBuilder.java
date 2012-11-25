@@ -1,6 +1,5 @@
 package org.lemsml.jlems.run;
 
-import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.sim.ContentError;
 
 
@@ -14,7 +13,8 @@ public class SingleChildBuilder extends BuilderElement implements ChildInstantia
 	String name;
 	
 	public SingleChildBuilder(String snm, ComponentBehavior cb) {
-		 componentBehavior = cb;
+		super(); 
+		componentBehavior = cb;
 		 name = snm;
 	}
 	

@@ -9,7 +9,7 @@ import org.lemsml.jlems.run.RuntimeError;
 import org.lemsml.jlems.run.StateInstance;
 import org.lemsml.jlems.sim.ContentError;
 
-public class ColonNode extends SelectionOperatorNode {
+public class ColonNode extends AbstractSelectionOperatorNode {
 
  
 	 
@@ -66,8 +66,8 @@ public class ColonNode extends SelectionOperatorNode {
 		Node nr = getRight();
 		
 		if (nr instanceof SelectorNode) {
-			if (nl instanceof SelectionNode) {
-				ArrayList<StateInstance> msia = ((SelectionNode)nl).getMatches(si);
+			if (nl instanceof AbstractSelectionNode) {
+				ArrayList<StateInstance> msia = ((AbstractSelectionNode)nl).getMatches(si);
 				if (msia.size() == 1) {
 					ret = ((SelectorNode)nr).getFloat(msia.get(0));
 					ok = true;

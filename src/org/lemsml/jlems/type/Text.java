@@ -10,18 +10,17 @@ public class Text implements Named  {
 	@ModelProperty(info="")
 	public String name;
 
-    public Text() {
-    }
-
-    public Text(String name) {
-        this.name = name;
-    }
-
     
+	public Text() {
+		// empty
+	}
+
+    public Text(String s) {
+    	name = s;
+    }
 	
 	public void resolve(LemsCollection<Dimension> dimensions) throws ContentError {
-	 
-		
+		// nothing to do
 	}
 
 

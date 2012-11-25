@@ -4,6 +4,6 @@ import org.lemsml.jlems.sim.ContentError;
 
 public interface Inheritor {
 
-	public boolean inherited(Object obj) throws ContentError;
+	boolean inherited(Object obj) throws ContentError;
 	
 }

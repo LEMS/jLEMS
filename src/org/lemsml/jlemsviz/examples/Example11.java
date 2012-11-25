@@ -1,7 +1,11 @@
 package org.lemsml.jlemsviz.examples;
  
 
-public class Example11 {
+public final class Example11 {
+	
+	private Example11() {
+		
+	}
 	
 	public static void main(String[] argv) {
 	 

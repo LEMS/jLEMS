@@ -5,13 +5,9 @@ import org.lemsml.jlems.type.Dimension;
 
  
 @ModelElement(info="Has a variable and a value. The value is the rate of change of the variable.")
-public class TimeDerivative extends StateChange {
+public class TimeDerivative extends AbstractStateChange {
 
-	
-	public TimeDerivative() {
-		super();
-	}
-	
+	 
   
 
 	 

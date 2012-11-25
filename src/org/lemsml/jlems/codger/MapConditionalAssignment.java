@@ -2,9 +2,9 @@ package org.lemsml.jlems.codger;
 
 import java.util.HashMap;
 
-import org.lemsml.jlems.logging.E;
+ 
 
-public class MapConditionalAssignment extends Operation {
+public class MapConditionalAssignment extends AbstractOperation {
 
 	VarType varType;
 	String varname;
@@ -13,6 +13,7 @@ public class MapConditionalAssignment extends Operation {
 	
 	
 	public MapConditionalAssignment(VarType d, String vnm, String fnm, HashMap<String, String> exposureMap) {
+		super();
 		varType = d;
 		varname = vnm;
 		fname = fnm;
@@ -23,7 +24,7 @@ public class MapConditionalAssignment extends Operation {
 	@Override
 	public String generateJava() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(MetaField.defaultDeclare(varType, varname));
+		sb.append(AbstractMetaField.defaultDeclare(varType, varname));
 		sb.append("\n");
 		sb.append("if (" + fname + ".equals(\"NONE\") {\n" + "}");
 		for (String s : map.keySet()) {

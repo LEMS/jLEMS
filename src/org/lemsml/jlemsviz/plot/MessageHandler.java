@@ -5,10 +5,10 @@ public interface MessageHandler {
 
 
 
-	public void msg(MessageType type, String txt);
+	void msg(MessageType type, String txt);
 
 
-	public void msg(String txt);
+	void msg(String txt);
 
 
 }

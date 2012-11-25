@@ -7,7 +7,7 @@ import org.lemsml.jlems.run.RuntimeError;
 import org.lemsml.jlems.run.StateInstance;
 import org.lemsml.jlems.sim.ContentError;
 
-public class IntersectionNode extends SelectionOperatorNode {
+public class IntersectionNode extends AbstractSelectionOperatorNode {
 
 	public IntersectionNode(String s) {
 		super(s);
@@ -23,7 +23,7 @@ public class IntersectionNode extends SelectionOperatorNode {
 	}
 
 	@Override
-	public SelectionOperatorNode copy() {
+	public AbstractSelectionOperatorNode copy() {
 		return new IntersectionNode(symbol);
 	}
 
@@ -36,9 +36,9 @@ public class IntersectionNode extends SelectionOperatorNode {
 	@Override
 	public ArrayList<StateInstance> getMatches(StateInstance baseSI) throws ContentError, ConnectionError, RuntimeError {
 		ArrayList<StateInstance> ret = null;
-		if (left instanceof SelectionNode && right instanceof SelectionNode) {
-			ArrayList<StateInstance> ml = ((SelectionNode)left).getMatches(baseSI);
-			ArrayList<StateInstance> mr = ((SelectionNode)right).getMatches(baseSI);
+		if (left instanceof AbstractSelectionNode && right instanceof AbstractSelectionNode) {
+			ArrayList<StateInstance> ml = ((AbstractSelectionNode)left).getMatches(baseSI);
+			ArrayList<StateInstance> mr = ((AbstractSelectionNode)right).getMatches(baseSI);
 			
 			ret = new ArrayList<StateInstance>();
 			for (StateInstance si : ml) {

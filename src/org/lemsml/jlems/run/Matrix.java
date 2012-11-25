@@ -7,7 +7,7 @@ public final class Matrix extends Object implements Cloneable {
 
    private double a[][];
    private double ws[];
-   private int n;
+   private final int n;
    private int perm[];
    private int sign;
 
@@ -16,7 +16,8 @@ public final class Matrix extends Object implements Cloneable {
 
 
    public Matrix(int nnn) {
-      n1 = n2 = n = nnn;
+      super();
+	   n1 = n2 = n = nnn;
       a = new double[n][n];
       perm = new int[n];
       ws = new double[n];
@@ -24,7 +25,8 @@ public final class Matrix extends Object implements Cloneable {
 
 
    public Matrix(double[][] a) {
-      this.a = a;
+      super();
+	   this.a = a;
       n1 = n2 = n = a.length;
       perm = new int[n];
       ws = new double[n];
@@ -52,7 +54,7 @@ public final class Matrix extends Object implements Cloneable {
    }
 
 
-   public final int dim() {
+   public int dim() {
       return n;
    }
 
@@ -198,7 +200,7 @@ public final class Matrix extends Object implements Cloneable {
 
 
    public void mpyBy(Matrix m) throws MatrixException {
-      a = (prod(m)).a;
+      a = prod(m).a;
    }
 
 
@@ -339,7 +341,7 @@ public final class Matrix extends Object implements Cloneable {
 
    public void lu() throws MatrixException {
       int i, imax, j, k;
-      double big, dum, sum, temp;
+      double big, sum;
       double vv[] = new double[n];
       double TINY = 1.0e-20;
 
@@ -349,7 +351,8 @@ public final class Matrix extends Object implements Cloneable {
       for (i = 0; i < n; i++) {
          big = 0.0;
          for (j = 0; j < n; j++) {
-            if ((temp = Math.abs(a[i][j])) > big) {
+            double temp = Math.abs(a[i][j]);
+        	 if (temp > big) {
                big = temp;
             }
          }
@@ -374,14 +377,15 @@ public final class Matrix extends Object implements Cloneable {
                sum -= a[i][k] * a[k][j];
             }
             a[i][j] = sum;
-            if ((dum = vv[i] * Math.abs(sum)) >= big) {
+            double dum = vv[i] * Math.abs(sum);
+            if (dum >= big) {
                big = dum;
                imax = i;
             }
          }
          if (j != imax) {
             for (k = 0; k < n; k++) {
-               dum = a[imax][k];
+               double dum = a[imax][k];
                a[imax][k] = a[j][k];
                a[j][k] = dum;
             }
@@ -393,7 +397,7 @@ public final class Matrix extends Object implements Cloneable {
             a[j][j] = TINY;
          }
          if (j != n) {
-            dum = 1.0 / (a[j][j]);
+            double dum = 1.0 / (a[j][j]);
             for (i = j + 1; i < n; i++) {
                a[i][j] *= dum;
             }
@@ -444,7 +448,7 @@ public final class Matrix extends Object implements Cloneable {
 
 
    public void invert() throws MatrixException {
-      a = (inverse()).a;
+      a = inverse().a;
    }
 
 
@@ -610,18 +614,19 @@ public final class Matrix extends Object implements Cloneable {
    }
 
 
-   public final int randomIndexFromColumn(int c, double rin) {
+   public int randomIndexFromColumn(int c, double rin) {
       double r = rin;
 	  int ir = 0;
-      while ((r -= a[ir][c]) > 0)
+      while ((r -= a[ir][c]) > 0) {
          ir++;
+      }
       return ir;
    }
 
 
 
    // should bufer this ***;
-   public final double[] getColumn(int ic) {
+   public double[] getColumn(int ic) {
       double[] c = new double[n2];
       for (int i = 0; i < n2; i++) {
          c[i] = a[i][ic];

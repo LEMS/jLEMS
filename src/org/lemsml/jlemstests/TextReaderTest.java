@@ -17,9 +17,7 @@ import org.lemsml.jlemsio.util.FileUtil;
  
  
 public class TextReaderTest {
-
-	public TextReaderTest() {
-	}
+ 
 
 	@Test
 	public void testReadFromString() throws ParseException, BuildException,

@@ -2,11 +2,11 @@ package org.lemsml.jlems.expression;
 
 import java.util.HashMap;
 
-import org.lemsml.jlems.eval.DVal;
+import org.lemsml.jlems.eval.AbstractDVal;
 import org.lemsml.jlems.eval.Divide;
 import org.lemsml.jlems.sim.ContentError;
 
-public class DivideNode extends FloatResultNode {
+public class DivideNode extends AbstractFloatResultNode {
 
 	
 	
@@ -29,7 +29,7 @@ public class DivideNode extends FloatResultNode {
 		return (Double.isNaN(x) ? 1 : x) / y;
 	}
 	
-	public DVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
+	public AbstractDVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
 		checkLeftRight();
 		return new Divide(leftEvaluable.makeEvaluable(fixedHM), rightEvaluable.makeEvaluable(fixedHM));
 	}

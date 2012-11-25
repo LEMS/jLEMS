@@ -10,10 +10,7 @@ public class DerivedScalarField {
 	
 	public String value;
 	
-	
-	public DerivedScalarField() {
-		
-	}
+	 
 	
 	
 }

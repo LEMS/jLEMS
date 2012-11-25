@@ -44,8 +44,7 @@ public class ParserCheck {
         			 E.info("Parsed " + expr + " to: " + pt.toString());
         		 } catch (Exception ex) {
         			 ok = false;
-        			 E.error("Failed to parse " + expr);
-        			 ex.printStackTrace();
+        			 E.report("Failed to parse " + expr, ex);
         		 }
         	 }
          }
@@ -82,7 +81,7 @@ public class ParserCheck {
         }
     	} catch (Exception ex) {
     		ok = false;
-    		ex.printStackTrace();
+    		E.report("Failed on evalcheck1", ex);
     	}
     }
     
@@ -110,7 +109,7 @@ public class ParserCheck {
         }
     	} catch (Exception ex) {
     		ok = false;
-    		ex.printStackTrace();
+    		E.report("Failed eval check2", ex);
     	}
     }
 
@@ -145,7 +144,7 @@ public class ParserCheck {
         	}
         	}catch (Exception ex) {
         		ok = false;
-        		ex.printStackTrace();
+        		E.report("Failed conditions", ex);
         	}
         }
     }     

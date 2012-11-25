@@ -2,12 +2,12 @@ package org.lemsml.jlems.expression;
 
 import java.util.HashMap;
 
-import org.lemsml.jlems.eval.BComp;
+import org.lemsml.jlems.eval.AbstractBComp;
 import org.lemsml.jlems.eval.NEQComp;
 import org.lemsml.jlems.run.RuntimeError;
 import org.lemsml.jlems.sim.ContentError;
 
-public class NotEqualsNode extends ComparisonNode {
+public class NotEqualsNode extends AbstractComparisonNode {
 
 	public NotEqualsNode() {
 		super("!=");
@@ -28,7 +28,7 @@ public class NotEqualsNode extends ComparisonNode {
 	 }
 	 
 	 
-	public BComp makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
+	public AbstractBComp makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
 		checkLeftRight();
 		return new NEQComp(leftEvaluable.makeEvaluable(fixedHM), rightEvaluable.makeEvaluable(fixedHM));
 	}

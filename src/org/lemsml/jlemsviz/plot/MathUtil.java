@@ -3,8 +3,13 @@ package org.lemsml.jlemsviz.plot;
 
 
 
-public class MathUtil {
+public final class MathUtil {
 
+	
+	private MathUtil() {
+		
+	}
+	
    public static double min(double[] v) {
       double ret = v[0];
       for (int i = 1; i < v.length; i++) {

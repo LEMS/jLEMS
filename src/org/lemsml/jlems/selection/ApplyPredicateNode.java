@@ -7,7 +7,7 @@ import org.lemsml.jlems.run.RuntimeError;
 import org.lemsml.jlems.run.StateInstance;
 import org.lemsml.jlems.sim.ContentError;
 
-public class ApplyPredicateNode extends SelectionOperatorNode {
+public class ApplyPredicateNode extends AbstractSelectionOperatorNode {
 
 	double fpos;
 	
@@ -22,7 +22,7 @@ public class ApplyPredicateNode extends SelectionOperatorNode {
 	
 	 
 	@Override
-	public SelectionOperatorNode copy() {
+	public AbstractSelectionOperatorNode copy() {
 		return new ApplyPredicateNode(symbol);
 	}
 
@@ -36,8 +36,8 @@ public class ApplyPredicateNode extends SelectionOperatorNode {
 	@Override
 	public ArrayList<StateInstance> getMatches(StateInstance baseSI) throws ContentError, ConnectionError, RuntimeError {
 		ArrayList<StateInstance> ret = null;
-		if (left instanceof SelectionNode && right instanceof PredicateNode) {
-			ArrayList<StateInstance> ml = ((SelectionNode)left).getMatches(baseSI);
+		if (left instanceof AbstractSelectionNode && right instanceof PredicateNode) {
+			ArrayList<StateInstance> ml = ((AbstractSelectionNode)left).getMatches(baseSI);
 		 
 			PredicateNode pnode = (PredicateNode)right;
 			ret = new ArrayList<StateInstance>();

@@ -6,13 +6,14 @@ import java.util.HashMap;
 import org.lemsml.jlems.sim.ContentError;
 
 
-public class ForEachBuilder extends PostBuilder {
+public class ForEachBuilder extends AbstractPostBuilder {
 
 	String path;
 	String var;
 	
 	
 	public ForEachBuilder(String instances, String as) {
+		super();
 		path = instances;
 		var = as;
 	}

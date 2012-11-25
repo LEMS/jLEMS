@@ -5,10 +5,10 @@ import java.util.HashMap;
 import org.lemsml.jlems.eval.DBase;
 import org.lemsml.jlems.sim.ContentError;
 
-public abstract class FloatResultNode extends FloatOperatorNode implements DoubleParseTreeNode {
+public abstract class AbstractFloatResultNode extends AbstractFloatOperatorNode implements DoubleParseTreeNode {
 
 
-	public FloatResultNode(String s) {
+	public AbstractFloatResultNode(String s) {
 		super(s);
 	}
 

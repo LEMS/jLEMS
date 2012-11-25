@@ -5,13 +5,14 @@ import java.util.HashMap;
 import org.lemsml.jlems.sim.RunnableAccessor;
 import org.lemsml.jlems.type.Component;
 
-public class WithBuilder extends PostBuilder {
+public class WithBuilder extends AbstractPostBuilder {
 
 	String path;
 	String var;
 	
     public WithBuilder(String instance, String as) {
-        path = instance;
+        super();
+    	path = instance;
         var = as;
     }
 

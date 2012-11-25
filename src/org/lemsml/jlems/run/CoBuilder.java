@@ -1,8 +1,9 @@
 package org.lemsml.jlems.run;
 
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Component;
-import org.lemsml.jlemsviz.plot.E;
+ 
 
 public class CoBuilder extends AbstractChildBuilder {
 
@@ -13,7 +14,8 @@ public class CoBuilder extends AbstractChildBuilder {
 	
 	
 	public CoBuilder(Component c, ComponentBehavior cb) {
-		 ctr = c;
+		super(); 
+		ctr = c;
 		 componentBehavior = cb;
 	}
 	

@@ -631,7 +631,7 @@ public class StateInstance implements StateRunnable {
 		}
 		if (multiA != null) {
 			for (MultiInstance mi : multiA) {
-				for (StateInstance si : mi.instances) {
+				for (StateInstance si : mi.getInstances()) {
 					if (si.getID() != null) {
 						idSIHM.put(si.getID(), si);
 						// E.info("added child " + si.getID());

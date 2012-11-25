@@ -3,13 +3,13 @@ package org.lemsml.jlems.expression;
 import java.util.HashMap;
 
 import org.lemsml.jlems.eval.DFunc;
-import org.lemsml.jlems.eval.DVal;
+import org.lemsml.jlems.eval.AbstractDVal;
 import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Lems;
 
 
-public class FunctionNode extends UnaryNode implements DoubleParseTreeNode {
+public class FunctionNode extends AbstractUnaryNode implements DoubleParseTreeNode {
 
 	String fname = null;
 
@@ -99,7 +99,7 @@ public class FunctionNode extends UnaryNode implements DoubleParseTreeNode {
 	}
 	
 	
-	public DVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
+	public AbstractDVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
 		checkArg();
 		return new DFunc(fname, argEvaluable.makeEvaluable(fixedHM));
 	}

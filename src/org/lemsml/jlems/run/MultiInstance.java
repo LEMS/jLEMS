@@ -8,17 +8,16 @@ import org.lemsml.jlems.sim.ContentError;
 
 public class MultiInstance {
 
-	 
-	String typeName;
-	String knownAs;
+	private final String typeName;
+	private String knownAs;
 	
 	public StateRunnable parent;
 	
-	ArrayList<StateInstance> instances = new ArrayList<StateInstance>();
+	private final ArrayList<StateInstance> instances = new ArrayList<StateInstance>();
 	 
-	HashMap<String, StateInstance> instanceHM = new HashMap<String, StateInstance>();
+	private final HashMap<String, StateInstance> instanceHM = new HashMap<String, StateInstance>();
 	
-	ArrayList<PostBuilder> postBuilders;
+	ArrayList<AbstractPostBuilder> postBuilders;
 	
     @Override
 	public String toString() {
@@ -193,7 +192,11 @@ public class MultiInstance {
 		ret.addAll(instances);
 		return ret;
 	}
-
+	
+	
+	public ArrayList<StateInstance> getInstances() {
+		return instances;
+	}
  
  
 }

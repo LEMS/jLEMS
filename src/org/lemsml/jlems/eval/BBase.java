@@ -9,11 +9,11 @@ import org.lemsml.jlems.run.RuntimeError;
 
 public class BBase implements BooleanEvaluator {
 
-	BVal root;
+	AbstractBVal root;
 	
 	DVar[] vars;
 	
-	public BBase(BVal bv) {
+	public BBase(AbstractBVal bv) {
 		root = bv;
 		ArrayList<DVar> val = new ArrayList<DVar>();
 		root.recAdd(val);

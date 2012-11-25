@@ -49,11 +49,11 @@ public class StateWrapper {
 
  
 	public void advance(StateInstance parent, double t, double dt) {
-	 
+		// nothing to do
 	}
  
 	public void exportState(String pfx, double t, LineDisplay ld) {
-	 
+		E.missing();
 	}
 	
 	

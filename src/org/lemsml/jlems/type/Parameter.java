@@ -21,10 +21,7 @@ public class Parameter implements Named {
     
     public String exposure;
 
-
-    public Parameter() {
-    }
-
+ 
   
 
     public void resolve(LemsCollection<Dimension> dimensions) throws ContentError {

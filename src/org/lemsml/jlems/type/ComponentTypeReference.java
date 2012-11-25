@@ -12,19 +12,11 @@ public class ComponentTypeReference implements Named {
 
 	@ModelProperty(info="")
 	public String name;
-  	
-	public ComponentTypeReference() {
-		
-	}
-	
-	
-	public ComponentTypeReference(String sn) {
+   
 	 
-	}
-	
 	
 	public void resolve(Lems lems, Parser p) throws ContentError, ParseError {
-	 
+		// nothing to do
 	}
 
 
@@ -34,7 +26,9 @@ public class ComponentTypeReference implements Named {
 
  
 	public ComponentTypeReference makeCopy() {
-		 return new ComponentTypeReference(name);
+		 ComponentTypeReference ret = new ComponentTypeReference();
+		 ret.name = name;
+		 return ret;
 	}
 
   

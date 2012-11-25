@@ -3,9 +3,9 @@ package org.lemsml.jlems.selection;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.lemsml.jlems.expression.ComparisonNode;
+import org.lemsml.jlems.expression.AbstractComparisonNode;
 import org.lemsml.jlems.expression.ConstantNode;
-import org.lemsml.jlems.expression.FloatResultNode;
+import org.lemsml.jlems.expression.AbstractFloatResultNode;
 import org.lemsml.jlems.expression.FunctionNode;
 import org.lemsml.jlems.expression.IntegerConstantNode;
 import org.lemsml.jlems.expression.Node;
@@ -38,8 +38,8 @@ public class PredicateNode extends Node {
 		boolean ret = false;
 		if (children.size() == 1) {
 			Node n = children.get(0);
-			if (n instanceof ComparisonNode) {
-				ComparisonNode cn = (ComparisonNode)n;
+			if (n instanceof AbstractComparisonNode) {
+				AbstractComparisonNode cn = (AbstractComparisonNode)n;
 				double dleft = evaluateFloat(cn.left, si);
 				double dright = evaluateFloat(cn.right, si);
 				
@@ -67,7 +67,7 @@ public class PredicateNode extends Node {
 	
 	
 	public String toString() {
-		return "[" + (children.size() > 0 ? first().siblingsToString() : "") + "]";
+		return "[" + (children.isEmpty() ? "" : first().siblingsToString()) + "]";
 	}
 	
 	public void remove(Node n) {
@@ -87,7 +87,7 @@ public class PredicateNode extends Node {
 		}
 	}
 	
-	public ArrayList<Node> children() {
+	public ArrayList<Node> getChildren() {
 		return children;
 	}
 	
@@ -135,8 +135,8 @@ public class PredicateNode extends Node {
 		} else if (n instanceof SelectorNode) {
 			ret = ((SelectorNode)n).getFloat(si);
 		
-		} else if (n instanceof FloatResultNode) {
-			FloatResultNode frn = (FloatResultNode)n;
+		} else if (n instanceof AbstractFloatResultNode) {
+			AbstractFloatResultNode frn = (AbstractFloatResultNode)n;
 			double dleft = evaluateFloat(frn.left, si);
 			double dright = evaluateFloat(frn.right, si);
 			

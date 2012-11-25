@@ -9,6 +9,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+
+import org.lemsml.jlems.logging.E;
  
 
 
@@ -101,7 +103,7 @@ public class BaseCanvas extends BasePanel implements Repaintable {
 
 
    public void paint2D(Graphics2D g) {
-
+	   // ignore
    }
 
 

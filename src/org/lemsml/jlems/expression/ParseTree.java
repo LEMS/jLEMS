@@ -6,8 +6,9 @@ import org.lemsml.jlems.eval.BBase;
 import org.lemsml.jlems.eval.BooleanEvaluator;
 import org.lemsml.jlems.eval.DBase;
 import org.lemsml.jlems.eval.DoubleEvaluator;
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.sim.ContentError;
-import org.lemsml.jlemsviz.plot.E;
+ 
 
 public class ParseTree {
  

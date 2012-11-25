@@ -8,6 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+
+import org.lemsml.jlems.logging.E;
  
 
 public final class Painter {
@@ -17,10 +19,10 @@ public final class Painter {
    private Graphics2D g;
 
 
-   private BasicStroke normalStroke;
+   private final BasicStroke normalStroke;
    private BasicStroke dashedStroke;
 
-   private PointPainter pointPainter;
+   private final PointPainter pointPainter;
 
    /*
     * private LinePainter lp = new LinePaniter(); private AreaPainter ap = new
@@ -114,7 +116,7 @@ public final class Painter {
    }
 
 
-   public final double[] getXYXYLimits() {
+   public double[] getXYXYLimits() {
       return worldTransform.getXYXYLimits();
    }
 
@@ -219,7 +221,7 @@ public final class Painter {
 
 
 
-   public final void drawPixelLine(int x0, int y0, int x1, int y1) {
+   public void drawPixelLine(int x0, int y0, int x1, int y1) {
       g.drawLine(x0, y0, x1, y1);
    }
 
@@ -981,11 +983,11 @@ public void fillPolygon(Polypoint pp, int cfill, int cline) {
       setColor(new Color(icol));
    }
    
-   public final void drawCable(Position pa, Position pcenter, Position pb) {
+   public void drawCable(Position pa, Position pcenter, Position pb) {
 	   drawCable(pa, pcenter, pb, null, 1, true);
    }
    
-   public final void drawCable(Position pa, Position pcenter, Position pb, Color c, double lw, boolean wip) {
+   public void drawCable(Position pa, Position pcenter, Position pb, Color c, double lw, boolean wip) {
       double ax = pa.getX();
       double ay = pa.getY();
       double bx = pb.getX();
@@ -999,7 +1001,7 @@ public void fillPolygon(Polypoint pp, int cfill, int cline) {
 
 
 
-    public final void drawHalfCable(double x0, double y0, double dx0, double dy0, double x1,
+    public void drawHalfCable(double x0, double y0, double dx0, double dy0, double x1,
          double y1, int n, Color c, double lw, boolean wip) {
 
       double vx, vy, vl, dx, dy, dl, f, alp0, alp;
@@ -1204,31 +1206,31 @@ public void fillPolygon(Polypoint pp, int cfill, int cline) {
 
 
 
-   public final void draw3DPoint (double x, double y, double z) {
+   public void draw3DPoint (double x, double y, double z) {
       g.drawOval (powx(xProj(x,y,z)) - 2,  powy(yProj(x,y,z)) - 2, 4, 4);
    }
 
 
-   public final void fill3DOval (double x, double y, double z,
+   public void fill3DOval (double x, double y, double z,
 			  int hw, int hh) {
 	   g.fillOval(powx(xProj(x,y,z)) - hw,  powy(yProj(x,y,z)) - hh, 2*hw, 2 * hh);
 		  //************** missing code - recopy!!!!!
    }
 
-   public final void draw3DCircle (double x, double y, double z,
+   public void draw3DCircle (double x, double y, double z,
 				   double r) {
       drawCircle(xProj(x,y,z), yProj(x,y,z), r);
 
    }
 
-   public final void fill3DCircle (double x, double y, double z,
+   public void fill3DCircle (double x, double y, double z,
 		   double r) {
 	   fillCircle(xProj(x,y,z), yProj(x,y,z), r);
 
 }
 
 
-   public final void draw3DMark(double x, double y, double z, int ityp, int isize) {
+   public void draw3DMark(double x, double y, double z, int ityp, int isize) {
 		   int ix = powx(xProj(x, y, z));
 		   int iy = powy(yProj(x, y, z));
 		   // TODO change mark accorting to ityp;
@@ -1236,7 +1238,7 @@ public void fillPolygon(Polypoint pp, int cfill, int cline) {
 		   g.drawLine(ix, iy-isize, ix, iy+isize);
 }
    /*
-   public final void draw3DHalfLine(double xa, double ya, double za,
+   public void draw3DHalfLine(double xa, double ya, double za,
 				                    double xb, double yb, double zb) {
       drawHalfLine(xProj(xa,ya,za), yProj(xa,ya,za),
 		       xProj(xb,yb,zb), yProj(xb,yb,zb));
@@ -1244,7 +1246,7 @@ public void fillPolygon(Polypoint pp, int cfill, int cline) {
 */
 
 
-   public final void draw3DZOffsetLine(double xa, double ya, double za,
+   public void draw3DZOffsetLine(double xa, double ya, double za,
 					                   double xb, double yb, double zb,
 					                   double z0, double dpdz) {
       double zpa = zProj(xa, ya, za);
@@ -1255,13 +1257,15 @@ public void fillPolygon(Polypoint pp, int cfill, int cline) {
 
 
 
-   final void drawOutline(double xa, double ya, double ra,
+   void drawOutline(double xa, double ya, double ra,
 			              double xb, double yb, double rb) {
 
      double vy = xb - xa;
      double vx = -(yb - ya);
      double vl = Math.sqrt (vx * vx + vy * vy);
-     if (vl <= 0.0) vl = 1.e-6; // ***
+     if (vl <= 0.0) {
+    	 vl = 1.e-6; // ***
+     }
      vx /= vl;
      vy /= vl;
 
@@ -1274,13 +1278,14 @@ public void fillPolygon(Polypoint pp, int cfill, int cline) {
 
 
 
-   final void drawSides(double xa, double ya, double ra, double xb, double yb, double rb) {
+   void drawSides(double xa, double ya, double ra, double xb, double yb, double rb) {
 
 		double vy = xb - xa;
 		double vx = -(yb - ya);
 		double vl = Math.sqrt(vx * vx + vy * vy);
-		if (vl <= 0.0)
+		if (vl <= 0.0) {
 			vl = 1.e-6; // ***
+		}
 		vx /= vl;
 		vy /= vl;
 
@@ -1291,13 +1296,15 @@ public void fillPolygon(Polypoint pp, int cfill, int cline) {
 
 
 
-   final void fillOutline(double xa, double ya, double ra,
+   void fillOutline(double xa, double ya, double ra,
 			              double xb, double yb, double rb) {
 
      double vy = xb - xa;
      double vx = -(yb - ya);
      double vl = Math.sqrt (vx * vx + vy * vy);
-     if (vl <= 0.0) vl = 1.e-6; // ***
+     if (vl <= 0.0) {
+    	 vl = 1.e-6; // ***
+     }
      vx /= vl;
      vy /= vl;
      drawLine(xa - ra * vx, ya - ra * vy,  xb - rb * vx, yb - rb * vy);
@@ -1310,26 +1317,26 @@ public void fillPolygon(Polypoint pp, int cfill, int cline) {
   }
 
 
-   public final void draw3DLine(double xa, double ya, double za,
+   public void draw3DLine(double xa, double ya, double za,
 			   double xb, double yb, double zb) {
 	   		drawLine(xProj(xa,ya,za), yProj(xa,ya,za), xProj(xb,yb,zb), yProj(xb,yb,zb));
    }
 
 
-   public final void draw3DOutline(double xa, double ya, double za, double ra,
+   public void draw3DOutline(double xa, double ya, double za, double ra,
 			         			   double xb, double yb, double zb, double rb) {
       drawOutline(xProj(xa,ya,za), yProj(xa,ya,za), ra,
 		          xProj(xb,yb,zb), yProj(xb,yb,zb), rb);
    }
 
 
-   public final void fill3DSegment(double xa, double ya, double za, double ra,
+   public void fill3DSegment(double xa, double ya, double za, double ra,
 			                       double xb, double yb, double zb, double rb) {
       fillOutline(xProj(xa,ya,za), yProj(xa,ya,za), ra,
 		      xProj(xb,yb,zb), yProj(xb,yb,zb), rb);
    }
 
-   public final void draw3DCarrot(double xa, double ya, double za, double ra,
+   public void draw3DCarrot(double xa, double ya, double za, double ra,
 			   double xb, double yb, double zb, double rb) {
 	   double x2a = xProj(xa,ya,za);
 	   double y2a = yProj(xa,ya,za);
@@ -1341,7 +1348,7 @@ public void fillPolygon(Polypoint pp, int cfill, int cline) {
    }
 
 
-   public final void draw3DSegment(double xa, double ya, double za, double ra,
+   public void draw3DSegment(double xa, double ya, double za, double ra,
 		   double xb, double yb, double zb, double rb) {
    double x2a = xProj(xa,ya,za);
    double y2a = yProj(xa,ya,za);
@@ -1363,7 +1370,7 @@ public void fillPolygon(Polypoint pp, int cfill, int cline) {
 	   drawString(lbl, powx(x2a)+idx, powy(y2a)+idy);
  }
 
-   public final boolean visible3D (double x, double y, double z) {
+   public boolean visible3D (double x, double y, double z) {
       return worldTransform.visible3D(x, y, z);
 
    }
@@ -1483,8 +1490,7 @@ public void push3D(double x, double y, double z) {
 
 
 	public void drawAxes() {
-
-
+		// nothing to do
 	}
 
 

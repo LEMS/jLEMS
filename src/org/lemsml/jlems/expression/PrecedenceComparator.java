@@ -2,10 +2,10 @@ package org.lemsml.jlems.expression;
 
 import java.util.Comparator;
 
-public class PrecedenceComparator implements Comparator<OperatorNode> {
+public class PrecedenceComparator implements Comparator<AbstractOperatorNode> {
 
 	 
-	public int compare(OperatorNode a, OperatorNode b) {
+	public int compare(AbstractOperatorNode a, AbstractOperatorNode b) {
 		int pa = a.getPrecedence();
 		int pb = b.getPrecedence();
 		

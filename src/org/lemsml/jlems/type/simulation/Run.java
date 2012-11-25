@@ -29,21 +29,6 @@ public class Run {
 	// private Valued val_total;
 
 	 
-    public Run() {
-    
-    }
-
-    
-    public Run(String component, String variable, String increment, String total) {
-        this.component = component;
-        this.variable = variable;
-        this.increment = increment;
-        this.total = total;
-    }
-
-
-    
-
 	
 	
 	public void resolve(ComponentType r_type) throws ContentError {
