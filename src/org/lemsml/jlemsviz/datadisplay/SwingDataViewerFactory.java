@@ -16,6 +16,7 @@ public final class SwingDataViewerFactory extends DataViewerFactory {
 	} 
 	
 	private SwingDataViewerFactory() {
+		super();
 		DataViewerFactory.getFactory().setDelegate(this);
 	}
 	

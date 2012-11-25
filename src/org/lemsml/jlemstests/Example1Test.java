@@ -5,6 +5,8 @@
 
 package org.lemsml.jlemstests;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -28,11 +30,12 @@ public class Example1Test {
  
     @Test
     public void testExample1() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException, XMLException  {
-          executeExample("example1.xml");
+          boolean ret = executeExample("example1.xml");
+          assertTrue("example 1", ret);
     }
 
    
-    public void executeExample(String filename) throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException, XMLException {
+    public boolean executeExample(String filename) throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException, XMLException {
     	File fdir = new File("examples");
     	File f = new File(fdir, filename);
     	FileInclusionReader fir = new FileInclusionReader(f);
@@ -46,6 +49,7 @@ public class Example1Test {
         sim.run();
         
         E.info("OK - executed " + filename);
+        return true;
     }
     
     

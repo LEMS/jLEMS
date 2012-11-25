@@ -408,6 +408,12 @@ public class Regime implements Named {
 	public void addOnCondition(OnCondition oc) {
 		onConditions.add(oc);
 	}
+
+
+	public Regime makeCopy() {
+		E.missing();
+		return null;
+	}
 	
 	
 	

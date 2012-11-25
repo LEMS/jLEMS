@@ -3,8 +3,6 @@ package org.lemsml.jlems.eval;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import org.lemsml.viz.E;
-
 public class DCon extends AbstractDVal {
 	
 	double val;

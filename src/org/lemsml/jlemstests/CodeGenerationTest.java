@@ -1,5 +1,7 @@
 package org.lemsml.jlemstests;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -42,13 +44,14 @@ public class CodeGenerationTest {
     @Test
     public void runExample1() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException {
     	File f1 = new File("examples/example1.xml");
- 		generateFromFile(f1, "na");
+ 		boolean ret = generateFromFile(f1, "na");
+ 		assertTrue("Example 1", ret);
     }
     
     
     
     
-    public void generateFromFile(File f, String tgtid) throws ContentError,
+    public boolean generateFromFile(File f, String tgtid) throws ContentError,
     		ConnectionError, ParseError, IOException, RuntimeError, ParseException, 
     		BuildException, XMLException {
     	E.info("Loading LEMS file from: " + f.getAbsolutePath());
@@ -78,7 +81,7 @@ public class CodeGenerationTest {
 		
 		E.info("Generated code:\n\n" + srcCode);
 		
-		
+		return true;
 		
     }
 }

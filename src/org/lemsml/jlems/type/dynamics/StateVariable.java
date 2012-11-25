@@ -104,6 +104,15 @@ public class StateVariable implements Valued  {
 		}
 		return ret;
 	}
+
+
+	public StateVariable makeCopy() {
+		StateVariable ret = new StateVariable();
+		ret.name = name;
+		ret.exposure = exposure;
+		ret.dimension = dimension;
+		return ret;
+	}
 	
 	
 	

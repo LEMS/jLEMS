@@ -792,15 +792,15 @@ public class ComponentBehavior {
 			E.info("********* Flattening " + knownas + " (id=" + cptid + ")");
 			ret = getFlattenedComponentBehavior(knownas);
 		} else {
-			ret = makeChildConsolidated(knownas);
+			ret = makeChildConsolidated();
 		}
 		return ret;
 	}
 	
 	
-	public ComponentBehavior makeChildConsolidated(String knownas) {
+	public ComponentBehavior makeChildConsolidated() {
 		ComponentBehavior ret = makeShallowCopy();
-		ret.consolidateChildren(knownas);
+		ret.consolidateChildren();
 		return ret;
 	}
 	
@@ -820,7 +820,7 @@ public class ComponentBehavior {
 		
 	
 	
-	private void consolidateChildren(String knownas) {
+	private void consolidateChildren() {
 		// E.info("Consolidating children in " + knownas + (cptid != null ? "(id=" + cptid + ")" : ""));
 		for (String sch : childHM.keySet()) {
 			// E.info("Child: " + sch);

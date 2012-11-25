@@ -78,10 +78,10 @@ public class GridPainter {
 
 
          for (int i = 0; i < ixpts.length; i++) {
-            p.drawCenteredString(AbstractFormatter.format(xpts[i], dx), ixpts[i], height-10);
+            p.drawCenteredString(Formatter.format(xpts[i], dx), ixpts[i], height-10);
          }
           for (int i = 0; i < iypts.length; i++) {
-            p.drawString(AbstractFormatter.format(ypts[i], dy), 10, height-iypts[i]+4);
+            p.drawString(Formatter.format(ypts[i], dy), 10, height-iypts[i]+4);
          }
 
           if (xlabel != null) {

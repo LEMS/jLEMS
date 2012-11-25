@@ -16,6 +16,12 @@ public class OnStart extends PointResponse   {
 		supResolve(bhv, stateVariables, valHM, parser);
 	}
 
+	public OnStart makeCopy() {
+		OnStart ret = new OnStart();
+		super.copyInto(ret);
+		return ret;
+	}
+
 	
 
 

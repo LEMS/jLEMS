@@ -33,7 +33,6 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
 
    private BoxSelectionHandler boxSelectionHandler;
    private PanHandler panHandler;
-   private TurnZoomHandler turnZoomHandler;
    private ClickZoomHandler clickZoomHandler;
    private RollHandler rollHandler;
    private TurntableHandler turntableHandler;
@@ -221,7 +220,7 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
       boxSelectionHandler = new BoxSelectionHandler();
       addHandler(boxSelectionHandler);
 
-      turnZoomHandler = new TurnZoomHandler();
+      TurnZoomHandler turnZoomHandler = new TurnZoomHandler();
       addHandler(turnZoomHandler);
 
       // TODO - only if 3d?

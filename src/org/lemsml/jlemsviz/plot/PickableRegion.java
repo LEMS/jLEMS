@@ -62,7 +62,7 @@ public final class PickableRegion implements Pickable {
 
 
    public boolean contains(double xq, double yq) {
-      return AbstractGeom.pointIsInside(xb, yb, xq, yq);
+      return Geom.pointIsInside(xb, yb, xq, yq);
    }
    
 

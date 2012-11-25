@@ -223,4 +223,15 @@ public class DerivedVariable extends ExpressionValued implements Valued {
 		return parseTree;
 	}
 
+	public DerivedVariable makeCopy() {
+		DerivedVariable ret = new DerivedVariable();
+		ret.name = name;
+		ret.reduce = reduce;
+		ret.select = select;
+		ret.exposure = exposure;
+		ret.dimension = dimension;
+		ret.value = value;
+		return ret;
+	}
+
 }

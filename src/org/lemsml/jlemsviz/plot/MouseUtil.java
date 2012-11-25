@@ -3,6 +3,8 @@ package org.lemsml.jlemsviz.plot;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 
+import org.lemsml.jlems.logging.E;
+
 
 public final class MouseUtil {
    
@@ -35,7 +37,7 @@ public final class MouseUtil {
          rbutton = RIGHT;
 
       } else {
-         System.out.println("unknown button mask: " + modif + " "
+         E.info("unknown button mask: " + modif + " "
                + "knowns mask (b1, b2 b3, shift, ctrl, alt ,meta): " + InputEvent.BUTTON1_MASK
                + " " + InputEvent.BUTTON2_MASK + " " + InputEvent.BUTTON3_MASK + " "
                + InputEvent.SHIFT_MASK + " " + InputEvent.CTRL_MASK + " " + InputEvent.ALT_MASK

@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.lang.reflect.Field;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -141,7 +140,7 @@ public final class JUtil {
 
 
 
-   public static void copyBinaryResource(String respathin, File dest) {
+   public static void copyBinaryResource(String respathin, File dest) throws FileNotFoundException, IOException {
       String respath = respathin;
 	   if (dest.exists()) {
       //   E.info("destination file already exists - not copying " + dest);
@@ -149,18 +148,11 @@ public final class JUtil {
       }
 
      // E.info("installing " + dest);
-
-
-      try {
+ 
          if (respath.startsWith(rootPath)) {
             respath = respath.substring(rootPath.length()+1,respath.length());
          }
          extractRelativeResource(rootClass, respath, dest);
-
-      } catch (Exception ex) {
-         E.warning("ResourceAccess - cant get " + respath + " " + ex);
-         ex.printStackTrace();
-      }
    }
 
 
@@ -171,62 +163,23 @@ public final class JUtil {
  	   
        OutputStream out = new FileOutputStream(dest);
        byte[] buf = new byte[1024];
-       int len;
-       while ((len = in.read(buf)) > 0) {
-          out.write(buf, 0, len);
+       int len = in.read(buf);
+       while (true) {
+          if (len > 0) {
+        	  out.write(buf, 0, len);
+        	  len = in.read(buf);
+          } else {
+        	  break;
+          }
        }
        in.close();
        out.close();
    }
 
 
-
-
-   public static void extractStaticFieldResources(Class<?> c, File dest) {
-	   try {
-		   Field f = c.getField("RESOURCES");
-		   String[] sa = (String[])(f.get(c.newInstance()));
-		   for (String s : sa) {
-			   extractRelativeResource(c, s, new File(dest, s));
-		   }
-
-	   } catch (NoSuchFieldException ex) {
-		   // ignore - normal case if there are no additional RESOURCES;
-
-	   } catch (Exception ex) {
-		   E.info("exception : " + ex);
-	   }
-   }
-
-
-
-   
  
-
-
-   public static Object newInstance(String sin) throws ContentError {
-	   String s = sin;
-      Object ret = null;
-
-      if (s.startsWith("org.")) {
-         // OK;
-      } else {
-         s = "org.catcmb." + s; // ADHOC
-      }
-
-      try {
-         // Class<?> c = Class.forName(s);
-         Class<?> c = ClassLoader.getSystemClassLoader().loadClass(s);
-         ret = c.newInstance();
-      } catch (Exception ex) {
-         throw new ContentError("cant instantiate " + s + " " + ex);
-        
-      }
-      return ret;
-   }
-
-
-
+ 
+  
    public static String shortClassName(Object ov) {
       String cnm = ov.getClass().getName();
       cnm = cnm.substring(cnm.lastIndexOf(".") + 1, cnm.length());
@@ -333,7 +286,7 @@ public final class JUtil {
 		} catch (Exception ex) {
 			E.error("cant list resources? " + ex);
 		}
-		return als.toArray(new String[0]);
+		return als.toArray(new String[als.size()]);
 	}
 
 

@@ -8,7 +8,6 @@ import java.util.HashMap;
 
 import org.junit.Test;
 import org.junit.runner.Result;
-import org.lemsml.jlems.eval.DoubleEvaluator;
 import org.lemsml.jlems.expression.AndNode;
 import org.lemsml.jlems.expression.OrNode;
 import org.lemsml.jlems.expression.ParseError;
@@ -28,7 +27,8 @@ public class ParserTest {
  		Parser p = new Parser();
  		String src1 = "a + b";
  		ParseTree pt1 = p.parseExpression(src1); 		
- 		DoubleEvaluator dev = pt1.makeFloatEvaluator();
+ 		// DoubleEvaluator dev = 
+ 				pt1.makeFloatEvaluator();
  		
 		String src = "3 + (1.3e-4 + 5) + (3 *4)+ 4/(4.*45) + 34.2E-2 + sin(a + b) / cos(b + c)";
 		ParseTree pt = p.parseExpression(src);

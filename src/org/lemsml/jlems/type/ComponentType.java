@@ -406,6 +406,17 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 
 		for (Dynamics b : dynamicses) {
 			b.setComponentType(this);
+			
+			if (b.inheritDynamics()) {
+				if (r_extends != null) {
+					b.inheritFrom(r_extends.getDynamics());
+					
+				} else {
+					throw new ContentError("Dynamics in " + this + 
+							" can't inherit super type dynamics : no supertype");
+				}
+			}
+			
 			b.resolve(lems, p);
 		}
 

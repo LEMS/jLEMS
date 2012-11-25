@@ -1,5 +1,7 @@
 package org.lemsml.jlemsviz.plot;
 
+import java.util.Locale;
+
 
 public enum ColorNames {
    BLACK("#000000"),
@@ -63,7 +65,7 @@ public enum ColorNames {
    public static String getHexValue(String sin) {
 	   String s = sin;
       String ret = null;
-      s = s.toUpperCase();
+      s = s.toUpperCase(Locale.ENGLISH);
       for (ColorNames cn : values()) {
               if (cn.name().equals(s)) {
                       ret = cn.hexval;

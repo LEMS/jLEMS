@@ -3,8 +3,9 @@ package org.lemsml.jlems.run;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.sim.ContentError;
-import org.lemsml.viz.E;
+ 
 
 
 public class ApplyBuilder extends AbstractPostBuilder {

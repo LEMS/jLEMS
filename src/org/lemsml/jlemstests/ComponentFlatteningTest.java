@@ -19,7 +19,7 @@ import org.lemsml.jlems.type.Lems;
 import org.lemsml.jlems.xml.XMLException;
 import org.lemsml.jlemsio.logging.DefaultLogger;
 import org.lemsml.jlemsio.reader.FileInclusionReader;
-import org.lemsml.jlemsio.xmlio.XMLSerializer;
+ 
 
 
 public class ComponentFlatteningTest {
@@ -79,10 +79,9 @@ public class ComponentFlatteningTest {
         ComponentType ct = cf.getFlatType();
         Component cp = cf.getFlatComponent();
         
-        String typeOut = XMLSerializer.serialize(ct);
-        String cptOut = XMLSerializer.serialize(cp);
-        
-     
+        // String typeOut = XMLSerializer.serialize(ct);
+        // String cptOut = XMLSerializer.serialize(cp);
+      
         // E.info("Flat type: \n" + typeOut);
         // E.info("Flat cpt: \n" + cptOut);
         

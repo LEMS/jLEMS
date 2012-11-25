@@ -56,6 +56,9 @@ public class PointResponse {
     }
 
     
+    public void addTransition(Transition t) {
+    	transitions.add(t);
+    }
 
 	
 	public ActionBlock makeEventAction(HashMap<String, Double> fixedHM) throws ContentError {
@@ -85,5 +88,26 @@ public class PointResponse {
 			 sa.checkDimensions(dimHM);
 		 }
 		
+	}
+
+	public void copyInto(PointResponse ret) {
+		 for (StateAssignment sa : stateAssignments) {
+			 ret.addStateAssignment(sa.makeCopy());
+		 }
+		 for (Transition t : transitions) {
+			 ret.addTransition(t.makeCopy());
+		 }
+		 for (EventOut eo : eventOuts) {
+			 ret.addEventOut(eo.makeCopy());
+		 }
+	}
+
+	
+	private void addEventOut(EventOut eo) {
+		eventOuts.add(eo);
+	}
+
+	private void addStateAssignment(StateAssignment sa) {
+		stateAssignments.add(sa);
 	}
 }

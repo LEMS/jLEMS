@@ -33,6 +33,7 @@ import org.lemsml.jlems.type.Named;
 import org.lemsml.jlems.type.ParamValue;
 import org.lemsml.jlems.type.Property;
 import org.lemsml.jlems.type.Requirement;
+import org.lemsml.jlems.type.Super;
 
 
 @ModelElement(info="Specifies the dynamical behavior of components build from this ComponentType. ")
@@ -41,6 +42,8 @@ public class Dynamics  {
 	public String name;
  	 
 	public boolean simultaneous = false;
+	
+	public LemsCollection<Super> supers = new LemsCollection<Super>();
 	
 	public LemsCollection<DerivedVariable> derivedVariables = new LemsCollection<DerivedVariable>();
 	
@@ -62,7 +65,6 @@ public class Dynamics  {
 	public LemsCollection<DerivedScalarField> derivedScalarFields = new LemsCollection<DerivedScalarField>();
 	
 	public LemsCollection<DerivedPunctateField> derivedPunctateFields = new LemsCollection<DerivedPunctateField>();
-	
 	
 	
 	
@@ -135,19 +137,6 @@ public class Dynamics  {
 	
 	
 	public void resolve(Lems lems, Parser parser) throws ContentError, ParseError {
-		
-		/*
-		// see copyFromExtends below
-		if (inherit != null) {
-			if (inherit.equals("variables")) {
-				copyFromExtends();
-				
-			} else {
-				throw new ContentError("Unrecognized inherit: " + inherit);
-			}	
-		}
-	*/
-
 		if (lems.looseResolving()) {
 			// then we expose anything with a name that matches the name of an exposure
 			HashSet<String> expHS = new HashSet<String>();
@@ -553,6 +542,42 @@ public class Dynamics  {
 	
 	public void addOnEvent(OnEvent oe) {
 		 onEvents.add(oe);
+	}
+
+	public boolean inheritDynamics() {
+		boolean ret = false;
+		if (supers.size() > 0) {
+			ret = true;
+		}
+		return ret;
+	}
+
+	public void inheritFrom(Dynamics src) {
+		for (DerivedVariable dv : src.derivedVariables) {
+			derivedVariables.add(dv.makeCopy());
+		}
+		for (StateVariable sv : src.stateVariables) {
+			stateVariables.add(sv.makeCopy());
+		}
+		for (TimeDerivative td: src.timeDerivatives) {
+			timeDerivatives.add(td.makeCopy());
+		}
+		for (KineticScheme ks : src.kineticSchemes) {
+			kineticSchemes.add(ks.makeCopy());
+		}
+		for (OnStart os : src.onStarts) {
+			onStarts.add(os.makeCopy());
+		}
+		for (OnEvent oe : src.onEvents) {
+			onEvents.add(oe.makeCopy());
+		}
+		for (OnCondition oc : src.onConditions) {
+			onConditions.add(oc.makeCopy());
+		}
+		for (Regime r : src.regimes) {
+			regimes.add(r.makeCopy());
+		}
+	 
 	}
 
  

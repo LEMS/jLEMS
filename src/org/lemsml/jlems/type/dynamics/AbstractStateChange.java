@@ -91,6 +91,11 @@ public abstract class AbstractStateChange extends ExpressionValued {
 
 	
 	public abstract Dimension getStateVariableDimensionMultiplier();
+
+	public void copyInto(AbstractStateChange ret) {
+		 ret.variable = variable;
+		super.copyInto(ret);
+	}
 	
 	
 }

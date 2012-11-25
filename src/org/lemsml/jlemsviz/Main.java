@@ -65,9 +65,8 @@ public final class Main {
 
 
         } catch (Exception ex) {
-            E.info("Problem reading model from " + simFile.getAbsolutePath());
-        	E.info(ex.getMessage());
-            ex.printStackTrace();
+            String msg = "Problem reading model from " + simFile.getAbsolutePath();
+            E.report(msg, ex);
         }
     }
 }

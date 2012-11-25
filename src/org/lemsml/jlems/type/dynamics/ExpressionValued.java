@@ -28,6 +28,10 @@ public class ExpressionValued {
 		}
 		
 	}
+
+	public void copyInto(ExpressionValued ret) {
+		ret.value = value;
+	}
 	
 	
 }

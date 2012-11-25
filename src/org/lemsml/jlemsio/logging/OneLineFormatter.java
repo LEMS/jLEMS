@@ -2,12 +2,13 @@ package org.lemsml.jlemsio.logging;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.logging.LogRecord;
 import java.util.logging.SimpleFormatter;
 
 public class OneLineFormatter extends SimpleFormatter {
 
-	SimpleDateFormat date_format = new SimpleDateFormat("MMM dd,yyyy HH:mm");
+	SimpleDateFormat date_format = new SimpleDateFormat("MMM dd,yyyy HH:mm", Locale.ENGLISH);
  
  
 	  public String format(LogRecord rec) {

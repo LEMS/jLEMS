@@ -1,16 +1,19 @@
 package org.lemsml.jlemsviz.plot;
  
 
-public abstract class AbstractGeom {
+public final class Geom {
 
 
+	private Geom() {
+		
+	}
 
-   public final static boolean pointIsInside(double[] xb, double[] yb, int x, int y) {
+   public static boolean pointIsInside(double[] xb, double[] yb, int x, int y) {
       return pointIsInside(xb, yb, (double)x, (double)y);
    }
 
 
-   public final static boolean pointIsInside(double[] xb, double[] yb, double x, double y) {
+   public static boolean pointIsInside(double[] xb, double[] yb, double x, double y) {
       int n = xb.length;
       int iwn = 0;
       for (int i = 0; i < n; i++) {

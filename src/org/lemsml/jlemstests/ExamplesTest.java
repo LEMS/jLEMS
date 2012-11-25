@@ -5,6 +5,8 @@
 
 package org.lemsml.jlemstests;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -28,51 +30,61 @@ public class ExamplesTest {
  
     @Test
     public void testExample1() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException,  XMLException  {
-          executeExample("example1.xml");
+          boolean ok = executeExample("example1.xml");
+          assertTrue("Example1", ok);
     }
 
     @Test
     public void testExample2() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException,  XMLException   {
-            executeExample("example2.xml");
+            boolean ok = executeExample("example2.xml");
+            assertTrue("Example2", ok);
     }
     
     @Test
     public void testExample3() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException,  XMLException  {
-          executeExample("example3.xml");
+    	 boolean ok = executeExample("example3.xml");
+    	 assertTrue("Example 3" , ok);
     }
     
     @Test
     public void testExample4() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException,  XMLException   {
-          executeExample("example4.xml");
+          boolean ok = executeExample("example4.xml");
+          assertTrue("Example 4", ok);
     }
     @Test
     public void testExample5() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException,  XMLException   {
-           executeExample("example5.xml");
+           boolean ok = executeExample("example5.xml");
+           assertTrue("Example 5", ok);
     }
     @Test
     public void testExample6() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException,  XMLException   {
-         executeTreeExample("example6.xml");
+         boolean ok = executeTreeExample("example6.xml");
+         assertTrue("Example 6", ok);
     }
     @Test
     public void testExample7() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException,  XMLException   {
-         executeExample("example7.xml");
+         boolean ok = executeExample("example7.xml");
+         assertTrue("Example 7", ok);
     }
     @Test
     public void testExample8() throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException, XMLException   {
-           executeExample("example8.xml");
+           boolean ok = executeExample("example8.xml");
+           assertTrue("Example 8", ok);
     }
     @Test
     public void testExample9() throws ContentError, ConnectionError, RuntimeError, ParseError, ParseException, BuildException, XMLException   {
-           executeProcessExample("example9.xml");
+           boolean ok = executeProcessExample("example9.xml");
+         assertTrue("Example 9", ok); 
     }
     
     @Test
     public void testExample10() throws ContentError, ConnectionError, RuntimeError, ParseError, ParseException, BuildException, XMLException, IOException   {
-           executeTreeExample("example10_Q10.xml");
+          boolean ok = executeTreeExample("example10_Q10.xml");
+          assertTrue("Example 10", ok);
     }
     
     
-    public void executeExample(String filename) throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException,  XMLException {
+    public boolean executeExample(String filename) throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException,  XMLException {
     	File fdir = new File("examples");
     	File f = new File(fdir, filename);
     	FileInclusionReader fir = new FileInclusionReader(f);
@@ -86,9 +98,10 @@ public class ExamplesTest {
         sim.run();
         
         E.info("OK - executed " + filename);
+        return true;
     }
     
-    public void executeTreeExample(String filename) throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException,  XMLException {
+    public boolean executeTreeExample(String filename) throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException,  XMLException {
     	File fdir = new File("examples");
     	File f = new File(fdir, filename);
     	FileInclusionReader fir = new FileInclusionReader(f);
@@ -102,9 +115,10 @@ public class ExamplesTest {
         sim.runTree();
         
         E.info("OK - executed " + filename);
+        return true;
     }
     
-    public void executeProcessExample(String filename) throws ContentError, ConnectionError, RuntimeError, ParseError, ParseException, BuildException,  XMLException {
+    public boolean executeProcessExample(String filename) throws ContentError, ConnectionError, RuntimeError, ParseError, ParseException, BuildException,  XMLException {
     	File fdir = new File("examples");
     	
     	File f = new File(fdir, filename);
@@ -118,6 +132,7 @@ public class ExamplesTest {
 	 		lemsp.process();
 		
         E.info("OK - executed " + filename);
+        return true;
     }
     
 

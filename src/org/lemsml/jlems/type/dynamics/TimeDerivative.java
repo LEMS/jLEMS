@@ -17,6 +17,12 @@ public class TimeDerivative extends AbstractStateChange {
 		 return ret;
 	}
 
+	public TimeDerivative makeCopy() {
+		TimeDerivative ret = new TimeDerivative();
+		super.copyInto(ret);
+		return ret;
+	}
+
 
 
 

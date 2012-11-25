@@ -25,5 +25,12 @@ public class StateAssignment extends AbstractStateChange {
 	public Dimension getStateVariableDimensionMultiplier() {
 		return new Dimension(Dimension.NO_DIMENSION);
 	}
+
+
+	public StateAssignment makeCopy() {
+		StateAssignment ret = new StateAssignment();
+		super.copyInto(ret);
+		return ret;
+	}
 	
 }

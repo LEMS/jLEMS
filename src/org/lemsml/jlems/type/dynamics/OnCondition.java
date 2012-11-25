@@ -55,6 +55,7 @@ public class OnCondition extends PointResponse   {
 		if (trigger != null) {
 			ret.trigger = trigger.makeCopy();
 		}
+		super.copyInto(ret);
 		return ret;
 	}
 

@@ -41,7 +41,7 @@ public class OnEvent extends PointResponse {
 
 	public OnEvent makeCopy() {
 		OnEvent oe = new OnEvent();
-		oe.port=  port;
+		oe.port = port;
 		return oe;
 	}
 

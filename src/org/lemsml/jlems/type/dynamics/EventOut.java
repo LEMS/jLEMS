@@ -20,5 +20,12 @@ public class EventOut {
 	public String getPortName() {
 		return r_eventPort.getName();
 	}
+
+
+	public EventOut makeCopy() {
+		EventOut ret = new EventOut();
+		ret.port = port;
+		return ret;
+	}
 	
 }

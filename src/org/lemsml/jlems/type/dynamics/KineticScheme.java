@@ -5,12 +5,14 @@ import java.util.HashMap;
 
 import org.lemsml.jlems.annotation.ModelElement;
 import org.lemsml.jlems.annotation.ModelProperty;
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.KScheme;
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Children;
 import org.lemsml.jlems.type.Component;
 import org.lemsml.jlems.type.ComponentReference;
 import org.lemsml.jlems.type.ComponentType;
+ 
 
 @ModelElement(info="A kinetic scheme does not itself introduce any new elements or state variables. " +
 		"It is rather a way of connecting quantities in existing components by saying that " +
@@ -111,6 +113,12 @@ public class KineticScheme {
 
 	public String getEdgesName() {
 		return edges;
+	}
+
+
+	public KineticScheme makeCopy() {
+		E.missing();
+		return null;
 	}
 
  

@@ -15,5 +15,11 @@ public class Transition {
 	public String getRegime() {
 		return regime;
 	}
+
+	public Transition makeCopy() {
+		Transition ret = new Transition();
+		ret.regime = regime;
+		return ret;
+	}
 	
 }

@@ -1,10 +1,13 @@
 package org.lemsml.jlemsviz.plot;
 
  
-public abstract class AbstractFormatter {
+public final class Formatter {
 
+	private Formatter() {
+		
+	}
  
-   public final static float trim(double a, int itr) {
+   public static float trim(double a, int itr) {
       double d = 0.0;
       if (Math.abs(a) < 1.0e-300) {
          d = 0.0;

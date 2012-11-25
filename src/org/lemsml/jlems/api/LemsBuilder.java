@@ -1,8 +1,9 @@
 package org.lemsml.jlems.api;
  
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.type.Dimension;
 import org.lemsml.jlems.type.Lems;
-import org.lemsml.viz.E;
+ 
 
 
 // NB this should be the only way to access lems components from outside - 

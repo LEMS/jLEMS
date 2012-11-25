@@ -28,9 +28,12 @@ import org.lemsml.jlems.sim.ContentError;
  
 
 
-public abstract class FileUtil {
+public final class FileUtil {
 
 
+	private FileUtil() {
+		
+	}
 
    public static byte[] readHeader(File f, int n) throws IOException {
       byte[] ret = null;
@@ -307,7 +310,7 @@ public abstract class FileUtil {
    }
 
 
-   public final static File[] routeToAncestor(File dtgt, File dtop) {
+   public static File[] routeToAncestor(File dtgt, File dtop) {
 	      int nup = 0;
 	      File[] dh = new File[10];
 	      File dwk = dtgt;
@@ -330,7 +333,7 @@ public abstract class FileUtil {
 
 
 
-	   public final static String pathFromAncestor(File ftop, File ftgt) {
+	   public static String pathFromAncestor(File ftop, File ftgt) {
 	      File[] af = routeToAncestor(ftgt, ftop);
 	      String sr = "";
 	      for (int i = 0; i < af.length - 1; i++) {
@@ -341,7 +344,7 @@ public abstract class FileUtil {
 	   }
 
 
-	   public final static String relpath(int nl) {
+	   public static String relpath(int nl) {
 	      String arel = "../";
 	      String srel = "";
 	      for (int k = 0; k < nl; k++) {

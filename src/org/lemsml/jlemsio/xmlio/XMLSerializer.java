@@ -145,32 +145,30 @@ public class XMLSerializer {
 						// export map may set it null if it shouldn't be
 						// exported
 						if (fieldName != null) {
-
-							Class<?> cls = ob.getClass();
-
+							
 							if (wk instanceof Double) {
-								setAttribute(cls, ret, fieldName, "" + ((Double) wk).doubleValue());
+								setAttribute(ret, fieldName, "" + ((Double) wk).doubleValue());
 
 							} else if (wk instanceof Integer) {
-								setAttribute(cls, ret, fieldName, "" + ((Integer) wk).intValue());
+								setAttribute(ret, fieldName, "" + ((Integer) wk).intValue());
 
 							} else if (wk instanceof Boolean) {
-								setAttribute(cls, ret, fieldName, (((Boolean) wk).booleanValue() ? "true" : "false"));
+								setAttribute(ret, fieldName, (((Boolean) wk).booleanValue() ? "true" : "false"));
 
 							} else if (wk instanceof String) {
-								setAttribute(cls, ret, fieldName, (String) wk);
+								setAttribute(ret, fieldName, (String) wk);
 
 							} else if (wk instanceof double[]) {
-								setAttribute(cls, ret, fieldName, makeString((double[]) wk));
+								setAttribute(ret, fieldName, makeString((double[]) wk));
 
 							} else if (wk instanceof int[]) {
-								setAttribute(cls, ret, fieldName, makeString((int[]) wk));
+								setAttribute(ret, fieldName, makeString((int[]) wk));
 
 							} else if (wk instanceof boolean[]) {
-								setAttribute(cls, ret, fieldName, makeString((boolean[]) wk));
+								setAttribute(ret, fieldName, makeString((boolean[]) wk));
 
 							} else if (wk instanceof String[]) {
-								setAttribute(cls, ret, fieldName, makeString((String[]) wk));
+								setAttribute(ret, fieldName, makeString((String[]) wk));
 
 							} else if (wk != null) {
 
@@ -200,7 +198,7 @@ public class XMLSerializer {
 
 	}
 
-	private void setAttribute(Class<?> cls, XMLElement ret, String fieldName, String avalue) {
+	private void setAttribute(XMLElement ret, String fieldName, String avalue) {
 		String value = avalue;
 		String anm = fieldName;
 		 

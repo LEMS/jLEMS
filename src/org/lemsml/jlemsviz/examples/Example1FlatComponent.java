@@ -23,7 +23,6 @@ import org.lemsml.jlems.type.Lems;
 import org.lemsml.jlems.xml.XMLException;
 import org.lemsml.jlemsio.logging.DefaultLogger;
 import org.lemsml.jlemsio.reader.FileInclusionReader;
-import org.lemsml.jlemsio.xmlio.XMLSerializer;
 import org.lemsml.jlemsviz.datadisplay.SwingDataViewerFactory;
 
  
@@ -74,8 +73,8 @@ public class Example1FlatComponent {
         ComponentType ct = cf.getFlatType();
         Component cp = cf.getFlatComponent();
         
-        String typeOut = XMLSerializer.serialize(ct);
-        String cptOut = XMLSerializer.serialize(cp);
+        // String typeOut = XMLSerializer.serialize(ct);
+        // String cptOut = XMLSerializer.serialize(cp);
         
      
         // E.info("Flat type: \n" + typeOut);
