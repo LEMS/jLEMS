@@ -33,7 +33,6 @@ import org.lemsml.jlems.type.Named;
 import org.lemsml.jlems.type.ParamValue;
 import org.lemsml.jlems.type.Property;
 import org.lemsml.jlems.type.Requirement;
-import org.lemsml.jlems.type.Super;
 
 
 @ModelElement(info="Specifies the dynamical behavior of components build from this ComponentType. ")

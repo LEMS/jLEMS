@@ -34,7 +34,7 @@ public class XMLReaderTest {
 		XMLElementReader xmlReader = new XMLElementReader(testString); 
 		XMLElement xe = xmlReader.getRootElement();
 	 
-		assertTrue(xe.getTag().equals("Lems"));
+		assertTrue("Tags match", xe.getTag().equals("Lems"));
 	}
 	
 

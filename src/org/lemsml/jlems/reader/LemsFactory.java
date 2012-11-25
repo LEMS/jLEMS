@@ -103,6 +103,8 @@ public class LemsFactory extends AbstractLemsFactory {
             ret = buildOnEntry(xel);
         } else if (tag.equals("Transition")) {
             ret = buildTransition(xel);
+        } else if (tag.equals("Super")) {
+            ret = buildSuper(xel);
         } else if (tag.equals("StateScalarField")) {
             ret = buildStateScalarField(xel);
         } else if (tag.equals("DerivedScalarField")) {
@@ -904,6 +906,8 @@ public class LemsFactory extends AbstractLemsFactory {
 
             Object obj = instantiateFromXMLElement(cel);
             if (xn.equals("UNUSED")) {
+            } else if (obj instanceof Super) {
+                ret.supers.add((Super)obj);
             } else if (obj instanceof DerivedVariable) {
                 ret.derivedVariables.add((DerivedVariable)obj);
             } else if (obj instanceof StateVariable) {
@@ -1287,6 +1291,23 @@ public class LemsFactory extends AbstractLemsFactory {
             if (xn.equals("UNUSED")) {
             } else if (xn.equals("regime")) {
                 ret.regime = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private Super buildSuper(XMLElement xel) {
+        Super ret = new Super();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
             } else {
                 E.warning("unrecognized attribute " + xa);
             }

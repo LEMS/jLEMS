@@ -45,6 +45,7 @@ import org.lemsml.jlems.type.dynamics.Regime;
 import org.lemsml.jlems.type.dynamics.StateAssignment;
 import org.lemsml.jlems.type.dynamics.StateScalarField;
 import org.lemsml.jlems.type.dynamics.StateVariable;
+import org.lemsml.jlems.type.dynamics.Super;
 import org.lemsml.jlems.type.dynamics.TimeDerivative;
 import org.lemsml.jlems.type.dynamics.Transition;
 import org.lemsml.jlems.type.geometry.Frustum;
@@ -146,6 +147,7 @@ public final class LemsClasses {
 	 	ret.add(new LemsClass(Regime.class, section));
 	 	ret.add(new LemsClass(OnEntry.class, section));
 	 	ret.add(new LemsClass(Transition.class, section));
+	 	ret.add(new LemsClass(Super.class, section));
 	 	
 	 	ret.add(new LemsClass(StateScalarField.class, section));
 	 	ret.add(new LemsClass(DerivedScalarField.class, section));
