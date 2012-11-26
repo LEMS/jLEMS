@@ -60,7 +60,7 @@ public abstract class AbstractInclusionReader {
 	
 		
 	protected String insertIncludes(String stxta) throws ContentError {
-		String stxt = stxta;
+		String stxt = removeXMLComments(stxta);
 		StringBuilder sfullSB = new StringBuilder();
 		String sinc = "<Include ";
 		while (true) {	
@@ -85,7 +85,7 @@ public abstract class AbstractInclusionReader {
 
 	public String trimOuterElement(String s) {
 		String ret = "";
-		String swk = removeXmlComments(s);
+		String swk = removeXMLComments(s);
 		swk = swk.trim();
 
                 if (swk.startsWith("<?xml")) {
@@ -109,14 +109,14 @@ public abstract class AbstractInclusionReader {
 		return ret;
 	}
 	
-        //TODO: put elsewhere?
-	public static String removeXmlComments(String xml) {
+	// TODO: put elsewhere? 
+	// TODO accumulate fragments in buffer rather than processing whole string each time
+	public static String removeXMLComments(String xml) {
 		String ret = xml;
 		while(ret.indexOf("<!--") >= 0){
 			int start = ret.indexOf("<!--");
-			int end = ret.indexOf("-->")+3;
+			int end = ret.indexOf("-->") + 3;
 			ret = ret.substring(0,start) + ret.substring(end);
-                             
 		}
 		return ret;
      }

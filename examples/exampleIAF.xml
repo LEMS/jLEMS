@@ -118,8 +118,8 @@ refractoryPeriod="4ms" capacitance="1pF"/>
     </EventConnectivity>
 </Network>
 
-
 <Include file="MultiRunSimulation.xml"/>
+
 
 <SimulationSet id="simset">
 	<Display id="disp1" title="Example1" xmin="0" xmax="80" ymin="-80" ymax="50"/>

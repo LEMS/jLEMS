@@ -27,8 +27,7 @@ public class RunFileExample {
 	}
   	
 	private File getSrcFile() {
-		File fex = new File(fdir, "examples");
-		File fs = new File(fex, filename);
+		File fs = new File(fdir, filename);
 		return fs;
 	}
 	

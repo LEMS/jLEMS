@@ -178,12 +178,11 @@ public class PathDerivedVariable {
             		}
             		String cnm = bit.substring(0, iob);
             		
-            		MultiInstance mi = par.getMultiInstance(cnm);
             		
-            		if (mi == null) {
-                        // No need for this warning...
-            			//E.warning("No match to path element '" + cnm + "' in " + path+" on "+ base+", parent: "+base.parent);
-            		} else {
+            		if (par.hasMultiInstance(cnm)) {
+            			MultiInstance mi = par.getMultiInstance(cnm);
+            		 
+            	 
                     	 String pred = bit.substring(iob + 1, icb);
                     	 if (pred.equals("*")) {
                     		 swka.addAll(mi.getStateInstances());                    		 
@@ -207,7 +206,17 @@ public class PathDerivedVariable {
                     	    	 
                     	     }
                     	 }
-                     }
+            		} else {
+            			if (required) {
+            				String msg = ("No match to path element '" + cnm + "' in " + 
+            						path + " on " + par + " base=" + base + ", parent=" + base.parent);
+
+            				// TODO - need some check on required
+            				//            				throw new ContentError(msg);
+            			}
+            		}
+            		
+            		
             	} else {
             		swka.add(par.getChildInstance(bit));
             	}
