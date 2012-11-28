@@ -88,26 +88,40 @@ public abstract class AbstractInclusionReader {
 		String swk = removeXMLComments(s);
 		swk = swk.trim();
 
-                if (swk.startsWith("<?xml")) {
-                        int index = swk.indexOf(">");
-                        swk = swk.substring(index+1).trim();
-                }
+		if (swk.startsWith("<?xml")) {
+			int index = swk.indexOf(">");
+			swk = swk.substring(index+1).trim();
+		}
 
-                if (swk.startsWith("<Lems")) {
-                	int index = swk.indexOf(">");
-                	swk = swk.substring(index+1);
-                }
-
-
-                if (swk.endsWith("</Lems>")) {
-                	swk = swk.replace("</Lems>", "");
-                	ret = swk;
-                } else {
-                	E.error("expecting 'Lems' element in included file but not found:  " + swk);
-                }
-       
+		if (swk.startsWith("<")) {
+			int isp = swk.indexOf(" ");
+			int ict = swk.indexOf(">");
+			String eltname = swk.substring(1, (ict < isp ? ict : isp));
+			int sco = swk.indexOf(">");
+			
+			String ctag = "</" + eltname + ">";
+			E.info("Seeking ctag " + ctag);
+			int ice = swk.lastIndexOf(ctag);
+			
+			if (ice > sco) {
+				ret = swk.substring(sco + 1, ice);
+				E.info("Including content from main element: <" + eltname + ">");
+				
+			} else {
+				int l = swk.length();
+				E.error("non matching XML close in include: open tag=" + eltname + " end= ..." + swk.substring(l-15, l));
+			}
+		} else {
+			int l = swk.length();
+			E.error("Cant extract content from " + swk.substring(0, (20 < l ? 20 : l)));
+		}
+	
 		return ret;
 	}
+	
+	
+	
+	
 	
 	// TODO: put elsewhere? 
 	// TODO accumulate fragments in buffer rather than processing whole string each time

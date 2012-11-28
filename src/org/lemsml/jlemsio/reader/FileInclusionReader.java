@@ -65,7 +65,7 @@ public class FileInclusionReader extends AbstractInclusionReader {
             // NB its possible that fpar is different from one of the search dirs because s could be a
             // path rather than a single file name. So, if s is "dir1/dir2/filename" and we resolve it
             // relative to one of the current serach paths, we need to add dir2 to the search list because its
-            // contents may include files with only the lat part of the path.
+            // contents may include files with only the last part of the path.
             File fpar = f.getParentFile();
             if (searchDirs.contains(fpar)) {
                 // already there.
