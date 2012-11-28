@@ -16,6 +16,8 @@ public class FileInclusionReader extends AbstractInclusionReader {
     private static ArrayList<File> searchDirs = new ArrayList<File>();
     private final File prefDir;
 
+    
+    
     public FileInclusionReader(File f) {
     	super();
     	rootFile = f;
@@ -39,6 +41,19 @@ public class FileInclusionReader extends AbstractInclusionReader {
         searchDirs.add(f);
     }
 
+    public void addSearchPath(String s) {
+    	 addSearchPath(new File(s));
+    }
+    
+
+	public void addSearchPaths(String sp) {
+		String[] bits = sp.split(":");
+		for (String s : bits) {
+			addSearchPath(s);
+		}
+	}
+
+    
     public String getRelativeContent(String s) throws ContentError {
     	String ret = "";
     	

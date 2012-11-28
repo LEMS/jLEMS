@@ -54,7 +54,7 @@
         	<fileset dir="src" includes="org/lemsml/jlems/**"/>
             <fileset dir="src" includes="org/lemsml/jlemsio/**"/>
             <manifest>
-                <attribute name="Main-Class" value="org.lemsml.Main"/>
+                <attribute name="Main-Class" value="org.lemsml.jlemsviz.VizMain"/>
             </manifest>
         </jar>
     	<copy tofile="builtjars/lems.jar" file="builtjars/lems-${version.number}.jar"/>
@@ -67,6 +67,7 @@
 	        <jar destfile="builtjars/lems-core-${version.number}.jar">
 	            <fileset dir="build" includes="org/lemsml/jlems/**"/>
 	            <fileset dir="src" includes="org/lemsml/jlems/**"/>
+	        	
 	        </jar>
 	    	<copy tofile="builtjars/lems-core.jar" file="builtjars/lems-core-${version.number}.jar"/>
 	    </target>

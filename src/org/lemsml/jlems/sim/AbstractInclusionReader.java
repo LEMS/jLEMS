@@ -100,13 +100,11 @@ public abstract class AbstractInclusionReader {
 			int sco = swk.indexOf(">");
 			
 			String ctag = "</" + eltname + ">";
-			E.info("Seeking ctag " + ctag);
-			int ice = swk.lastIndexOf(ctag);
+ 			int ice = swk.lastIndexOf(ctag);
 			
 			if (ice > sco) {
 				ret = swk.substring(sco + 1, ice);
-				E.info("Including content from main element: <" + eltname + ">");
-				
+ 				
 			} else {
 				int l = swk.length();
 				E.error("non matching XML close in include: open tag=" + eltname + " end= ..." + swk.substring(l-15, l));

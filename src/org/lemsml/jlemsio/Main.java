@@ -1,6 +1,7 @@
 package org.lemsml.jlemsio;
  
 import java.io.File;
+import java.util.HashMap;
 
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.logging.E;
@@ -16,7 +17,7 @@ import org.lemsml.jlemsio.reader.FileInclusionReader;
 
 public final class Main {
 
-	 static String usage = "USAGE: java -jar lems-0.X.X.jar model-file [-options]\n";
+	 static String usage = "USAGE: java -jar lems-0.X.X.jar [-cp folderpaths] model-file\n";
 	
 
 	 private Main() {
@@ -35,36 +36,75 @@ public final class Main {
             showUsage();
             System.exit(1);
         }
-        File simFile = new File(argv[0]);
- 
-        if (!simFile.exists()) {
-        	E.error("No such file: " + simFile.getAbsolutePath());
+        
+        
+        HashMap<String, String> argMap = parseArguments(argv);
+        
+        String typePath = null;
+        String modelName = null;
+        
+        if (argMap.containsKey("-cp")) {
+        	typePath = argMap.get("-cp");
+        	argMap.remove("-cp");
+        }
+        if (argMap.containsKey("0")) {
+        	modelName = argMap.get("0");
+        	argMap.remove("0");
+        }
+        
+        if (modelName == null) {
         	showUsage();
         	System.exit(1);
         }
+        
+        File simFile = new File(modelName);
+ 
+        if (!simFile.exists()) {
+        	E.error("No such file: " + simFile.getAbsolutePath());
+        	System.exit(1);
+        }
 
-       
-        	FileInclusionReader fir = new FileInclusionReader(simFile);
-        	Sim sim = new Sim(fir.read());
+        FileInclusionReader fir = new FileInclusionReader(simFile);
+        if (typePath != null) {
+        	fir.addSearchPaths(typePath);
+        }
+        Sim sim = new Sim(fir.read());
             
-              sim.readModel();
-              sim.build();
+        sim.readModel();
+        sim.build();
             
-            boolean doRun = true;
+        boolean doRun = true;
             
-            if (argv.length > 1) {
-                String opt = argv[1];
-                E.info("Error, unrecognized command line element: (" + opt + ")");
-                showUsage();
-            }
-          
-            
-            if (doRun) {
-                sim.run();
-                E.info("Finished reading, building, running & displaying LEMS model");
-            }
-
-
-       
+        if (doRun) {
+        	sim.run();
+        	E.info("Finished reading, building, running & displaying LEMS model");
+        }       
     }
+    
+     
+    private static HashMap<String, String> parseArguments(String[] argv) {
+    	HashMap<String, String> ret = new HashMap<String, String>();
+    	
+    	int iarg = 0;
+    	int ifree = 0;
+    	while (true) {
+    		if (iarg < argv.length) {
+    			String s = argv[iarg];
+      			iarg += 1;
+    			if (s.startsWith("-")) {
+     				if (iarg < argv.length) {
+    					ret.put(s, argv[iarg]);
+    					iarg += 1;
+    				}
+    			} else {
+      				ret.put("" + ifree, s);
+    				ifree += 1;
+    			}
+    		} else {
+    			break;
+    		}
+    	}
+    	return ret;
+    }
+    
 }
