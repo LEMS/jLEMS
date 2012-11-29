@@ -70,7 +70,7 @@ public class CodeGenerationTest {
         ComponentGenerator cg = new ComponentGenerator();
         for (Component cpt : lems.getComponents()) {
         	E.info("Adding cpt " + cpt.getID());
-        	cg.addComponentBehavior(cpt.getComponentBehavior());
+        	cg.addStateType(cpt.getStateType());
         }
         
         

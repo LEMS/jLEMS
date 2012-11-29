@@ -10,7 +10,7 @@ import org.lemsml.jlems.sim.ContentError;
 
 public class StateInstance implements StateRunnable {
 
-	ComponentBehavior uclass;
+	StateType uclass;
 	String id;
 	private HashMap<String, DoublePointer> varHM;
 	private HashMap<String, DoublePointer> expHM;
@@ -69,7 +69,7 @@ public class StateInstance implements StateRunnable {
 		// PairFilter for usage
 	}
 
-	public StateInstance(ComponentBehavior uc) {
+	public StateInstance(StateType uc) {
 		uclass = uc;
 		id = uc.getComponentID();
 	}
@@ -779,7 +779,7 @@ public class StateInstance implements StateRunnable {
 		varHM.put(vnm, new DoublePointer(pval));
 	}
 
-	public ComponentBehavior getComponentBehavior() {
+	public StateType getStateType() {
 		return uclass;
 	}
     

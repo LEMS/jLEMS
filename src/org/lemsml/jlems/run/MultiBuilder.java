@@ -12,24 +12,24 @@ public class MultiBuilder extends AbstractChildBuilder {
 
 	
 	int number;
-	ComponentBehavior componentBehavior;
+	StateType stateType;
 	
 	ArrayList<ExpressionDerivedVariable> edvAL = new ArrayList<ExpressionDerivedVariable>();
  	
-	public MultiBuilder(int n, ComponentBehavior cb) {
+	public MultiBuilder(int n, StateType cb) {
 		super();
 		number = n;
-		 componentBehavior = cb;
+		 stateType = cb;
  	}
 	
 	
 	public void childInstantiate(StateInstance par) throws ContentError, ConnectionError, RuntimeError {
  		
-		String tnm = componentBehavior.typeName;
+		String tnm = stateType.typeName;
 		
-		// MultiInstance mi = new MultiInstance(componentBehavior.typeName, "");
+		// MultiInstance mi = new MultiInstance(stateType.typeName, "");
 		for (int i = 0; i < number; i++) {
-			StateInstance sr = componentBehavior.newInstance();
+			StateInstance sr = stateType.newInstance();
  			sr.setNewVariable("index", i);
 			
  			HashMap<String, DoublePointer> varHM = sr.getVariables();
@@ -76,8 +76,8 @@ public class MultiBuilder extends AbstractChildBuilder {
 
 
 	@Override
-	public void consolidateComponentBehaviors() {
-		componentBehavior = componentBehavior.getConsolidatedComponentBehavior("(multi)");
+	public void consolidateStateTypes() {
+		stateType = stateType.getConsolidatedStateType("(multi)");
 	}
 	
 	

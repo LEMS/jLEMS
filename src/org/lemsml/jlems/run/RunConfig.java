@@ -28,8 +28,8 @@ public class RunConfig {
     
 
 
-	public ComponentBehavior getTarget() throws ContentError, ParseError {
-		return targetComponent.getComponentBehavior();
+	public StateType getTarget() throws ContentError, ParseError {
+		return targetComponent.getStateType();
 	}
 
 

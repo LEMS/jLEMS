@@ -31,7 +31,7 @@ public class PairsEventConnection extends BuildElement {
 		
 		if (receiver != null && cpt.hasAttribute(receiver)) {
 			Component receiverComponent = cpt.getChild(receiver);
-			ret.setReceiverComponentBehavior(receiverComponent.getComponentBehavior());
+			ret.setReceiverStateType(receiverComponent.getStateType());
 		}
 		if (receiverContainer != null && cpt.hasAttribute(receiverContainer)) {
 			String sv = cpt.getStringValue(receiverContainer);

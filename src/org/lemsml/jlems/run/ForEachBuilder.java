@@ -43,7 +43,7 @@ public class ForEachBuilder extends AbstractPostBuilder {
 
 
 	@Override
-	public void consolidateComponentBehaviors() {
+	public void consolidateStateTypes() {
 		// TODO Auto-generated method stub
 		
 	}	

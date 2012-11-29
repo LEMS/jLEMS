@@ -19,7 +19,7 @@ public class SelectionExpression {
 	}
 	
 	public String toString() {
-		return getEvaluationProcessDescription();
+		return src;
 	}
 	
 	

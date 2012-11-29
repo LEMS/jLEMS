@@ -2,7 +2,7 @@ package org.lemsml.jlems.type.structure;
 
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.run.BuilderElement;
-import org.lemsml.jlems.run.ComponentBehavior;
+import org.lemsml.jlems.run.StateType;
 import org.lemsml.jlems.run.SingleChildBuilder;
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Component;
@@ -35,13 +35,13 @@ public class ChildInstance extends BuildElement {
 	
  
 	public BuilderElement makeBuilder(Component cpt) throws ContentError, ParseError {
-		ComponentBehavior cb = null;
+		StateType cb = null;
 		
 		if (component != null) {
 			Component c = cpt.getChild(component);
-			cb = c.getComponentBehavior();
+			cb = c.getStateType();
 		} else if (component != null) {
-			cb = r_component.getComponentBehavior();
+			cb = r_component.getStateType();
 		}
 	
 		SingleChildBuilder sb = new SingleChildBuilder(component, cb);

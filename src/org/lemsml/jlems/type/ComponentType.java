@@ -10,7 +10,7 @@ import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.expression.Parser;
 import org.lemsml.jlems.expression.Valued;
 import org.lemsml.jlems.logging.E;
-import org.lemsml.jlems.run.ComponentBehavior;
+import org.lemsml.jlems.run.StateType;
 import org.lemsml.jlems.run.Constants;
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.dynamics.DerivedVariable;
@@ -876,7 +876,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		return procedures;
 	}
 
-	public ComponentBehavior makeComponentBehavior(Component cpt) throws ContentError, ParseError {
+	public StateType makeStateType(Component cpt) throws ContentError, ParseError {
 
 		HashMap<String, Double> fixedHM = new HashMap<String, Double>();
 
@@ -890,14 +890,14 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 			fixedHM.put(pv.getName(), pv.getDoubleValue());
 		}
 
-		ComponentBehavior ret = null;
+		StateType ret = null;
 		
 		if (hasBehavior()) {
 			Dynamics bv = getDynamics();
-			ret = bv.makeComponentBehavior(cpt, fixedHM);
+			ret = bv.makeStateType(cpt, fixedHM);
 
 		} else {
- 			ret = new ComponentBehavior(cpt.getID(), getName());
+ 			ret = new StateType(cpt.getID(), getName());
 			for (ParamValue pv : cpt.getParamValues()) {
 				 String qn = pv.getName();
 				 double qv = pv.getDoubleValue();
@@ -927,42 +927,25 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 
 		for (String s :cpt.refHM.keySet()) {
 			Component ch = cpt.refHM.get(s);
-			ComponentBehavior chb = ch.getComponentBehavior();
-			ret.addRefComponentBehavior(s, chb);
+			StateType chb = ch.getStateType();
+			ret.addRefStateType(s, chb);
 		}
 
 		for (String s : cpt.childHM.keySet()) {
 			Component ch = cpt.childHM.get(s);
-			ComponentBehavior chb = ch.getComponentBehavior();
-			ret.addChildComponentBehavior(s, chb);
+			StateType chb = ch.getStateType();
+			ret.addChildStateType(s, chb);
 		}
 
 		
 		if (cpt.freeChildren != null) {
 			for (Component fc : cpt.freeChildren) {
-				ComponentBehavior chb = fc.getComponentBehavior();
-				ret.addListComponentBehavior(cpt.getListName(fc), chb);
+				StateType chb = fc.getStateType();
+				ret.addListStateType(cpt.getListName(fc), chb);
 			}
 		}
 			
-		
-		// This is wrong - if the children contain some A's then some B's and then some A's, we 
-		// want to preserve that order in the CB because it might implement their dependencies 
-		
-		/*
-		for (String s : cpt.childrenNames) {
-			E.info("proc children name " + s + " in " + this);	
-			ArrayList<Component> cpts = cpt.childrenHM.get(s);
-			ArrayList<ComponentBehavior> cba = new ArrayList<ComponentBehavior>();
-			for (Component c : cpts) {
-				cba.add(c.getComponentBehavior());
-			}
-			ret.addMultiComponentBehavior(s, new MultiComponentBehavior(cba));
-		}
-		*/
-		
-		
-		
+		 
 		
 		for (Attachments ats : getAttachmentss()) {
  			ret.addAttachmentSet(ats.getName(), ats.getComponentType().getName());

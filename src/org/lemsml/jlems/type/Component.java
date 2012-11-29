@@ -7,7 +7,7 @@ import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.expression.ParseTree;
 import org.lemsml.jlems.logging.E;
-import org.lemsml.jlems.run.ComponentBehavior;
+import org.lemsml.jlems.run.StateType;
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.xml.XMLAttribute;
 import org.lemsml.jlems.xml.XMLElement;
@@ -79,7 +79,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 
 	private boolean madeCB = false;
 
-	private ComponentBehavior componentBehavior;
+	private StateType stateType;
  	
 	 
 
@@ -672,14 +672,14 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	
 	
 
-	public ComponentBehavior makeComponentBehavior() throws ContentError, ParseError {
+	public StateType makeStateType() throws ContentError, ParseError {
 	
 		if (madeCB) {
 			throw new ContentError("remaking a component behavior that is already made " + id + " " + r_type);
 		}
 
-		ComponentBehavior ret = r_type.makeComponentBehavior(this);
-		componentBehavior = ret;
+		StateType ret = r_type.makeStateType(this);
+		stateType = ret;
 		madeCB = true;
 		return ret;
 	}
@@ -688,21 +688,21 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		
 	
 	
-	public ComponentBehavior makeConsolidatedCoponentBehavior(String knownas) throws ContentError, ParseError {
-		ComponentBehavior cb = getComponentBehavior();
-	    ComponentBehavior ret = cb.makeConsolidatedBehavior(knownas);
+	public StateType makeConsolidatedCoponentBehavior(String knownas) throws ContentError, ParseError {
+		StateType cb = getStateType();
+	    StateType ret = cb.makeConsolidatedStateType(knownas);
  	    return ret;
 	}
 	
 	
 
-	public ComponentBehavior getComponentBehavior() throws ContentError, ParseError {
-		ComponentBehavior ret = null;
+	public StateType getStateType() throws ContentError, ParseError {
+		StateType ret = null;
 		 
-		if (componentBehavior == null) {
-			makeComponentBehavior();
+		if (stateType == null) {
+			makeStateType();
 		}
-		ret = componentBehavior;
+		ret = stateType;
 		return ret;
 	}
 

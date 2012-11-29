@@ -4,12 +4,12 @@ public class ListChild {
 
 	
 	String listName;
-	ComponentBehavior componentBehavior;
+	StateType stateType;
 	
 	
-	public ListChild(String lnm, ComponentBehavior cb) {
+	public ListChild(String lnm, StateType cb) {
 		listName = lnm;
-		componentBehavior = cb;
+		stateType = cb;
 	}
 
 
@@ -17,12 +17,12 @@ public class ListChild {
 		return listName;
 	}
 	
-	public ComponentBehavior getComponentBehavior() {
-		return componentBehavior;
+	public StateType getStateType() {
+		return stateType;
 	}
 
 
 	public String getTypeName() {
-		return componentBehavior.getTypeName();
+		return stateType.getTypeName();
 	}
 }

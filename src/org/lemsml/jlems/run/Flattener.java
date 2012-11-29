@@ -251,7 +251,7 @@ public class Flattener {
 	
 	
 
-	public void exportTo(ComponentBehavior ret) {
+	public void exportTo(StateType ret) {
 
 		for (String s : indepsA) {
 			ret.addIndependentVariable(s);

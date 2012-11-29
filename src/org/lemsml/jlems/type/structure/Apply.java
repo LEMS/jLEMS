@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.run.ApplyBuilder;
 import org.lemsml.jlems.run.BuilderElement;
-import org.lemsml.jlems.run.ComponentBehavior;
+import org.lemsml.jlems.run.StateType;
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Children;
 import org.lemsml.jlems.type.Component;
@@ -20,11 +20,11 @@ public class Apply extends BuildElement {
  	
 	
 	public BuilderElement makeBuilder(Component cpt) throws ContentError, ParseError {
-		ArrayList<ComponentBehavior> acb = new ArrayList<ComponentBehavior>();
+		ArrayList<StateType> acb = new ArrayList<StateType>();
 		
 		ArrayList<Component> cs = cpt.getChildrenAL(components);
 		for (Component c : cs) {
-			acb.add(c.getComponentBehavior());
+			acb.add(c.getStateType());
 		}
 		
 		ApplyBuilder ret = new ApplyBuilder(components, acb);

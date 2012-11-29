@@ -59,12 +59,12 @@ public class PairFilterBuilder extends AbstractPostBuilder {
 			n1 += 1;
 		}
 		
-		E.info("Pair filter: from " + n0 + " kept " + n1);
+		E.info("Pair filter kept " + n1 + " out of " + n0 + " based on " + selexp);
 		 
 	}
 
 	@Override
-	public void consolidateComponentBehaviors() {
+	public void consolidateStateTypes() {
 		// TODO Auto-generated method stub
 		
 	}

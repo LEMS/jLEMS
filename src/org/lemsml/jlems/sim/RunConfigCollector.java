@@ -2,11 +2,11 @@ package org.lemsml.jlems.sim;
 
 import java.util.ArrayList;
 
-import org.lemsml.jlems.run.ComponentBehavior;
+import org.lemsml.jlems.run.StateType;
 import org.lemsml.jlems.run.RunConfig;
 import org.lemsml.jlems.run.RuntimeRecorder;
 
-public class RunConfigCollector implements ComponentBehaviorVisitor {
+public class RunConfigCollector implements StateTypeVisitor {
 
 	ArrayList<RunConfig> runConfigs;
 	
@@ -15,7 +15,7 @@ public class RunConfigCollector implements ComponentBehaviorVisitor {
 	}
 
 	@Override
-	public void visit(ComponentBehavior cb) {
+	public void visit(StateType cb) {
 		RunConfig rc = cb.getRunConfig();
 		if (rc != null) {
 			runConfigs.add(rc);

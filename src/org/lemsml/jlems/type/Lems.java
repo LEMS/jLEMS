@@ -10,7 +10,7 @@ import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.expression.Parser;
 import org.lemsml.jlems.expression.Valued;
 import org.lemsml.jlems.logging.E;
-import org.lemsml.jlems.run.ComponentBehavior;
+import org.lemsml.jlems.run.StateType;
 import org.lemsml.jlems.run.ConnectionError;
 import org.lemsml.jlems.run.Constants;
 import org.lemsml.jlems.run.EventManager;
@@ -337,7 +337,7 @@ public class Lems {
     
      
 
-    public StateInstance build(ComponentBehavior cptb, EventManager em) throws ContentError, ConnectionError, ParseError, RuntimeError {
+    public StateInstance build(StateType cptb, EventManager em) throws ContentError, ConnectionError, ParseError, RuntimeError {
       	Constants.setConstantsHM(getConstantsValueHM());
       	StateInstance ret = cptb.newInstance();
         ret.setEventManager(em);

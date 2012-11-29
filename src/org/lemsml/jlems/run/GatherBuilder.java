@@ -30,11 +30,11 @@ SelectionExpression selexp;
 			InstanceSet<StateInstance> iset = tgt.getInstanceSet(col);
 			iset.setItems(matches);
 			
-			E.info("GATHER BUILDER set " + tgt.id + " " + iset.size() + " from " + selexp);
+			E.info("Generated set of " + iset.size() +  " items(" + tgt.id + ")");
 	}
 
 	@Override
-	public void consolidateComponentBehaviors() {
+	public void consolidateStateTypes() {
 		// TODO Auto-generated method stub
 		
 	}

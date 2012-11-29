@@ -26,9 +26,7 @@ public class Gather extends BuildElement {
 		String sel = cpt.getPathParameterPath(pathParameter);
 		SelectionParser sp = new SelectionParser();
 		SelectionExpression selexp = sp.parse(sel);
-		
-		E.info("making a gather builder " + selexp + " collection=" + collection);
-		
+ 		
 		return new GatherBuilder(selexp, collection);
 		
 	}

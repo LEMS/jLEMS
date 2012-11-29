@@ -5,17 +5,17 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import org.lemsml.jlems.logging.E;
-import org.lemsml.jlems.run.ComponentBehavior;
+import org.lemsml.jlems.run.StateType;
 import org.lemsml.jlems.run.ExpressionDerivedVariable;
 import org.lemsml.jlems.run.FixedQuantity;
-import org.lemsml.jlems.run.MultiComponentBehavior;
+import org.lemsml.jlems.run.MultiStateType;
 import org.lemsml.jlems.run.PathDerivedVariable;
 import org.lemsml.jlems.run.VariableROC;
 
 public class ComponentGenerator {
 
 	
-	ArrayList<ComponentBehavior> aCB = new ArrayList<ComponentBehavior>();
+	ArrayList<StateType> aCB = new ArrayList<StateType>();
 	
  	
 	
@@ -27,7 +27,7 @@ public class ComponentGenerator {
 	 
 	
 	
-	public void addComponentBehavior(ComponentBehavior cb) {
+	public void addStateType(StateType cb) {
 		aCB.add(cb);
 	}
 	
@@ -43,8 +43,8 @@ public class ComponentGenerator {
 	
 	
 	public void buildMetaCode() {
-		HashMap<String, ComponentBehavior> cbHM = new HashMap<String, ComponentBehavior>();
-		for (ComponentBehavior cb : aCB) {
+		HashMap<String, StateType> cbHM = new HashMap<String, StateType>();
+		for (StateType cb : aCB) {
 			cbHM.put(cb.getComponentID(), cb);
 		}
 		
@@ -53,7 +53,7 @@ public class ComponentGenerator {
 		
 		GenPackage gp = new GenPackage("org.lemsml.generated");
 		
-		for (ComponentBehavior cb : aCB) {
+		for (StateType cb : aCB) {
 			String cbid = cb.getComponentID();
 			recAdd(gp, cb, cbid);
 		}
@@ -61,7 +61,7 @@ public class ComponentGenerator {
 	}
 		
 		
-	private void recAdd(GenPackage gp, ComponentBehavior cb, String cnm) {
+	private void recAdd(GenPackage gp, StateType cb, String cnm) {
 		MetaClass mc = makeMetaClass(gp, cb, cnm);
 		
 	 	
@@ -69,22 +69,22 @@ public class ComponentGenerator {
 		
 		GenPackage cgp = new GenPackage(cnm, gp);
 		
-		HashMap<String, ComponentBehavior> chm = cb.getChildHM();
+		HashMap<String, StateType> chm = cb.getChildHM();
 		for (String s : chm.keySet()) {
-			ComponentBehavior ccb = chm.get(s);
+			StateType ccb = chm.get(s);
 			E.info("Adding child cb " + cnm + " child=" + getCNM(ccb, s));
 			String chnm = getCNM(ccb, s);
 			recAdd(cgp, ccb, chnm);
 		}
 		
-		HashMap<String, MultiComponentBehavior> mchm = cb.getMultiHM();
+		HashMap<String, MultiStateType> mchm = cb.getMultiHM();
 		for (String s : mchm.keySet()) {
 			// TODO create abstract type s that exposes properties we need
-			ArrayList<ComponentBehavior> acb = mchm.get(s).getCBs();
+			ArrayList<StateType> acb = mchm.get(s).getCBs();
 		
 			int ctr = 0;
 			if (!acb.isEmpty()) {
-				for (ComponentBehavior ccb : acb) {
+				for (StateType ccb : acb) {
 					String acnm = getCNM(cb, s + ctr);
 					ctr += 1;
 					
@@ -100,7 +100,7 @@ public class ComponentGenerator {
 	
 	
 	 
-	private MetaClass makeMetaClass(GenPackage gp, ComponentBehavior cb, String cnm) {
+	private MetaClass makeMetaClass(GenPackage gp, StateType cb, String cnm) {
 		
 		
 		MetaClass ret = new MetaClass(gp, cnm);
@@ -113,14 +113,14 @@ public class ComponentGenerator {
 			ret.addVariable(s);
 		}
 		
-		HashMap<String, ComponentBehavior> chm = cb.getChildHM();
+		HashMap<String, StateType> chm = cb.getChildHM();
 		for (String s : chm.keySet()) {
 			ret.addObjectField(cnm, s, chm.get(s).getComponentID());
 		}
 		
-		HashMap<String, MultiComponentBehavior> mchm = cb.getMultiHM();
+		HashMap<String, MultiStateType> mchm = cb.getMultiHM();
 		for (String s : mchm.keySet()) {
-			ArrayList<ComponentBehavior> acb = mchm.get(s).getCBs();
+			ArrayList<StateType> acb = mchm.get(s).getCBs();
 			if (!acb.isEmpty()) {
 				ret.addObjectArrayField(cnm, arrayName(s), s);				
 			}
@@ -137,9 +137,9 @@ public class ComponentGenerator {
 		}
 		
 		for (String s : mchm.keySet()) {
-			ArrayList<ComponentBehavior> acb = mchm.get(s).getCBs();
+			ArrayList<StateType> acb = mchm.get(s).getCBs();
 			int ctr = 0;
-			for (ComponentBehavior scb : acb) {
+			for (StateType scb : acb) {
 				String acnm = getCNM(scb, s + ctr);
 				ctr += 1;
 				mc.addObjectToArrayInstantiator(acnm, arrayName(s), scb.getComponentID());
@@ -197,7 +197,7 @@ public class ComponentGenerator {
 
 
 
-	private String getCNM(ComponentBehavior cb, String ka) {
+	private String getCNM(StateType cb, String ka) {
 		String ret = cb.getComponentID();
 		if (ret == null) {
 			ret = ka; 

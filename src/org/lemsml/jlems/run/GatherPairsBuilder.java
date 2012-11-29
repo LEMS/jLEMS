@@ -38,7 +38,7 @@ public class GatherPairsBuilder extends AbstractPostBuilder {
 			iset.setItems(pmatches, qmatches);
 			
 			
-			E.info("GATHER PAIRS BUILDER, destid=" + tgt.id + " set=" + iset + " from " + pselexp + " and " + qselexp);
+			E.info("Selected pairs " + iset);
 			
 			BuildContext cbc = new BuildContext();
 			cbc.setWorkPairs(iset);
@@ -46,7 +46,7 @@ public class GatherPairsBuilder extends AbstractPostBuilder {
 	}
 
 	@Override
-	public void consolidateComponentBehaviors() {
+	public void consolidateStateTypes() {
 		// TODO Auto-generated method stub
 		
 	}

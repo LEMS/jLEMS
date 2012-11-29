@@ -100,7 +100,7 @@ public class DerivedVariable extends ExpressionValued implements Valued {
 
         if (select != null && select.trim().length() > 0) {
         	// TODO - could parse the select expression here into something that 
-        	// can operate on the ComponentBehavior tree?
+        	// can operate on the StateType tree?
         	select = select.trim();
         } else {
         	select = null;

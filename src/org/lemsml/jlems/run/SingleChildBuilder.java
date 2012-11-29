@@ -8,19 +8,19 @@ import org.lemsml.jlems.sim.ContentError;
 public class SingleChildBuilder extends BuilderElement implements ChildInstantiator {
 
 	 
-	ComponentBehavior componentBehavior;
+	StateType stateType;
 	
 	String name;
 	
-	public SingleChildBuilder(String snm, ComponentBehavior cb) {
+	public SingleChildBuilder(String snm, StateType cb) {
 		super(); 
-		componentBehavior = cb;
+		stateType = cb;
 		 name = snm;
 	}
 	
 	
 	public void childInstantiate(StateInstance parent) throws ContentError, ConnectionError, RuntimeError {
-		StateInstance sr = componentBehavior.newInstance();
+		StateInstance sr = stateType.newInstance();
  		sr.setParent(parent);
 		parent.addChild(name, (StateInstance)sr);
 	}
@@ -32,9 +32,9 @@ public class SingleChildBuilder extends BuilderElement implements ChildInstantia
 	}
 
 	@Override
-	public void consolidateComponentBehaviors() {
-		 if (componentBehavior != null) {
-			 componentBehavior = componentBehavior.getConsolidatedComponentBehavior("(child)");
+	public void consolidateStateTypes() {
+		 if (stateType != null) {
+			 stateType = stateType.getConsolidatedStateType("(child)");
 		 }	
 	}
  

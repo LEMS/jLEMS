@@ -5,17 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.lemsml.jlems.logging.E;
-import org.lemsml.jlems.run.ComponentBehavior;
+import org.lemsml.jlems.run.StateType;
 import org.lemsml.jlems.run.ExpressionDerivedVariable;
-import org.lemsml.jlems.run.MultiComponentBehavior;
+import org.lemsml.jlems.run.MultiStateType;
 import org.lemsml.jlems.run.PathDerivedVariable;
 import org.lemsml.jlems.run.VariableROC;
 
-public class ComponentBehaviorWriter {
+public class StateTypeWriter {
  
 	
 	
-	public void print(ComponentBehavior cb) {
+	public void print(StateType cb) {
 		StringBuilder sb = new StringBuilder();
 		
 		appendTo(sb, "", cb, "");
@@ -24,9 +24,9 @@ public class ComponentBehaviorWriter {
 	}
 	
 	
-	private void appendTo(final StringBuilder sb, String apfx, final ComponentBehavior cb, final String ka) {
+	private void appendTo(final StringBuilder sb, String apfx, final StateType cb, final String ka) {
 		String pfx = apfx;
-		sb.append(pfx + (ka.length() > 0 ? ka + ": " : "") + "ComponentBehavior " + cb.getComponentID() + "\n");
+		sb.append(pfx + (ka.length() > 0 ? ka + ": " : "") + "StateType " + cb.getComponentID() + "\n");
 		
 		pfx += "   ";
 		
@@ -66,7 +66,7 @@ public class ComponentBehaviorWriter {
 		
 		sb.append("\n");
 		
-		HashMap<String, ComponentBehavior> chm = cb.getChildHM();
+		HashMap<String, StateType> chm = cb.getChildHM();
 		if (!chm.isEmpty()) {
 			sb.append(pfx + "Children: " + chm.size() + "\n");
 			for (String s : chm.keySet()) {
@@ -74,19 +74,19 @@ public class ComponentBehaviorWriter {
 			}
 		}
 		
-		HashMap<String, MultiComponentBehavior> mcbhm = cb.getMultiHM();
+		HashMap<String, MultiStateType> mcbhm = cb.getMultiHM();
 		if (!mcbhm.isEmpty()) {
 		sb.append(pfx + "MultiChildren: " + mcbhm.size() + "\n");
 		for (String s : mcbhm.keySet()) {
-			MultiComponentBehavior mcb = mcbhm.get(s);
-			ArrayList<ComponentBehavior> acb = mcb.getCBs();
+			MultiStateType mcb = mcbhm.get(s);
+			ArrayList<StateType> acb = mcb.getCBs();
 			for (int i = 0; i < acb.size(); i++) {
 				appendTo(sb, pfx, acb.get(i), s + "[" + i + "]");				
 			}
 		}
 		}
 		
-		HashMap<String, ComponentBehavior> rhm = cb.getRefHM();
+		HashMap<String, StateType> rhm = cb.getRefHM();
 		if (!rhm.isEmpty()) {
 		sb.append(pfx + "Refs: " + rhm.size() + "\n");
 		for (String s : rhm.keySet()) {

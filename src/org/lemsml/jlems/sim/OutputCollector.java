@@ -2,10 +2,10 @@ package org.lemsml.jlems.sim;
 
 import java.util.ArrayList;
 
-import org.lemsml.jlems.run.ComponentBehavior;
+import org.lemsml.jlems.run.StateType;
 import org.lemsml.jlems.run.RuntimeOutput;
 
-public class OutputCollector implements ComponentBehaviorVisitor {
+public class OutputCollector implements StateTypeVisitor {
 
 	ArrayList<RuntimeOutput> outputs;
 	
@@ -14,7 +14,7 @@ public class OutputCollector implements ComponentBehaviorVisitor {
 	}
 
 	@Override
-	public void visit(ComponentBehavior cb) {
+	public void visit(StateType cb) {
 		ArrayList<RuntimeOutput> a = cb.getRuntimeOutputs();
 		if (a != null) {
 			outputs.addAll(a);

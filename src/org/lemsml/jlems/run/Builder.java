@@ -66,9 +66,9 @@ public class Builder {
 
 
 
-	public void consolidateComponentBehaviors() {
+	public void consolidateStateTypes() {
 		for (BuilderElement be : builderElements) {
-			be.consolidateComponentBehaviors();
+			be.consolidateStateTypes();
 		}
 	}
 }

@@ -39,10 +39,10 @@ public class ComponentRegime {
  
 	ArrayList<String> svars = new ArrayList<String>();
 	
-	ComponentBehavior parent;
+	StateType parent;
 	
 	
-	public ComponentRegime(ComponentBehavior cb, String snm, String tnm) {
+	public ComponentRegime(StateType cb, String snm, String tnm) {
 		parent = cb;
 		name = snm;
 		typeName = tnm;
@@ -282,7 +282,7 @@ public class ComponentRegime {
 	
 	
 
-	public ComponentRegime makeCopy(ComponentBehavior p) {
+	public ComponentRegime makeCopy(StateType p) {
 		ComponentRegime ret= new ComponentRegime(p, name, typeName);
 	
 		for (String s : indeps) {

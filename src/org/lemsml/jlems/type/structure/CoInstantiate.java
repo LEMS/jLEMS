@@ -3,7 +3,7 @@ package org.lemsml.jlems.type.structure;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.run.BuilderElement;
 import org.lemsml.jlems.run.CoBuilder;
-import org.lemsml.jlems.run.ComponentBehavior;
+import org.lemsml.jlems.run.StateType;
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Component;
 import org.lemsml.jlems.type.ComponentType;
@@ -39,14 +39,14 @@ public class CoInstantiate extends BuildElement {
 	
  
 	public BuilderElement makeBuilder(Component cpt) throws ContentError, ParseError {
-		ComponentBehavior cb = null;
+		StateType cb = null;
 		
 		if (component != null) {
 			Component c = cpt.getChild(component);
-			cb = c.getComponentBehavior();
+			cb = c.getStateType();
 			
 		} else if (r_component != null) {
-			cb = r_component.getComponentBehavior();
+			cb = r_component.getStateType();
 		}
 		
 

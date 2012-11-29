@@ -2,27 +2,27 @@ package org.lemsml.jlems.run;
 
 import java.util.ArrayList;
 
-import org.lemsml.jlems.sim.ComponentBehaviorVisitor;
+import org.lemsml.jlems.sim.StateTypeVisitor;
 import org.lemsml.jlems.sim.ContentError;
 
-public class MultiComponentBehavior {
+public class MultiStateType {
 
-	ArrayList<ComponentBehavior> cba;
+	ArrayList<StateType> cba;
 	
 	
-	public MultiComponentBehavior() {
-		cba = new ArrayList<ComponentBehavior>();
+	public MultiStateType() {
+		cba = new ArrayList<StateType>();
 	}
 	
 	
 	 
 
 	
-	public void add(ComponentBehavior cb) {
+	public void add(StateType cb) {
 		cba.add(cb);
 	}
 	
-	public ArrayList<ComponentBehavior> getCBs() {
+	public ArrayList<StateType> getCBs() {
 		return cba;
 	}
 	
@@ -30,15 +30,15 @@ public class MultiComponentBehavior {
 	// TODO - set knownAs (name of this array within parent) here instead of "multi"? 
 	public MultiInstance newInstance() throws ContentError, ConnectionError, RuntimeError {
 		MultiInstance mi =  new MultiInstance("", "multi");
-		for (ComponentBehavior cb : cba) {
+		for (StateType cb : cba) {
 			mi.add(cb.newInstance());
 		}
 		return mi;
 	}
 
 	
-	public void visitAll(ComponentBehaviorVisitor v) {
-		for (ComponentBehavior cb : cba) {
+	public void visitAll(StateTypeVisitor v) {
+		for (StateType cb : cba) {
 			cb.visitAll(v);
 		}
 		

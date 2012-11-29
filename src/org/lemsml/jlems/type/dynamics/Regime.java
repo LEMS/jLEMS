@@ -13,7 +13,7 @@ import org.lemsml.jlems.expression.Parser;
 import org.lemsml.jlems.expression.Valued;
 import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.ActionBlock;
-import org.lemsml.jlems.run.ComponentBehavior;
+import org.lemsml.jlems.run.StateType;
 import org.lemsml.jlems.run.ComponentRegime;
 import org.lemsml.jlems.run.ConditionAction;
 import org.lemsml.jlems.run.EventAction;
@@ -194,7 +194,7 @@ public class Regime implements Named {
 	
 
 
-	public ComponentRegime makeComponentRegime(ComponentBehavior cb, Component cpt, HashMap<String, Double> fixedHM) throws ContentError {
+	public ComponentRegime makeComponentRegime(StateType cb, Component cpt, HashMap<String, Double> fixedHM) throws ContentError {
 		 ComponentRegime ret = new ComponentRegime(cb, name, cpt.getComponentType().getName());
 		 
 		 if (b_initial) {

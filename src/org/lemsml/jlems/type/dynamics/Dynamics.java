@@ -15,7 +15,7 @@ import org.lemsml.jlems.expression.Parser;
 import org.lemsml.jlems.expression.Valued;
 import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.ActionBlock;
-import org.lemsml.jlems.run.ComponentBehavior;
+import org.lemsml.jlems.run.StateType;
 import org.lemsml.jlems.run.ComponentRegime;
 import org.lemsml.jlems.run.ConditionAction;
 import org.lemsml.jlems.run.EventAction;
@@ -281,9 +281,9 @@ public class Dynamics  {
 	}
 	 
 
-	public ComponentBehavior makeComponentBehavior(Component cpt, HashMap<String, Double> fixedHM) throws ContentError, ParseError {
+	public StateType makeStateType(Component cpt, HashMap<String, Double> fixedHM) throws ContentError, ParseError {
  		
-         ComponentBehavior ret = new ComponentBehavior(cpt.getID(), cpt.getComponentType().getName());
+         StateType ret = new StateType(cpt.getID(), cpt.getComponentType().getName());
 		 
          ret.setSimultaneous(simultaneous);
          

@@ -12,7 +12,7 @@ public class EventConnectionBuilder extends AbstractPostBuilder {
 	String from;
 	String to;
 	
-	ComponentBehavior receiverCB;
+	StateType receiverCB;
 	
 	String destAttachments;
 
@@ -153,7 +153,7 @@ public class EventConnectionBuilder extends AbstractPostBuilder {
 	}
 
 
-	public void setReceiverComponentBehavior(ComponentBehavior cb) {
+	public void setReceiverStateType(StateType cb) {
 		receiverCB = cb;
 	}
 
@@ -175,9 +175,9 @@ public class EventConnectionBuilder extends AbstractPostBuilder {
 
  
 	@Override
-	public void consolidateComponentBehaviors() {
+	public void consolidateStateTypes() {
 		 if (receiverCB != null) {
-			 receiverCB = receiverCB.getConsolidatedComponentBehavior("(receiver)");
+			 receiverCB = receiverCB.getConsolidatedStateType("(receiver)");
 		 }	
 	}
 

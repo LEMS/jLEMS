@@ -3,13 +3,13 @@ package org.lemsml.jlems.sim;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.lemsml.jlems.display.ComponentBehaviorWriter;
+import org.lemsml.jlems.display.StateTypeWriter;
 import org.lemsml.jlems.display.DataViewPort;
 import org.lemsml.jlems.display.DataViewer;
 import org.lemsml.jlems.display.DataViewerFactory;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.logging.E;
-import org.lemsml.jlems.run.ComponentBehavior;
+import org.lemsml.jlems.run.StateType;
 import org.lemsml.jlems.run.ConnectionError;
 import org.lemsml.jlems.run.EventManager;
 import org.lemsml.jlems.run.RunConfig;
@@ -25,8 +25,8 @@ import org.lemsml.jlems.type.Target;
 
 public class Sim extends LemsProcess {
 
-   ComponentBehavior rootBehavior;
-    ComponentBehavior targetBehavior;
+   StateType rootBehavior;
+    StateType targetBehavior;
     
      
     HashMap<String, DataViewer> dvHM;
@@ -59,9 +59,9 @@ public class Sim extends LemsProcess {
 	        throw new ContentError("No such component " + dr.component);
 	    }
  	
-	    rootBehavior = simCpt.getComponentBehavior();
+	    rootBehavior = simCpt.getStateType();
 	    
-	    // collect everything in the ComponentBehavior tree that makes a display
+	    // collect everything in the StateType tree that makes a display
 	    ArrayList<RuntimeOutput> runtimeOutputs = new ArrayList<RuntimeOutput>();
 	    OutputCollector oc = new OutputCollector(runtimeOutputs);
 	    rootBehavior.visitAll(oc);
@@ -104,10 +104,10 @@ public class Sim extends LemsProcess {
     
     public void run(RunConfig rc, boolean flatten) throws ConnectionError, ContentError, RuntimeError, ParseError {
    	    	
-  		ComponentBehavior raw = rc.getTarget();
+  		StateType raw = rc.getTarget();
   		
   		if (flatten) {
-  			targetBehavior = raw.getConsolidatedComponentBehavior("root");
+  			targetBehavior = raw.getConsolidatedStateType("root");
   		} else {
   			targetBehavior = raw;
   		}
@@ -178,7 +178,7 @@ public class Sim extends LemsProcess {
 
     
 	public void printCB() throws ContentError, ParseError {
-		ComponentBehaviorWriter cbw = new ComponentBehaviorWriter();
+		StateTypeWriter cbw = new StateTypeWriter();
 		for (RunConfig rc : runConfigs) {
 			
 			cbw.print(rc.getTarget());
@@ -189,11 +189,11 @@ public class Sim extends LemsProcess {
 	
 	
 	public void printFirstConsolidated() throws ContentError, ParseError {
-		ComponentBehaviorWriter cbw = new ComponentBehaviorWriter();
+		StateTypeWriter cbw = new StateTypeWriter();
 		if (!runConfigs.isEmpty()) {
 			RunConfig rc = runConfigs.get(0);
 			
-			ComponentBehavior cb = rc.getTarget().getConsolidatedComponentBehavior("root");
+			StateType cb = rc.getTarget().getConsolidatedStateType("root");
 			cbw.print(cb);
 		}
 		 

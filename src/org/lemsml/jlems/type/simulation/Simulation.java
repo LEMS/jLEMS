@@ -1,7 +1,7 @@
 package org.lemsml.jlems.type.simulation;
 
 import org.lemsml.jlems.logging.E;
-import org.lemsml.jlems.run.ComponentBehavior;
+import org.lemsml.jlems.run.StateType;
 import org.lemsml.jlems.run.RuntimeOutput;
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Component;
@@ -36,7 +36,7 @@ public class Simulation {
 	}
 	
 	
-	public void appendToBehavior(Component cpt, ComponentBehavior ret) throws ContentError {
+	public void appendToBehavior(Component cpt, StateType ret) throws ContentError {
 	 
 	 if (runs.size() > 0) {
 		 for (Run run : runs) {

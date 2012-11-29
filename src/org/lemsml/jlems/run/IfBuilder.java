@@ -23,7 +23,7 @@ public class IfBuilder extends BuilderElement {
 
 
 	@Override
-	public void consolidateComponentBehaviors() {
+	public void consolidateStateTypes() {
 		// TODO Auto-generated method stub
 		
 	}

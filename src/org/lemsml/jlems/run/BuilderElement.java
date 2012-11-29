@@ -12,6 +12,6 @@ public abstract class BuilderElement {
 		elts.add(be);
 	}
 
-	public abstract void consolidateComponentBehaviors();
+	public abstract void consolidateStateTypes();
   
 }

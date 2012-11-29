@@ -58,7 +58,7 @@ public class EventConnection extends BuildElement {
 		
 		if (receiver != null && cpt.hasAttribute(receiver)) {
 			Component receiverComponent = cpt.getChild(receiver);
-			ret.setReceiverComponentBehavior(receiverComponent.getComponentBehavior());
+			ret.setReceiverStateType(receiverComponent.getStateType());
 
             for (Assign ass : assigns) {
                 String ea = ass.getExposeAs();

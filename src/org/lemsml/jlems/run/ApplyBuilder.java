@@ -12,7 +12,7 @@ public class ApplyBuilder extends AbstractPostBuilder {
  
 	String listName;
  	
-	public ApplyBuilder(String mnm, ArrayList <ComponentBehavior> a) {
+	public ApplyBuilder(String mnm, ArrayList <StateType> a) {
 		super();
 		listName = mnm;
  	}
@@ -35,8 +35,8 @@ public class ApplyBuilder extends AbstractPostBuilder {
 	}
 
 	@Override
-	public void consolidateComponentBehaviors() {
-		E.missing();
+	public void consolidateStateTypes() {
+		// nothing to do here - we don't create any children directly
 	}
  
  

@@ -7,11 +7,11 @@ import java.util.Map.Entry;
 
 import org.lemsml.jlems.eval.DoubleEvaluator;
 import org.lemsml.jlems.logging.E;
-import org.lemsml.jlems.sim.ComponentBehaviorVisitor;
+import org.lemsml.jlems.sim.StateTypeVisitor;
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Component;
 
-public class ComponentBehavior {
+public class StateType {
 
 	String cptid;
 	String typeName;
@@ -44,16 +44,16 @@ public class ComponentBehavior {
 	
 	ArrayList<KScheme> kschemes = new ArrayList<KScheme>();
 	
-	HashMap<String, ComponentBehavior> refHM = new HashMap<String, ComponentBehavior>();
+	HashMap<String, StateType> refHM = new HashMap<String, StateType>();
 	
-	HashMap<String, ComponentBehavior> childHM = new HashMap<String, ComponentBehavior>();
+	HashMap<String, StateType> childHM = new HashMap<String, StateType>();
 	
 	
 	ArrayList<ListChild> listChildren = new ArrayList<ListChild>();
  
 	
 	// TODO get rid of these entirely
-	HashMap<String, MultiComponentBehavior> multiHM = new HashMap<String, MultiComponentBehavior>();
+	HashMap<String, MultiStateType> multiHM = new HashMap<String, MultiStateType>();
 	
 	HashMap<String, String> attSetHM = new HashMap<String, String>();
 
@@ -90,18 +90,18 @@ public class ComponentBehavior {
 	
 	// flattenedCB is genuinely flat - it could be the root flattened one, or one of its children, in the process 
 	// of flattening the root.
-	ComponentBehavior flattenedCB = null;
+	StateType flattenedCB = null;
 
 	// consolidated is a behavior tree in which any behaviors that are marked for flattening have been flattened
 	// but others remain as before
-	ComponentBehavior consolidatedCB = null;
+	StateType consolidatedCB = null;
 	
 	
 	HashMap<String, Double> der1, der2, der3, der4, vwk,  val1, val2, val3, val4;
 	
 	
 	
-	public ComponentBehavior(String sid, String tnm) {
+	public StateType(String sid, String tnm) {
 		cptid = sid;
 		typeName = tnm;
 		vars.add("t"); // TODO should just have one DoublePointer to t 
@@ -109,7 +109,7 @@ public class ComponentBehavior {
 	
     @Override
 	public String toString() {
-		return "ComponentBehavior, id=" + cptid + ", Type=" + typeName;
+		return "StateType, id=" + cptid + ", Type=" + typeName;
 	}
 	
 	public String getComponentID() {
@@ -182,7 +182,7 @@ public class ComponentBehavior {
 		
 		
 		for (ListChild lc : listChildren) {
-			StateInstance si = lc.getComponentBehavior().newInstance();
+			StateInstance si = lc.getStateType().newInstance();
 			uin.addListChild(lc.getTypeName(), lc.getListName(), si);
 		}
 		
@@ -631,17 +631,17 @@ public class ComponentBehavior {
 	}
 
 	
-	public void addRefComponentBehavior(String s, ComponentBehavior chb) {
+	public void addRefStateType(String s, StateType chb) {
 		refHM.put(s, chb);
 	}
 	
-	public void addChildComponentBehavior(String s, ComponentBehavior chb) {
+	public void addChildStateType(String s, StateType chb) {
 		childHM.put(s, chb);
 	}
 
 	
 	/*
-	public void addMultiComponentBehavior(String s, MultiComponentBehavior mcb) {
+	public void addMultiComponentBehavior(String s, MultiStateType mcb) {
 		E.info("Adding multhm name " + s + " " + mcb);
 		
  		multiHMNames.add(s);
@@ -652,22 +652,22 @@ public class ComponentBehavior {
 	}
 */
 	
-	public void addListComponentBehavior(String s, ComponentBehavior cb) {
+	public void addListStateType(String s, StateType cb) {
 		listChildren.add(new ListChild(s, cb));
 		addMulti(s, cb);
 	}
 	
 	
 	private void clearMultis() {
-		multiHM = new HashMap<String, MultiComponentBehavior>();
+		multiHM = new HashMap<String, MultiStateType>();
 	}
 	
 		
-	private void addMulti(String s, ComponentBehavior cb) {	
+	private void addMulti(String s, StateType cb) {	
 		if (multiHM.containsKey(s)) {
 			multiHM.get(s).add(cb);
 		} else {
-			MultiComponentBehavior mcb = new MultiComponentBehavior();
+			MultiStateType mcb = new MultiStateType();
 			mcb.add(cb);
 			multiHM.put(s, mcb);
 		}
@@ -769,15 +769,15 @@ public class ComponentBehavior {
 	
 	
 	
-	public ComponentBehavior getConsolidatedComponentBehavior(String knownas) {
+	public StateType getConsolidatedStateType(String knownas) {
 		if (consolidatedCB == null) {
-			consolidatedCB = makeConsolidatedBehavior(knownas);
+			consolidatedCB = makeConsolidatedStateType(knownas);
 		}
 		return consolidatedCB;
 	}
 	
 	
-	public ComponentBehavior getFlattenedComponentBehavior(String knownas) {
+	public StateType getFlattenedStateType(String knownas) {
 		if (flattenedCB == null) {
 			flattenedCB = makeFlattened(knownas);
 		}
@@ -786,11 +786,11 @@ public class ComponentBehavior {
 	
 	 
 	
-	public ComponentBehavior makeConsolidatedBehavior(String knownas) {
-		ComponentBehavior ret = null;
+	public StateType makeConsolidatedStateType(String knownas) {
+		StateType ret = null;
 		if (simultaneous) {
 			E.info("********* Flattening " + knownas + " (id=" + cptid + ")");
-			ret = getFlattenedComponentBehavior(knownas);
+			ret = getFlattenedStateType(knownas);
 		} else {
 			ret = makeChildConsolidated();
 		}
@@ -798,23 +798,23 @@ public class ComponentBehavior {
 	}
 	
 	
-	public ComponentBehavior makeChildConsolidated() {
-		ComponentBehavior ret = makeShallowCopy();
+	public StateType makeChildConsolidated() {
+		StateType ret = makeShallowCopy();
 		ret.consolidateChildren();
 		return ret;
 	}
 	
 	
-	public HashMap<String, ComponentBehavior> getChildHM() {
+	public HashMap<String, StateType> getChildHM() {
 		return childHM;
 	}
 	
 
-	public HashMap<String, ComponentBehavior> getRefHM() {
+	public HashMap<String, StateType> getRefHM() {
 		return refHM;
 	}
 	
-	public HashMap<String, MultiComponentBehavior> getMultiHM() {
+	public HashMap<String, MultiStateType> getMultiHM() {
 		return multiHM;
 	}
 		
@@ -824,8 +824,8 @@ public class ComponentBehavior {
 		// E.info("Consolidating children in " + knownas + (cptid != null ? "(id=" + cptid + ")" : ""));
 		for (String sch : childHM.keySet()) {
 			// E.info("Child: " + sch);
-			ComponentBehavior cbch = childHM.get(sch);
-			ComponentBehavior fcbch = cbch.getConsolidatedComponentBehavior(sch);
+			StateType cbch = childHM.get(sch);
+			StateType fcbch = cbch.getConsolidatedStateType(sch);
 			childHM.put(sch,  fcbch);
 		}
 		
@@ -834,34 +834,34 @@ public class ComponentBehavior {
 		clearMultis();
 		for (ListChild lc : listChildren) {
 			String lnm = lc.getListName();
-			addMulti(lnm, lc.getComponentBehavior().getConsolidatedComponentBehavior(lnm));
+			addMulti(lnm, lc.getStateType().getConsolidatedStateType(lnm));
 		}
 		
 		/*
 		for (String sm : multiHM.keySet()) {
 			// E.info("multi child " + sm);
-			MultiComponentBehavior mcb = multiHM.get(sm);
-			ArrayList<ComponentBehavior> af = new ArrayList<ComponentBehavior>();
-			for (ComponentBehavior cbv : mcb.getCBs()) {
+			MultiStateType mcb = multiHM.get(sm);
+			ArrayList<StateType> af = new ArrayList<StateType>();
+			for (StateType cbv : mcb.getCBs()) {
 				af.add(cbv.getConsolidatedComponentBehavior(sm));
 			}
 			
-			MultiComponentBehavior fmcb = new MultiComponentBehavior(af);
+			MultiStateType fmcb = new MultiStateType(af);
 			multiHM.put(sm, fmcb);
 		}
 		*/
 		
 		
 		for (String sm : refHM.keySet()) {
- 			ComponentBehavior cbr = refHM.get(sm);
-			ComponentBehavior fcbr = cbr.getConsolidatedComponentBehavior(sm);
+ 			StateType cbr = refHM.get(sm);
+			StateType fcbr = cbr.getConsolidatedStateType(sm);
 			refHM.put(sm,  fcbr);
 		}
 		
 		
 		if (builders != null) {
 			for (Builder b : builders) {
-				b.consolidateComponentBehaviors();
+				b.consolidateStateTypes();
 			}
 		}
 		
@@ -869,7 +869,7 @@ public class ComponentBehavior {
 	
 	
 	
-	public ComponentBehavior makeFlattened(String knownas) {	
+	public StateType makeFlattened(String knownas) {	
 		Flattener flattener = new Flattener();
 
 		// E.info("FLAT making flattened of " + typeName + " " + cptid + " " + indeps);
@@ -877,31 +877,31 @@ public class ComponentBehavior {
 		addToFlattener(null, flattener);
 		
 		for (String sch : childHM.keySet()) {
-			ComponentBehavior cbch = childHM.get(sch);
-			ComponentBehavior cbchflat = cbch.getFlattenedComponentBehavior(sch);
+			StateType cbch = childHM.get(sch);
+			StateType cbchflat = cbch.getFlattenedStateType(sch);
 			cbchflat.addToFlattener(sch, flattener);	
 		}
 		
 		for (String sm : multiHM.keySet()) {
 			E.info("multi child " + sm);
-			MultiComponentBehavior mcb = multiHM.get(sm);
+			MultiStateType mcb = multiHM.get(sm);
  			int ictr = 0;
-			for (ComponentBehavior cbv : mcb.getCBs()) {
-				ComponentBehavior mcf = cbv.getFlattenedComponentBehavior(sm);
+			for (StateType cbv : mcb.getCBs()) {
+				StateType mcf = cbv.getFlattenedStateType(sm);
 				 mcf.addToFlattener(sm + ictr, flattener);
 				ictr += 1;
 			}	 
 		}
 		
 		for (String sm : refHM.keySet()) {
- 			ComponentBehavior cbr = refHM.get(sm);
-			ComponentBehavior fcbr = cbr.getFlattenedComponentBehavior(sm);
+ 			StateType cbr = refHM.get(sm);
+			StateType fcbr = cbr.getFlattenedStateType(sm);
 			fcbr.addToFlattener(sm, flattener);
 		}
  		
 		flattener.resolvePaths();
 		
-		ComponentBehavior ret = new ComponentBehavior(cptid, typeName);
+		StateType ret = new StateType(cptid, typeName);
 		ret.flattened = true;
 		
 		flattener.exportTo(ret);
@@ -990,25 +990,25 @@ public class ComponentBehavior {
 
 
 	
-	public ComponentBehavior makeShallowCopy() {
-		ComponentBehavior ret = new ComponentBehavior(cptid, typeName);
+	public StateType makeShallowCopy() {
+		StateType ret = new StateType(cptid, typeName);
 	
 		for (String s : indeps) {
 			ret.addIndependentVariable(s);
 		}
 		
 		for (String s : childHM.keySet()) {
-			ret.addChildComponentBehavior(s, childHM.get(s)); //.makeShallowCopy());
+			ret.addChildStateType(s, childHM.get(s)); //.makeShallowCopy());
 		}
 		
 		// TODO cloning refs?
 		for (String s : refHM.keySet()) {
-			ret.addRefComponentBehavior(s, refHM.get(s)); // .makeShallowCopy());
+			ret.addRefStateType(s, refHM.get(s)); // .makeShallowCopy());
 		}
 		
 	 
 		for (ListChild lc : listChildren) {
-			ret.addListComponentBehavior(lc.getListName(), lc.getComponentBehavior());
+			ret.addListStateType(lc.getListName(), lc.getStateType());
 		}
 		
 		//for (String s : multiHM.keySet()) {
@@ -1118,7 +1118,7 @@ public class ComponentBehavior {
 	}
 	
 	
-	public void visitAll(ComponentBehaviorVisitor v) {
+	public void visitAll(StateTypeVisitor v) {
 		v.visit(this);
 		
 		for (String s : childHM.keySet()) {
