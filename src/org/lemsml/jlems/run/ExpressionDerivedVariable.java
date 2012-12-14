@@ -44,7 +44,7 @@ public class ExpressionDerivedVariable {
 		return exposeAs;
 	}
 	
-	public String getVarName() {
+	public String getVariableName() {
 		return varname;
 	}
 

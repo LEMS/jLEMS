@@ -1,4 +1,4 @@
-package org.lemsml.jlems.codger;
+package org.lemsml.jlems.codger.metaclass;
 
 public abstract class AbstractMethodArgument {
 	public String name;
@@ -8,6 +8,9 @@ public abstract class AbstractMethodArgument {
 	}
 
 	public abstract String generateJava();
+
+	public abstract String generateCallJava();
+	 
 	 
 	
 }

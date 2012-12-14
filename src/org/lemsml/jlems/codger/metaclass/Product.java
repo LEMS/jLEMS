@@ -1,4 +1,5 @@
-package org.lemsml.jlems.codger;
+package org.lemsml.jlems.codger.metaclass;
+
 
 public class Product extends AbstractExpression {
 

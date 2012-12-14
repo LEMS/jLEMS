@@ -7,5 +7,8 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/junit-4.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-compiler-jdk.jar"/>
+	<classpathentry kind="lib" path="lib/commons-compiler.jar"/>
+	<classpathentry kind="lib" path="lib/janino.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

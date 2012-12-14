@@ -15,7 +15,7 @@ public class VariableROC {
 		rateexp = das;
 	}
 
-	public String getVarName() {
+	public String getVariableName() {
 		return varname;
 	}
 

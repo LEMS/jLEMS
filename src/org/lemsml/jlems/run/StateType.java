@@ -148,6 +148,26 @@ public class StateType {
             return pathderiveds;
     }
 	
+    
+    
+    public HashSet<String> getAllIndeps() {
+    	HashSet<String> ret = new HashSet<String>();
+    	ret.addAll(getIndeps());
+    	for (ListChild lc : listChildren) {
+    		ret.addAll(lc.getStateType().getAllIndeps());
+    	}
+    	for (String s : childHM.keySet()) {
+    		ret.addAll(childHM.get(s).getAllIndeps());
+    	}
+    	
+    	return ret;
+    }
+    
+    
+    
+    
+    
+    
 	public StateInstance newInstance() throws ContentError, ConnectionError, RuntimeError {
 	 
 		StateInstance uin = new StateInstance(this);
@@ -589,7 +609,7 @@ public class StateType {
 	public void fix() {
 		HashSet<String> vHS = new HashSet<String>();
 		for (VariableROC vroc : rates) {
-			String vnm = vroc.getVarName();
+			String vnm = vroc.getVariableName();
 			vars.add(vnm);
 			vHS.add(vnm);
 		}
@@ -600,7 +620,7 @@ public class StateType {
 			}
 		}
 		for (PathDerivedVariable pdv : pathderiveds) {
-			String s = pdv.getVarName();
+			String s = pdv.getVariableName();
 			if (!vHS.contains(s)) {
 				vars.add(s);
 				vHS.add(s);

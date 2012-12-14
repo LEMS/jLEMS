@@ -1,8 +1,9 @@
-package org.lemsml.jlems.codger;
+package org.lemsml.jlems.codger.metaclass;
 
 import java.util.ArrayList;
+
  
-public class MetaConstructor {
+public class Constructor {
 
 	 
 	ArrayList<Instantiation> instantiations = new ArrayList<Instantiation>();

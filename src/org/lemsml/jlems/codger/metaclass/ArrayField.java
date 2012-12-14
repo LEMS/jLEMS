@@ -1,12 +1,13 @@
-package org.lemsml.jlems.codger;
+package org.lemsml.jlems.codger.metaclass;
 
-public class ObjectArrayField extends AbstractMetaField {
+
+public class ArrayField extends AbstractField {
 
 	String type;
 	
 	String pack;
 	
-	public ObjectArrayField(String p, String nm, String typ) {
+	public ArrayField(String p, String nm, String typ) {
 		super(nm);
 		pack = p;
 		type = typ;

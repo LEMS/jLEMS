@@ -78,7 +78,7 @@ public class PathDerivedVariable {
     
     
 
-    public String getVarName() {
+    public String getVariableName() {
         return varname;
     }
 

@@ -82,7 +82,7 @@ public class RegimeStateInstance implements StateRunnable  {
 	
 	public void setExpressionDerived(ArrayList<ExpressionDerivedVariable> exderiveds) {
 		for (ExpressionDerivedVariable edv : exderiveds) {
-			checkPut(edv.getVarName(), 0.0);
+			checkPut(edv.getVariableName(), 0.0);
 		}
 	}
 	

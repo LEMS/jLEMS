@@ -63,7 +63,7 @@ public class Flattener {
 		known.addAll(indepsA);
 		known.addAll(svA);
 		for (VariableROC vr : rocA) {
-			known.add(vr.getVarName());
+			known.add(vr.getVariableName());
 		}
 			
 		
@@ -79,7 +79,7 @@ public class Flattener {
 				if (edv.onlyDependsOn(known)) {
 					justAdded.add(edv);
 					totalAdded.add(edv);
-					known.add(edv.getVarName());
+					known.add(edv.getVariableName());
 					nadded += 1;
 				}
 			}
@@ -131,7 +131,7 @@ public class Flattener {
 				if (elts.length == 0) {
 					DCon dcon = new DCon(0.);
 					DBase db = new DBase(dcon);
-					edvA.add(new ExpressionDerivedVariable(pdv.getVarName(), db));
+					edvA.add(new ExpressionDerivedVariable(pdv.getVariableName(), db));
 					
 				} else {
 					AbstractDVal wk = new DVar(elts[0]);
@@ -149,7 +149,7 @@ public class Flattener {
 						 }
 					}
 					DBase db = new DBase(wk);
-					edvA.add(new ExpressionDerivedVariable(pdv.getVarName(), db));
+					edvA.add(new ExpressionDerivedVariable(pdv.getVariableName(), db));
 				}
 				
 			 
@@ -165,7 +165,7 @@ public class Flattener {
 	
 	private void substitutePathDerived() {
 		for (PathDerivedVariable pdv : pdvA) {
-			String vnm = pdv.getVarName();
+			String vnm = pdv.getVariableName();
 			String pth = pdv.getPath();
 			
 			// E.info("ZZZ sub time " + pth + " " + vnm);
@@ -219,15 +219,15 @@ public class Flattener {
 		ret.addAll(svA);
 		ret.addAll(indepsA);
 		for (PathDerivedVariable pdv : pdvA) {
- 			ret.add(pdv.getVarName());
+ 			ret.add(pdv.getVariableName());
  		}
  		
 		for (ExpressionDerivedVariable edv : edvA) {
- 			ret.add(edv.getVarName());
+ 			ret.add(edv.getVariableName());
  		}
  		
 		for (VariableROC vr : rocA) {
- 			ret.add(vr.getVarName());
+ 			ret.add(vr.getVariableName());
  		}
 		return ret;
 	}

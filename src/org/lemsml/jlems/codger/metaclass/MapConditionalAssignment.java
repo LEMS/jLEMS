@@ -1,6 +1,7 @@
-package org.lemsml.jlems.codger;
+package org.lemsml.jlems.codger.metaclass;
 
 import java.util.HashMap;
+
 
  
 
@@ -24,7 +25,7 @@ public class MapConditionalAssignment extends AbstractOperation {
 	@Override
 	public String generateJava() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(AbstractMetaField.defaultDeclare(varType, varname));
+		sb.append(AbstractField.defaultDeclare(varType, varname));
 		sb.append("\n");
 		sb.append("if (" + fname + ".equals(\"NONE\") {\n" + "}");
 		for (String s : map.keySet()) {

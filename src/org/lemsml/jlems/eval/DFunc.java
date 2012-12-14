@@ -31,7 +31,7 @@ public class DFunc extends AbstractDVal {
 	
         @Override
         public String toExpression() {
-                return fname + "(" + arg  + ")";
+                return fname + "(" + arg.toExpression() + ")";
         }
 
      

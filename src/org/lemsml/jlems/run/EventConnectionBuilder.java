@@ -65,7 +65,7 @@ public class EventConnectionBuilder extends AbstractPostBuilder {
             		try {
 					double d = edv.evalptr(baseHM);
 					
-					String vnm = edv.getVarName();
+					String vnm = edv.getVariableName();
 					rsi.setNewVariable(vnm, d);
 					//E.info("Set new var " + vnm + " " + d);
             		} catch (RuntimeError re) {
@@ -123,7 +123,7 @@ public class EventConnectionBuilder extends AbstractPostBuilder {
 				//   E.info("Evaluating " + edv + " using "+ baseHM);
 				try {
 					double d = edv.evalptr(baseHM);
-					String vnm = edv.getVarName();
+					String vnm = edv.getVariableName();
 					st.setNewVariable(vnm, d);
 					//E.info("Set new var " + vnm + " " + d);
 				} catch (RuntimeError re) {

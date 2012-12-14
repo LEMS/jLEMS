@@ -1,11 +1,11 @@
-package org.lemsml.jlems.codger;
+package org.lemsml.jlems.codger.metaclass;
 
-public class FixedMetaField extends AbstractMetaField {
+public class FixedField extends AbstractField {
 
 	
 	double value;
 	
-	public FixedMetaField(String nm, double val) {
+	public FixedField(String nm, double val) {
 		super(nm);
 		value = val;
 	}

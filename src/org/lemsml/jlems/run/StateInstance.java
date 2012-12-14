@@ -303,7 +303,7 @@ public class StateInstance implements StateRunnable {
 
 	public void setExpressionDerived(ArrayList<ExpressionDerivedVariable> exderiveds) {
 		for (ExpressionDerivedVariable edv : exderiveds) {
-			varHM.put(edv.getVarName(), new DoublePointer(0.));
+			varHM.put(edv.getVariableName(), new DoublePointer(0.));
 		}
 	}
 

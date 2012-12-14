@@ -117,7 +117,7 @@ public class StateTypeWriter {
 	private String makeRatesList(final List<VariableROC> rates) {
 		String ret = "";
 		for (VariableROC vr : rates) {
-			ret += "            " + vr.getVarName() + " = " + vr.getTextExpression() + "\n";
+			ret += "            " + vr.getVariableName() + " = " + vr.getTextExpression() + "\n";
 		}
 		return ret;
 	}
@@ -125,7 +125,7 @@ public class StateTypeWriter {
 	private String makeEDVList(final List<ExpressionDerivedVariable> arrayList) {
 		String ret =  "";
 		for (ExpressionDerivedVariable edv : arrayList) {
-			ret += ("    " + edv.getVarName() + " = " + edv.getExpressionString() + "\n");
+			ret += ("    " + edv.getVariableName() + " = " + edv.getExpressionString() + "\n");
 		}
 		return ret;
 		
@@ -142,7 +142,7 @@ public class StateTypeWriter {
 	private String makePDVList(List<PathDerivedVariable> arrayList) {
 		String ret = " ";
 	 	for (PathDerivedVariable vr : arrayList) {
-			ret += "    " + vr.getVarName() + " = " + vr.getPath() + "\n";
+			ret += "    " + vr.getVariableName() + " = " + vr.getPath() + "\n";
 		}
 		return ret;
 	}

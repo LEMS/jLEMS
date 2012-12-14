@@ -193,7 +193,7 @@ public class ComponentRegime {
 		
 		HashSet<String> vHS = new HashSet<String>();
 		for (VariableROC vroc : rates) {
-			String vnm = vroc.getVarName();
+			String vnm = vroc.getVariableName();
 			vars.add(vnm);
 			vHS.add(vnm);
 		}
@@ -205,7 +205,7 @@ public class ComponentRegime {
 		}
  
 		for (PathDerivedVariable pdv : pathderiveds) {
-			String s = pdv.getVarName();
+			String s = pdv.getVariableName();
 			if (!vHS.contains(s)) {
 				vars.add(s);
 				vHS.add(s);

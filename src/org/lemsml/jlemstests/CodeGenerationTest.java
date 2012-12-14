@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
-import org.lemsml.jlems.codger.ComponentGenerator;
+import org.lemsml.jlems.codger.StateTypeGenerator;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.ConnectionError;
@@ -20,6 +20,7 @@ import org.lemsml.jlems.type.Lems;
 import org.lemsml.jlems.xml.XMLException;
 import org.lemsml.jlemsio.logging.DefaultLogger;
 import org.lemsml.jlemsio.reader.FileInclusionReader;
+import org.lemsml.jlemsio.util.FileUtil;
 
 
 // N.B. - not a test yet, just for development
@@ -44,14 +45,16 @@ public class CodeGenerationTest {
     @Test
     public void runExample1() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException {
     	File f1 = new File("examples/example1.xml");
- 		boolean ret = generateFromFile(f1, "na");
+    	
+    	File f2 = new File("src/org/lemsml/dynamic");
+ 		boolean ret = generateFromFile(f1, "na", f2);
  		assertTrue("Example 1", ret);
     }
     
     
     
     
-    public boolean generateFromFile(File f, String tgtid) throws ContentError,
+    public boolean generateFromFile(File f, String tgtid, File destdir) throws ContentError,
     		ConnectionError, ParseError, IOException, RuntimeError, ParseException, 
     		BuildException, XMLException {
     	E.info("Loading LEMS file from: " + f.getAbsolutePath());
@@ -67,19 +70,26 @@ public class CodeGenerationTest {
 
         Lems lems = sim.getLems();
         
-        ComponentGenerator cg = new ComponentGenerator();
-        for (Component cpt : lems.getComponents()) {
-        	E.info("Adding cpt " + cpt.getID());
-        	cg.addStateType(cpt.getStateType());
-        }
+        StateTypeGenerator cg = new StateTypeGenerator();
         
+        Component cna = lems.getComponent("na");
+        cg.addStateType(cna.getStateType());
+        
+        
+        //for (Component cpt : lems.getComponents()) {
+        //	E.info("Adding cpt " + cpt.getID());
+        //	cg.addStateType(cpt.getStateType());
+        //}
         
 		
 		String srcCode = cg.getCombinedJavaSource();
 		
-				// cg.getJavaSource(tgtid);
+		cg.writeSourceFiles(destdir);
+
+		// cg.getJavaSource(tgtid);
 		
 		E.info("Generated code:\n\n" + srcCode);
+		 
 		
 		return true;
 		

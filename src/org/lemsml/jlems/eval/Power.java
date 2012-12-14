@@ -20,9 +20,9 @@ public class Power extends AbstractDOp {
 		return Math.pow(left.eval(), right.eval());
 	}
 
-        @Override
-        public String toExpression() {
-                return "("+left.toExpression() +" ^ "+ right.toExpression() +")";
-        }
+	@Override
+	public String toExpression() {
+		return " pow(" + left.toExpression() + ", " + right.toExpression() + ")";
+    }
  
 }

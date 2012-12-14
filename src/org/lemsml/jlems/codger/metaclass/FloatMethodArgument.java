@@ -1,4 +1,4 @@
-package org.lemsml.jlems.codger;
+package org.lemsml.jlems.codger.metaclass;
 
 public class FloatMethodArgument extends AbstractMethodArgument {
 
@@ -9,6 +9,10 @@ public class FloatMethodArgument extends AbstractMethodArgument {
  
 	public String generateJava() {
 		return "double " + name;
+	}
+	
+	public String generateCallJava() {
+		return name;
 	}
 	
 }
