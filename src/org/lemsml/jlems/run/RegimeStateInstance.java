@@ -7,7 +7,7 @@ import org.lemsml.jlems.display.LineDisplay;
 import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.sim.ContentError;
 
-public class RegimeStateInstance implements StateRunnable  {
+public class RegimeStateInstance {
 
 	ComponentRegime uclass;
 	
@@ -234,25 +234,11 @@ public class RegimeStateInstance implements StateRunnable  {
 		return uclass.getName();
 	}
 
+	public void evaluate(StateInstance stateInstance) {
+		E.missing();
+	}
+
 	 
-	@Override
-	public HashMap<String, DoublePointer> getVariables() {
-		E.missing();
-		return null;
-	}
-
-	@Override
-	public void setNewVariable(String string, double d) {
-		E.missing();
-		
-	}
-
-	@Override
-	public void evaluate(StateRunnable parent) throws RuntimeError,
-			ContentError {
-		E.missing();
-	}
- 
 
 	
 	

@@ -22,8 +22,8 @@ public class StateInstance implements StateRunnable {
 	InPort firstIn;
 	boolean hasChildren = false;
 
-	ArrayList<StateInstance> childA;
-	HashMap<String, StateInstance> childHM;
+	ArrayList<StateRunnable> childA;
+	HashMap<String, StateRunnable> childHM;
 	
 	
 	ArrayList<StateListChild> stateListChildren;
@@ -36,12 +36,13 @@ public class StateInstance implements StateRunnable {
 	MultiInstance onlyAMI = null;
 	
 	boolean singleIS = false;
-	InstanceSet<StateInstance> onlyIS = null;
+	InstanceSet<StateRunnable> onlyIS = null;
 	boolean resolvedPaths = false;
+
 	HashMap<String, StateInstance> pathSIHM;
 	HashMap<String, ArrayList<StateInstance>> pathAHM;
 
-	HashMap<String, StateInstance> idSIHM;
+	HashMap<String, StateRunnable> idSIHM;
 	boolean hasSchemes = false;
 	ArrayList<KSchemeInst> schemeA;
 	HashMap<String, KSchemeInst> schemeHM;
@@ -49,11 +50,11 @@ public class StateInstance implements StateRunnable {
 	HashMap<String, RegimeStateInstance> regimeHM;
 
 	RegimeStateInstance activeRegime = null;
-	HashMap<String, InstanceSet<StateInstance>> instanceSetHM;
-	HashMap<String, InstancePairSet<StateInstance>> instancePairSetHM;
+	HashMap<String, InstanceSet<StateRunnable>> instanceSetHM;
+	HashMap<String, InstancePairSet<StateRunnable>> instancePairSetHM;
 	ArrayList<DestinationMap> dmaps;
 	ArrayList<Builder> builders;
-	StateInstance parent;
+	StateRunnable parent;
 	Object work; // just a a cache - TODO not a good solution
 	boolean built = false;
 	boolean initialized = false;
@@ -61,7 +62,7 @@ public class StateInstance implements StateRunnable {
 
 	boolean debug = false;
 
-	EventManager eventManager;
+	// EventManager eventManager;
 	
 	
 	public StateInstance() {
@@ -78,11 +79,11 @@ public class StateInstance implements StateRunnable {
 		return id;
 	}
 
-	public void setParent(StateInstance p) {
+	public void setParent(StateRunnable p) {
 		parent = p;
 	}
 
-	public StateInstance getParent() {
+	public StateRunnable getParent() {
 		return parent;
 	}
 
@@ -95,7 +96,7 @@ public class StateInstance implements StateRunnable {
 		return currentTime;
 	}
 	
-	
+	/*
 	public void setEventManager(EventManager em) {
 		eventManager = em;
 	}
@@ -113,6 +114,7 @@ public class StateInstance implements StateRunnable {
 		}
 		return ret;
 	}
+	*/
 	
 
 	public void initialize(StateRunnable parent) throws RuntimeError, ContentError {
@@ -125,7 +127,7 @@ public class StateInstance implements StateRunnable {
 		}
 
 		if (hasChildren) {
-			for (StateInstance ch : childA) {
+			for (StateRunnable ch : childA) {
 				ch.initialize(this);
 			}
 		}
@@ -148,7 +150,7 @@ public class StateInstance implements StateRunnable {
 
 		// Once more
 		if (hasChildren) {
-			for (StateInstance ch : childA) {
+			for (StateRunnable ch : childA) {
 				ch.initialize(this);
 			}
 		}
@@ -181,7 +183,7 @@ public class StateInstance implements StateRunnable {
 		}
 
 		if (hasChildren) {
-			for (StateInstance ch : childA) {
+			for (StateRunnable ch : childA) {
 				ch.evaluate(this);
 			}
 		}
@@ -221,7 +223,7 @@ public class StateInstance implements StateRunnable {
 		}
 
 		if (hasChildren) {
-			for (StateInstance ch : childA) {
+			for (StateRunnable ch : childA) {
 				ch.advance(this, t, dt);
 			}
 		}
@@ -394,8 +396,8 @@ public class StateInstance implements StateRunnable {
 		return ret;
 	}
 
-	public StateInstance getChild(String snm) throws ConnectionError {
-		StateInstance ret = null;
+	public StateRunnable getChild(String snm) throws ConnectionError {
+		StateRunnable ret = null;
 
 		if (snm.startsWith("[") && singleAMI) {
 			int idx = Integer.parseInt(snm.substring(1, snm.length() - 1));
@@ -409,8 +411,8 @@ public class StateInstance implements StateRunnable {
 			// TODO this is rather adhoc for resolving paths - should be
 			// external
 			if (childA != null) {
-				for (StateInstance si : childA) {
-					if (snm.equals(si.uclass.getComponentID())) {
+				for (StateRunnable si : childA) {
+					if (snm.equals(si.getComponentID())) {
 						ret = si;
 						break;
 					}
@@ -418,7 +420,7 @@ public class StateInstance implements StateRunnable {
 			}
 			if (ret == null && multiA != null) {
 				for (MultiInstance mi : multiA) {
-					for (StateInstance sr : mi.getStateInstances()) {
+					for (StateRunnable sr : mi.getStateInstances()) {
 						if (sr == null) {
 							throw new ConnectionError("null sr in multi instance?");
 
@@ -466,16 +468,16 @@ public class StateInstance implements StateRunnable {
 			StringBuilder err = new StringBuilder("Problem getting exposed var " + varname + " in: " + this + "\n" + 
 					"Exposed: " + expHM + "\n" + "Vars: " + varHM + "\n");
 			if (childA != null) {
-				for (StateInstance si : childA) {
-					err.append("Child: " + si + ", vars: " + si.varHM + "\n");
+				for (StateRunnable si : childA) {
+					err.append("Child: " + si + ", vars: " + si.getVariables() + "\n");
 				}
 			} else {
 				err.append("childA is null\n");
 			}
 			if (childHM != null) {
 				for (String k : childHM.keySet()) {
-					StateInstance si = childHM.get(k);
-					err.append("Child " + k + ": " + si + ", vars: " + si.varHM + "\n");
+					StateRunnable si = childHM.get(k);
+					err.append("Child " + k + ": " + si + ", vars: " + si.getVariables() + "\n");
 				}
 			} else {
 				err.append("childHM is null\n");
@@ -494,8 +496,8 @@ public class StateInstance implements StateRunnable {
 
 			if (!hasChildren) {
 				hasChildren = true;
-				childA = new ArrayList<StateInstance>();
-				childHM = new HashMap<String, StateInstance>();
+				childA = new ArrayList<StateRunnable>();
+				childHM = new HashMap<String, StateRunnable>();
 			}
 			childA.add(newInstance);
 			childHM.put(s, newInstance);
@@ -560,13 +562,13 @@ public class StateInstance implements StateRunnable {
 		}
 	}
 
-	public StateInstance getChildInstance(String snm) throws ContentError {
+	public StateRunnable getChildInstance(String snm) throws ContentError {
 		// errors because we used to turn ComponentRefs into children, but we
 		// don't always need that
 		// now they go in refHM and don't automaticlly get instances added as
 		// children
 		// which to do????
-		StateInstance ret = null;
+		StateRunnable ret = null;
 		try {
 			checkBuilt();
 		} catch (RuntimeError er) {
@@ -598,22 +600,22 @@ public class StateInstance implements StateRunnable {
 		return mi;
 	}
 
-	public void addPathStateInstance(String pth, StateInstance pl) {
+	public void addPathStateInstance(String pth, StateRunnable pl) {
 		if (pathSIHM == null) {
 			pathSIHM = new HashMap<String, StateInstance>();
 		}
-		pathSIHM.put(pth, pl);
+		pathSIHM.put(pth, (StateInstance)pl);
 	}
 
-	public StateInstance getPathStateInstance(String pth) throws ContentError {
+	public StateRunnable getPathStateInstance(String pth) throws ContentError {
 		if (!resolvedPaths) {
 			uclass.applyPathDerived(this);
 		}
 		return pathSIHM.get(pth);
 	}
 
-	public StateInstance getScopeInstance(String id) {
-		StateInstance ret = null;
+	public StateRunnable getScopeInstance(String id) {
+		StateRunnable ret = null;
 
 		if (idSIHM == null) {
 			makeIDSIHM();
@@ -629,9 +631,9 @@ public class StateInstance implements StateRunnable {
 	}
 
 	void makeIDSIHM() {
-		idSIHM = new HashMap<String, StateInstance>();
+		idSIHM = new HashMap<String, StateRunnable>();
 		if (childA != null) {
-			for (StateInstance si : childA) {
+			for (StateRunnable si : childA) {
 				if (si.getID() != null) {
 					idSIHM.put(si.getID(), si);
 					// E.info("added child " + si.getID());
@@ -640,7 +642,7 @@ public class StateInstance implements StateRunnable {
 		}
 		if (multiA != null) {
 			for (MultiInstance mi : multiA) {
-				for (StateInstance si : mi.getInstances()) {
+				for (StateRunnable si : mi.getInstances()) {
 					if (si.getID() != null) {
 						idSIHM.put(si.getID(), si);
 						// E.info("added child " + si.getID());
@@ -655,7 +657,7 @@ public class StateInstance implements StateRunnable {
 		public String getPathStringValue(String path, double fac, double off) throws ContentError, RuntimeError {
 			String ret = "";
 
-	        StateInstance wkinst = this;
+	        StateRunnable wkinst = this;
 	        String[] bits = path.split("/");
 	        for (int i = 0; i < bits.length - 1; i++) {
 	            wkinst = wkinst.getChildInstance(bits[i]);
@@ -816,18 +818,18 @@ public class StateInstance implements StateRunnable {
 		return varHM.get(s);
 	}
 
-	public ArrayList<StateInstance> getStateInstances(String path) throws ConnectionError, ContentError, RuntimeError {
+	public ArrayList<StateRunnable> getStateInstances(String path) throws ConnectionError, ContentError, RuntimeError {
 		//E.info("Getting instances: " + path + " relative to " + this);
-		ArrayList<StateInstance> ret = quietGetStateInstances(path);
+		ArrayList<StateRunnable> ret = quietGetStateInstances(path);
 		if (ret == null) {
 			throw new ConnectionError("No such set of instances " + path + " relative to " + this + " or its ancestors");
 		}
 		return ret;
 	}
 
-	public ArrayList<StateInstance> quietGetStateInstances(String path) throws ConnectionError, ContentError, RuntimeError {
+	public ArrayList<StateRunnable> quietGetStateInstances(String path) throws ConnectionError, ContentError, RuntimeError {
  		
-		ArrayList<StateInstance> ret = null;
+		ArrayList<StateRunnable> ret = null;
 		if (hasChildren && childHM.containsKey(path)) {
 			E.info("QUERY - using path twice?");
 			ret = childHM.get(path).quietGetStateInstances(path);
@@ -854,9 +856,9 @@ public class StateInstance implements StateRunnable {
 		return ret;
 	}
 
-	public ArrayList<StateInstance> getStateInstances() throws ConnectionError, ContentError, RuntimeError {
+	public ArrayList<StateRunnable> getStateInstances() throws ConnectionError, ContentError, RuntimeError {
 		checkBuilt();
-		ArrayList<StateInstance> ret = null;
+		ArrayList<StateRunnable> ret = null;
  		if (singleAMI) {
 			ret = onlyAMI.getStateInstances();
  
@@ -876,7 +878,7 @@ public class StateInstance implements StateRunnable {
 		}
 
 		if (childA != null) {
-			for (StateInstance csi : childA) {
+			for (StateRunnable csi : childA) {
 				csi.checkBuilt();
 			}
 		}
@@ -917,13 +919,13 @@ public class StateInstance implements StateRunnable {
 	}
 
 	public void addInstanceSet(String s) {
-		InstanceSet<StateInstance> newIS = new InstanceSet<StateInstance>(s, this);
+		InstanceSet<StateRunnable> newIS = new InstanceSet<StateRunnable>(s, this);
 		addInstanceSet(newIS);
 	}
 
-	public void addInstanceSet(InstanceSet<StateInstance> newIS) {
+	public void addInstanceSet(InstanceSet<StateRunnable> newIS) {
 		if (instanceSetHM == null) {
-			instanceSetHM = new HashMap<String, InstanceSet<StateInstance>>();
+			instanceSetHM = new HashMap<String, InstanceSet<StateRunnable>>();
 		}
 		instanceSetHM.put(newIS.getName(), newIS);
 		if (onlyIS == null) {
@@ -934,23 +936,23 @@ public class StateInstance implements StateRunnable {
 		}
 	}
 
-	public InstanceSet<StateInstance> getInstanceSet(String col) {
+	public InstanceSet<StateRunnable> getInstanceSet(String col) {
 		return instanceSetHM.get(col);
 	}
 
 	public void addInstancePairSet(String s) {
-		InstancePairSet<StateInstance> newIS = new InstancePairSet<StateInstance>(s, this);
+		InstancePairSet<StateRunnable> newIS = new InstancePairSet<StateRunnable>(s, this);
 		addInstancePairSet(newIS);
 	}
 
-	public void addInstancePairSet(InstancePairSet<StateInstance> newIS) {
+	public void addInstancePairSet(InstancePairSet<StateRunnable> newIS) {
 		if (instancePairSetHM == null) {
-			instancePairSetHM = new HashMap<String, InstancePairSet<StateInstance>>();
+			instancePairSetHM = new HashMap<String, InstancePairSet<StateRunnable>>();
 		}
 		instancePairSetHM.put(newIS.getName(), newIS);
 	}
 
-	public InstancePairSet<StateInstance> getInstancePairSet(String col) {
+	public InstancePairSet<StateRunnable> getInstancePairSet(String col) {
 		return instancePairSetHM.get(col);
 	}
 
@@ -961,12 +963,12 @@ public class StateInstance implements StateRunnable {
 
 	}
 
-	public InstanceSet<StateInstance> getUniqueInstanceSet() throws ContentError {
-		InstanceSet<StateInstance> ret = null;
+	public InstanceSet<StateRunnable> getUniqueInstanceSet() throws ContentError {
+		InstanceSet<StateRunnable> ret = null;
 		if (singleIS) {
 			ret = onlyIS;
 		} else if (singleAMI) {
-			InstanceSet<StateInstance> is = onlyAMI.getInstanceSet(this);
+			InstanceSet<StateRunnable> is = onlyAMI.getInstanceSet(this);
 			addInstanceSet(is);
 			ret = is;
 		}
@@ -980,13 +982,13 @@ public class StateInstance implements StateRunnable {
 	// used by path expressions to match a single section of the path.
 	// Expressions and this method should supplant
 	// all the other matching methods here
-	public ArrayList<StateInstance> getPathInstances(String sel) throws ContentError, ConnectionError, RuntimeError {
-		ArrayList<StateInstance> ret = null;
+	public ArrayList<StateRunnable> getPathInstances(String sel) throws ContentError, ConnectionError, RuntimeError {
+		ArrayList<StateRunnable> ret = null;
 		if (instanceSetHM != null && instanceSetHM.containsKey(sel)) {
 			ret = instanceSetHM.get(sel).getItems();
 
 		} else if (hasChildren && childHM.containsKey(sel)) {
-			ret = new ArrayList<StateInstance>();
+			ret = new ArrayList<StateRunnable>();
 			ret.add(childHM.get(sel));
 			// POSERR 7 mar 2011
 			// ret = childHM.get(sel).getStateInstances();
@@ -1039,11 +1041,11 @@ public class StateInstance implements StateRunnable {
 	}
 
 	public void startArray(String snm) {
-		InstanceSet<StateInstance> iset = new InstanceSet<StateInstance>(snm, this);
+		InstanceSet<StateRunnable> iset = new InstanceSet<StateRunnable>(snm, this);
 		addInstanceSet(iset);
 	}
 
-	public void addToArray(String snm, StateInstance pc) {
+	public void addToArray(String snm, StateRunnable pc) {
 		getInstanceSet(snm).add(pc);
 
 	}
@@ -1066,5 +1068,10 @@ public class StateInstance implements StateRunnable {
 
 	public HashMap<String, MultiInstance> getMultiHM() {
 		return multiHM;
+	}
+
+	@Override
+	public Object getComponentID() {
+		return uclass.getComponentID();
 	}
 }

@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
+import org.lemsml.javagen.JavaGenerator;
 import org.lemsml.jlems.codger.StateTypeGenerator;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.logging.E;
@@ -84,7 +85,8 @@ public class CodeGenerationTest {
 		
 		String srcCode = cg.getCombinedJavaSource();
 		
-		cg.writeSourceFiles(destdir);
+		JavaGenerator jg = new JavaGenerator();
+		jg.writeSourceFiles(destdir, cg);
 
 		// cg.getJavaSource(tgtid);
 		

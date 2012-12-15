@@ -33,11 +33,11 @@ public class Sim extends LemsProcess {
       
     ArrayList<RunConfig> runConfigs;
     
-    EventManager eventManager;
-    
     int maxExecutionTime = 0;
     
-
+    EventManager eventManager;
+    
+    
     public Sim(String srcStr) {
     	super(srcStr);
     }
@@ -49,6 +49,8 @@ public class Sim extends LemsProcess {
  	
     	
     public void build() throws ContentError, ConnectionError, ParseError {
+    	
+    	eventManager = EventManager.getInstance();
     	
   	    Target dr = lems.getTarget();
  	    Component simCpt = dr.getComponent();
@@ -80,8 +82,7 @@ public class Sim extends LemsProcess {
 	    runConfigs = new ArrayList<RunConfig>();
 	    RunConfigCollector rcc = new RunConfigCollector(runConfigs);
 	    rootBehavior.visitAll(rcc);
-	     
-	    eventManager = new EventManager();
+	  
 	     
 	}
 
@@ -141,8 +142,7 @@ public class Sim extends LemsProcess {
         
        
         rootState.initialize(null);  
-        EventManager eventManager = rootState.getEventManager();
-        
+          
         long realTimeStart = System.currentTimeMillis();
         int nsDone = 0;
      

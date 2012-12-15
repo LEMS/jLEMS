@@ -78,7 +78,9 @@ public class Dynamics  {
 	
 	private ComponentType r_type;
 	
- 
+	// If we inherit from another one, the peer gets modified, we stay the same so  we cn be rewritten
+	private Dynamics r_peer;
+	
 	
 	public void setComponentType(ComponentType t) {
 		r_type = t;
@@ -90,6 +92,14 @@ public class Dynamics  {
 	
 	public String getName() {
 		return name;
+	}
+	
+	public Dynamics getPeer() {
+		Dynamics ret = this;
+		if (r_peer != null) {
+			ret = r_peer;
+		}
+		return ret;
 	}
 	
      
@@ -136,6 +146,14 @@ public class Dynamics  {
 	
 	
 	public void resolve(Lems lems, Parser parser) throws ContentError, ParseError {
+		if (r_peer != null) {
+			r_peer.realResolve(lems, parser);
+		} else {
+			realResolve(lems, parser);
+		}
+	}
+		
+	private void realResolve(Lems lems, Parser parser) throws ContentError, ParseError {
 		if (lems.looseResolving()) {
 			// then we expose anything with a name that matches the name of an exposure
 			HashSet<String> expHS = new HashSet<String>();
@@ -579,5 +597,19 @@ public class Dynamics  {
 	 
 	}
 
+	
+	public void makePeerCopy() {
+		Dynamics ret = new Dynamics();
+		ret.name = name;
+		ret.simultaneous = simultaneous;
+		
+		if (r_type != null) {
+			ret.r_type = r_type;
+		}
+		
+		ret.inheritFrom(this);
+		r_peer = ret;
+	}
  
 }
+

@@ -22,7 +22,7 @@ public class ExecutablePrint extends ExecutableStatement {
 
 
 	@Override
-	public void execute(StateInstance so, HashMap<String, StateInstance> context)
+	public void execute(StateRunnable so, HashMap<String, StateRunnable> context)
 			throws RuntimeError, ContentError, ConnectionError {
 		
 		String s = tpl.eval(so, context);

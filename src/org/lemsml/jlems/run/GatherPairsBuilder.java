@@ -24,17 +24,18 @@ public class GatherPairsBuilder extends AbstractPostBuilder {
 	}
 
 	@Override
-	public void postBuild(StateInstance tgt, HashMap<String, StateInstance> sihm, BuildContext bc) throws ConnectionError,
+	public void postBuild(StateRunnable tgt, HashMap<String, StateRunnable> sihm, BuildContext bc) throws ConnectionError,
 			ContentError, RuntimeError {
 	 		
+		
 			InstanceCollector pic = new InstanceCollector(pselexp);
-			ArrayList<StateInstance> pmatches = pic.collect(tgt.getParent());
+			ArrayList<StateRunnable> pmatches = pic.collect(tgt.getParent());
 
 			
 			InstanceCollector qic = new InstanceCollector(qselexp);
-			ArrayList<StateInstance> qmatches = qic.collect(tgt.getParent());
+			ArrayList<StateRunnable> qmatches = qic.collect(tgt.getParent());
 			
-			InstancePairSet<StateInstance> iset = tgt.getInstancePairSet(col);
+			InstancePairSet<StateRunnable> iset = ((StateInstance)tgt).getInstancePairSet(col);
 			iset.setItems(pmatches, qmatches);
 			
 			

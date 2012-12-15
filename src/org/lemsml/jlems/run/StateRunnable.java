@@ -1,5 +1,6 @@
 package org.lemsml.jlems.run;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.lemsml.jlems.display.LineDisplay;
@@ -30,10 +31,55 @@ public interface StateRunnable {
 	
 	String getID();
  
-
 	void setNewVariable(String string, double d);
 
 	void evaluate(StateRunnable parent) throws RuntimeError, ContentError;
+
+	void initialize(StateRunnable sr) throws RuntimeError, ContentError;
+
+	Object getComponentID();
+
+	StateRunnable getChildInstance(String string) throws ContentError;
+
+	ArrayList<StateRunnable> quietGetStateInstances(String path) throws ConnectionError, ContentError, RuntimeError;
+
+	void setParent(StateRunnable par);
+
+	ArrayList<StateRunnable> getStateInstances() throws ConnectionError, ContentError, RuntimeError;
+
+	void checkBuilt() throws ConnectionError, ContentError, RuntimeError;
+
+	StateRunnable getScopeInstance(String id);
+
+	ArrayList<StateRunnable> getPathInstances(String sel) throws ContentError, ConnectionError, RuntimeError;
+
+	double quietGetFloatProperty(String sel) throws ContentError;
+
+	boolean hasSingleMI();
+
+	OutPort getOutPort(String sourcePortId);
+
+	StateRunnable getPathStateInstance(String path) throws ContentError;
+
+	OutPort getFirstOutPort();
+
+	StateRunnable getParent();
+
+	InstanceSet<StateRunnable> getUniqueInstanceSet() throws ContentError;
+
+	InstanceSet<StateRunnable> getInstanceSet(String col);
+
+	Object getWork();
+
+	ArrayList<StateRunnable> getStateInstances(String path) throws ConnectionError, ContentError, RuntimeError;
+
+	double getFloatProperty(String sel) throws ContentError;
+
+	String getPathStringValue(String fieldName, double fac, double off) throws ContentError, RuntimeError;
+
+	void addAttachment(String destAttachments, StateInstance rsi) throws ConnectionError, ContentError, RuntimeError;
+
+	MultiInstance getSingleMI();
 
  
 }

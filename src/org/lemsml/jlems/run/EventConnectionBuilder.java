@@ -32,9 +32,9 @@ public class EventConnectionBuilder extends AbstractPostBuilder {
 	}
 
 	 
-	public void postBuild(StateInstance base, HashMap<String, StateInstance> sihm, BuildContext bc) throws ConnectionError, ContentError, RuntimeError {
-  		StateInstance sf = sihm.get(from);
-		StateInstance st = sihm.get(to);
+	public void postBuild(StateRunnable base, HashMap<String, StateRunnable> sihm, BuildContext bc) throws ConnectionError, ContentError, RuntimeError {
+  		StateRunnable sf = sihm.get(from);
+		StateRunnable st = sihm.get(to);
 		
 	
 		if (sf == null) {
@@ -93,7 +93,7 @@ public class EventConnectionBuilder extends AbstractPostBuilder {
 				E.error("No input port ("+sourcePortId+") on " + st);
 			}
 
-			op.connectTo(inPort, delay, base.getEventManager());
+			op.connectTo(inPort, delay, EventManager.getInstance());
 			st.addAttachment(destAttachments, rsi);
 			
 		} else {
@@ -135,7 +135,7 @@ public class EventConnectionBuilder extends AbstractPostBuilder {
 				E.error("Event connection: no connection made from " + from + " to " + to + 
 						" (" + sourcePortId + ", " + targetPortId + ")");
 			} else {
-				op.connectTo(inPort, delay, base.getEventManager());
+				op.connectTo(inPort, delay, EventManager.getInstance());
 			}
 		}
 	}

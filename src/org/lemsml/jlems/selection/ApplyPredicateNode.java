@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.lemsml.jlems.run.ConnectionError;
 import org.lemsml.jlems.run.RuntimeError;
 import org.lemsml.jlems.run.StateInstance;
+import org.lemsml.jlems.run.StateRunnable;
 import org.lemsml.jlems.sim.ContentError;
 
 public class ApplyPredicateNode extends AbstractSelectionOperatorNode {
@@ -34,14 +35,14 @@ public class ApplyPredicateNode extends AbstractSelectionOperatorNode {
 	
 	
 	@Override
-	public ArrayList<StateInstance> getMatches(StateInstance baseSI) throws ContentError, ConnectionError, RuntimeError {
-		ArrayList<StateInstance> ret = null;
+	public ArrayList<StateRunnable> getMatches(StateRunnable baseSI) throws ContentError, ConnectionError, RuntimeError {
+		ArrayList<StateRunnable> ret = null;
 		if (left instanceof AbstractSelectionNode && right instanceof PredicateNode) {
-			ArrayList<StateInstance> ml = ((AbstractSelectionNode)left).getMatches(baseSI);
+			ArrayList<StateRunnable> ml = ((AbstractSelectionNode)left).getMatches(baseSI);
 		 
 			PredicateNode pnode = (PredicateNode)right;
-			ret = new ArrayList<StateInstance>();
-			for (StateInstance si : ml) {
+			ret = new ArrayList<StateRunnable>();
+			for (StateRunnable si : ml) {
 				if (pnode.evaluate(si)) {
 					ret.add(si);
 				}

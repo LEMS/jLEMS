@@ -20,21 +20,21 @@ public class ForEachBuilder extends AbstractPostBuilder {
 
 
 	 
-	public void postBuild(StateInstance base, HashMap<String, StateInstance> sihm, BuildContext bc) throws ConnectionError, ContentError, RuntimeError {
+	public void postBuild(StateRunnable base, HashMap<String, StateRunnable> sihm, BuildContext bc) throws ConnectionError, ContentError, RuntimeError {
 
 
 		//E.info("postBuild on: " + base + ", bc: " + bc);
-		HashMap<String, StateInstance> passHM = null;
+		HashMap<String, StateRunnable> passHM = null;
 
 		if (sihm == null) {
-			passHM = new HashMap<String, StateInstance>();
+			passHM = new HashMap<String, StateRunnable>();
 		} else {
 			passHM = sihm;
 		}
 		// MUSTDO base is not the right starting point: should be relative to the link target in enclosing cpt
-		ArrayList<StateInstance> asi = base.getStateInstances(path);
+		ArrayList<StateRunnable> asi = base.getStateInstances(path);
  		
-		for (StateInstance si : asi) {
+		for (StateRunnable si : asi) {
 			passHM.put(var, si);		
 	 		postChildren(base, passHM, bc);	
 		}

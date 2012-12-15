@@ -16,11 +16,11 @@ public class WithBuilder extends AbstractPostBuilder {
         var = as;
     }
 
-    public void postBuild(StateInstance base, HashMap<String, StateInstance> siHM, BuildContext bc) throws ConnectionError {
+    public void postBuild(StateRunnable base, HashMap<String, StateRunnable> siHM, BuildContext bc) throws ConnectionError {
         RunnableAccessor ra = new RunnableAccessor(base);
 
 
-        StateInstance sr = null;
+        StateRunnable sr = null;
         //E.info("WithBuilder needs "+path+" relative to: "+base);
         
         if (path.equals(Component.THIS_COMPONENT)) {

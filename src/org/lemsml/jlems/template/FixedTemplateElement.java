@@ -3,6 +3,7 @@ package org.lemsml.jlems.template;
 import java.util.HashMap;
 
 import org.lemsml.jlems.run.StateInstance;
+import org.lemsml.jlems.run.StateRunnable;
  
 
 public class FixedTemplateElement extends AbstractTemplateElement {
@@ -26,7 +27,7 @@ public class FixedTemplateElement extends AbstractTemplateElement {
 	}
 
 	@Override
-	public String eval(StateInstance so, HashMap<String, StateInstance> context) {
+	public String eval(StateRunnable so, HashMap<String, StateRunnable> context) {
 		return val;
 	}
  

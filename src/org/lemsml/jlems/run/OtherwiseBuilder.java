@@ -8,7 +8,7 @@ import org.lemsml.jlems.sim.ContentError;
 public class OtherwiseBuilder extends AbstractPostBuilder {
 
  
-	public void postBuild(StateInstance base, HashMap<String, StateInstance> sihm, BuildContext bc) throws ConnectionError, ContentError, RuntimeError {
+	public void postBuild(StateRunnable base, HashMap<String, StateRunnable> sihm, BuildContext bc) throws ConnectionError, ContentError, RuntimeError {
 		super.postChildren(base, sihm, bc);	
 	}
 

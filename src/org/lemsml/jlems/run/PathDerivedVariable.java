@@ -82,9 +82,12 @@ public class PathDerivedVariable {
         return varname;
     }
 
-    public double eval(StateInstance sin) throws RuntimeError, ContentError {
+    public double eval(StateRunnable rsin) throws RuntimeError, ContentError {
         double ret = Double.NaN;
-        StateInstance tgt = null;
+        
+        // NB can only eval a path derived varaible on state instances, note compiled ones
+        StateInstance sin = (StateInstance)rsin;
+        StateRunnable tgt = null;
         try {
             if (simple) {
                 tgt = sin.getPathStateInstance(path);
@@ -151,7 +154,7 @@ public class PathDerivedVariable {
         StateInstance wkinst = uin;
         String[] bits = path.split("/");
         for (int i = 0; i < bits.length - 1; i++) {
-        	wkinst = wkinst.getChildInstance(bits[i]);
+        	wkinst = (StateInstance)wkinst.getChildInstance(bits[i]);
         }
         ret = wkinst;
         return ret;
@@ -185,13 +188,21 @@ public class PathDerivedVariable {
             	 
                     	 String pred = bit.substring(iob + 1, icb);
                     	 if (pred.equals("*")) {
-                    		 swka.addAll(mi.getStateInstances());                    		 
+                    		 
+                    		 for (StateRunnable sr : mi.getStateInstances()) {
+                    			 swka.add((StateInstance)sr);                    		 
+                    		 }
+                    		 
                     	 } else {
                     		 String[] sab = parsePredicate(pred);
                     		 String satt = sab[0];
                     	     String sval = sab[1];
                     	     
-                    	     for (StateInstance asi : mi.getStateInstances()) {
+                    	     for (StateRunnable rasi : mi.getStateInstances()) {
+                    	    	 
+                    	    	 //TODO - check we're sure weve got a stateInstance here
+                    	    	 StateInstance asi = (StateInstance)rasi;
+                    	    	 
                                  if (asi.hasTypeParam(satt)) {
                                      String stv = asi.getTypeParam(satt);
                                      if (stv != null && stv.equals(sval)) {
@@ -218,7 +229,7 @@ public class PathDerivedVariable {
             		
             		
             	} else {
-            		swka.add(par.getChildInstance(bit));
+            		swka.add((StateInstance)par.getChildInstance(bit));
             	}
             	wka = swka;            	
             }

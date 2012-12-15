@@ -1,7 +1,5 @@
 package org.lemsml.jlems.codger;
-
-import java.io.File;
-import java.io.IOException;
+ 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -22,7 +20,6 @@ import org.lemsml.jlems.run.FixedQuantity;
 import org.lemsml.jlems.run.MultiStateType;
 import org.lemsml.jlems.run.PathDerivedVariable;
 import org.lemsml.jlems.run.VariableROC;
-import org.lemsml.jlemsio.util.FileUtil;
 
 public class StateTypeGenerator {
 
@@ -405,27 +402,7 @@ public class StateTypeGenerator {
 	}
 
 
-	public void writeSourceFiles(File destdir) throws IOException {
-		if (!mcUpToDate) {
-			buildMetaCode();
-		}
-		
-		for (CodeUnit mc : codeUnits) {
-			String src = mc.generateJava();
-			
-			File wkdest = destdir;
-			ArrayList<String> subps = mc.getSubPackages();
-			for (String sp : subps) {
-				wkdest = new File(wkdest, sp);
-				wkdest.mkdirs();
-			}
-			
-			
-			File fdest = new File(wkdest, mc.getClassName() + ".java");
-			FileUtil.writeStringToFile(src, fdest);
-		}
-		
-	}
+
 
 	private String getChildObjectName(String s) {
 		return "o_" + s;
@@ -451,6 +428,16 @@ public class StateTypeGenerator {
 	
 	private String arrayTypeName(String s) {
 		return s + "_base";
+	}
+
+
+	public ArrayList<CodeUnit> getCodeUnits() {
+		
+		if (!mcUpToDate) {
+			buildMetaCode();
+		}
+		
+		return codeUnits;
 	}
 	
 	

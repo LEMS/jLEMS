@@ -340,7 +340,7 @@ public class Lems {
     public StateInstance build(StateType cptb, EventManager em) throws ContentError, ConnectionError, ParseError, RuntimeError {
       	Constants.setConstantsHM(getConstantsValueHM());
       	StateInstance ret = cptb.newInstance();
-        ret.setEventManager(em);
+      //  ret.setEventManager(em);
         
         ret.checkBuilt();
 

@@ -23,12 +23,12 @@ public class ApplyBuilder extends AbstractPostBuilder {
 	
 	
 	@Override
-	public void postBuild(StateInstance tgt, HashMap<String, StateInstance> sihm, BuildContext bc) throws ConnectionError,
+	public void postBuild(StateRunnable tgt, HashMap<String, StateRunnable> sihm, BuildContext bc) throws ConnectionError,
 			ContentError, RuntimeError {
  	 
-		MultiInstance mi = tgt.getMultiInstance(listName);
+		MultiInstance mi = ((StateInstance)tgt).getMultiInstance(listName);
  
-		for (StateInstance si : mi.getInstances()) {		
+		for (StateRunnable si : mi.getInstances()) {		
 			si.checkBuilt();
 			postChildren(si, null, bc);
 		}

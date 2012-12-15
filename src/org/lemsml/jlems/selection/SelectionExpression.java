@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.lemsml.jlems.run.ConnectionError;
 import org.lemsml.jlems.run.RuntimeError;
 import org.lemsml.jlems.run.StateInstance;
+import org.lemsml.jlems.run.StateRunnable;
 import org.lemsml.jlems.sim.ContentError;
 
 public class SelectionExpression {
@@ -23,7 +24,7 @@ public class SelectionExpression {
 	}
 	
 	
-	public ArrayList<StateInstance> getMatches(StateInstance baseSI) throws ContentError, ConnectionError, RuntimeError {
+	public ArrayList<StateRunnable> getMatches(StateRunnable baseSI) throws ContentError, ConnectionError, RuntimeError {
 		return root.getMatches(baseSI);
 	}
 

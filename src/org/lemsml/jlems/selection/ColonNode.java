@@ -7,6 +7,7 @@ import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.ConnectionError;
 import org.lemsml.jlems.run.RuntimeError;
 import org.lemsml.jlems.run.StateInstance;
+import org.lemsml.jlems.run.StateRunnable;
 import org.lemsml.jlems.sim.ContentError;
 
 public class ColonNode extends AbstractSelectionOperatorNode {
@@ -27,8 +28,8 @@ public class ColonNode extends AbstractSelectionOperatorNode {
 	}
  
 	@Override
-	public ArrayList<StateInstance> getMatches(StateInstance baseSI) throws ContentError, ConnectionError {
-		ArrayList<StateInstance> ret = null;
+	public ArrayList<StateRunnable> getMatches(StateRunnable baseSI) throws ContentError, ConnectionError {
+		ArrayList<StateRunnable> ret = null;
 		
 		E.error("shouldn't be asking for matches on colon node " + this);
 		/*
@@ -59,7 +60,7 @@ public class ColonNode extends AbstractSelectionOperatorNode {
 
 
 
-	public double evaluateFloat(StateInstance si) throws ContentError, ConnectionError, RuntimeError {
+	public double evaluateFloat(StateRunnable si) throws ContentError, ConnectionError, RuntimeError {
 		double ret = 0;
 		boolean ok = false;
 		Node nl = getLeft();
@@ -67,7 +68,7 @@ public class ColonNode extends AbstractSelectionOperatorNode {
 		
 		if (nr instanceof SelectorNode) {
 			if (nl instanceof AbstractSelectionNode) {
-				ArrayList<StateInstance> msia = ((AbstractSelectionNode)nl).getMatches(si);
+				ArrayList<StateRunnable> msia = ((AbstractSelectionNode)nl).getMatches(si);
 				if (msia.size() == 1) {
 					ret = ((SelectorNode)nr).getFloat(msia.get(0));
 					ok = true;

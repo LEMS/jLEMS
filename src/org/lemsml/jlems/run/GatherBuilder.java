@@ -21,16 +21,16 @@ SelectionExpression selexp;
 	}
 
 	@Override
-	public void postBuild(StateInstance tgt, HashMap<String, StateInstance> sihm, BuildContext bc) throws ConnectionError,
+	public void postBuild(StateRunnable tgt, HashMap<String, StateRunnable> sihm, BuildContext bc) throws ConnectionError,
 			ContentError, RuntimeError {
 	 		
 			InstanceCollector ic = new InstanceCollector(selexp);
-			ArrayList<StateInstance> matches = ic.collect(tgt.getParent());
+			ArrayList<StateRunnable> matches = ic.collect(tgt.getParent());
 
-			InstanceSet<StateInstance> iset = tgt.getInstanceSet(col);
+			InstanceSet<StateRunnable> iset = tgt.getInstanceSet(col);
 			iset.setItems(matches);
 			
-			E.info("Generated set of " + iset.size() +  " items(" + tgt.id + ")");
+			E.info("Generated set of " + iset.size() +  " items(" + tgt.getID() + ")");
 	}
 
 	@Override

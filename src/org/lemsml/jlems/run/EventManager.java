@@ -12,6 +12,21 @@ public class EventManager {
 	
 	ArrayList<PendingEvent> events = new ArrayList<PendingEvent>();
 	
+	private static EventManager instance = null;
+	
+	
+	private EventManager() {
+		
+	}
+	
+	
+	public static EventManager getInstance() {
+		if (instance == null) {
+			instance = new EventManager();
+		}
+		return instance;
+	}
+	
 	
 	public void advance(double t) throws RuntimeError {
 		

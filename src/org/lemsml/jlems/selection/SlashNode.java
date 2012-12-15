@@ -7,6 +7,7 @@ import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.ConnectionError;
 import org.lemsml.jlems.run.RuntimeError;
 import org.lemsml.jlems.run.StateInstance;
+import org.lemsml.jlems.run.StateRunnable;
 import org.lemsml.jlems.sim.ContentError;
 
 public class SlashNode extends AbstractSelectionOperatorNode {
@@ -28,18 +29,18 @@ public class SlashNode extends AbstractSelectionOperatorNode {
 	}
  
 	@Override
-	public ArrayList<StateInstance> getMatches(StateInstance baseSI) throws ContentError, ConnectionError, RuntimeError {
-		ArrayList<StateInstance> ret = null;
+	public ArrayList<StateRunnable> getMatches(StateRunnable baseSI) throws ContentError, ConnectionError, RuntimeError {
+		ArrayList<StateRunnable> ret = null;
 		E.info("slash node get matches: left=" + left + " right=" + right);
 		
 		Node nl = getLeft();
 		if (nl instanceof AbstractSelectionNode) {
-			ArrayList<StateInstance> wka = ((AbstractSelectionNode)nl).getMatches(baseSI);
+			ArrayList<StateRunnable> wka = ((AbstractSelectionNode)nl).getMatches(baseSI);
 			Node nr = getRight();
 			if (nr instanceof  AbstractSelectionNode) {
-				ret = new ArrayList<StateInstance>();
+				ret = new ArrayList<StateRunnable>();
 				AbstractSelectionNode rsn = (AbstractSelectionNode)nr;
-				for (StateInstance si : wka) {
+				for (StateRunnable si : wka) {
 					ret.addAll(rsn.getMatches(si));
 				}
 				
@@ -57,7 +58,7 @@ public class SlashNode extends AbstractSelectionOperatorNode {
 
 
 
-	public double evaluateFloat(StateInstance si) throws ContentError, ConnectionError, RuntimeError {
+	public double evaluateFloat(StateRunnable si) throws ContentError, ConnectionError, RuntimeError {
 		double ret = 0;
 		boolean ok = false;
 		Node nl = getLeft();
@@ -65,7 +66,7 @@ public class SlashNode extends AbstractSelectionOperatorNode {
 		
 		if (nr instanceof SelectorNode) {
 			if (nl instanceof AbstractSelectionNode) {
-				ArrayList<StateInstance> msia = ((AbstractSelectionNode)nr).getMatches(si);
+				ArrayList<StateRunnable> msia = ((AbstractSelectionNode)nr).getMatches(si);
 				if (msia.size() == 1) {
 					ret = ((SelectorNode)nr).getFloat(msia.get(0));
 					

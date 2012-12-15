@@ -11,9 +11,9 @@ public class InstanceSet<T> {
 	
 	ArrayList<T> items;
 	
-	StateInstance parent;
+	StateRunnable parent;
 	
-	public InstanceSet(String nm, StateInstance p) {
+	public InstanceSet(String nm, StateRunnable p) {
 		name = nm;
 		parent = p;
 	}
@@ -46,7 +46,7 @@ public class InstanceSet<T> {
 		items.addAll(instances);
 	}
 
-	public StateInstance getParent() {
+	public StateRunnable getParent() {
 		return parent;
 	}
 

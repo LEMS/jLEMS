@@ -409,7 +409,10 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 			
 			if (b.inheritDynamics()) {
 				if (r_extends != null) {
-					b.inheritFrom(r_extends.getDynamics());
+					
+					b.makePeerCopy();
+					
+					b.getPeer().inheritFrom(r_extends.getDynamics());
 					
 				} else {
 					throw new ContentError("Dynamics in " + this + 
@@ -491,8 +494,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 			if (ep.isDirectionIn()) {
 				ret = ep;
 			} else {
-				E.error("input port needed for " + port
-						+ " but got output port");
+				E.error("input port needed for " + port + " but got output port");
 			}
 		}
 		if (ret == null) {
@@ -508,12 +510,11 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 			if (ep.isDirectionOut()) {
 				ret = ep;
 			} else {
-				E.error("output port needed for " + port
-						+ " but got input port");
+				E.error("output port needed for " + port + " but got input port");
 			}
 		}
 		if (ret == null) {
-			E.error("No such port: " + port+" on "+this);
+			E.error("No such port: " + port + " on " + this);
 		}
 		return ret;
 	}
@@ -533,6 +534,9 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 					//E.info("No dynamics is specified for " + name);
 				}
 			}
+		}
+		if (ret != null) {
+			ret = ret.getPeer();
 		}
 		return ret;
 	}

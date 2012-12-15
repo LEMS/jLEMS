@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.lemsml.jlems.run.ConnectionError;
 import org.lemsml.jlems.run.RuntimeError;
 import org.lemsml.jlems.run.StateInstance;
+import org.lemsml.jlems.run.StateRunnable;
 import org.lemsml.jlems.sim.ContentError;
 
 public class SelectorNode extends AbstractSelectionNode {
@@ -31,13 +32,13 @@ public class SelectorNode extends AbstractSelectionNode {
 
 	
 	@Override
-	public ArrayList<StateInstance> getMatches(StateInstance baseSI) throws ContentError, ConnectionError, RuntimeError {
- 		ArrayList<StateInstance> asi = baseSI.getPathInstances(sel);
+	public ArrayList<StateRunnable> getMatches(StateRunnable baseSI) throws ContentError, ConnectionError, RuntimeError {
+ 		ArrayList<StateRunnable> asi = baseSI.getPathInstances(sel);
  		return asi;
 	}
 
 
-	public double getFloat(StateInstance si) throws ContentError {
+	public double getFloat(StateRunnable si) throws ContentError {
 		return si.getFloatProperty(sel);
 	}
 

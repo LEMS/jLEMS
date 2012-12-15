@@ -14,8 +14,8 @@ public class Builder {
 	 
 
  
-	public void postBuild(StateInstance si) throws ConnectionError, ContentError, RuntimeError {
-		HashMap<String, StateInstance> siHM = new HashMap<String, StateInstance>();
+	public void postBuild(StateRunnable si) throws ConnectionError, ContentError, RuntimeError {
+		HashMap<String, StateRunnable> siHM = new HashMap<String, StateRunnable>();
 
 		BuildContext bc = new BuildContext();
 		

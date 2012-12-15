@@ -22,8 +22,8 @@ public class ExecutableForEach extends ExecutableStatement {
 
 
 	@Override
-	public void execute(StateInstance so, HashMap<String, StateInstance> context) throws RuntimeError, ContentError, ConnectionError {
-		 for (StateInstance si : so.getPathInstances(select)) {
+	public void execute(StateRunnable so, HashMap<String, StateRunnable> context) throws RuntimeError, ContentError, ConnectionError {
+		 for (StateRunnable si : so.getPathInstances(select)) {
 			 context.put(as, si);
 			 for (ExecutableStatement es : statements) {
 				 es.execute(si, context);

@@ -15,8 +15,8 @@ public class InstanceCollector {
 		selexpr = ex;
 	}
 
-	public ArrayList<StateInstance> collect(StateInstance root) throws ContentError, ConnectionError, RuntimeError {
-		ArrayList<StateInstance> ret = selexpr.getMatches(root) ; 
+	public ArrayList<StateRunnable> collect(StateRunnable root) throws ContentError, ConnectionError, RuntimeError {
+		ArrayList<StateRunnable> ret = selexpr.getMatches(root) ; 
 		return ret;
 	}
 

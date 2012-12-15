@@ -11,10 +11,10 @@ import org.lemsml.jlems.run.StateWrapper;
 
 public class RunnableAccessor {
 
-	StateInstance root;
+	StateRunnable root;
 	
 	
-	public RunnableAccessor(StateInstance sr) {
+	public RunnableAccessor(StateRunnable sr) {
 		root = sr;
 	}
 
@@ -67,12 +67,14 @@ public class RunnableAccessor {
 	}
 
 
-	public StateInstance getStateInstance(String path) throws ConnectionError {
+	public StateRunnable getStateInstance(String path) throws ConnectionError {
 		return getRelativeStateInstance(root, path);
 	}
 	
-	public StateInstance getRelativeStateInstance(StateInstance base, String path) throws ConnectionError {
-		StateInstance ret = null;
+	
+	
+	public StateRunnable getRelativeStateInstance(StateRunnable base, String path) throws ConnectionError {
+		StateRunnable ret = null;
 		
 		String spath = path;
 		spath = spath.replace("[", "/[");
@@ -80,7 +82,7 @@ public class RunnableAccessor {
 		String[] bits = spath.split("/");
 	
 		
-		StateInstance wk = base;
+		StateRunnable wk = base;
 		for (int i = 0; i < bits.length-1; i++) {
 			wk = wk.getChild(bits[i]);
 			if (wk == null) {
@@ -103,7 +105,7 @@ public class RunnableAccessor {
 				
 			} else {
 				String msg = "Can't get predicate " + lastbit + " from " + wk + ", original path: " + path  + "\n";
-				msg += "component has singeMI=" + wk.hasSingleMI() + " nmi=" + wk.getMultiInstanceCount() + " sets";
+				msg += "component has singeMI=" + wk.hasSingleMI() + "";
 				throw new ConnectionError(msg);
 			}
 		}
@@ -117,8 +119,8 @@ public class RunnableAccessor {
 	
 	
 	
-	public ArrayList<StateInstance> getStateInstances(String path) throws ConnectionError {
-		ArrayList<StateInstance> ret = null;
+	public ArrayList<StateRunnable> getStateInstances(String path) throws ConnectionError {
+		ArrayList<StateRunnable> ret = null;
 		
 		String[] bits = path.split("/");
 		
@@ -133,7 +135,7 @@ public class RunnableAccessor {
 			throw new ConnectionError("cant find instances at " + path);
 		}  
 		if (wk instanceof StateInstance) {
-			ret = new ArrayList<StateInstance>();
+			ret = new ArrayList<StateRunnable>();
 			ret.add((StateInstance)wk);
 		} else if (wk instanceof MultiInstance) {
 			ret = ((MultiInstance)wk).getStateInstances();

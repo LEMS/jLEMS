@@ -24,14 +24,14 @@ public class CoBuilder extends AbstractChildBuilder {
   		
 		// MultiInstance mi = new MultiInstance(stateType.typeName, "");
 		 
-		StateInstance si = par.getScopeInstance(ctr.getID());
-		InstanceSet<StateInstance> iset = si.getUniqueInstanceSet();
+		StateRunnable si = par.getScopeInstance(ctr.getID());
+		InstanceSet<StateRunnable> iset = si.getUniqueInstanceSet();
 		
 		iset.getParent().checkBuilt();
 		
-		for (StateInstance psi : iset.getItems()) {
+		for (StateRunnable psi : iset.getItems()) {
 			StateInstance sr = stateType.newInstance();
-			sr.coCopy(psi);
+			sr.coCopy((StateInstance)psi);
 			par.addListChild(stateType.getTypeName(), sr.getID(), sr);
 		//	mi.add(sr);
 		}

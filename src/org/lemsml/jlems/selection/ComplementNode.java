@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.lemsml.jlems.run.ConnectionError;
 import org.lemsml.jlems.run.RuntimeError;
 import org.lemsml.jlems.run.StateInstance;
+import org.lemsml.jlems.run.StateRunnable;
 import org.lemsml.jlems.sim.ContentError;
 
 public class ComplementNode extends AbstractSelectionOperatorNode {
@@ -33,13 +34,13 @@ public class ComplementNode extends AbstractSelectionOperatorNode {
 
 	
 	@Override
-	public ArrayList<StateInstance> getMatches(StateInstance baseSI) throws ContentError, ConnectionError, RuntimeError {
-		ArrayList<StateInstance> ret = null;
+	public ArrayList<StateRunnable> getMatches(StateRunnable baseSI) throws ContentError, ConnectionError, RuntimeError {
+		ArrayList<StateRunnable> ret = null;
 		if (left instanceof AbstractSelectionNode && right instanceof AbstractSelectionNode) {
-			ArrayList<StateInstance> ml = ((AbstractSelectionNode)left).getMatches(baseSI);
-			ArrayList<StateInstance> mr = ((AbstractSelectionNode)right).getMatches(baseSI);
+			ArrayList<StateRunnable> ml = ((AbstractSelectionNode)left).getMatches(baseSI);
+			ArrayList<StateRunnable> mr = ((AbstractSelectionNode)right).getMatches(baseSI);
 			
-			ret = new ArrayList<StateInstance>();
+			ret = new ArrayList<StateRunnable>();
 			ret.addAll(ml);
 			ret.removeAll(mr);
 			

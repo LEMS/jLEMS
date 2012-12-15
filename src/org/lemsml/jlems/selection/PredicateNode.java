@@ -13,6 +13,7 @@ import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.run.ConnectionError;
 import org.lemsml.jlems.run.RuntimeError;
 import org.lemsml.jlems.run.StateInstance;
+import org.lemsml.jlems.run.StateRunnable;
 import org.lemsml.jlems.sim.ContentError;
 
 public class PredicateNode extends Node {
@@ -34,7 +35,7 @@ public class PredicateNode extends Node {
 	}
 	
 	
-	public boolean evaluate(StateInstance si) throws ContentError, ConnectionError, RuntimeError {
+	public boolean evaluate(StateRunnable si) throws ContentError, ConnectionError, RuntimeError {
 		boolean ret = false;
 		if (children.size() == 1) {
 			Node n = children.get(0);
@@ -124,7 +125,7 @@ public class PredicateNode extends Node {
 	
 	
 	
-	public double evaluateFloat(Node n, StateInstance si) throws ContentError, ConnectionError, RuntimeError {
+	public double evaluateFloat(Node n, StateRunnable si) throws ContentError, ConnectionError, RuntimeError {
 		double ret = 0;
 		if (n instanceof SlashNode) {
 			ret = ((SlashNode)n).evaluateFloat(si);

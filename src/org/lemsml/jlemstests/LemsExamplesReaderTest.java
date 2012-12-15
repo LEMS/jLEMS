@@ -32,7 +32,7 @@ public class LemsExamplesReaderTest {
 		for (File fx : fdir.listFiles()) {
 			
 			if (fx.getName().startsWith("example")) {
-				FileInclusionReader fir = new FileInclusionReader(fx);
+ 				FileInclusionReader fir = new FileInclusionReader(fx);
 				String fullText = fir.read();
 				
 				LemsProcess lemsProcess = new LemsProcess(fullText);
@@ -43,7 +43,14 @@ public class LemsExamplesReaderTest {
 				String sout = XMLSerializer.serialize(lems);	 
 		 
 				LemsProcess lp2 = new LemsProcess(sout);
-				lp2.readModel();
+
+				try {
+					lp2.readModel();
+				} catch (ContentError ex) {
+					E.info("Reread failed for:\n" + sout);
+					throw ex;
+				}
+				
 				Lems lems2 = lp2.getLems();
 			
 				String sout2 = XMLSerializer.serialize(lems2);	 		

@@ -13,9 +13,9 @@ public class MultiInstance {
 	
 	public StateRunnable parent;
 	
-	private final ArrayList<StateInstance> instances = new ArrayList<StateInstance>();
+	private final ArrayList<StateRunnable> instances = new ArrayList<StateRunnable>();
 	 
-	private final HashMap<String, StateInstance> instanceHM = new HashMap<String, StateInstance>();
+	private final HashMap<String, StateRunnable> instanceHM = new HashMap<String, StateRunnable>();
 	
 	ArrayList<AbstractPostBuilder> postBuilders;
 	
@@ -54,7 +54,7 @@ public class MultiInstance {
 		return ret;
 	}
 
-	public StateInstance getChildByID(String id) {
+	public StateRunnable getChildByID(String id) {
 		return instanceHM.get(id);
 	}
 
@@ -62,7 +62,7 @@ public class MultiInstance {
 
 
 	public void initialize(StateRunnable parent) throws RuntimeError, ContentError {
-		for (StateInstance si : instances) {
+		for (StateRunnable si : instances) {
 			si.initialize(parent);
 		}
 	}
@@ -81,7 +81,7 @@ public class MultiInstance {
 		}
 	}
 	
-	public ArrayList<StateInstance> getStateInstances() {
+	public ArrayList<StateRunnable> getStateInstances() {
 		return instances;
 	}
 	
@@ -156,8 +156,8 @@ public class MultiInstance {
  
 
 
-	public void setParent(StateInstance par) {
-		for (StateInstance sr : instances) {
+	public void setParent(StateRunnable par) {
+		for (StateRunnable sr : instances) {
 			sr.setParent(par);
 		}
 		parent = par;
@@ -169,7 +169,7 @@ public class MultiInstance {
 	}
 
 
-	public StateInstance getPredicateInstance(String lastbit) {
+	public StateRunnable getPredicateInstance(String lastbit) {
 		String si = lastbit.substring(1, lastbit.length() - 1);
 		// E.info("parsing index from predicate " + si);
 		int ind = Integer.parseInt(si);
@@ -182,19 +182,19 @@ public class MultiInstance {
 	}
 
 
-	public StateInstance getInstance(int idx) {
+	public StateRunnable getInstance(int idx) {
 		return instances.get(idx);
 	}
 
 
-	public InstanceSet<StateInstance> getInstanceSet(StateInstance p) {
-		InstanceSet<StateInstance> ret = new InstanceSet<StateInstance>(knownAs, p);
+	public InstanceSet<StateRunnable> getInstanceSet(StateRunnable p) {
+		InstanceSet<StateRunnable> ret = new InstanceSet<StateRunnable>(knownAs, p);
 		ret.addAll(instances);
 		return ret;
 	}
 	
 	
-	public ArrayList<StateInstance> getInstances() {
+	public ArrayList<StateRunnable> getInstances() {
 		return instances;
 	}
  

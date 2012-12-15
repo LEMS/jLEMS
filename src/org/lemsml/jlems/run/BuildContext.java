@@ -2,15 +2,15 @@ package org.lemsml.jlems.run;
 
 public class BuildContext {
 
-	InstancePairSet<StateInstance> wkPairs;
+	InstancePairSet<StateRunnable> wkPairs;
 	
  
 	
-	public void setWorkPairs(InstancePairSet<StateInstance> ips) {
+	public void setWorkPairs(InstancePairSet<StateRunnable> ips) {
 		wkPairs = ips;
 	}
 	
-	public InstancePairSet<StateInstance> getWorkPairs() {
+	public InstancePairSet<StateRunnable> getWorkPairs() {
 		return wkPairs;
 	}
 }

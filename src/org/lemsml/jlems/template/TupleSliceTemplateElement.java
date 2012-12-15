@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.StateInstance;
+import org.lemsml.jlems.run.StateRunnable;
  
 
 public class TupleSliceTemplateElement extends AbstractTemplateElement {
@@ -40,7 +41,7 @@ public class TupleSliceTemplateElement extends AbstractTemplateElement {
 
 
 	@Override
-	public String eval(StateInstance so, HashMap<String, StateInstance> context) {
+	public String eval(StateRunnable so, HashMap<String, StateRunnable> context) {
 		E.missing();
 		return "";
 	}

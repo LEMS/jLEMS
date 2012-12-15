@@ -19,8 +19,8 @@ public class PairsEventConnectionBuilder extends AbstractPostBuilder {
 	}
 
 	 
-	public void postBuild(StateInstance base, HashMap<String, StateInstance> sihm, BuildContext bc) throws ConnectionError, ContentError, RuntimeError {
-		InstancePairSet<StateInstance> ips = base.getInstancePairSet(pairs);
+	public void postBuild(StateRunnable base, HashMap<String, StateRunnable> sihm, BuildContext bc) throws ConnectionError, ContentError, RuntimeError {
+		InstancePairSet<StateRunnable> ips = ((StateInstance)base).getInstancePairSet(pairs);
 		
 		
 		BuildContext cbc = new BuildContext();
@@ -29,7 +29,7 @@ public class PairsEventConnectionBuilder extends AbstractPostBuilder {
 		
 	
 		int np = 0;
-		for (InstancePair<StateInstance> ip : ips.getPairs()) {
+		for (InstancePair<StateRunnable> ip : ips.getPairs()) {
 			connectInstances(ip.getP(), ip.getQ());
 			np += 1;
 		}
@@ -39,7 +39,7 @@ public class PairsEventConnectionBuilder extends AbstractPostBuilder {
 	
 	
 	
-	private void connectInstances(StateInstance sf, StateInstance st) throws ContentError, ConnectionError, RuntimeError {
+	private void connectInstances(StateRunnable sf, StateRunnable st) throws ContentError, ConnectionError, RuntimeError {
 
         //TODO: add check for named in & out ports!
 		if (receiverCB != null) {

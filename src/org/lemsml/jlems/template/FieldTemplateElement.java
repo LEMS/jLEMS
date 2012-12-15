@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.lemsml.jlems.run.RuntimeError;
 import org.lemsml.jlems.run.StateInstance;
+import org.lemsml.jlems.run.StateRunnable;
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Lems;
 import org.lemsml.jlems.type.Unit;
@@ -61,7 +62,7 @@ public class FieldTemplateElement extends AbstractTemplateElement {
 	}
 
 	@Override
-	public String eval(StateInstance so, HashMap<String, StateInstance> context) throws ContentError, RuntimeError {
+	public String eval(StateRunnable so, HashMap<String, StateRunnable> context) throws ContentError, RuntimeError {
 		 String ret = "";
 		 
 		 double fac = 1.0;

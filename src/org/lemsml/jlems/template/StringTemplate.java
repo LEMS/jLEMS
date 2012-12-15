@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.run.RuntimeError;
 import org.lemsml.jlems.run.StateInstance;
+import org.lemsml.jlems.run.StateRunnable;
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Lems;
  
@@ -101,7 +102,7 @@ public class StringTemplate {
 	}
 
 
-	public String eval(StateInstance so, HashMap<String, StateInstance> context) throws ContentError, RuntimeError {
+	public String eval(StateRunnable so, HashMap<String, StateRunnable> context) throws ContentError, RuntimeError {
 		 
 		String ret = "";
 		for (AbstractTemplateElement te : elements) {

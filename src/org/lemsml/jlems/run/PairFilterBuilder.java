@@ -21,26 +21,26 @@ public class PairFilterBuilder extends AbstractPostBuilder {
  
 	@SuppressWarnings("unchecked")
 	@Override
-	public void postBuild(StateInstance tgt, HashMap<String, StateInstance> sihm, BuildContext bc) throws ConnectionError,
+	public void postBuild(StateRunnable tgt, HashMap<String, StateRunnable> sihm, BuildContext bc) throws ConnectionError,
 			ContentError, RuntimeError {
 	
-		InstancePairSet<StateInstance> pairs = bc.getWorkPairs();
+		InstancePairSet<StateRunnable> pairs = bc.getWorkPairs();
 	
 		E.info("ips " + pairs);
 		
 		StateInstance baseContainer = new StateInstance();
 		baseContainer.startArray("x");
 		
-		ArrayList<StateInstance> asi = new ArrayList<StateInstance>();
+		ArrayList<StateRunnable> asi = new ArrayList<StateRunnable>();
 		
 		int n0 = 0;
-		for (InstancePair<StateInstance> pair : pairs.getPairs()) {
+		for (InstancePair<StateRunnable> pair : pairs.getPairs()) {
 			StateInstance pc = new StateInstance();
 			pc.setParent(tgt);
 			baseContainer.addToArray("x", pc);
 			asi.add(pc);
-			pc.addChild("p", pair.getP());
-			pc.addChild("q", pair.getQ());
+			pc.addChild("p", (StateInstance)pair.getP());
+			pc.addChild("q", (StateInstance)pair.getQ());
 			pc.setWork("pair", pair);
 			n0 += 1;
 		}
@@ -49,13 +49,13 @@ public class PairFilterBuilder extends AbstractPostBuilder {
 //		sis.setItems(asi);
 //		tgt.addInstanceSet(sis);
 		
-		ArrayList<StateInstance> aic = selexp.getMatches(baseContainer);
+		ArrayList<StateRunnable> aic = selexp.getMatches(baseContainer);
 		
 		 
 		pairs.empty();
 		int n1 = 0;
-		for (StateInstance ic : aic) {
-			pairs.addPair((InstancePair<StateInstance>)ic.getWork());
+		for (StateRunnable ic : aic) {
+			pairs.addPair((InstancePair<StateRunnable>)ic.getWork());
 			n1 += 1;
 		}
 		

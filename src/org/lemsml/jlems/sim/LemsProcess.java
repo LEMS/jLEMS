@@ -121,8 +121,8 @@ public class LemsProcess {
 
 				// E.info("Running procedure: " + pr + " on " + cpt);
 
-				EventManager eventManager = new EventManager();
-				StateInstance so = lems.build(cpt.getStateType(), eventManager);
+			 
+				StateInstance so = lems.build(cpt.getStateType(), EventManager.getInstance());
 
 				ep.execute(so);
 			}

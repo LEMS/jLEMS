@@ -12,8 +12,8 @@ public class ExecutableProcedure {
 	
 	
 	
-	public void execute(StateInstance so) throws RuntimeError, ContentError, ConnectionError {
-		HashMap<String, StateInstance> context = new HashMap<String, StateInstance>();
+	public void execute(StateRunnable so) throws RuntimeError, ContentError, ConnectionError {
+		HashMap<String, StateRunnable> context = new HashMap<String, StateRunnable>();
 		for (ExecutableStatement es : statements) {
 			es.execute(so, context);
 		}
