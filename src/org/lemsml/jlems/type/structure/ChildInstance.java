@@ -2,6 +2,7 @@ package org.lemsml.jlems.type.structure;
 
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.run.BuilderElement;
+import org.lemsml.jlems.run.RuntimeType;
 import org.lemsml.jlems.run.StateType;
 import org.lemsml.jlems.run.SingleChildBuilder;
 import org.lemsml.jlems.sim.ContentError;
@@ -35,13 +36,14 @@ public class ChildInstance extends BuildElement {
 	
  
 	public BuilderElement makeBuilder(Component cpt) throws ContentError, ParseError {
-		StateType cb = null;
+		RuntimeType cb = null;
 		
 		if (component != null) {
 			Component c = cpt.getChild(component);
-			cb = c.getStateType();
+			cb = c.getRuntimeType();
+			
 		} else if (component != null) {
-			cb = r_component.getStateType();
+			cb = r_component.getRuntimeType();
 		}
 	
 		SingleChildBuilder sb = new SingleChildBuilder(component, cb);

@@ -111,10 +111,10 @@ public class PathDerivedVariable {
                 // E.info("seeking psa " + path);
             	// this calls getTargetArray below the first time, then caches
             	// the array of targets for future use
-                ArrayList<StateInstance> asa = sin.getPathStateArray(path);
+                ArrayList<StateRunnable> asa = sin.getPathStateArray(path);
 
                 ret = fbase;
-                for (StateInstance sa : asa) {
+                for (StateRunnable sa : asa) {
                     double var = sa.getVariable(tgtvar);
                     if (mode == SUM) {
                         ret += var;
@@ -148,31 +148,33 @@ public class PathDerivedVariable {
     }
 */
 
-    public StateInstance getTargetState(StateInstance uin) throws ContentError {
-        StateInstance ret = null;
+    public StateRunnable getTargetState(StateInstance uin) throws ContentError {
+        StateRunnable ret = null;
 
-        StateInstance wkinst = uin;
+        StateRunnable wkinst = uin;
         String[] bits = path.split("/");
         for (int i = 0; i < bits.length - 1; i++) {
-        	wkinst = (StateInstance)wkinst.getChildInstance(bits[i]);
+        	StateRunnable sr = wkinst.getChildInstance(bits[i]);
+        	wkinst = wkinst.getChildInstance(bits[i]);
         }
         ret = wkinst;
         return ret;
     }
 
-    public ArrayList<StateInstance> getTargetArray(StateInstance base) throws ContentError {
-        ArrayList<StateInstance> ret = new ArrayList<StateInstance>();
+    public ArrayList<StateRunnable> getTargetArray(StateInstance base) throws ContentError {
+        ArrayList<StateRunnable> ret = new ArrayList<StateRunnable>();
 
-        ArrayList<StateInstance> wka = new ArrayList<StateInstance>();
+        ArrayList<StateRunnable> wka = new ArrayList<StateRunnable>();
         wka.add(base);
         
         String[] bits = path.split("/");
         
         for (int i = 0; i < bits.length - 1; i++) {
             String bit = bits[i];
-            ArrayList<StateInstance> swka = new ArrayList<StateInstance>();
+            ArrayList<StateRunnable> swka = new ArrayList<StateRunnable>();
             
-            for (StateInstance par : wka) {
+            for (StateRunnable rpar : wka) {
+            	StateInstance par = (StateInstance)rpar;
             	if (bit.indexOf("[") > 0) { 
             		int iob = bit.indexOf("[");
             		int icb = bit.indexOf("]");

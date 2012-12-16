@@ -44,14 +44,17 @@ public class MetaClass extends CodeUnit {
 
 
 	public Method newMetaMethod(VarType typ, String nm, String rv) {
-		Method mm = new Method(typ, nm, rv);
+		Method mm = new Method(nm);
+		mm.setReturnType(typ);
+		mm.setReturnName(rv);
 		methods.add(mm);
 		return mm;
 	}
 
 
 	public Method newMetaMethod(String nm) {
-		Method mm = new Method(VarType.VOID, nm, null);
+		Method mm = new Method(nm);
+		mm.setReturnType(VarType.VOID);
 		methods.add(mm);
 		return mm;
 	}
@@ -67,6 +70,11 @@ public class MetaClass extends CodeUnit {
 		for (String s : pkgHS) {
 			sb.append("import " + rootPkg + "." + s + ".*;\n");
 		}
+		
+		for (String s : clsHS) {
+			sb.append("import " + s + ";\n");
+		}
+		
 		
 		for (String s : dependencies) {
 			sb.append("import " + getJavaDep(s) + ";\n");
@@ -126,6 +134,12 @@ public class MetaClass extends CodeUnit {
 		String ret = "";
 		if (s.equals("LIST")) {
 			ret = "java.util.ArrayList";
+		} else if (s.equals("MAP")) {
+			ret = "java.util.HashMap";
+			
+		} else if (s.equals("DOUBLEPOINTER")) {
+			ret = "org.lemsml.jlems.run.DoublePointer";
+			
 		} else {
 			E.missing("unrecognized dependency " + s);
 		}
@@ -179,6 +193,8 @@ public class MetaClass extends CodeUnit {
 
 	public void addImplements(MetaInterface mi) {
 		interfaces.add(mi);
+		String s = mi.getFQClassName();
+		clsHS.add(s);
 	}
 
 

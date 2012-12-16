@@ -19,15 +19,9 @@ public class MetaInterface extends CodeUnit {
 		super(gp, s);
 	}
 
-	public Method newMetaMethod(VarType typ, String nm, String rv) {
-		Method mm = new Method(typ, nm, rv);
-		methods.add(mm);
-		return mm;
-	}
-
-
+	 
 	public Method newMetaMethod(String nm) {
-		Method mm = new Method(VarType.VOID, nm, null);
+		Method mm = new Method(nm);
 		methods.add(mm);
 		return mm;
 	}
@@ -165,6 +159,8 @@ public class MetaInterface extends CodeUnit {
 		return ret;
 	}
 
+	 
+	
 	public String getName() {
 		// TODO Auto-generated method stub
 		return null;

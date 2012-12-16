@@ -18,6 +18,11 @@ public class DoublePointer {
 		return value;
 	}
 	
+	public double getValue() {
+		return value;
+	}
+	
+	
 	public void set(double d) {
 		value = d;
 	}

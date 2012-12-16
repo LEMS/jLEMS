@@ -1,5 +1,7 @@
 package org.lemsml.jlems.sim;
   
+import java.util.ArrayList;
+
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.reader.LemsFactory;
@@ -7,6 +9,7 @@ import org.lemsml.jlems.run.ConnectionError;
 import org.lemsml.jlems.run.EventManager;
 import org.lemsml.jlems.run.ExecutableProcedure;
 import org.lemsml.jlems.run.RuntimeError;
+import org.lemsml.jlems.run.RuntimeType;
 import org.lemsml.jlems.run.StateInstance;
 import org.lemsml.jlems.type.BuildException;
 import org.lemsml.jlems.type.Component;
@@ -29,26 +32,23 @@ public class LemsProcess {
 
 	protected Lems lems;
 
-	public static final int NONE = 0;
- 
-	public static final int STRING = 3;
-	public static final int BUILT = 4;
-
-	protected int mode = NONE;
+	 
 
 	boolean allowConsolidation = true;
 
- 
+	  
+    ArrayList<RuntimeType> substitutions = new ArrayList<RuntimeType>();
+    
 
-	public LemsProcess(String srcStr) {
-		this.srcStr = srcStr;
-		mode = STRING;
-	}
+	public LemsProcess(String str) {
+		srcStr = str;
+ 	}
 
-	public LemsProcess(Lems lems) {
-		this.lems = lems;
-		mode = BUILT;
+	
+	public void addSubstitutionType(RuntimeType rt) {
+		substitutions.add(rt);
 	}
+	 
 
 	public void setNoConsolidation() {
 		allowConsolidation = false;
@@ -72,6 +72,8 @@ public class LemsProcess {
 		LemsFactory lf = new LemsFactory();
 		lems = lf.buildLemsFromXMLElement(xel);
 
+		
+		
 		if (loose) {
 			lems.setResolveModeLoose();
 		}
@@ -79,22 +81,19 @@ public class LemsProcess {
 		lems.deduplicate();
 		lems.resolve();
 
-		lems.evaluateStatic();
-
+		lems.evaluateStatic();		
 	}
 
 	public String getSourceText() throws ContentError {
 		String stxt = "";
 	
-		if (mode == STRING) {
-			stxt = srcStr.trim();
+	 		stxt = srcStr.trim();
 
 			if (stxt.startsWith("<?xml")) {
 				int index = stxt.indexOf(">");
 				stxt = stxt.substring(index + 1).trim();
 			}
-
-		}
+ 
 		return stxt;
 	}
 
@@ -108,6 +107,19 @@ public class LemsProcess {
 		return lems;
 	}
 
+	
+	public void applySubstitutions() throws ContentError {
+		if (substitutions != null) {
+			for (RuntimeType rt : substitutions) {
+				String sid = rt.getID();
+				Component cpt = lems.getComponent(sid);
+				cpt.setRuntimeType(rt);
+				E.info("Replaced runtime type in " + cpt);
+			}
+		}
+	}
+	
+	
 	public void process() throws ContentError, ConnectionError, ParseError, RuntimeError {
 		for (Target dr : lems.getTargets()) {
 

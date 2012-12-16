@@ -11,7 +11,7 @@ import org.lemsml.jlems.sim.StateTypeVisitor;
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Component;
 
-public class StateType {
+public class StateType implements RuntimeType {
 
 	String cptid;
 	String typeName;
@@ -100,11 +100,20 @@ public class StateType {
 	HashMap<String, Double> der1, der2, der3, der4, vwk,  val1, val2, val3, val4;
 	
 	
+	boolean trackTime = false;
+	long timeCounter = 0;
+	long wkTime;
+	
 	
 	public StateType(String sid, String tnm) {
 		cptid = sid;
 		typeName = tnm;
 		vars.add("t"); // TODO should just have one DoublePointer to t 
+
+			if (sid != null && sid.equals("na")) {
+				E.info("Created state type " + sid + " " + hashCode());
+				E.stackTrace();
+			}
 	}
 	
     @Override
@@ -116,6 +125,22 @@ public class StateType {
 		return cptid;
 	}
 
+	public void enableTiming() {
+		trackTime = true;
+	}
+	
+	public void startClock() {
+		wkTime = System.nanoTime();
+	}
+	
+	public void stopClock() {
+		timeCounter += (System.nanoTime() - wkTime);
+	}
+	
+	public long getTotalTime() {
+		return timeCounter;
+	}
+	
     public ArrayList<VariableROC> getRates() {
         return rates;
     }
@@ -165,7 +190,10 @@ public class StateType {
     
     
     
-    
+    public StateRunnable newStateRunnable() throws ContentError, ConnectionError, RuntimeError {
+    	StateInstance si = newInstance();
+    	return si;
+    }
     
     
 	public StateInstance newInstance() throws ContentError, ConnectionError, RuntimeError {
@@ -341,7 +369,7 @@ public class StateType {
 		for (PathDerivedVariable pdv : pathderiveds) {
 			if (pdv.isSimple()) {
 				try {
-					StateInstance si = pdv.getTargetState(uin);
+					StateRunnable si = pdv.getTargetState(uin);
 					uin.addPathStateInstance(pdv.getPath(), si);
 				} catch (ContentError ce) {
 					if (pdv.isRequired()) {
@@ -1013,8 +1041,9 @@ public class StateType {
 	public StateType makeShallowCopy() {
 		StateType ret = new StateType(cptid, typeName);
 	
+		
 		for (String s : indeps) {
-			ret.addIndependentVariable(s);
+ 			ret.addIndependentVariable(s);
 		}
 		
 		for (String s : childHM.keySet()) {
@@ -1164,5 +1193,15 @@ public class StateType {
 
 	public String getTypeName() {
 		return typeName;
+	}
+
+	public HashSet<String> getRequirements() {
+		HashSet<String> allReq = new HashSet<String>();
+		allReq.addAll(indeps);
+		for (ListChild lc : listChildren) {
+			allReq.addAll(lc.getStateType().getRequirements());
+		}
+		
+		 return allReq;
 	}
 }

@@ -37,7 +37,7 @@ public class DynamicCompilationTest {
 		E.info("instantiated one " + inst);
 		
 		GeneratedInstance gi = (GeneratedInstance)inst;
-		gi.advance(0.01);
+	//	gi.advance(0.01);
 	
 	}
 	

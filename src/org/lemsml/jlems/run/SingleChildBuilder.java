@@ -1,5 +1,6 @@
 package org.lemsml.jlems.run;
 
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.sim.ContentError;
 
 
@@ -8,21 +9,30 @@ import org.lemsml.jlems.sim.ContentError;
 public class SingleChildBuilder extends BuilderElement implements ChildInstantiator {
 
 	 
-	StateType stateType;
+	RuntimeType runtimeType;
 	
 	String name;
 	
-	public SingleChildBuilder(String snm, StateType cb) {
+	public SingleChildBuilder(String snm, RuntimeType cb) {
 		super(); 
-		stateType = cb;
+		runtimeType = cb;
 		 name = snm;
 	}
 	
 	
 	public void childInstantiate(StateInstance parent) throws ContentError, ConnectionError, RuntimeError {
-		StateInstance sr = stateType.newInstance();
- 		sr.setParent(parent);
-		parent.addChild(name, (StateInstance)sr);
+		if (runtimeType instanceof StateType) {
+			StateType stateType = (StateType)runtimeType;
+			StateInstance sr = stateType.newInstance();
+			sr.setParent(parent);
+			parent.addChild(name, sr);
+		
+		} else {
+			E.info("Time to build from a non state type: " + runtimeType);
+			StateRunnable sr = runtimeType.newStateRunnable();
+			sr.setParent(parent);
+			parent.addChild(name, sr);
+		}
 	}
  
 
@@ -33,8 +43,8 @@ public class SingleChildBuilder extends BuilderElement implements ChildInstantia
 
 	@Override
 	public void consolidateStateTypes() {
-		 if (stateType != null) {
-			 stateType = stateType.getConsolidatedStateType("(child)");
+		 if (runtimeType instanceof StateType) {
+			 runtimeType = ((StateType)runtimeType).getConsolidatedStateType("(child)");
 		 }	
 	}
  

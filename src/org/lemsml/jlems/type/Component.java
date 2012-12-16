@@ -7,6 +7,7 @@ import org.lemsml.jlems.annotation.ModelProperty;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.expression.ParseTree;
 import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.run.RuntimeType;
 import org.lemsml.jlems.run.StateType;
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.xml.XMLAttribute;
@@ -14,9 +15,7 @@ import org.lemsml.jlems.xml.XMLElement;
 
 
 public class Component implements Attributed, IDd, Summaried, Namable, Parented {
-
-    public static final String THIS_COMPONENT = "this";
-    public static final String PARENT_COMPONENT = "parent";
+ 
     
 	@ModelProperty(info="")
 	public String id;
@@ -82,7 +81,11 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	private StateType stateType;
  	
 	 
-
+	// RuntimeType can be a NativeType for code generated components
+	private RuntimeType runtimeType;
+	
+	
+	
 	public void setID(String s) {
 		id = s;
 	}
@@ -100,6 +103,10 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		type = s;
 	}
 
+	public void setRuntimeType(RuntimeType rt) {
+		runtimeType = rt;
+	}
+	
 	 
 	@Override
 	public String toString() {
@@ -674,6 +681,8 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 
 	public StateType makeStateType() throws ContentError, ParseError {
 	
+	 
+		
 		if (madeCB) {
 			throw new ContentError("remaking a component behavior that is already made " + id + " " + r_type);
 		}
@@ -695,11 +704,28 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	}
 	
 	
+	public RuntimeType getRuntimeType() throws ContentError, ParseError {
+		RuntimeType ret = null;
+		if (runtimeType != null) {
+			ret = runtimeType;
+		} else {
+			ret = getStateType();
+		}
+		return ret;
+	}
+	
 
 	public StateType getStateType() throws ContentError, ParseError {
 		StateType ret = null;
 		 
+		//if (id != null && id.equals("na")) {
+		//	E.info("   xxxxxxxxxxxxx making na state type");
+		//	E.stackTrace();
+		//}
+		
+		
 		if (stateType == null) {
+			E.info("Building stae type for " + getID());
 			makeStateType();
 		}
 		ret = stateType;

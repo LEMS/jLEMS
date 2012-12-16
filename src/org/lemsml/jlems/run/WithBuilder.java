@@ -23,13 +23,13 @@ public class WithBuilder extends AbstractPostBuilder {
         StateRunnable sr = null;
         //E.info("WithBuilder needs "+path+" relative to: "+base);
         
-        if (path.equals(Component.THIS_COMPONENT)) {
+        if (path.equals("this")) {
             sr = base;
-        }
-        else if(path.equals(Component.PARENT_COMPONENT)) {
+        
+        } else if(path.equals("parent")) {
             sr = base.getParent();
-        }
-        else {
+        
+        } else {
             sr = ra.getRelativeStateInstance(base.getParent(), path);
         }
         

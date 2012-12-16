@@ -39,8 +39,8 @@ public class StateInstance implements StateRunnable {
 	InstanceSet<StateRunnable> onlyIS = null;
 	boolean resolvedPaths = false;
 
-	HashMap<String, StateInstance> pathSIHM;
-	HashMap<String, ArrayList<StateInstance>> pathAHM;
+	HashMap<String, StateRunnable> pathSIHM;
+	HashMap<String, ArrayList<StateRunnable>> pathAHM;
 
 	HashMap<String, StateRunnable> idSIHM;
 	boolean hasSchemes = false;
@@ -215,11 +215,15 @@ public class StateInstance implements StateRunnable {
 		if (!built) {
 			throw new RuntimeError("advance() called before build on " + this);
 		}
-
+		
 		currentTime = t;
 
 		if (!initialized) {
 			this.initialize(parent);
+		}
+		
+		if (uclass.trackTime) {
+			uclass.startClock();
 		}
 
 		if (hasChildren) {
@@ -250,6 +254,10 @@ public class StateInstance implements StateRunnable {
 
 		if (hasRegimes) {
 			activeRegime.advance(this, t, dt);
+		}
+		
+		if (uclass.trackTime) {
+			uclass.stopClock();
 		}
 	}
 	
@@ -488,7 +496,7 @@ public class StateInstance implements StateRunnable {
 	}
 
 	
-	public void addChild(String s, StateInstance newInstance) {
+	public void addChild(String s, StateRunnable newInstance) {
 		if (newInstance == null) {
 			E.warning("adding a null child instance to " + this);
 		} else {
@@ -602,9 +610,9 @@ public class StateInstance implements StateRunnable {
 
 	public void addPathStateInstance(String pth, StateRunnable pl) {
 		if (pathSIHM == null) {
-			pathSIHM = new HashMap<String, StateInstance>();
+			pathSIHM = new HashMap<String, StateRunnable>();
 		}
-		pathSIHM.put(pth, (StateInstance)pl);
+		pathSIHM.put(pth, pl);
 	}
 
 	public StateRunnable getPathStateInstance(String pth) throws ContentError {
@@ -684,11 +692,11 @@ public class StateInstance implements StateRunnable {
 	
 	
 
-	public void addPathStateArray(String pth, ArrayList<StateInstance> pla) throws ContentError {
+	public void addPathStateArray(String pth, ArrayList<StateRunnable> pla) throws ContentError {
 		// E.info("adding psa " + pth + " " + pla);
 
 		if (pathAHM == null) {
-			pathAHM = new HashMap<String, ArrayList<StateInstance>>();
+			pathAHM = new HashMap<String, ArrayList<StateRunnable>>();
 		}
 
 		pathAHM.put(pth, pla);
@@ -699,7 +707,7 @@ public class StateInstance implements StateRunnable {
 		dmaps.add(dm);
 	}
 
-	public ArrayList<StateInstance> getPathStateArray(String pth) throws ContentError {
+	public ArrayList<StateRunnable> getPathStateArray(String pth) throws ContentError {
 		if (!resolvedPaths) {
 			// E.info("resolving psas in getPSA");
 			uclass.applyPathDerived(this);

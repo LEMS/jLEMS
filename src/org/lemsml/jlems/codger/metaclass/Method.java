@@ -19,13 +19,21 @@ public class Method {
 	
  
 	
-	
-	public Method(VarType typ, String nm, String rnm) {
-		returnType = typ;
+	public Method(String nm) {
+		returnType = VarType.VOID;
 		name = nm;
+	}
+	 
+
+	public void setReturnType(VarType typ) {
+		returnType = typ;
+	}
+	
+	public void setReturnName(String rnm) {
 		returnName = rnm;
 	}
-
+	
+	
 	public String getName() {
 		return name;
 	}
@@ -35,10 +43,16 @@ public class Method {
 	}
 
 	public void addFloatArgument(String s) {
-		arguments.add(new FloatMethodArgument(s));
-		
+		arguments.add(new FloatMethodArgument(s));	
 	}
-
+	
+	public void addStringArgument(String s) {
+		arguments.add(new StringMethodArgument(s));
+	}
+	
+	public void addMapArgument(String mnm, VarType keyType, VarType valType) {
+		arguments.add(new MapMethodArgument(mnm, keyType, valType));
+	}
 
 	public MethodCall newMethodCall(String str) {
 		 MethodCall mc = new MethodCall(str);
@@ -57,7 +71,7 @@ public class Method {
 	 
 	public String generateJava() {
  		StringBuilder sb = new StringBuilder();
-		sb.append("public " + javaVarType(returnType) + " " + name + "(");
+		sb.append("public " + VarTypes.javaVarType(returnType) + " " + name + "(");
 		boolean first = true;
 	
 		
@@ -72,7 +86,8 @@ public class Method {
 		
 		
 		if (returnType != null && returnType != VarType.VOID) {
-			sb.append("    " + javaVarType(returnType) + " " + returnName + " = " + javaVarDefault(returnType) + ";\n");
+			sb.append("    " + VarTypes.javaVarType(returnType) + " " + 
+						returnName + " = " + VarTypes.javaVarDefault(returnType) + ";\n");
 		}
 		
 		String opindent = "    ";
@@ -97,7 +112,7 @@ public class Method {
 	 
 		public String generateInterfaceJava() {
 	 		StringBuilder sb = new StringBuilder();
-			sb.append("public " + javaVarType(returnType) + " " + name + "(");
+			sb.append("public " + VarTypes.javaVarType(returnType) + " " + name + "(");
 			boolean first = true;
 			for (AbstractMethodArgument ma : arguments) {
 				if (!first) {
@@ -111,40 +126,7 @@ public class Method {
 		}
 		
 		
-		
-	private String javaVarType(VarType vt) {
-		String ret = "";
-		if (vt.equals(VarType.DOUBLE)) {
-			ret = "double";
-		} else if (vt.equals(VarType.STRING)) {
-			ret = "string";
-		} else if (vt.equals(VarType.INTEGER)) {
-			ret = "int";
-		} else if (vt.equals(VarType.VOID)) {
-			ret = "void";
-		} else {
-			E.error("Unrecognized var type " + vt);
-		}
-		return ret;
-	}
 	
-	
-	private String javaVarDefault(VarType vt) {
-		String ret = "";
-		if (vt.equals(VarType.DOUBLE)) {
-			ret = "0.";
-		} else if (vt.equals(VarType.STRING)) {
-			ret = "\"\"";
-		} else if (vt.equals(VarType.INTEGER)) {
-			ret = "0";
-		} else if (vt.equals(VarType.VOID)) {
-			ret = "";
-		} else {
-			E.error("Unrecognized var type " + vt);
-		}
-		return ret;
-	}
-
  
 	public String generateCallJava() {
 		String ret = "" + name + "(";
@@ -202,6 +184,22 @@ public class Method {
 		E.info("add mrc " + cmi + " ");
 		MethodCallOnChildren mrc = new MethodCallOnChildren(anm, cmi.getClassName(), cmi.getMethod(mnm));
 		ops.add(mrc);
+	}
+
+	public void addCall(Method method) {
+		 LocalMethodCall mc = new LocalMethodCall(method);
+		 ops.add(mc);
+	}
+
+	public void addMapDoubleExtraction(String var, String map, String val) {
+		MapDoubleExtraction mde = new MapDoubleExtraction(var, map, val);
+		ops.add(mde);
+	}
+
+
+	public void addStringConditionalSetter(String s1, String s2, String lnm, String cnm) {
+		StringConditionalSetter scs = new StringConditionalSetter(s1, s2, lnm, cnm);
+		ops.add(scs);
 	}
 	
 }

@@ -47,7 +47,7 @@ public class CodeGenerationTest {
     public void runExample1() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException {
     	File f1 = new File("examples/example1.xml");
     	
-    	File f2 = new File("src/org/lemsml/dynamic");
+    	File f2 = new File("src");
  		boolean ret = generateFromFile(f1, "na", f2);
  		assertTrue("Example 1", ret);
     }
@@ -71,7 +71,7 @@ public class CodeGenerationTest {
 
         Lems lems = sim.getLems();
         
-        StateTypeGenerator cg = new StateTypeGenerator();
+        StateTypeGenerator cg = new StateTypeGenerator("org.lemsml.dynamic");
         
         Component cna = lems.getComponent("na");
         cg.addStateType(cna.getStateType());

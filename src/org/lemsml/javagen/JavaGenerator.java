@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import org.lemsml.jlems.codger.StateTypeGenerator;
 import org.lemsml.jlems.codger.metaclass.CodeUnit;
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlemsio.util.FileUtil;
 
 public class JavaGenerator {
@@ -31,6 +32,7 @@ public class JavaGenerator {
 			
 			File fdest = new File(wkdest, mc.getClassName() + ".java");
 			FileUtil.writeStringToFile(src, fdest);
+			E.info("Written " + fdest.getAbsolutePath());
 		}
 		
 	}

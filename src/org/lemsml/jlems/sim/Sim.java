@@ -37,18 +37,18 @@ public class Sim extends LemsProcess {
     
     EventManager eventManager;
     
+  
+    
     
     public Sim(String srcStr) {
     	super(srcStr);
     }
-
-    public Sim(Lems lems) {
-       super(lems);
-    }
-
+ 
  	
     	
     public void build() throws ContentError, ConnectionError, ParseError {
+    	
+    	applySubstitutions();
     	
     	eventManager = EventManager.getInstance();
     	

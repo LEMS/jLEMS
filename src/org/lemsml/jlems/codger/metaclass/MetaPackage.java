@@ -54,10 +54,10 @@ public class MetaPackage {
 		ArrayList<String> ret = new ArrayList<String>();
 		MetaPackage wk = this;
 		while (true) {
+			ret.add(0, wk.pckg);
 			if (wk.isRoot()) {
 				break;
 			} else {
-				ret.add(0, wk.pckg);
 				wk = wk.parent;
 			}
 		}

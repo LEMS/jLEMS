@@ -12,6 +12,8 @@ public abstract class CodeUnit {
 	public MetaPackage metaPackage;
 
 	public HashSet<String> pkgHS = new HashSet<String>();
+	public HashSet<String> clsHS = new HashSet<String>();
+	
 	
 	public CodeUnit(MetaPackage gp, String s) {
 		metaPackage = gp;
@@ -34,6 +36,11 @@ public abstract class CodeUnit {
 	}
 
 
+	public String getFQClassName() {
+		String ret = metaPackage.getPackageName() + "." + name;
+		return ret;
+	}
+	
 
 
 	public abstract String generateJava();

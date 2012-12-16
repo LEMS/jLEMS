@@ -6,7 +6,7 @@ import org.lemsml.jlems.logging.E;
 
 public class DestinationMap {
 
-	ArrayList<StateInstance> targetA;
+	ArrayList<StateRunnable> targetA;
 	 
 	String path;
 	
@@ -17,7 +17,7 @@ public class DestinationMap {
 	
 	// NB this only works for paths like synapse[*]/g
 	// - needs generalizing along with PathDerived
-	public DestinationMap(String p, ArrayList<StateInstance> pla) {
+	public DestinationMap(String p, ArrayList<StateRunnable> pla) {
 		path = p;
 		targetA = pla;
 		bits = path.split("/");

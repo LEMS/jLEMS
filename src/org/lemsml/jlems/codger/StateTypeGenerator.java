@@ -24,6 +24,8 @@ import org.lemsml.jlems.run.VariableROC;
 public class StateTypeGenerator {
 
 	
+	String targetPackage;
+	
 	ArrayList<StateType> aCB = new ArrayList<StateType>();
 	
  
@@ -34,6 +36,11 @@ public class StateTypeGenerator {
 	
 	HashMap<String, CodeUnit> metaItemHM = new HashMap<String, CodeUnit>();
   
+	
+	
+	public StateTypeGenerator(String tp) {
+		targetPackage = tp;
+	}
 	
 	
 	public void addStateType(StateType cb) {
@@ -51,6 +58,20 @@ public class StateTypeGenerator {
 	
 	
 	
+	public MetaPackage getRootPackage() {
+		return makeMetaPackage(targetPackage);
+	}
+	
+	public MetaPackage makeMetaPackage(String spkg) {	
+		String[] bits = spkg.split("\\.");
+		MetaPackage ret = new MetaPackage(bits[0]);
+		for (int i = 1; i < bits.length; i++) {
+			ret = new MetaPackage(bits[i], ret);
+		}
+		return ret;
+	}
+	
+	
 	public void buildMetaCode() {
 		HashMap<String, StateType> cbHM = new HashMap<String, StateType>();
 		for (StateType cb : aCB) {
@@ -61,23 +82,65 @@ public class StateTypeGenerator {
 		metaItemHM = new HashMap<String, CodeUnit>();
 		
 		
-		MetaPackage gp = new MetaPackage("org.lemsml.dynamic");
+		MetaPackage gp = getRootPackage();
+		
+		MetaInterface geninst = new MetaInterface(makeMetaPackage("org.lemsml.jlems.run"), "GeneratedInstance");
 		
 		for (StateType cb : aCB) {
 			String cbid = cb.getComponentID();
-			recAdd(gp, cb, cbid, null);
+			MetaClass mc = recAdd(gp, cb, cbid, null);
+			mc.addImplements(geninst);
+			addAdvanceMethod(mc, cb);
+			addExposedGetter(mc, cb);
 		}
 		mcUpToDate = true;
 	}
 		
+	
+	
+	
+	private void addAdvanceMethod(MetaClass mc, StateType cb) {
+		Method m = mc.newMetaMethod("advance");
+		m.addFloatArgument("t");
+		m.addFloatArgument("dt");
+		m.addMapArgument("vars", VarType.STRING, VarType.DOUBLEPOINTER);
+		mc.addDependency("MAP");
+		mc.addDependency("DOUBLEPOINTER");
 		
+		E.info(" XXXX  requmts " + cb.getRequirements().size());
+		for (String s : cb.getRequirements()) {
+			E.info("     YYY added mde " + s);
+			m.addMapDoubleExtraction(s, "vars", s);
+		}
+		
+		m.addCall(mc.getMethod("forwardEuler"));
+	}
+	
+		
+	
+	
+	private void addExposedGetter(MetaClass mc, StateType cb) {
+		Method m = mc.newMetaMethod("getVariable");
+		m.setReturnType(VarType.DOUBLE);
+		m.setReturnName("ret");
+		
+		m.addStringArgument("varname");
+		
+		for (String s : cb.getExposureMap().keySet()) {
+			String sv = cb.getExposureMap().get(s);
+			m.addStringConditionalSetter("varname", s, "ret", sv);
+		}
+	
+	}
+	
+	
+	
+	
+	
 	private MetaClass recAdd(MetaPackage gp, StateType cb, String cnm, MetaInterface mi) {
 		
 		String partsPkg = cnm + "_parts";
-		
-		
-		
-		
+		 
 		MetaPackage cgp = new MetaPackage(partsPkg, gp);
 		
 		HashMap<String, MetaClass> childMCHM = new HashMap<String, MetaClass>();
@@ -303,15 +366,7 @@ public class StateTypeGenerator {
 		}
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		 
 		
 		
 		
