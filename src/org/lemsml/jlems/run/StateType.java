@@ -109,11 +109,7 @@ public class StateType implements RuntimeType {
 		cptid = sid;
 		typeName = tnm;
 		vars.add("t"); // TODO should just have one DoublePointer to t 
-
-			if (sid != null && sid.equals("na")) {
-				E.info("Created state type " + sid + " " + hashCode());
-				E.stackTrace();
-			}
+ 
 	}
 	
     @Override

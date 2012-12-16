@@ -107,10 +107,9 @@ public class StateTypeGenerator {
 		mc.addDependency("MAP");
 		mc.addDependency("DOUBLEPOINTER");
 		
-		E.info(" XXXX  requmts " + cb.getRequirements().size());
+	 
 		for (String s : cb.getRequirements()) {
-			E.info("     YYY added mde " + s);
-			m.addMapDoubleExtraction(s, "vars", s);
+ 			m.addMapDoubleExtraction(s, "vars", s);
 		}
 		
 		m.addCall(mc.getMethod("forwardEuler"));
@@ -149,9 +148,7 @@ public class StateTypeGenerator {
 		for (String s : chm.keySet()) {
 			StateType ccb = chm.get(s);
 			String chnm = getCNM(ccb, s);
-			
-			E.info("ST " + cnm + " has child key " + s + " type " + ccb.getTypeName() + " name " + chnm);
-			MetaClass mcc = recAdd(cgp, ccb, chnm, null);
+ 			MetaClass mcc = recAdd(cgp, ccb, chnm, null);
 			childMCHM.put(chnm, mcc);
 		}
 		
@@ -179,9 +176,6 @@ public class StateTypeGenerator {
 				for (StateType ccb : acb) {
 					String acnm = getCNM(ccb, s + ctr);
 					ctr += 1;
-					
-					E.info("Adding array child of " + cnm + " type " + cb.getTypeName() + " child=" + acnm);
-					// TODO the ones we're adding here need to extend s
 					recAdd(cgp, ccb, acnm, lmi);
 				}	
 			

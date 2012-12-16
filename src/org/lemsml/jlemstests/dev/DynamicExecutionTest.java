@@ -52,14 +52,16 @@ public class DynamicExecutionTest {
 		File fsrc = new File("src");
 		
 		String pkgName = "org.lemsml.dynamic";
-		String cptid = "na";
 		
-		generateFromFile(fmod, "na", fsrc, pkgName);
-		
-		Class cptClass = compileAndLoad(fsrc, pkgName, cptid);
+		String nacptid = "na";
+		generateFromFile(fmod, nacptid, fsrc, pkgName);
+		Class nacls = compileAndLoad(fsrc, pkgName, nacptid);
 	
+		String kcptid = "k";
+		generateFromFile(fmod, kcptid, fsrc, pkgName);
+		Class kcls = compileAndLoad(fsrc, pkgName, kcptid);
 		
-	
+	 
     	FileInclusionReader fir = new FileInclusionReader(fmod);
     	Sim sim = new Sim(fir.read());
 
@@ -67,34 +69,24 @@ public class DynamicExecutionTest {
         
         sim.setMaxExecutionTime(1000);
 
-     
-
         
-        
-        
-        NativeType nta = new NativeType("na", cptClass);
-        
+        NativeType nta = new NativeType("na", nacls);
         nta.enableTiming();
         
-        NativeType ntk = new NativeType("k", cptClass);
+        NativeType ntk = new NativeType("k", kcls);
 
-         sim.addSubstitutionType(nta);
-       // sim.addSubstitutionType(ntk);
-        
-        
+        sim.addSubstitutionType(nta);
+        sim.addSubstitutionType(ntk);
         
         Lems lems = sim.getLems();
         Component cna = lems.getComponent("na");
         StateType cst = cna.getStateType();
         cst.enableTiming();
-        E.info("Enabled timing on " + cst.hashCode());
-        
+         
         sim.build();
         
         Component cna2 = lems.getComponent("na");
         StateType cst2 = cna.getStateType();
-        E.info("post build " + cst2.hashCode());
-        
         long t1 = System.currentTimeMillis();
         sim.runTree();
         
@@ -106,6 +98,7 @@ public class DynamicExecutionTest {
         E.info("Time in cpt type " + cst.getID() + ": " + Math.round(1.e-6 * cst.getTotalTime()));
 	
         E.info("Time in native type " + nta.getID() + ": " + Math.round(1.e-6 * nta.getTotalTime()));
+      
 	}
 	
  
@@ -128,14 +121,9 @@ public class DynamicExecutionTest {
   
 		  StateTypeGenerator cg = new StateTypeGenerator(pkgName);
   
-		  Component cna = lems.getComponent("na");
+		  Component cna = lems.getComponent(tgtid);
 		  cg.addStateType(cna.getStateType());
- 
-  //for (Component cpt : lems.getComponents()) {
-  //	E.info("Adding cpt " + cpt.getID());
-  //	cg.addStateType(cpt.getStateType());
-  //}
-  	
+  
 		  String srcCode = cg.getCombinedJavaSource();
 	
 		  JavaGenerator jg = new JavaGenerator();

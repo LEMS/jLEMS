@@ -717,15 +717,10 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 
 	public StateType getStateType() throws ContentError, ParseError {
 		StateType ret = null;
-		 
-		//if (id != null && id.equals("na")) {
-		//	E.info("   xxxxxxxxxxxxx making na state type");
-		//	E.stackTrace();
-		//}
-		
+	 
 		
 		if (stateType == null) {
-			E.info("Building stae type for " + getID());
+		//	E.info("Building stae type for " + getID());
 			makeStateType();
 		}
 		ret = stateType;

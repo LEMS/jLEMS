@@ -93,7 +93,7 @@ public class MetaInterface extends CodeUnit {
 			ArrayList<Method> candidates = new ArrayList<Method>();
 			candidates.addAll(implementers.get(0).getMetaMethods());
 			
-			E.info("Pulling up - implementers: " + implementers.size() + " considerin " + candidates.size());
+			// E.info("Pulling up - implementers: " + implementers.size() + " considerin " + candidates.size());
 			
 			HashSet<Method> kept = new HashSet<Method>();
 			kept.addAll(candidates);

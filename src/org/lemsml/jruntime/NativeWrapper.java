@@ -138,8 +138,8 @@ public class NativeWrapper implements StateRunnable {
 
 	@Override
 	public void initialize(StateRunnable sr) throws RuntimeError, ContentError {
-		E.missing("Native wrapper");
-		
+		//E.missing("Native wrapper");
+		// TODO - nothing to do here?
 	}
 
 
@@ -167,7 +167,7 @@ public class NativeWrapper implements StateRunnable {
 
 	@Override
 	public void setParent(StateRunnable par) {
-		E.missing("Native wrapper");
+		// shouldn't need this?
 		
 	}
 
@@ -181,7 +181,7 @@ public class NativeWrapper implements StateRunnable {
 
 	@Override
 	public void checkBuilt() throws ConnectionError, ContentError, RuntimeError {
-		E.missing("Native wrapper");
+	// not needed
 		
 	}
 
