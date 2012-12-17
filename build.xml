@@ -8,6 +8,8 @@
  
     <path id="junit.classpath">
         <pathelement location="lib/junit-4.8.1.jar"/>
+        <pathelement location="lib/commons-compiler.jar"/>
+        <pathelement location="lib/commons-compiler-jdk.jar"/>
     </path>
 
     <path id="jarrun.classpath">
