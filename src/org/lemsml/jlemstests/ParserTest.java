@@ -15,6 +15,7 @@ import org.lemsml.jlems.expression.ParseTree;
 import org.lemsml.jlems.expression.Parser;
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlemsio.logging.DefaultLogger;
+import org.lemsml.jlems.logging.E;
 
 /**
  * 
@@ -65,15 +66,32 @@ public class ParserTest {
 		eval = pt.makeFloatEvaluator().evalD(valHM);
 		res = 5e24;
 		assertEquals(res, eval, 0);
+		
+
 
 		String[] tests = new String[] { "(v/VOLT)", "rate * exp((v - midpoint)/scale)", "(exp(73 * X))",
-				"( 0.76 ) / TIME_SCALE", "sqrt(4)", "exp (x * (-0.059))" };
+				"( 0.76 ) / TIME_SCALE", "sqrt(4)", "exp (x * (-0.059))", "1.2 * 5 * 5.0e-3 * 6e34" };
 
 		for (String test : tests) {
 			pt = p.parseExpression(test);
-			// E.info("Parsed to: " +
-			// root.toString()+", ("+root.getClass()+")");
+			E.info("Parsed to: " + pt.toString());
 		}
+
+	
+		
+		ParseTree de1 = p.parseExpression("(exp ( (1e-3 * (-1.5 + (-1)/(1+(exp ((v-(-40))/5)))) * (v-11) * 9.648e4) / (8.315*(273.16+ (celsius) )) ))");
+		ParseTree de2 = p.parseExpression("(exp ( ( ( (-1.5) - 1/(1+(exp ((v-(-40))/5)))) * (v-11) * 96.48) / (8.315*(273.16+ (celsius) )) ))");
+		  
+		
+		valHM.clear();
+		valHM.put("v", -65d);
+		valHM.put("celsius", 30d);
+		double eval1 = de1.makeFloatEvaluator().evalD(valHM);
+		E.info("1 evaluates to " + eval1);
+		double eval2 = de2.makeFloatEvaluator().evalD(valHM);
+		E.info("2 evaluates to " + eval2);
+
+		assertEquals(eval1, eval2, 0);
 	}
 
 	@Test
