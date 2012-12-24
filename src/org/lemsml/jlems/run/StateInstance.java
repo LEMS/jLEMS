@@ -89,9 +89,16 @@ public class StateInstance implements StateRunnable {
 
 	@Override
 	public String toString() {
-		return (uclass != null ? "StateInstance " + uclass.getID() + ":" + uclass.getTypeName() : "dummy instance");
+		String ret = "";
+		if (uclass == null) {
+			ret = "Dumy state instance " + getID();
+		} else {
+			ret = uclass.getID() + "[" + uclass.getTypeName() + "]";
+		}
+		return ret;
 	}
 
+	
 	public double getCurrentTime() {
 		return currentTime;
 	}
@@ -446,8 +453,9 @@ public class StateInstance implements StateRunnable {
 		}
 
 		if (ret == null) {
-			String err = "No such child element or variable " + snm + " in " + this + "\nThe children (hasChildren = "+hasChildren+") are, "
-                + "childHM: " + childHM + "\nchildA: " + childA;
+			String err = "No such child element or variable " + snm + " in " + this + "\n";
+			err += "childHM= " + childHM + "\n"; 
+			err += "childA= " + childA;
 			throw new ConnectionError(err);
 		}
 		return ret;

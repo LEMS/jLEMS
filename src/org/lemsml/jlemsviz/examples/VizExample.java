@@ -36,7 +36,7 @@ public final class VizExample {
 		DefaultLogger.initialize();
 	 
 		
-		File fdir = new File("../jLEMS");
+		File fdir = new File("examples");
 	
 		RunFileExample fe = new RunFileExample(fdir, s);
 	

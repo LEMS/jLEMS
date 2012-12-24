@@ -32,10 +32,14 @@ public class RunnableAccessor {
 		StateRunnable wk = root;
 		for (int i = 0; i < bits.length-1; i++) {
 			// E.srcinfo("seeking child " + bits[i] + " in " + wk);
-			
-			wk = wk.getChild(bits[i]);
-			if (wk == null) {
-				break;
+ 		
+			if (bits[i].trim().length() == 0) {
+				// skip it
+			} else {
+				wk = wk.getChild(bits[i]);
+				if (wk == null) {
+					break;
+				}
 			}
 		}
 		
