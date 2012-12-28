@@ -1,7 +1,7 @@
 package org.lemsml.jlems.type.simulation;
 
 import org.lemsml.jlems.logging.E;
-import org.lemsml.jlems.run.RuntimeOutput;
+import org.lemsml.jlems.run.RuntimeDisplay;
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Component;
 
@@ -13,8 +13,8 @@ public class DataDisplay {
 
   
 
-	public RuntimeOutput getRuntimeOutput(Component cpt) throws ContentError {
-		RuntimeOutput ret = new RuntimeOutput();
+	public RuntimeDisplay getRuntimeOutput(Component cpt) throws ContentError {
+		RuntimeDisplay ret = new RuntimeDisplay();
 		ret.setID(cpt.id);
 		ret.setTitle(cpt.getTextParam(title));
 		

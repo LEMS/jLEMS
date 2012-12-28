@@ -1,6 +1,6 @@
 package org.lemsml.jlems.run;
 
-public class RuntimeOutput {
+public class RuntimeWriter {
 
 	String id;
 	String title;

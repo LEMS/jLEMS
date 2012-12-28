@@ -31,7 +31,7 @@
     <Text name="save"/>
     <Path name="quantity"/>
     <Simulation>
-        <Record quantity="quantity" timeScale="timeScale" scale="scale" color="color" display="display"/>
+        <Record quantity="quantity" timeScale="timeScale" scale="scale" color="color" destination="display"/>
     </Simulation>
 </ComponentType>
 

@@ -1992,7 +1992,7 @@ public class LemsFactory extends AbstractLemsFactory {
             } else if (xn.equals("color")) {
                 ret.color = parseString(xv);
             } else if (xn.equals("display")) {
-                ret.display = parseString(xv);
+                ret.destination = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
             }

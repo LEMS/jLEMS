@@ -21,12 +21,11 @@ public class Record {
 	public String color;
 
 	
-	public String display;
- 
- 
+	public String destination;
+	
  
     public String toString() {
-    	return "Recorder q=" + quantity + ", scale=" + scale + ", display=" + display + ", color=" + color;
+    	return "Recorder q=" + quantity + ", scale=" + scale + ", display=" + destination + ", color=" + color;
     }
   
 }

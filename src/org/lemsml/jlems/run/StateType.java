@@ -65,7 +65,9 @@ public class StateType implements RuntimeType {
 	HashSet<String> exposedNames = new HashSet<String>();
 	HashMap<String, String> exposedMap = new HashMap<String, String>();
 	
-	ArrayList<RuntimeOutput> runtimeOutputs = new ArrayList<RuntimeOutput>();
+	ArrayList<RuntimeDisplay> runtimeDisplays = new ArrayList<RuntimeDisplay>();
+	
+	ArrayList<RuntimeWriter> runtimeWriters = new ArrayList<RuntimeWriter>();
 	
 	ArrayList<RuntimeRecorder> runtimeRecorders = new ArrayList<RuntimeRecorder>();
 	
@@ -1153,10 +1155,13 @@ public class StateType implements RuntimeType {
 		return exposedMap;
 	}
 
-	public void addRuntimeOutput(RuntimeOutput ro) {
-		runtimeOutputs.add(ro);
+	public void addRuntimeDisplay(RuntimeDisplay ro) {
+		runtimeDisplays.add(ro);
 	}
 
+	public void addRuntimeWriter(RuntimeWriter rw) {
+		runtimeWriters.add(rw);
+	}
 	
 	public void addRecorder(String id, String q, double tsc, double ysc, String col, String display) {
 		runtimeRecorders.add(new RuntimeRecorder(id, q, tsc, ysc, col, display));
@@ -1175,8 +1180,8 @@ public class StateType implements RuntimeType {
 	}
 
 	
-	public ArrayList<RuntimeOutput> getRuntimeOutputs() {
-		return runtimeOutputs;
+	public ArrayList<RuntimeDisplay> getRuntimeDisplays() {
+		return runtimeDisplays;
 	}
 
 	public ArrayList<RuntimeRecorder> getRuntimeRecorders() {

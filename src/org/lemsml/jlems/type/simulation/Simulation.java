@@ -1,8 +1,9 @@
 package org.lemsml.jlems.type.simulation;
 
 import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.run.RuntimeWriter;
 import org.lemsml.jlems.run.StateType;
-import org.lemsml.jlems.run.RuntimeOutput;
+import org.lemsml.jlems.run.RuntimeDisplay;
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Component;
 import org.lemsml.jlems.type.ComponentType;
@@ -19,6 +20,7 @@ public class Simulation {
 	
 	public transient LemsCollection <DataDisplay> dataDisplays = new LemsCollection<DataDisplay>();
 
+	public transient LemsCollection <DataWriter> dataWriters = new LemsCollection<DataWriter>();
 
 	
 	public void resolve(final Lems lems, final ComponentType r_type) throws ContentError {
@@ -50,10 +52,19 @@ public class Simulation {
 	 
 	 if (dataDisplays.size() > 0) {
 		 for (DataDisplay dd : dataDisplays) {
-			 final RuntimeOutput ro = dd.getRuntimeOutput(cpt);
-			 ret.addRuntimeOutput(ro);
+			 final RuntimeDisplay ro = dd.getRuntimeOutput(cpt);
+			 ret.addRuntimeDisplay(ro);
 		 }
 	 }
+	 
+	 if (dataWriters.size() > 0) {
+		 for (DataWriter dw : dataWriters) {
+			 final RuntimeWriter ro = dw.getRuntimeWriter(cpt);
+			 ret.addRuntimeWriter(ro);
+		 }
+	 }
+	 
+	 
 	 
 	 if (records.size() > 0) {
 		 for (Record r : records) {
@@ -61,7 +72,7 @@ public class Simulation {
 			 if (path == null) {
 				 throw new ContentError("No path specified for recorder (" + r.quantity + ") in " + cpt);
 			 }
-			 final Component cdisp = cpt.getInheritableLinkTarget(r.display);
+			 final Component cdisp = cpt.getInheritableLinkTarget(r.destination);
 			 
 			 final String disp = cdisp.id;
 			 if (disp == null) {

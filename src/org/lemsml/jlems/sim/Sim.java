@@ -14,7 +14,7 @@ import org.lemsml.jlems.run.ConnectionError;
 import org.lemsml.jlems.run.EventManager;
 import org.lemsml.jlems.run.RunConfig;
 import org.lemsml.jlems.run.RuntimeError;
-import org.lemsml.jlems.run.RuntimeOutput;
+import org.lemsml.jlems.run.RuntimeDisplay;
 import org.lemsml.jlems.run.RuntimeRecorder;
 import org.lemsml.jlems.run.StateInstance;
 import org.lemsml.jlems.type.Component;
@@ -64,13 +64,13 @@ public class Sim extends LemsProcess {
 	    rootBehavior = simCpt.getStateType();
 	    
 	    // collect everything in the StateType tree that makes a display
-	    ArrayList<RuntimeOutput> runtimeOutputs = new ArrayList<RuntimeOutput>();
-	    OutputCollector oc = new OutputCollector(runtimeOutputs);
+	    ArrayList<RuntimeDisplay> runtimeDisplaies = new ArrayList<RuntimeDisplay>();
+	    OutputCollector oc = new OutputCollector(runtimeDisplaies);
 	    rootBehavior.visitAll(oc);
 	   
 	    // build the displays and keep them in dvHM
 	    dvHM = new HashMap<String, DataViewer>();
-	    for (RuntimeOutput ro : runtimeOutputs) {
+	    for (RuntimeDisplay ro : runtimeDisplaies) {
 	    	DataViewer dv = DataViewerFactory.getFactory().newDataViewer(ro.getTitle());
 	    	dvHM.put(ro.getID(), dv);
 	    	if (dv instanceof DataViewPort) {
