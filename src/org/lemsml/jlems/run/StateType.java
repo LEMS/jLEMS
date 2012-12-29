@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 
 import org.lemsml.jlems.eval.DoubleEvaluator;
 import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.out.ResultWriter;
 import org.lemsml.jlems.sim.StateTypeVisitor;
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Component;
@@ -67,7 +68,7 @@ public class StateType implements RuntimeType {
 	
 	ArrayList<RuntimeDisplay> runtimeDisplays = new ArrayList<RuntimeDisplay>();
 	
-	ArrayList<RuntimeWriter> runtimeWriters = new ArrayList<RuntimeWriter>();
+	ArrayList<RuntimeOutput> runtimeOutputs = new ArrayList<RuntimeOutput>();
 	
 	ArrayList<RuntimeRecorder> runtimeRecorders = new ArrayList<RuntimeRecorder>();
 	
@@ -1159,8 +1160,8 @@ public class StateType implements RuntimeType {
 		runtimeDisplays.add(ro);
 	}
 
-	public void addRuntimeWriter(RuntimeWriter rw) {
-		runtimeWriters.add(rw);
+	public void addRuntimeOutput(RuntimeOutput rw) {
+		runtimeOutputs.add(rw);
 	}
 	
 	public void addRecorder(String id, String q, double tsc, double ysc, String col, String display) {
@@ -1184,6 +1185,10 @@ public class StateType implements RuntimeType {
 		return runtimeDisplays;
 	}
 
+	public ArrayList<RuntimeOutput> getRuntimeOutputs() {
+		return runtimeOutputs;
+	}
+	
 	public ArrayList<RuntimeRecorder> getRuntimeRecorders() {
 		return runtimeRecorders;
 	}

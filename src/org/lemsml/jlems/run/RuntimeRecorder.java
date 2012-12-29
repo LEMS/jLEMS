@@ -1,6 +1,7 @@
 package org.lemsml.jlems.run;
 
 import org.lemsml.jlems.display.DataViewer;
+import org.lemsml.jlems.out.ResultWriter;
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.sim.RunnableAccessor;
 
@@ -14,7 +15,9 @@ public class RuntimeRecorder {
 	 
 	  StateWrapper stateWrapper;
 
+	  // on or the other of these will be set - maybe common interface?
 	  DataViewer dataViewer;
+	  ResultWriter resultWriter;
 	  
 	  double tscale;
 	  double yscale;
@@ -57,13 +60,31 @@ public class RuntimeRecorder {
         }
         dataViewer = dv;
     }
+	
+	
+	public void connectRunnable(RunnableAccessor ra, ResultWriter rw) throws ConnectionError {
+		if (quantity == null) {
+			throw new ConnectionError("Recorder has null quantity " + toString());
+		}
+        stateWrapper = ra.getStateWrapper(quantity);
+        if (stateWrapper == null) {
+            throw new ConnectionError("unable to access state variable: " + quantity);
+        }
+        resultWriter = rw;
+    }
+	
 
     public void appendState(double ft) throws ContentError, RuntimeError {
 
         double x = ft / tscale;
         double y = stateWrapper.getValue() / yscale;
         //E.info("Adding point: ("+x+", "+y+")");
-        dataViewer.addPoint(id, x, y, color);
-       
+
+        if (dataViewer != null) {
+        	dataViewer.addPoint(id, x, y, color);
+        }
+        if (resultWriter != null) {
+        	resultWriter.addPoint(id, x, y);
+        }
     }
 }

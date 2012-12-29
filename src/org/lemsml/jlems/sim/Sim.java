@@ -9,6 +9,9 @@ import org.lemsml.jlems.display.DataViewer;
 import org.lemsml.jlems.display.DataViewerFactory;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.out.ResultWriter;
+import org.lemsml.jlems.out.ResultWriterFactory;
+import org.lemsml.jlems.run.RuntimeOutput;
 import org.lemsml.jlems.run.StateType;
 import org.lemsml.jlems.run.ConnectionError;
 import org.lemsml.jlems.run.EventManager;
@@ -30,7 +33,10 @@ public class Sim extends LemsProcess {
     
      
     HashMap<String, DataViewer> dvHM;
-      
+    HashMap<String, ResultWriter> rwHM;
+    
+    ArrayList<ResultWriter> resultWriters = new ArrayList<ResultWriter>();
+    
     ArrayList<RunConfig> runConfigs;
     
     int maxExecutionTime = 0;
@@ -64,13 +70,13 @@ public class Sim extends LemsProcess {
 	    rootBehavior = simCpt.getStateType();
 	    
 	    // collect everything in the StateType tree that makes a display
-	    ArrayList<RuntimeDisplay> runtimeDisplaies = new ArrayList<RuntimeDisplay>();
-	    OutputCollector oc = new OutputCollector(runtimeDisplaies);
+	    ArrayList<RuntimeDisplay> runtimeDisplays = new ArrayList<RuntimeDisplay>();
+	    DisplayCollector oc = new DisplayCollector(runtimeDisplays);
 	    rootBehavior.visitAll(oc);
 	   
 	    // build the displays and keep them in dvHM
 	    dvHM = new HashMap<String, DataViewer>();
-	    for (RuntimeDisplay ro : runtimeDisplaies) {
+	    for (RuntimeDisplay ro : runtimeDisplays) {
 	    	DataViewer dv = DataViewerFactory.getFactory().newDataViewer(ro.getTitle());
 	    	dvHM.put(ro.getID(), dv);
 	    	if (dv instanceof DataViewPort) {
@@ -78,14 +84,26 @@ public class Sim extends LemsProcess {
  	    	}
 	    }
 	     
+	 
+	    // collect everything in the StateType tree that records something
+	    ArrayList<RuntimeOutput> runtimeOutputs = new ArrayList<RuntimeOutput>();
+	    OutputCollector oco = new OutputCollector(runtimeOutputs);
+	    rootBehavior.visitAll(oco);
 	   
+	    // build the displays and keep them in dvHM
+	    rwHM = new HashMap<String, ResultWriter>();
+ 	    for (RuntimeOutput ro : runtimeOutputs) {
+ 	    	ResultWriter rw = ResultWriterFactory.getFactory().newResultWriter(ro);
+	    	rwHM.put(ro.getID(), rw);
+	    	resultWriters.add(rw);
+	    }
+	   	    
 	    runConfigs = new ArrayList<RunConfig>();
 	    RunConfigCollector rcc = new RunConfigCollector(runConfigs);
 	    rootBehavior.visitAll(rcc);
-	  
-	     
 	}
 
+    
     public void run() throws ConnectionError, ContentError, RuntimeError, ParseError {
     	run(true);
     }
@@ -119,10 +137,21 @@ public class Sim extends LemsProcess {
   	       
   	    ArrayList<RuntimeRecorder> recorders = rc.getRecorders();
   	    
+  	    
+  	    
+  	    
   	    for (RuntimeRecorder rr : recorders) {
   	    	String disp = rr.getDisplay();
   	    	if (dvHM.containsKey(disp)) {
   	    		rr.connectRunnable(ra, dvHM.get(disp));
+  	    	
+  	    	} else if (rwHM.containsKey(disp)) {
+  	    		ResultWriter rw = rwHM.get(disp);
+  	    		rw.addedRecorder();
+  	    		rr.connectRunnable(ra, rw);
+  	    		
+  	    		E.info("Connected runnable to " + disp + " " + rwHM.get(disp));
+  	    		
   	    	} else {
   	    		throw new ConnectionError("No such data viewer " + disp + " needed for " + rr);
   	    	}
@@ -131,10 +160,6 @@ public class Sim extends LemsProcess {
         double dt = rc.getTimestep();
         int nstep = (int) Math.round(rc.getRuntime() / dt);
 
-
-      
-        StringBuilder info = new StringBuilder("#Report of running simulation with LEMS Interpreter\n");
-        StringBuilder times = new StringBuilder();
  
         long start = System.currentTimeMillis();
   
@@ -152,11 +177,16 @@ public class Sim extends LemsProcess {
                 rootState.advance(null, t, dt);
         	}
         	
+        	
+        	for (ResultWriter rw : resultWriters) {
+        		rw.advance(t);
+        	}
+        	
         	for (RuntimeRecorder rr : recorders) {
         		rr.appendState(t);
         	}
            
-            times.append((float) (t * 1000)).append("\n");
+  
             t += dt;
             
             if (maxExecutionTime > 0 && istep % 100 == 0) {
@@ -170,11 +200,14 @@ public class Sim extends LemsProcess {
             nsDone = istep;
         }
         E.info("Finished " + nsDone + " steps");
-
+    	
+        
+        for (ResultWriter rw : resultWriters) {
+    		rw.close();
+    	}
         
         long end = System.currentTimeMillis();
-        info.append("RealSimulationTime=" + ((end - start) / 1000.0) + "\n");
-       }
+    }
 
     
 	public void printCB() throws ContentError, ParseError {

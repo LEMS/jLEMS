@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.lemsml.jlemsio.examples.RunFileExample;
 import org.lemsml.jlemsio.logging.DefaultLogger;
+import org.lemsml.jlemsio.out.FileResultWriterFactory;
 import org.lemsml.jlemsviz.datadisplay.SwingDataViewerFactory;
 
 public final class VizExample {
@@ -18,9 +19,16 @@ public final class VizExample {
 	}
 	
 	
-	public static void run(String fdrname, String s) {
+	private static void initIO() {
 		SwingDataViewerFactory.initialize();
 		DefaultLogger.initialize();
+		FileResultWriterFactory.initialize();
+	}
+	
+	
+	
+	public static void run(String fdrname, String s) {
+		initIO();
 		
  		
 		File fdir = new File(fdrname);
@@ -32,10 +40,8 @@ public final class VizExample {
 	}
 
 	public static void runTree(String s) {
-		SwingDataViewerFactory.initialize();
-		DefaultLogger.initialize();
-	 
-		
+		initIO();
+			
 		File fdir = new File("examples");
 	
 		RunFileExample fe = new RunFileExample(fdir, s);

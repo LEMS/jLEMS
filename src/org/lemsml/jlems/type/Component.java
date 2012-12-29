@@ -605,6 +605,15 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	private String stringParams() {
 		return paramValues.toString();
 	}
+	
+	public boolean hasParam(String p) throws ContentError {
+		boolean ret = false;
+		if (p != null && paramValues.hasName(p)) {
+			ret = true;
+		}
+		return ret;
+	}
+	
 
 	public ParamValue getParamValue(String pvn) throws ContentError {
 		// paramValues.getByName(pvn);
@@ -638,7 +647,13 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		type = scl;
 	}
 
-	
+	public boolean hasTextParam(String pnm) {
+		boolean ret = false;
+		if (textParamHM.containsKey(pnm)) {
+			ret = true;
+		}
+		return ret;
+	}
 
 	public String getTextParam(String pnm) {
 		String ret = null;

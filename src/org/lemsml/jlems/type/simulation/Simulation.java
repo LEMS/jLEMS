@@ -1,7 +1,9 @@
 package org.lemsml.jlems.type.simulation;
 
 import org.lemsml.jlems.logging.E;
-import org.lemsml.jlems.run.RuntimeWriter;
+import org.lemsml.jlems.out.ResultWriter;
+ 
+import org.lemsml.jlems.run.RuntimeOutput;
 import org.lemsml.jlems.run.StateType;
 import org.lemsml.jlems.run.RuntimeDisplay;
 import org.lemsml.jlems.sim.ContentError;
@@ -22,6 +24,9 @@ public class Simulation {
 
 	public transient LemsCollection <DataWriter> dataWriters = new LemsCollection<DataWriter>();
 
+	
+	public static int idCounter = 0;
+	
 	
 	public void resolve(final Lems lems, final ComponentType r_type) throws ContentError {
 		for (Run run : runs) {
@@ -59,8 +64,8 @@ public class Simulation {
 	 
 	 if (dataWriters.size() > 0) {
 		 for (DataWriter dw : dataWriters) {
-			 final RuntimeWriter ro = dw.getRuntimeWriter(cpt);
-			 ret.addRuntimeWriter(ro);
+			 final RuntimeOutput ro = dw.getRuntimeOutput(cpt);
+			 ret.addRuntimeOutput(ro);
 		 }
 	 }
 	 
@@ -72,22 +77,38 @@ public class Simulation {
 			 if (path == null) {
 				 throw new ContentError("No path specified for recorder (" + r.quantity + ") in " + cpt);
 			 }
-			 final Component cdisp = cpt.getInheritableLinkTarget(r.destination);
-			 
-			 final String disp = cdisp.id;
-			 if (disp == null) {
-				 throw new ContentError("No display defined for recorder " + r);
+			 Component cdisp = null;
+			 if (r.destination != null) {
+				 cdisp = cpt.getInheritableLinkTarget(r.destination);
 			 } else {
-				 final double tsc = cpt.getParamValue(r.timeScale).getDoubleValue();
-				 final double ysc = cpt.getParamValue(r.scale).getDoubleValue();
-				 
-				 if (tsc == 0.0 || ysc == 0.0) {
-					 throw new ContentError("Recorder scales cant be 0: " + r + " " + tsc + " " + ysc);
-				 }
-				 ret.addRecorder(cpt.id, path, tsc, ysc, cpt.getTextParam(r.color), disp);
+				 cdisp = cpt.getParent();
 			 }
+			 
+			 if (cdisp == null) {
+				 throw new ContentError("No display defined for recorder " + r);				 
+			 }
+			 if (cdisp.id == null) {
+				 cdisp.id = autoID();
+			 }
+			 
+			 double tsc = 1.;
+			 double ysc = 1.;
+			 if (r.timeScale != null && cpt.hasParam(r.timeScale)) {
+				 tsc = cpt.getParamValue(r.timeScale).getDoubleValue();
+			 }
+			if (r.scale != null && cpt.hasParam(r.scale)) {	
+				ysc = cpt.getParamValue(r.scale).getDoubleValue();
+			}
+			 ret.addRecorder(cpt.id, path, tsc, ysc, cpt.getTextParam(r.color), cdisp.id);
 		 }
 	 }
+	}
+
+	
+	private String autoID() {
+		idCounter += 1;
+		String ret = "_" + idCounter;
+		return ret;
 	}
 	 
 }

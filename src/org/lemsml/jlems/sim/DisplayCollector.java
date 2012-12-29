@@ -2,21 +2,20 @@ package org.lemsml.jlems.sim;
 
 import java.util.ArrayList;
 
-import org.lemsml.jlems.run.RuntimeOutput;
 import org.lemsml.jlems.run.StateType;
 import org.lemsml.jlems.run.RuntimeDisplay;
 
-public class OutputCollector implements StateTypeVisitor {
+public class DisplayCollector implements StateTypeVisitor {
 
-	ArrayList<RuntimeOutput> outputs;
+	ArrayList<RuntimeDisplay> outputs;
 	
-	public OutputCollector(ArrayList<RuntimeOutput> al) {
+	public DisplayCollector(ArrayList<RuntimeDisplay> al) {
 		outputs = al;
 	}
 
 	@Override
 	public void visit(StateType cb) {
-		ArrayList<RuntimeOutput> a = cb.getRuntimeOutputs();
+		ArrayList<RuntimeDisplay> a = cb.getRuntimeDisplays();
 		if (a != null) {
 			outputs.addAll(a);
 		}

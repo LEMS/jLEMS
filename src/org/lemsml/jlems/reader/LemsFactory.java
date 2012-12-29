@@ -149,6 +149,8 @@ public class LemsFactory extends AbstractLemsFactory {
             ret = buildRecord(xel);
         } else if (tag.equals("DataDisplay")) {
             ret = buildDataDisplay(xel);
+        } else if (tag.equals("DataWriter")) {
+            ret = buildDataWriter(xel);
         } else if (tag.equals("Run")) {
             ret = buildRun(xel);
         } else if (tag.equals("Procedure")) {
@@ -1966,6 +1968,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.runs.add((Run)obj);
             } else if (obj instanceof DataDisplay) {
                 ret.dataDisplays.add((DataDisplay)obj);
+            } else if (obj instanceof DataWriter) {
+                ret.dataWriters.add((DataWriter)obj);
             } else {
                 E.warning("unrecognized element " + cel);
             }
@@ -1991,7 +1995,7 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.scale = parseString(xv);
             } else if (xn.equals("color")) {
                 ret.color = parseString(xv);
-            } else if (xn.equals("display")) {
+            } else if (xn.equals("destination")) {
                 ret.destination = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
@@ -2014,6 +2018,29 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.title = parseString(xv);
             } else if (xn.equals("dataRegion")) {
                 ret.dataRegion = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private DataWriter buildDataWriter(XMLElement xel) {
+        DataWriter ret = new DataWriter();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("id")) {
+                ret.id = parseString(xv);
+            } else if (xn.equals("path")) {
+                ret.path = parseString(xv);
+            } else if (xn.equals("fileName")) {
+                ret.fileName = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
             }
