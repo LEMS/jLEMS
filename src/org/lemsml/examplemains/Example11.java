@@ -1,4 +1,4 @@
-package org.lemsml.jlemsviz.examples;
+package org.lemsml.examplemains;
  
 
 public final class Example11 {

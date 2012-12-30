@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.lemsml.jlemsviz.examples;
+package org.lemsml.examplemains;
 
 import java.io.File;
 import java.io.IOException;

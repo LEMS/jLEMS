@@ -347,9 +347,9 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 				// will populate it later
 
 			} else {
-				E.simpleError("no value supplied for parameter: " + pvn + " in " + id + " (" + type + ")");
-				String stxt = makeAttributeText();
-				E.info("Attributes: " + stxt);
+				String msg = "no value supplied for parameter: " + pvn + " in " + this + "\n";
+				msg += "Defined attributes: " + makeAttributeText();
+				throw new ContentError(msg);
 			}
 					
 			if (atval != null) {
