@@ -7,11 +7,15 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.HashMap;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.UIManager;
@@ -19,6 +23,9 @@ import javax.swing.plaf.ColorUIResource;
 
 import org.lemsml.jlems.display.DataViewPort;
 import org.lemsml.jlems.display.DataViewer;
+import org.lemsml.jlems.logging.E;
+import org.lemsml.jlemsio.data.FormattedDataUtil;
+import org.lemsml.jlemsio.util.FileUtil;
 import org.lemsml.jlemsviz.plot.DataDisplay;
 import org.lemsml.jlemsviz.plot.DisplayList;
 import org.lemsml.jlemsviz.plot.DisplayListPainter;
@@ -62,34 +69,31 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 		ctr.setLayout(new BorderLayout(2, 2));
 		// ctr.add(viewer.getPanel(), BorderLayout.CENTER);
 
-		JPanel jp = new JPanel();
-		ptop.setLayout(new BorderLayout(2, 2));
-		ptop.add(jp, BorderLayout.CENTER);
-		ctr.add(ptop, BorderLayout.NORTH);
-
-		jp.setLayout(new FlowLayout(FlowLayout.CENTER));
-
-		ButtonGroup group = new ButtonGroup();
-		String[] modes = { WorldCanvas.PAN, WorldCanvas.EZOOM, WorldCanvas.BOX, WorldCanvas.MULTI };
-		String[] lbls = { "Pan", "Zoom", "Box", "Multi" };
-		for (int i = 0; i < modes.length; i++) {
-			JRadioButton jrb = new JRadioButton(lbls[i]);
-			group.add(jrb);
-			jp.add(jrb);
-			jrb.setActionCommand(modes[i]);
-			jrb.addActionListener(this);
-			if (i == 0) {
-				jrb.setSelected(true);
-			}
-		}
-		frameB = new JButton("Frame");
-		ptop.add(frameB, BorderLayout.EAST);
-		frameB.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				frameData();
-			}
-		});
-
+	 
+		JMenuBar jmb = new JMenuBar();
+		JMenu jm = new JMenu("File");
+		String[] actions = {"Open", "Save", "Import", "Clear", "Exit"};
+		addToMenu(actions, jm);
+		jmb.add(jm);
+		
+		
+		JMenu jmview = new JMenu("View");
+		String[] va = {"Frame"};
+		addToMenu(va, jmview);
+		jmb.add(jmview);
+		
+		
+		JMenu jmmouse = new JMenu("Mouse");
+		String[] ma = { "Pan", "Zoom", "Box", "Multi" };
+		addToMenu(ma, jmmouse);
+		jmb.add(jmmouse);
+		
+		
+		
+		ctr.add(jmb, BorderLayout.NORTH);
+		
+		
+		
 		dataDisplay = new DataDisplay(500, 400);
 		ctr.add(dataDisplay, BorderLayout.CENTER);
 
@@ -105,10 +109,81 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 		displayList = new DisplayList();
 
 		setData(displayList);
-
+		
 		show();
+	
+		checkUserPref();
 	}
+	
+	
+	private File fpref() {
+		File fu = new File(System.getProperty("user.home"));
+		File fjl = new File(fu, ".jlems");
+		return fjl;
+	}
+	
+	
+	private void checkUserPref() {
+		try {
+	 
+		File fjl = fpref();
+		
+		if (fjl.exists()) {
+			String s = FileUtil.readStringFromFile(fjl);
+			for (String line : s.split("\n")) {
+				if (line.indexOf("mouseMode") == 0) {
+					String[] bits = line.split(":");
+					if (bits.length >= 2) {
+						dataDisplay.setMode("mouse", bits[1].trim());
+					}
+				}
+			}
+		}
+		} catch (Exception ex) {
+			E.warning("couldn't read preferences");
+		}
+	}
+	
+	
+	private void setPref(String pf, String v) {
+		try {
+		File fjl = fpref();
+		String wk = "";
+		if (fjl.exists()) {
+			String s = FileUtil.readStringFromFile(fjl);
+			for (String line : s.split("\n")) {
+				String[] bits = line.split(":");
+				if (bits.length > 0 && bits[0].trim().equals(pf)) {
+					// leave it out
+				} else {
+					wk += line + "\n";
+				}
+			}
+		}
+		wk += pf + " : " + v + "\n";
+		FileUtil.writeStringToFile(wk, fjl);
+		E.info("Written " + fjl.getAbsolutePath());
+		} catch (Exception ex) {
+			E.error("coldn't save preferences: " + ex);
+		}
+	}
+	
+	
 
+	private void addToMenu(String[] actions, JMenu jm) {
+	for (String s : actions) {
+		JMenuItem jmi = new JMenuItem(s);
+		jmi.setActionCommand(s.toLowerCase());
+		jmi.addActionListener(this);
+		jm.add(jmi);
+	}
+	}
+	
+	
+	
+	
+	
+	
 	public void setRegion(double[] d) {
 		if (d != null && d.length == 4) {
 			region = d;
@@ -140,8 +215,41 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 
 	public void actionPerformed(ActionEvent e) {
 		String sev = e.getActionCommand();
-		dataDisplay.setMode("mouse", sev);
+		
+		if (sev.equals("import")) {
+			importFile();
+			
+		} else if (sev.equals("clear")) {
+			displayList.clear();
+			dataDisplay.repaint();
+			
+		} else if (sev.equals("exit")) {
+			frame.dispose();
+			
+		} else if (sev.equals("frame")) {
+			frameData();
+			
+		} else if (sev.equals("pan")) {
+			dataDisplay.setMode("mouse", WorldCanvas.PAN);
+			setPref("mouseMode", WorldCanvas.PAN);
+			
 
+		} else if (sev.equals("zoom")) {
+			dataDisplay.setMode("mouse", WorldCanvas.EZOOM);
+			setPref("mouseMode", WorldCanvas.EZOOM);
+
+		} else if (sev.equals("box")) {
+			dataDisplay.setMode("mouse", WorldCanvas.BOX);
+			setPref("mouseMode", WorldCanvas.BOX);
+
+		} else if (sev.equals("multi")) {
+			dataDisplay.setMode("mouse", WorldCanvas.MULTI);
+			setPref("mouseMode", WorldCanvas.MULTI);
+			
+		 	
+		} else {		
+			dataDisplay.setMode("mouse", sev);
+		}
 	}
 
 	public void addPoint(String s, double x, double y, String color) {
@@ -198,8 +306,8 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 		}
 		sb.append("</html>");
 
-		ptop.setToolTipText(sb.toString());
-		frameB.setToolTipText(sb.toString());
+	//	ptop.setToolTipText(sb.toString());
+	//	frameB.setToolTipText(sb.toString());
 
 	}
 
@@ -209,4 +317,22 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 //		show();
 	}
 
+	
+	
+	
+	public void importFile() {
+		File f = SwingDialogs.getInstance().getFileToRead();
+		if (f != null) {
+			double[][] dat = FormattedDataUtil.readDataArray(f);
+			double[][] cols = FormattedDataUtil.transpose(dat);
+			
+			int nc = cols.length;
+			for (int i = 1; i < nc; i++) {
+				displayList.addLine(cols[0], cols[i], "#00ff00");
+			}
+			dataDisplay.repaint();
+		}
+	}
+	
+	
 }

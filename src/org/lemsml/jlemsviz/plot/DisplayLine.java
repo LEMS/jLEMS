@@ -28,6 +28,14 @@ public class DisplayLine {
 		}
 	}
 	
+	
+	public void setPoints(double[] a, double[] b) {
+		xpts = a;
+		ypts = b;
+		npts = xpts.length;
+	}
+	
+	
 	public SColor getColor() {
 		 return scolor;
 	}

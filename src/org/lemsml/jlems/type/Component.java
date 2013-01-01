@@ -80,6 +80,9 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 
 	private StateType stateType;
  	
+	
+	private	 Component r_replacement;
+	
 	 
 	// RuntimeType can be a NativeType for code generated components
 	private RuntimeType runtimeType;
@@ -106,6 +109,11 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	public void setRuntimeType(RuntimeType rt) {
 		runtimeType = rt;
 	}
+	
+	public void setReplacement(Component cpt) {
+		r_replacement = cpt;
+	}
+	
 	
 	 
 	@Override
@@ -732,13 +740,24 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 
 	public StateType getStateType() throws ContentError, ParseError {
 		StateType ret = null;
-	 
-		
-		if (stateType == null) {
-		//	E.info("Building stae type for " + getID());
-			makeStateType();
+	
+		if (r_replacement != null) {
+			
+			if (stateType != null) {
+				E.warning("Component " + getID() + " has been replaced after being built. The original " +
+						"type may still be in use");
+			}
+			
+			ret = r_replacement.getStateType();
+ 			
+			
+		} else {
+			if (stateType == null) {
+				//	E.info("Building stae type for " + getID());
+ 				makeStateType();
+			}
+			ret = stateType;
 		}
-		ret = stateType;
 		return ret;
 	}
 

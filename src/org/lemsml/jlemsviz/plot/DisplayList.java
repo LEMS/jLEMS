@@ -41,4 +41,15 @@ public class DisplayList {
 		
 	}
 
+	public void addLine(double[] xp, double[] yp, String color) {
+		DisplayLine dl = new DisplayLine("", color);
+		dl.setPoints(xp, yp);
+		lines.add(dl);
+	}
+
+	public void clear() {
+		lines = new ArrayList<DisplayLine>();
+		lineHM = new HashMap<String, DisplayLine>();
+	}
+
 }
