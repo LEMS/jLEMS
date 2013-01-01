@@ -52,7 +52,7 @@
 	<Display id="disp1" title="Net1" xmin="0" xmax="30" ymin="-1" ymax="6" timeScale="1s">
 	    <Line id="g0"  timeScale="1s" quantity="height" scale="1m" color="#0000f0"/>
         
- 	</Display><Constant name="Avagadro's number" symbol="N" dimension="none" value="6.0221E23"/>
+ 	</Display> 
  	
   
  
