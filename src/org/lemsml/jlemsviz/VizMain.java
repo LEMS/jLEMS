@@ -9,6 +9,7 @@ import org.lemsml.jlems.type.BuildException;
 import org.lemsml.jlems.xml.XMLException;
 import org.lemsml.jlemsio.Main;
 import org.lemsml.jlemsio.logging.DefaultLogger;
+import org.lemsml.jlemsio.out.FileResultWriterFactory;
 import org.lemsml.jlemsviz.datadisplay.SwingDataViewerFactory;
 
 public final class VizMain {
@@ -20,7 +21,7 @@ public final class VizMain {
   
 	
     public static void main(String[] argv) throws ConnectionError, ContentError, RuntimeError, ParseError, ParseException, BuildException, XMLException {        
-    	
+    	FileResultWriterFactory.initialize();
     	SwingDataViewerFactory.initialize();
 		DefaultLogger.initialize();
 	 
