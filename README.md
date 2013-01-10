@@ -20,4 +20,5 @@ Build with Ant (http://ant.apache.org):
 
 Run an example:
 
-    ./lems examples/example1.xml
+    ./lems examples/example1.xml        (Linux/Mac)
+    lems.bat examples\example1.xml      (Windows)
