@@ -1,5 +1,3 @@
-export VERSION=0.8.3
-
 export CLASSPATH=.:./builtjars/lems.jar:$LEMS_HOME/builtjars/lems.jar
 
 echo Running the LEMS application...
