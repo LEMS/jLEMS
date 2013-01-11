@@ -395,5 +395,10 @@ public static void typeError(Object obj) throws ContentError {
 		
 	}
 
+	public static void trace() {
+		stackTrace();
+		
+	}
+
 	
 }

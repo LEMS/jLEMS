@@ -51,6 +51,8 @@ refractoryPeriod="4ms" capacitance="1pF"/>
 
 
 <Simulation id="sim" length="200ms" step="0.05ms" target="net1">
+    <Meta for="jlems" method="eulerTree" preFlatten="na"/>
+
 	<Display id="disp1" title="Flattening" xmin="0" xmax="80" ymin="-80" ymax="50" timeScale="1ms">
 	  <Line id="tsince-a" quantity="p1[0]/tsince" scale="1ms" timeScale="1ms"  color="#00c000"/>     
         	<Line id="p3v-a" quantity="p3[0]/v" scale="1mV" timeScale="1ms" color="#0000f0"/>

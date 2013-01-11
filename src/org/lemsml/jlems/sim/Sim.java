@@ -22,6 +22,7 @@ import org.lemsml.jlems.run.RuntimeRecorder;
 import org.lemsml.jlems.run.StateInstance;
 import org.lemsml.jlems.type.Component;
 import org.lemsml.jlems.type.Lems;
+import org.lemsml.jlems.type.Meta;
 import org.lemsml.jlems.type.Target;
  
 
@@ -118,6 +119,12 @@ public class Sim extends LemsProcess {
     	}
       }
 
+    
+    public void runWithMeta() throws ConnectionError, ContentError, RuntimeError, ParseError {
+    	for (RunConfig rc : runConfigs) {
+    		run(rc, false);
+    	}
+    }
   
 
     
@@ -125,7 +132,38 @@ public class Sim extends LemsProcess {
    	    	
   		StateType raw = rc.getTarget();
   		
-  		if (flatten) {
+  	
+  		Component cpt = rc.getControlComponent();
+  		
+  		
+  		boolean mflat = flatten;
+
+  		if (cpt != null) {
+  		E.info("checking metas " + cpt.getID() + " " + cpt.metas.size());
+  		
+  		for (Meta m : cpt.metas.getContents()) {
+  			HashMap<String, String> hm = m.getAttributes();
+  			if (hm.containsKey("method")) {
+  				String val = hm.get("method").toLowerCase();
+  				if (val.equals("rk4")) {
+  					mflat = true;
+  					E.info("Got meta for jlems: " + val);
+  					
+  				} else if (val.equals("eulertree")) {
+  					mflat = false; 
+  					E.info("Got meta for jlems: " + val);
+  					
+  				} else {
+  					E.warning("unrecognized method " + val);
+  				}
+  			}
+  			
+  		}
+  		}
+  		
+  		
+  		
+  		if (mflat) {
   			targetBehavior = raw.getConsolidatedStateType("root");
   		} else {
   			targetBehavior = raw;

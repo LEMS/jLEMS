@@ -49,5 +49,15 @@ public final class VizExample {
 		fe.runEulerTree();
 
 	}
+
+	
+	public static void runWithMeta(String s) {
+		initIO();
+		File fdir = new File("examples");
+		RunFileExample fe = new RunFileExample(fdir, s);
+		
+		fe.runWithMeta();
+	}
+	
 	
 }

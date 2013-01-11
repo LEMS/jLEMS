@@ -51,7 +51,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	@ModelProperty(info="Structured metadata can be put in Meta elements. The content is read into a generic xml data structure. " +
 			"Other tools can then do their own thing with it. Each Meta element should set the context attribute, so " +
 			"tools can use the getMeta(context) method to retrieve elements that match a particular context.")
-	public LemsCollection<Meta> metas;
+	public LemsCollection<Meta> metas = new LemsCollection<Meta>();
 	 
 	public double xPosition;
 	public double yPosition;

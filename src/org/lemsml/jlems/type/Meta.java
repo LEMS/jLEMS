@@ -1,28 +1,51 @@
 package org.lemsml.jlems.type;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.lemsml.jlems.sim.ContentError;
+import org.lemsml.jlems.xml.XMLAttribute;
 import org.lemsml.jlems.xml.XMLElement;
  
 
 // RawValued indicates that XML found inside Meta elements should be treated 
 // processed into an element tree, but not interpreted as lems elements.
-// other tools can do thier own thing with the content
+// other tools can do their own thing with the content
 public class Meta {
 
 	public String context;
 	
 	public XMLElement valueWrapper = new XMLElement("wrapper");
 	
+	private XMLElement p_sourceXML;
+	
+	public ArrayList<MetaItem> items = new ArrayList<MetaItem>();
+
+	
+	
+	public Meta() {
+		
+	}
+	
+	public void setSource(XMLElement xe) {
+		p_sourceXML = xe;
+	}
 	
 	public void addXMLElement(XMLElement xe) {
 		valueWrapper.add(xe);
 		// E.info("Set VW " + xe.toXMLString(""));
 	}
 
-	// TODO is the rest of this used?
-	public ArrayList<MetaItem> items = new ArrayList<MetaItem>();
+	public HashMap<String, String> getAttributes() {
+		HashMap<String, String> ret = new HashMap<String, String>();
+		if (p_sourceXML != null) {
+			for (XMLAttribute xa : p_sourceXML.getAttributes()) {
+				ret.put(xa.getName(), xa.getValue());
+			}
+		}
+		return ret;
+	}
+	 
 
 	public void add(Object obj) throws ContentError {
 		if (obj instanceof MetaItem) {

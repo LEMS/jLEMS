@@ -71,6 +71,24 @@ public class RunFileExample {
 		 
 	}
 	
+	public void runWithMeta() {
+        try {
+	 
+		FileInclusionReader fir = new FileInclusionReader(getSrcFile());
+		Sim sim = new Sim(fir.read());
+		 
+		// sim.setNoConsolidation();
+
+		sim.readModel();	
+	 		
+		sim.build();
+		
+		sim.runWithMeta();
+        } catch (Exception ex) {
+       	 E.report("Failed to run " + filename, ex);
+        }
+	}
+	
 	
 	
 	public void printConsolidated() {

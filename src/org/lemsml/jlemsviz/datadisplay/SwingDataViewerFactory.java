@@ -2,6 +2,7 @@ package org.lemsml.jlemsviz.datadisplay;
 
 import org.lemsml.jlems.display.DataViewer;
 import org.lemsml.jlems.display.DataViewerFactory;
+import org.lemsml.jlems.logging.E;
 
 public final class SwingDataViewerFactory extends DataViewerFactory {
 
@@ -9,7 +10,7 @@ public final class SwingDataViewerFactory extends DataViewerFactory {
 	
 	// inject this into the jLEMS DataViewerFactory:
 	public static void initialize() {
-		if (instance == null) {
+ 	if (instance == null) {
 			instance = new SwingDataViewerFactory();
 		}
 	 

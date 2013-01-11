@@ -88,7 +88,8 @@ public abstract class AbstractLemsFactory {
 				About ab = (About)instantiateFromXMLElement(cel);
 				ret.abouts.add(ab);
 			} else if (ct.equals("Meta")) {
-				Meta m = (Meta)instantiateFromXMLElement(cel);
+				Meta m = new Meta();
+				m.setSource(cel);
 				ret.metas.add(m);
 				
 			} else if (ct.equals("Insertion")) {

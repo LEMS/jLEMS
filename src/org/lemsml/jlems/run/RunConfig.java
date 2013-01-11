@@ -3,6 +3,7 @@ package org.lemsml.jlems.run;
 import java.util.ArrayList;
 
 import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.type.Component;
 
@@ -27,6 +28,9 @@ public class RunConfig {
 
     
 
+    public Component getTargetComponent() {
+    	return targetComponent;
+    }
 
 	public StateType getTarget() throws ContentError, ParseError {
 		return targetComponent.getStateType();
@@ -55,6 +59,11 @@ public class RunConfig {
 			recorders = new ArrayList<RuntimeRecorder>();
 		}
 		return recorders;
+	}
+
+	public Component getControlComponent() {
+		E.missing();
+		return null;
 	}
 	
 }
