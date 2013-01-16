@@ -59,5 +59,14 @@ public class PowerNode extends AbstractFloatResultNode {
 	public Dimensional evaluateDimensional(HashMap<String, Dimensional> dhm) throws ContentError {
 		throw new ContentError("Can't (yet) apply power operations to dimensions");
 	}
+
+
+	@Override
+	public void doVisit(ExpressionVisitor ev) throws ContentError {
+			checkLeftRight();
+			ev.visitPowerNode(leftEvaluable, rightEvaluable);
+		}
+		
+ 
 	
 }

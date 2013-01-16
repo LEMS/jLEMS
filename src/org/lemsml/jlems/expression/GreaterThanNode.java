@@ -37,6 +37,14 @@ public class GreaterThanNode extends AbstractComparisonNode {
 		return (ix > iy);
 	}
 	
-	 
+
+
+	@Override
+	public void doVisit(ExpressionVisitor ev) throws ContentError {
+			checkLeftRight();
+			ev.visitGreaterThanNode(leftEvaluable, rightEvaluable);
+		}
+		
+ 
 	
 }

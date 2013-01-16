@@ -52,5 +52,14 @@ public class MinusNode extends AbstractFloatResultNode {
 	public Dimensional evaluateDimensional(HashMap<String, Dimensional> dhm) throws ContentError {
 		throw new ContentError("Can't apply function operations to dimensions");
 	}
+
+
+	@Override
+	public void doVisit(ExpressionVisitor ev) throws ContentError {
+			checkLeftRight();
+			ev.visitMinusNode(leftEvaluable, rightEvaluable);
+		}
+		
+ 
 	
 }

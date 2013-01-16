@@ -1,43 +1,166 @@
 package org.lemsml.jlems.expression;
 
+import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.sim.ContentError;
 
 public class MathMLWriter implements ExpressionVisitor {
 
-	String wkText;
+	StringBuilder sb;
+	 
+	int depth = 0;
 	 
 	
-	public String generateMathML(ParseTree pt) throws ContentError {
+	
+	public String serialize(ParseTree pt) throws ContentError {
+		MathMLWriter mw = new MathMLWriter();
+		return mw.generateMathML(pt);
+	}
+	
+	
+	private String generateMathML(ParseTree pt) throws ContentError {
+		sb = new StringBuilder();
+		depth = 0;
 		pt.visitAll(this);
-		return wkText;
+		return sb.toString();
 	}
 	
-	
-	
-	// TODO - work in progress
-	public ExpressionVisitor visitNode(ExpressionVisitor evl, ParseTreeNode ptn, ExpressionVisitor evr) {
-		String sl = getText(evl);
-		String sr = getText(evr);
-		
-		String op = "";
-		if (ptn instanceof DivideNode) {
-			op = "/";
-		} else if (ptn instanceof PlusNode) {
-			op = "+";
-		}
-		
-		MathMLWriter mmw = new MathMLWriter();
-		mmw.wkText = "(" + sl + op + sr + ")";
-		return mmw;
-	}
-	
-	
-	private String getText(ExpressionVisitor ev) {
+	private String indent() {
 		String ret = "";
-		if (ev instanceof MathMLWriter) {
-			ret = ((MathMLWriter)ev).wkText;
+		for (int i = 0; i < depth; i++) {
+			ret += " ";
 		}
 		return ret;
+	}
+	
+	
+	@Override
+	public void visitVariable(String svar) {
+		sb.append(indent() + "<ci>" + svar + "</ci>\n");
+	}
+
+
+	@Override
+	public void visitOrNode(OrNode orNode) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void visitFunctionNode(String fname, DoubleParseTreeNode argEvaluable) throws ContentError {
+		sb.append(indent() + "<apply>\n");
+		depth += 1;
+		sb.append(indent() + "<" + fname + "/>\n");
+		argEvaluable.doVisit(this);
+		depth -= 1;
+		sb.append(indent() + "</apply>\n");
+	}
+
+
+	@Override
+	public void visitConstant(double dval) {
+		sb.append(indent() + "<cn>" + dval + "</cn>\n");
+	}
+
+
+	private void visitOp(String opname, DoubleParseTreeNode leftEvaluable, DoubleParseTreeNode rightEvaluable) throws ContentError {
+		sb.append(indent() + "<apply>\n");
+		depth += 1;
+		sb.append(indent() + "<" + opname + "/>\n");
+		if (leftEvaluable != null) {
+			leftEvaluable.doVisit(this);
+		}
+		 rightEvaluable.doVisit(this);
+		depth -= 1;
+		sb.append(indent() + "</apply>\n");
+	}
+	
+
+	@Override
+	public void visitPlusNode(DoubleParseTreeNode leftEvaluable, DoubleParseTreeNode rightEvaluable) throws ContentError {
+		visitOp("plus", leftEvaluable, rightEvaluable);
+	}
+
+
+	@Override
+	public void visitTimesNode(DoubleParseTreeNode leftEvaluable, DoubleParseTreeNode rightEvaluable) throws ContentError {
+		visitOp("times", leftEvaluable, rightEvaluable);
+	}
+
+
+	@Override
+	public void visitPowerNode(DoubleParseTreeNode leftEvaluable, DoubleParseTreeNode rightEvaluable) throws ContentError {
+		visitOp("power", leftEvaluable, rightEvaluable);
+	}
+
+
+	@Override
+	public void visitMinusNode(DoubleParseTreeNode leftEvaluable, DoubleParseTreeNode rightEvaluable) throws ContentError {
+		visitOp("minus", leftEvaluable, rightEvaluable);
+	}
+
+
+	@Override
+	public void visitUnaryMinusNode(DoubleParseTreeNode rightEvaluable) throws ContentError {
+		visitOp("minus", null, rightEvaluable);
+	}
+
+
+	@Override
+	public void visitDivideNode(DoubleParseTreeNode leftEvaluable, DoubleParseTreeNode rightEvaluable) throws ContentError {
+		visitOp("divide", leftEvaluable, rightEvaluable);
+	}
+	
+	@Override
+	public void visitModuloNode(DoubleParseTreeNode leftEvaluable, DoubleParseTreeNode rightEvaluable) throws ContentError {
+		visitOp("modulo", leftEvaluable, rightEvaluable);
+	}
+
+	
+	
+	
+
+	@Override
+	public void visitNotEqualsNode(DoubleParseTreeNode leftEvaluable, DoubleParseTreeNode rightEvaluable) {
+		// TODO Auto-generated method stub
+		E.missing();
+	}
+
+	@Override
+	public void visitAndNode(BooleanParseTreeNode leftEvaluable, BooleanParseTreeNode rightEvaluable) {
+		// TODO Auto-generated method stub	
+		E.missing();
+	}
+	 
+
+	@Override
+	public void visitLessThanOrEqualsNode(DoubleParseTreeNode leftEvaluable, DoubleParseTreeNode rightEvaluable) {
+		// TODO Auto-generated method stub	
+		E.missing();
+	}
+ 
+	@Override
+	public void visitLessThanNode(DoubleParseTreeNode leftEvaluable, DoubleParseTreeNode rightEvaluable) {
+		// TODO Auto-generated method stub	
+		E.missing();
+	}
+
+	@Override
+	public void visitGreaterThanOrEqualsNode(DoubleParseTreeNode leftEvaluable, DoubleParseTreeNode rightEvaluable) {
+		// TODO Auto-generated method stub
+		E.missing();
+	}
+
+
+	@Override
+	public void visitGreaterThanNode(DoubleParseTreeNode leftEvaluable, DoubleParseTreeNode rightEvaluable) {
+		E.missing();
+	}
+
+
+	@Override
+	public void visitEqualsNode(DoubleParseTreeNode leftEvaluable, DoubleParseTreeNode rightEvaluable) {
+		E.missing();
 	}
 	
 }

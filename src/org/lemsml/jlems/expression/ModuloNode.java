@@ -49,5 +49,14 @@ public class ModuloNode extends AbstractFloatResultNode {
 		throw new ContentError("Can't apply modulo operations to dimensions");
 	}
 	
+
+
+	@Override
+	public void doVisit(ExpressionVisitor ev) throws ContentError {
+			checkLeftRight();
+			ev.visitModuloNode(leftEvaluable, rightEvaluable);
+		}
+		
+ 
 	
 }

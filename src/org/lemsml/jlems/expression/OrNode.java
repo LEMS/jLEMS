@@ -44,4 +44,12 @@ public class OrNode extends AbstractBooleanOperatorNode {
 
 
 
+	@Override
+	public void doVisit(ExpressionVisitor ev) {
+		ev.visitOrNode(this);
+	}
+
+
+
+
 }

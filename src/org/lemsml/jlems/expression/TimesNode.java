@@ -36,5 +36,15 @@ public class TimesNode extends AbstractFloatResultNode {
 		Dimensional ret = dl.getTimes(dr);
 		return ret;
 	}
+
+
+
+	@Override
+	public void doVisit(ExpressionVisitor ev) throws ContentError {
+			checkLeftRight();
+			ev.visitTimesNode(leftEvaluable, rightEvaluable);
+		}
+		
+ 
 	
 }

@@ -15,12 +15,7 @@ public abstract class AbstractBooleanOperatorNode extends AbstractOperatorNode i
  
 	public abstract boolean bool(boolean x, boolean y);
  
-
-	public ExpressionVisitor visitAll(ExpressionVisitor ev) throws ContentError {
-		checkLeftRight();
-		return ev.visitNode(leftEvaluable.visitAll(ev), this, rightEvaluable.visitAll(ev));
-	}
-	
+ 
 	
 	protected void checkLeftRight() throws ContentError {
 		if (leftEvaluable == null) {

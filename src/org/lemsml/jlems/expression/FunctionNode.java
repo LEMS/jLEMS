@@ -127,12 +127,13 @@ public class FunctionNode extends AbstractUnaryNode implements DoubleParseTreeNo
 		 checkArg();
 		 argEvaluable.substituteVariables(varHM);
 	}
-	
-	
+	 
+
+
 	@Override
-	public ExpressionVisitor visitAll(ExpressionVisitor ev) throws ContentError {
+	public void doVisit(ExpressionVisitor ev) throws ContentError {
 		checkArg();
-		return ev.visitNode(null,  this,  argEvaluable.visitAll(ev));
+		ev.visitFunctionNode(fname, argEvaluable);	
 	}
 	
 }

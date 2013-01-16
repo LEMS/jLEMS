@@ -40,4 +40,13 @@ public class DivideNode extends AbstractFloatResultNode {
 	}
 
 
+
+	@Override
+	public void doVisit(ExpressionVisitor ev) throws ContentError {
+			checkLeftRight();
+			ev.visitDivideNode(leftEvaluable, rightEvaluable);
+		}
+		
+ 
+	
 }

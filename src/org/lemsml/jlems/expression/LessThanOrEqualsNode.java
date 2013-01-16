@@ -36,4 +36,17 @@ public class LessThanOrEqualsNode extends AbstractComparisonNode {
 	public boolean compareInts(long ix, long iy) {
 		return (ix <= iy);
 	}
+
+
+
+
+
+	@Override
+	public void doVisit(ExpressionVisitor ev) throws ContentError {
+			checkLeftRight();
+			ev.visitLessThanOrEqualsNode(leftEvaluable, rightEvaluable);
+		}
+		
+ 
+	
 }

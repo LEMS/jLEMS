@@ -14,5 +14,5 @@ public interface ParseTreeNode {
 
 	String toExpression() throws ContentError;
 
-	ExpressionVisitor visitAll(ExpressionVisitor ev) throws ContentError;
+	void doVisit(ExpressionVisitor ev) throws ContentError;
 }

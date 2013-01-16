@@ -41,4 +41,14 @@ public class AndNode extends AbstractBooleanOperatorNode {
 		getDimensionality(dimHM);
 
 	}
+
+
+
+
+	@Override
+	public void doVisit(ExpressionVisitor ev) throws ContentError {
+		checkLeftRight();
+		ev.visitAndNode(leftEvaluable, rightEvaluable);
+		
+	}
 }

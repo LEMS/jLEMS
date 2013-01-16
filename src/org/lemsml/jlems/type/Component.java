@@ -16,6 +16,9 @@ import org.lemsml.jlems.xml.XMLElement;
 
 public class Component implements Attributed, IDd, Summaried, Namable, Parented {
 
+	
+	// TODO RCC - I don't think these should be here. The caller should know about the keywords.
+	
     public static final String THIS_COMPONENT = "this";
     public static final String PARENT_COMPONENT = "parent";
  
