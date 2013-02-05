@@ -50,6 +50,24 @@
 		<jar destfile="builtjars/lems-${version.number}.jar">
 			<fileset dir="build" includes="org/lemsml/jlems/**"/>
 			<fileset dir="build" includes="org/lemsml/jlemsio/**"/>
+			<fileset dir="src" includes="org/lemsml/jlems/**"/>
+			<fileset dir="src" includes="org/lemsml/jlemsio/**"/>
+			<manifest>
+				<attribute name="Main-Class" value="org.lemsml.jlemsio.Main"/>
+			</manifest>
+		</jar>
+		<copy tofile="builtjars/lems.jar" file="builtjars/lems-${version.number}.jar"/>
+	</target>
+
+
+	
+	
+
+	<target name="viz-jar" depends="compile" description="Creates main Jar file">
+
+		<jar destfile="builtjars/lems-viz-${version.number}.jar">
+			<fileset dir="build" includes="org/lemsml/jlems/**"/>
+			<fileset dir="build" includes="org/lemsml/jlemsio/**"/>
 			<fileset dir="build" includes="org/lemsml/jlemsviz/**"/>
 			<fileset dir="src" includes="org/lemsml/jlems/**"/>
 			<fileset dir="src" includes="org/lemsml/jlemsio/**"/>
@@ -57,10 +75,12 @@
 				<attribute name="Main-Class" value="org.lemsml.jlemsviz.VizMain"/>
 			</manifest>
 		</jar>
-		<copy tofile="builtjars/lems.jar" file="builtjars/lems-${version.number}.jar"/>
+		<copy tofile="builtjars/lems-viz.jar" file="builtjars/lems-viz-${version.number}.jar"/>
 	</target>
 
 
+	
+	
 	<target name="core-jar" depends="compile" description="Create core Jar file">
 
 		<jar destfile="builtjars/lems-core-${version.number}.jar">
