@@ -1,4 +1,4 @@
-set CLASSPATH=.;.\builtjars\lems.jar;%LEMS_HOME%\builtjars\lems.jar
+set CLASSPATH=.;.\builtjars\lems-viz.jar;%LEMS_HOME%\builtjars\lems-viz.jar
 
 echo Running the LEMS application...
 

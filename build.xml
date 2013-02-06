@@ -128,16 +128,16 @@
 
 
 	<!-- One example just for testing purposes... -->
-	<target name="ex1" depends="jar"
+	<target name="ex1" depends="viz-jar"
             description="Tests the LEMS example: example1.xml">
 
-		<java classname="org.lemsml.jlemsviz.examples.Example1" fork="true">
+		<java classname="org.lemsml.jlemsviz.VizMain" fork="true">
 			<jvmarg value="-Xmx100M" />
 
-			<arg value="${examples.dir}/example1.xml"/>
+			<arg value="examples/example1.xml"/>
 
 			<classpath>
-				<pathelement location="builtjars/lems.jar"/>
+				<pathelement location="builtjars/lems-viz.jar"/>
 			</classpath>
 		</java>
 	</target>
