@@ -54,6 +54,8 @@ public class ParseTree {
 		BBase ret = null;
 		if (root instanceof BooleanParseTreeNode) {
 			ret = new BBase(((BooleanParseTreeNode) root).makeEvaluable(fixedHM));
+		} else {
+			throw new ContentError("Seeking a boolean evaluator, but not a boolean node? " + root);
 		}
 		return ret;
 	}

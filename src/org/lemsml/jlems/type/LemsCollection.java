@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.lemsml.jlems.expression.ParseTree;
 import org.lemsml.jlems.sim.ContentError;
 
 public class LemsCollection<T> implements Iterable<T> {
@@ -309,6 +310,11 @@ public class LemsCollection<T> implements Iterable<T> {
 			ret.put(getXID(t), t);
 		}
 		return ret;
+	}
+
+
+	public T get(int i) {
+		return contents.get(i);
 	}
 
 }

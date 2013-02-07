@@ -46,6 +46,8 @@ public class Dynamics  {
 	
 	public LemsCollection<DerivedVariable> derivedVariables = new LemsCollection<DerivedVariable>();
 	
+	public LemsCollection<ConditionalDerivedVariable> conditionalDerivedVariables = new LemsCollection<ConditionalDerivedVariable>();
+	
 	public LemsCollection<StateVariable> stateVariables = new LemsCollection<StateVariable>();
 	
 	public LemsCollection<TimeDerivative> timeDerivatives = new LemsCollection<TimeDerivative>();
@@ -137,6 +139,7 @@ public class Dynamics  {
 			
 			addToMap(stateVariables, valHM);
 			addToMap(derivedVariables, valHM);
+			addToMap(conditionalDerivedVariables, valHM);
 			addToMap(r_type.getFinalParams(), valHM);
 			addToMap(r_type.getInstancePropertys(), valHM);
 		}
@@ -173,6 +176,14 @@ public class Dynamics  {
 					E.shortWarning("Implicitly exposing a derived variable because its name matches an exposure: " + dv);
 				}
 			}
+			
+			for (ConditionalDerivedVariable dv : conditionalDerivedVariables) {
+				if (dv.exposure == null && expHS.contains(dv.name)) {
+					dv.exposure = dv.name;
+					E.shortWarning("Implicitly exposing a derived variable because its name matches an exposure: " + dv);
+				}
+			}
+			
 		}
 		
 		
@@ -200,7 +211,13 @@ public class Dynamics  {
 	 			countExposure(dvar.getExposure(), exposedHM);
 	 		}
 		}
-	 
+		
+		for (ConditionalDerivedVariable dvar : conditionalDerivedVariables) {
+	 		dvar.resolve(lems, lems.getDimensions(), r_type, valHM, parser);
+	 		if (dvar.hasExposure()) {
+	 			countExposure(dvar.getExposure(), exposedHM);
+	 		}
+		}
 		
 		for (StateVariable sv : stateVariables) {
 			sv.resolve(r_type, lems.getDimensions());
@@ -274,6 +291,11 @@ public class Dynamics  {
             return derivedVariables;
     }
 
+    public LemsCollection<ConditionalDerivedVariable> getConditionalDerivedVariables() {
+        return conditionalDerivedVariables;
+    }
+    
+    
     public LemsCollection<ExposedVar> getExposedVars() {
             return p_exposedVars;
     }
@@ -365,9 +387,21 @@ public class Dynamics  {
             if (dv.hasExposure()) {
                 ret.addExposureMapping(dv.getName(), dv.getExposure().getName());
             }
-			 
-		 
 		 }
+		 
+		 
+		 for (ConditionalDerivedVariable cdv : conditionalDerivedVariables) {
+			 DoubleEvaluator db = cdv.makeFloatFixedEvaluator(fixedHM);
+				 
+			 ret.addExpressionDerived(cdv.getName(), db);
+             	 
+			 
+            if (cdv.hasExposure()) {
+                ret.addExposureMapping(cdv.getName(), cdv.getExposure().getName());
+            }
+		 }
+		 
+		 
 		 
 		 for (TimeDerivative sd : timeDerivatives) {
 			 StateVariable sv = sd.getStateVariable();
@@ -510,7 +544,13 @@ public class Dynamics  {
 				E.error("checking " + dv + " in " + r_type + " " + ce.getMessage());
 			}
 		}
-		 
+		for (ConditionalDerivedVariable dv : conditionalDerivedVariables) {
+			try {
+				dimHM.put(dv.getName(), dv.getDimensionality(dimHM));
+			} catch (ContentError ce) {
+				E.error("checking " + dv + " in " + r_type + " " + ce.getMessage());
+			}
+		}
 		
 		for (TimeDerivative td : timeDerivatives) {
 			td.checkDimensions(dimHM);
@@ -539,6 +579,9 @@ public class Dynamics  {
 		 stateVariables.add(sv);
 	}
 	
+	public void addConditionalDerivedVariable(ConditionalDerivedVariable dv) {
+		 conditionalDerivedVariables.add(dv);
+	}
 	
 
 	public void addTimeDerivative(TimeDerivative td) {
@@ -573,6 +616,10 @@ public class Dynamics  {
 		for (DerivedVariable dv : src.derivedVariables) {
 			derivedVariables.add(dv.makeCopy());
 		}
+		for (ConditionalDerivedVariable dv : src.conditionalDerivedVariables) {
+			conditionalDerivedVariables.add(dv.makeCopy());
+		}
+		
 		for (StateVariable sv : src.stateVariables) {
 			stateVariables.add(sv.makeCopy());
 		}

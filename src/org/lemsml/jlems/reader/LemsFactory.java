@@ -105,6 +105,10 @@ public class LemsFactory extends AbstractLemsFactory {
             ret = buildTransition(xel);
         } else if (tag.equals("Super")) {
             ret = buildSuper(xel);
+        } else if (tag.equals("ConditionalDerivedVariable")) {
+            ret = buildConditionalDerivedVariable(xel);
+        } else if (tag.equals("Case")) {
+            ret = buildCase(xel);
         } else if (tag.equals("StateScalarField")) {
             ret = buildStateScalarField(xel);
         } else if (tag.equals("DerivedScalarField")) {
@@ -912,6 +916,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.supers.add((Super)obj);
             } else if (obj instanceof DerivedVariable) {
                 ret.derivedVariables.add((DerivedVariable)obj);
+            } else if (obj instanceof ConditionalDerivedVariable) {
+                ret.conditionalDerivedVariables.add((ConditionalDerivedVariable)obj);
             } else if (obj instanceof StateVariable) {
                 ret.stateVariables.add((StateVariable)obj);
             } else if (obj instanceof TimeDerivative) {
@@ -1310,6 +1316,67 @@ public class LemsFactory extends AbstractLemsFactory {
             String xv = xa.getValue();
 
             if (xn.equals("UNUSED")) {
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private ConditionalDerivedVariable buildConditionalDerivedVariable(XMLElement xel) {
+        ConditionalDerivedVariable ret = new ConditionalDerivedVariable();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("name")) {
+                ret.name = parseString(xv);
+            } else if (xn.equals("dimension")) {
+                ret.dimension = parseString(xv);
+            } else if (xn.equals("exposure")) {
+                ret.exposure = parseString(xv);
+            } else if (xn.equals("required")) {
+                ret.required = parseBoolean(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa);
+            }
+        }
+
+
+        for (XMLElement cel : xel.getXMLElements()) {
+            String xn = cel.getTag();
+
+            Object obj = instantiateFromXMLElement(cel);
+            if (xn.equals("UNUSED")) {
+            } else if (obj instanceof Case) {
+                ret.cases.add((Case)obj);
+            } else {
+                E.warning("unrecognized element " + cel);
+            }
+        }
+
+
+        return ret;
+    }
+
+    private Case buildCase(XMLElement xel) {
+        Case ret = new Case();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("name")) {
+                ret.name = parseString(xv);
+            } else if (xn.equals("condition")) {
+                ret.condition = parseString(xv);
+            } else if (xn.equals("value")) {
+                ret.value = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
             }

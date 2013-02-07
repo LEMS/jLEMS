@@ -30,6 +30,8 @@ import org.lemsml.jlems.type.Requirement;
 import org.lemsml.jlems.type.Target;
 import org.lemsml.jlems.type.Text;
 import org.lemsml.jlems.type.Unit;
+import org.lemsml.jlems.type.dynamics.Case;
+import org.lemsml.jlems.type.dynamics.ConditionalDerivedVariable;
 import org.lemsml.jlems.type.dynamics.DerivedPunctateField;
 import org.lemsml.jlems.type.dynamics.DerivedScalarField;
 import org.lemsml.jlems.type.dynamics.DerivedVariable;
@@ -149,6 +151,9 @@ public final class LemsClasses {
 	 	ret.add(new LemsClass(OnEntry.class, section));
 	 	ret.add(new LemsClass(Transition.class, section));
 	 	ret.add(new LemsClass(Super.class, section));
+	 	
+	 	ret.add(new LemsClass(ConditionalDerivedVariable.class, section));
+	 	ret.add(new LemsClass(Case.class, section));
 	 	
 	 	ret.add(new LemsClass(StateScalarField.class, section));
 	 	ret.add(new LemsClass(DerivedScalarField.class, section));
