@@ -11,7 +11,7 @@ Quick installation
 
 Clone the repository:
 
-    git clone git://github.com/robertcannon/jLEMS.git
+    git clone git://github.com/LEMS/jLEMS.git
 
 Build with Ant (http://ant.apache.org):
 
