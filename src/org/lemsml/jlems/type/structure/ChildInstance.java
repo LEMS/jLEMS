@@ -36,15 +36,21 @@ public class ChildInstance extends BuildElement {
 	
  
 	public BuilderElement makeBuilder(Component cpt) throws ContentError, ParseError {
-		RuntimeType cb = null;
-		
-		if (component != null) {
-			Component c = cpt.getChild(component);
-			cb = c.getRuntimeType();
-			
-		} else if (component != null) {
-			cb = r_component.getRuntimeType();
-		}
+            RuntimeType cb = null;
+
+            if (component != null) {
+                Component c = null;
+                if (component.startsWith("../")) {
+                    String newPath = component.substring(3);
+                    c = cpt.getParent().getChild(newPath);
+                } else {
+                    c = cpt.getChild(component);
+                }
+                cb = c.getRuntimeType();
+
+            } else if (component != null) {
+                cb = r_component.getRuntimeType();
+            }
 	
 		SingleChildBuilder sb = new SingleChildBuilder(component, cb);
 	
