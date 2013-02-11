@@ -835,6 +835,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	public String getStringValue(String sn) throws ContentError {
 		String ret = null;
 
+        //E.info("--- Get string value ("+sn+") on component ref "+this);
 
         if (sn.equals(THIS_COMPONENT)) {
             return THIS_COMPONENT;
@@ -913,15 +914,16 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		return ret;
 	}
 
-	private Component getRelativeComponent(String nm) throws ContentError {
+	public Component getRelativeComponent(String nm) throws ContentError {
 		Component ret = null;
-		if (childHM.containsKey(nm)) {
+		if (nm.startsWith("../")) {
+            return getParent().getRelativeComponent(nm.substring(3));
+        } else if (childHM.containsKey(nm)) {
 			ret = childHM.get(nm);
-
 		} else if (refHM.containsKey(nm)) {
 			ret = refHM.get(nm);
 		} else {
-			throw new ContentError("no such relative component: " + nm + " rel to " + this);
+			throw new ContentError("No such relative component: " + nm + " rel to " + this);
 		}
 		return ret;
 	}

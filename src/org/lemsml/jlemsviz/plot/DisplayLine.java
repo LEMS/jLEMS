@@ -12,8 +12,6 @@ public class DisplayLine {
 	SColor scolor;
 	
 	
-	
-	
 	public DisplayLine(String sl) {
 		name = sl;
 		scolor = new SColor("#ffffff");
@@ -51,6 +49,12 @@ public class DisplayLine {
 	public int getNpts() {
 		return npts;
 	}
+
+    public String getName() {
+        return name;
+    }
+
+    
 	
 	public void addPoint(double x, double y) {
 		if (npts == xpts.length) {

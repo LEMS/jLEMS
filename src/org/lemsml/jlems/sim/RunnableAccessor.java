@@ -84,11 +84,19 @@ public class RunnableAccessor {
 		spath = spath.replace("[", "/[");
 		
 		String[] bits = spath.split("/");
-	
+
+        //E.info("getRelativeStateInstance on "+base+", path: "+path);
 		
 		StateRunnable wk = base;
 		for (int i = 0; i < bits.length-1; i++) {
-			wk = wk.getChild(bits[i]);
+
+            //E.info("Bit: "+bits[i]);
+            if (bits[i].equals("..")) {
+                wk = wk.getParent();
+            } else {
+                wk = wk.getChild(bits[i]);
+            }
+            //E.info("wk: "+wk);
 			if (wk == null) {
 				break;
 			}

@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.UIManager;
@@ -27,6 +28,7 @@ import org.lemsml.jlems.logging.E;
 import org.lemsml.jlemsio.data.FormattedDataUtil;
 import org.lemsml.jlemsio.util.FileUtil;
 import org.lemsml.jlemsviz.plot.DataDisplay;
+import org.lemsml.jlemsviz.plot.DisplayLine;
 import org.lemsml.jlemsviz.plot.DisplayList;
 import org.lemsml.jlemsviz.plot.DisplayListPainter;
 import org.lemsml.jlemsviz.plot.PaintInstructor;
@@ -78,7 +80,7 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 		
 		
 		JMenu jmview = new JMenu("View");
-		String[] va = {"Frame"};
+		String[] va = {"Frame", "Legend"};
 		addToMenu(va, jmview);
 		jmb.add(jmview);
 		
@@ -207,6 +209,19 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 		dataDisplay.frameData();
 	}
 
+	public void legend() {
+
+        StringBuilder sb = new StringBuilder("<html><b>Traces present:</b><br/>");
+		for (String id : traceInfo.keySet()) {
+			String c = traceInfo.get(id);
+
+			sb.append("&nbsp;&nbsp;<font color=\"" + c + "\">------  " + id + "</font><br/>");
+		}
+		sb.append("</html>");
+
+		JOptionPane.showMessageDialog(frame, sb);
+	}
+
 	private void setData(DisplayList dl) {
 		DisplayListPainter dlp = new DisplayListPainter(dl);
 		dlp.setRepaintable(dataDisplay);
@@ -225,10 +240,13 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 			
 		} else if (sev.equals("exit")) {
 			frame.dispose();
-			
+
 		} else if (sev.equals("frame")) {
 			frameData();
-			
+
+		} else if (sev.equals("legend")) {
+			legend();
+
 		} else if (sev.equals("pan")) {
 			dataDisplay.setMode("mouse", WorldCanvas.PAN);
 			setPref("mouseMode", WorldCanvas.PAN);

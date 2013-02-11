@@ -268,14 +268,6 @@ public class StateInstance implements StateRunnable {
 		}
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	public void transitionTo(String rnm) throws RuntimeError {
 		activeRegime = regimeHM.get(rnm);

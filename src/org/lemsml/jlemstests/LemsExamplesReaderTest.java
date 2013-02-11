@@ -9,9 +9,12 @@ import org.junit.Test;
 import org.junit.runner.Result;
 import org.lemsml.jlems.expression.ParseError;
 import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.run.ConnectionError;
+import org.lemsml.jlems.run.RuntimeError;
 import org.lemsml.jlems.sim.ContentError;
 import org.lemsml.jlems.sim.LemsProcess;
 import org.lemsml.jlems.sim.ParseException;
+import org.lemsml.jlems.sim.Sim;
 import org.lemsml.jlems.type.BuildException;
 import org.lemsml.jlems.type.Lems;
 import org.lemsml.jlems.xml.XMLElementReader;
@@ -26,7 +29,7 @@ public class LemsExamplesReaderTest {
  
 	@Test
 	public void testReadFromString() throws ParseException, BuildException,
-			ContentError, XMLException, IOException, ParseError {
+			ContentError, XMLException, IOException, ParseError, ConnectionError, RuntimeError {
 
 		File fdir = new File("examples");
 		for (File fx : fdir.listFiles()) {
@@ -35,10 +38,10 @@ public class LemsExamplesReaderTest {
  				FileInclusionReader fir = new FileInclusionReader(fx);
 				String fullText = fir.read();
 				
-				LemsProcess lemsProcess = new LemsProcess(fullText);
+				Sim sim = new Sim(fullText);
 
-				lemsProcess.readModel();
-				Lems lems = lemsProcess.getLems();
+				sim.readModel();
+				Lems lems = sim.getLems();
 
 				String sout = XMLSerializer.serialize(lems);	 
 		 
@@ -56,7 +59,7 @@ public class LemsExamplesReaderTest {
 				String sout2 = XMLSerializer.serialize(lems2);	 		
 	 
 				if (sout.equals(sout2)) {
-					E.info("Lems Read/write OK for " + fx);
+					E.info("--- Lems Read/write OK for " + fx);
 				} else {
 					E.info("Read/write failure for " + fx.getName());
 					E.info("Exported:  " + XMLElementReader.deSpace(sout));
@@ -65,6 +68,12 @@ public class LemsExamplesReaderTest {
 				}
 	 		
 				assertEquals("string read", sout, sout2);
+
+
+                sim.build();
+
+                E.info("Lems build OK for " + fx);
+
 			}
 		}
 	}

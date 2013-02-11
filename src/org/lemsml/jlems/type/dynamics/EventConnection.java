@@ -55,9 +55,11 @@ public class EventConnection extends BuildElement {
 			ParamValue pv = cpt.getParamValue(delay);
 			ret.setDelay(pv.getDoubleValue(Dimension.getTimeDimension()));
 		}
-		
-		if (receiver != null && cpt.hasAttribute(receiver)) {
-			Component receiverComponent = cpt.getChild(receiver);
+		//System.out.println("cpt: "+cpt+", atr: "+cpt.attributes);
+              
+		if (receiver != null && cpt.getRelativeComponent(receiver)!=null) {
+			Component receiverComponent = cpt.getRelativeComponent(receiver);
+            //E.info("EventConnection, receiver: ["+receiver+"] resolved to: ["+receiverComponent+"]");
 			ret.setReceiverStateType(receiverComponent.getStateType());
 
             for (Assign ass : assigns) {
@@ -68,6 +70,7 @@ public class EventConnection extends BuildElement {
                 ret.addAssignment(ass.getProperty(), ass.getDoubleEvaluator());
             }
 		}
+
 		if (receiverContainer != null && cpt.hasAttribute(receiverContainer)) {
 			String sv = cpt.getStringValue(receiverContainer);
 			ret.setReceiverContainer(sv);
