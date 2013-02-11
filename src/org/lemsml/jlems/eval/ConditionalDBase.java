@@ -22,7 +22,7 @@ public class ConditionalDBase implements DoubleEvaluator {
 
    
 	public void addCondition(BooleanEvaluator be, DoubleEvaluator de) {
-		E.info("Added condidtion " + be + " " + de);
+		//E.info("Added condidtion " + be + " " + de);
 		conditions.add(be);
 		values.add(de);
 	}
