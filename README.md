@@ -3,7 +3,7 @@ jLEMS
 
 Java Interpreter for the Low Entropy Model Specification language.
 
-See http://robertcannon.github.com/jLEMS/
+See http://lems.github.com/jLEMS/
 
 
 Quick installation
@@ -16,7 +16,7 @@ Clone the repository:
 Build with Ant (http://ant.apache.org):
 
     cd jLEMS
-    ant
+    ant viz-jar
 
 Run an example:
 
