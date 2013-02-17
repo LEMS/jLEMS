@@ -16,7 +16,7 @@ This also serialises and deserialises nicely to standard #ffffff format.
 */
 
 
-public class SColor { //  implements DeReferencable, ReReferencable {
+public class SColor { 
 
    public String string;
 
@@ -90,7 +90,7 @@ public class SColor { //  implements DeReferencable, ReReferencable {
       int rgb = c.getRGB();
       // to HexString leaves off leading zeroes if it can;
 
-      int xrgb  = rgb | 0xff0000;
+      int xrgb  = rgb | 0xff000000;
 
       String fullhex = Integer.toHexString(xrgb);
       String ret = "#" + fullhex.substring(2, 8);

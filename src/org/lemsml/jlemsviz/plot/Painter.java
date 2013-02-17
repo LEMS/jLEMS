@@ -873,7 +873,11 @@ public void fillPolygon(Polypoint pp, int cfill, int cline) {
 
    }
 
-
+   public void drawLegendItem(String s, int ioff) {
+	   int sw = stringWidth(s);
+	   int wid = worldTransform.getCanvasWidth();
+	   g.drawString(s, wid - sw - 10, 12 * ioff + 20);
+   }
 
 
 

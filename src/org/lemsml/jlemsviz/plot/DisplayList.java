@@ -32,6 +32,7 @@ public class DisplayList {
 	public void addPoint(String sl, double x, double y, String color) {
 		if (lineHM.containsKey(sl)) {
 			lineHM.get(sl).addPoint(x, y);
+			
 		} else {
 			DisplayLine dl = new DisplayLine(sl, color);
 			lineHM.put(sl, dl);

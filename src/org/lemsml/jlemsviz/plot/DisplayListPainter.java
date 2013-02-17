@@ -34,6 +34,15 @@ public class DisplayListPainter implements PaintInstructor {
 				p.drawPolyline(dl.getXpts(), dl.getYpts(), np);
 			}
 		}
+		
+		int ioff = 0;
+		for (DisplayLine dl : displayList.getLines()) {
+			p.setColor(dl.getColor());
+		
+			p.drawLegendItem(dl.getName(), ioff);
+			ioff += 1;
+		}
+		
 	}
 
 	

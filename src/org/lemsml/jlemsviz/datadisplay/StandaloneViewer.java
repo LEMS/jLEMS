@@ -46,9 +46,8 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 	JPanel ptop = new JPanel();
 
 	Color mainBackground = new Color(120, 120, 120);
-
-	HashMap<String, String> traceInfo = new HashMap<String, String>();
-
+	// RCC displayList contains all the data that traceInfo was saving
+	
 	boolean setRange = false;
 	double[] region;
 	
@@ -210,15 +209,9 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 
 	public void legend() {
 
-        StringBuilder sb = new StringBuilder("<html><b>Traces present:</b><br/>");
-		for (String id : traceInfo.keySet()) {
-			String c = traceInfo.get(id);
-
-			sb.append("&nbsp;&nbsp;<font color=\"" + c + "\">------  " + id + "</font><br/>");
-		}
-		sb.append("</html>");
-
-		JOptionPane.showMessageDialog(frame, sb);
+		String lgnd = buildHTMLLegend();
+		
+		JOptionPane.showMessageDialog(frame, lgnd);
 	}
 
 	private void setData(DisplayList dl) {
@@ -270,12 +263,9 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 	}
 
 	public void addPoint(String s, double x, double y, String color) {
-		displayList.addPoint(s, x, y, color);
-
-		if (!traceInfo.containsKey(s)) {
-			traceInfo.put(s, color);
-			updateToolTip();
-		}
+		displayList.addPoint(s, x, y, color);	
+		
+	 
 		checkUpdate();
 	}
 
@@ -284,8 +274,8 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 	}
 
 	private void checkUpdate() {
-		long currentTime = System.currentTimeMillis();
-		if (currentTime - lastUpdate > 100) {
+		long currentTime = System.nanoTime() / 1000000;
+		if (currentTime - lastUpdate > 250) {
 			lastUpdate = currentTime;
 		 	
 			if (!setRange) {
@@ -311,23 +301,18 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 		sv.show();
 	}
 
-	private void updateToolTip() {
-		UIManager.put("ToolTip.background", new ColorUIResource(mainBackground));
-		UIManager.put("ToolTip.foreground", new ColorUIResource(Color.white));
-
+	
+	
+	public String buildHTMLLegend() {
 		StringBuilder sb = new StringBuilder("<html><b>Traces present:</b><br/>");
-		for (String id : traceInfo.keySet()) {
-			String c = traceInfo.get(id);
-
-			sb.append("&nbsp;&nbsp;<font color=\"" + c + "\">" + id + "</font><br/>");
-		}
-		sb.append("</html>");
-
-	//	ptop.setToolTipText(sb.toString());
-	//	frameB.setToolTipText(sb.toString());
-
+		for (DisplayLine dl : displayList.getLines()) {
+			sb.append("&nbsp;&nbsp;<font color=\"" + dl.getColor() + "\">----- " + dl.getName() + "</font><br/>");
+		}		
+		return sb.toString();
 	}
-
+	
+	
+	
 	@Override
 	public void showFinal() {
 //		frameData();
