@@ -1,5 +1,7 @@
 package org.lemsml.jlemsviz.plot;
 
+import java.util.ArrayList;
+
 import org.lemsml.jlems.logging.E;
  
 
@@ -12,11 +14,11 @@ public final class WorldTransform {
    private int pcx;
    private int pcy;
 
-   private int width;
-   private int height;
+   private int canvasWidth;
+   private int canvasHeight;
 
-   private int hx;
-   private int hy;
+   private int dataAreaWidth;
+   private int dataAreaHeight;
 
    private double dpdwx;
    private double dpdwy;
@@ -72,8 +74,7 @@ public final class WorldTransform {
    // for continuous zoom
    private double zoomCenX, zoomCenY, dpdwx0, dpdwy0, wcx0, wcy0;
 
-   int nRangeListener;
-   private RangeListener[] rangeListeners;
+   private ArrayList<RangeListener> rangeListeners = new ArrayList<RangeListener>();
 
    private RotationListener rotationListener;
 
@@ -94,9 +95,7 @@ public final class WorldTransform {
       wcx = 0.;
       wcy = 0.;
 
-      nRangeListener = 0;
-      rangeListeners = new RangeListener[10];
-
+   
       p_pixelSize = new Size(0., 0.);
    }
 
@@ -104,14 +103,15 @@ public final class WorldTransform {
    public void setCanvasSize(int w, int h) {
       setWidth(w);
       setHeight(h);
+      System.out.println("SCS " + w + " " + h);
    }
 
    public int getWidth() {
-	   return width;
+	   return canvasWidth;
    }
 
    public int getHeight() {
-	   return height;
+	   return canvasHeight;
    }
 
    public int getLeftMargin() {
@@ -136,15 +136,14 @@ public final class WorldTransform {
 
 
    public boolean intIsOnCanvas(int x, int y) {
-      return (x > -10 && x < width + 10 && y > -10 && y < height + 10);
+      return (x > -10 && x < canvasWidth + 10 && y > -10 && y < canvasHeight + 10);
    }
 
 
 
    public void addRangeListener(RangeListener rl) {
-      // just throw the array oob exception if it happens... ***
-      rangeListeners[nRangeListener++] = rl;
-      rl.rangeChanged(RangeListener.BOTH, getXYXYLimits());
+	  rangeListeners.add(rl);
+      rl.rangeChanged(getXYXYLimits());
    }
 
 
@@ -155,30 +154,28 @@ public final class WorldTransform {
 
 
    public void fixRanges() {
-      notifyRangeChange(RangeListener.BOTH);
+      notifyRangeChange();
    }
 
-   public void rangeChange(int axis) {
-      // notifyRangeChange(axis);
+   public void rangeChange() {
+      notifyRangeChange();
    }
 
+ 
 
    public void notifyRangeChange() {
-      notifyRangeChange(RangeListener.BOTH);
-   }
-
-
-   public void notifyRangeChange(int axis) {
       double[] lims = getXYXYLimits();
-      for (int i = 0; i < nRangeListener; i++) {
-         rangeListeners[i].rangeChanged(axis, lims);
+      for (RangeListener rl : rangeListeners) {
+         rl.rangeChanged(lims);
       }
+     //  System.out.println("notified rc " +  lims[0] + " " + lims[2]);
    }
 
 
    public void setPixelScalingFromTop(double d) {
       pSetXRange(0., d * getCanvasWidth());
       pSetYRange(-1. * d * getCanvasHeight(), 0.);
+      notifyRangeChange();
    }
 
 
@@ -231,38 +228,47 @@ public final class WorldTransform {
 
 
    public void setWidth(int w) {
-      width = w;
-      hx = (width - leftMargin - rightMargin) / 2;
-      if (hx < 2) {
-         hx = 2;
-      }
-      pcx = leftMargin + hx;
+	   if (canvasWidth != w) {
+		   canvasWidth = w;
+		   dataAreaWidth = (canvasWidth - leftMargin - rightMargin) / 2;
+		   if (dataAreaWidth < 2) {
+			   dataAreaWidth = 2;
+		   }
+		   pcx = leftMargin + dataAreaWidth;
+		   notifyRangeChange();
+	   }
    }
 
 
 
    public void setHeight(int h) {
-      height = h;
-      hy = (height - topMargin - bottomMargin) / 2;
-      if (hy < 2) {
-         hy = 2;
-      }
-      pcy = bottomMargin + hy;
+	   if (canvasHeight != h) {
+ 		   
+		   canvasHeight = h;
+		   dataAreaHeight = (canvasHeight - topMargin - bottomMargin) / 2;
+		   if (dataAreaHeight < 2) {
+			   dataAreaHeight = 2;
+		   }
+		   pcy = bottomMargin + dataAreaHeight;
+
+		   
+		   notifyRangeChange();
+	   }
    }
 
 
    public int getCanvasWidth() {
-      return width;
+      return canvasWidth;
    }
 
 
    public int getCanvasHeight() {
-      return height;
+      return canvasHeight;
    }
 
 
    public double getWorldCanvasWidth() {
-      return width / dpdwx;
+      return canvasWidth / dpdwx;
    }
 
 
@@ -270,7 +276,7 @@ public final class WorldTransform {
    public boolean isShowing(double x, double y) {
       int ix = powx(x);
       int iy = powy(y);
-      return (ix > 5 && iy > 5 && ix < width - 50 && iy < height - 5); // ADHOC
+      return (ix > 5 && iy > 5 && ix < canvasWidth - 50 && iy < canvasHeight - 5); // ADHOC
    }
 
 
@@ -359,7 +365,7 @@ public final class WorldTransform {
 
 
    protected double wopy(int y) {
-      return wcy + (height - y - pcy) / dpdwy;
+      return wcy + (canvasHeight - y - pcy) / dpdwy;
    }
 
 
@@ -392,7 +398,7 @@ public final class WorldTransform {
             vxmin = xr;
          }
       }
-      if (ii > 0 && ii < width) {
+      if (ii > 0 && ii < canvasWidth) {
          // drawnInXRange = true;
       }
       return ii;
@@ -408,7 +414,7 @@ public final class WorldTransform {
          f = -IBIG;
       }
 
-      int ii = (height - (pcy + (int)f));
+      int ii = (canvasHeight - (pcy + (int)f));
 
       if (recordRange) {
          if (yr > vymax) {
@@ -419,7 +425,7 @@ public final class WorldTransform {
          }
 
       }
-      if (ii > 0 && ii < height) {
+      if (ii > 0 && ii < canvasHeight) {
          // drawnInYRange = true;
       }
       return ii;
@@ -434,7 +440,7 @@ public final class WorldTransform {
    
    protected float fpowy(double yr) {
 	      float f = (float)(dpdwy * (yr - wcy));
-	      float ret = (height - (pcy + f));
+	      float ret = (canvasHeight - (pcy + f));
 	      return ret;
 }
    
@@ -444,7 +450,7 @@ public final class WorldTransform {
 
 
    private int qpowy(double yr) {
-      return (int)(height - (pcy + dpdwy * (yr - wcy)));
+      return (int)(canvasHeight - (pcy + dpdwy * (yr - wcy)));
    }
 
 
@@ -508,22 +514,22 @@ public final class WorldTransform {
 
 
    public double wxLeft() {
-      return wcx - hx / dpdwx;
+      return wcx - dataAreaWidth / dpdwx;
    }
 
 
    public double wxRight() {
-      return wcx + hx / dpdwx;
+      return wcx + dataAreaWidth / dpdwx;
    }
 
 
    public double wyBottom() {
-      return wcy - hy / dpdwy;
+      return wcy - dataAreaHeight / dpdwy;
    }
 
 
    public double wyTop() {
-      return wcy + hy / dpdwy;
+      return wcy + dataAreaHeight / dpdwy;
    }
 
 
@@ -569,7 +575,7 @@ public final class WorldTransform {
       if (constantAspectRatio) {
          enforceAspectRatioY();
       }
-      rangeChange(RangeListener.BOTH);
+      rangeChange();
    }
 
 
@@ -592,7 +598,7 @@ public final class WorldTransform {
    private void yZoomAbout(double f, int yc) {
       double yWorld = wopy(yc);
 
-      if (yc < height - bottomMargin && yRescalable) {
+      if (yc < canvasHeight - bottomMargin && yRescalable) {
          wcy = yWorld + f * (wcy - yWorld);
          dpdwy /= f;
          if (dpdwy > 1. / SMALL) {
@@ -626,7 +632,7 @@ public final class WorldTransform {
 	            dpdwx = 1. / SMALL;
 	         }
 	   }
-	   if (yc < height - bottomMargin && yRescalable) {
+	   if (yc < canvasHeight - bottomMargin && yRescalable) {
 	         wcy = zoomCenY + fy * (wcy0 - zoomCenY);
 	         dpdwy = dpdwy0 / fy;
 	         if (dpdwy > 1. / SMALL) {
@@ -636,6 +642,7 @@ public final class WorldTransform {
 	   if (constantAspectRatio) {
 	         enforceAspectRatioY();
 	   }
+	   notifyRangeChange();
    }
 
 
@@ -659,17 +666,22 @@ public final class WorldTransform {
    public void reframe(Box b) {
       setXRange(b.getXmin(), b.getXmax());
       setYRange(b.getYmin(), b.getYmax());
+      
+      System.out.println("wt set ranges " + b.getXmin() + " " + b.getXmax());
+      
       notifyRangeChange();
    }
 
 
    public void setXRange(double xl, double xh) {
       pSetXRange(xl, xh);
+      notifyRangeChange();
    }
 
 
    public void setYRange(double yl, double yh) {
       pSetYRange(yl, yh);
+      notifyRangeChange();
    }
 
 
@@ -692,21 +704,19 @@ public final class WorldTransform {
          if (xh <= xl + SMALL) {
             xh = xl + SMALL;
          }
-         dpdwx = 2. * hx / (xh - xl);
+         dpdwx = 2. * dataAreaWidth / (xh - xl);
       }
 
 
       if (constantAspectRatio) {
          enforceAspectRatioX();
       }
-
-      rangeChange(RangeListener.X);
    }
 
 
    public void ensureCovers(double xl, double yl, double xh, double yh) {
       // set tighter constraint last; other first to get center
-      if ((xh - xl) * hy >  (yh - yl) * hx) {
+      if ((xh - xl) * dataAreaHeight >  (yh - yl) * dataAreaWidth) {
          pSetYRange(yl, yh);
          pSetXRange(xl, xh);
 
@@ -714,6 +724,7 @@ public final class WorldTransform {
          pSetXRange(xl, xh);
          pSetYRange(yl, yh);
       }
+      notifyRangeChange();
    }
 
 
@@ -735,14 +746,13 @@ public final class WorldTransform {
          if (yh <= yl + SMALL) {
             yh = yl + SMALL;
          }
-         dpdwy = 2. * hy / (yh - yl);
+         dpdwy = 2. * dataAreaHeight / (yh - yl);
       }
 
       if (constantAspectRatio) {
          enforceAspectRatioY();
       }
-
-      rangeChange(RangeListener.Y);
+      rangeChange();
    }
 
 
@@ -753,6 +763,7 @@ public final class WorldTransform {
       range[1] = wyBottom();
       range[2] = wxRight();
       range[3] = wyTop();
+        
       return range;
    }
 
@@ -771,9 +782,9 @@ public final class WorldTransform {
 
    public void setXYXYLimits(double xl, double yl, double xh, double yh) {
       if (constantAspectRatio) {
-         // assume axect ratio is 1 for now!!! ---------- TODO;
-         if ((xh - xl) / (width - leftMargin - rightMargin) > (yh - yl)
-               / (height - topMargin - bottomMargin)) {
+         // assume aspect ratio is 1 for now!!! ---------- TODO;
+         if ((xh - xl) / (canvasWidth - leftMargin - rightMargin) > (yh - yl)
+               / (canvasHeight - topMargin - bottomMargin)) {
 
             pSetYRange(yl, yh);
             pSetXRange(xl, xh);
@@ -787,6 +798,7 @@ public final class WorldTransform {
          pSetXRange(xl, xh);
          pSetYRange(yl, yh);
       }
+      notifyRangeChange();
    }
 
 
@@ -811,10 +823,10 @@ public final class WorldTransform {
 
    // default mouse coanvas ignores these - subclasses should
    // do something more useful
-   void boxSelected(int x0, int y0, int x1, int y1) {
+   public void boxSelected(int x0, int y0, int x1, int y1) {
       pSetXRange(wopx(x0), wopx(x1));
       pSetYRange(wopy(y0), wopy(y1));
-
+      notifyRangeChange();
    }
 
 
@@ -841,7 +853,7 @@ public final class WorldTransform {
       // not final - should be smarter here - just shift an image EFF;
       wcx = wcxtp - (wopx(xto) - wopx(xfrom));
       wcy = wcytp - (wopy(yto) - wopy(yfrom));
-      rangeChange(RangeListener.BOTH);
+      rangeChange();
 
    }
 
@@ -858,7 +870,7 @@ public final class WorldTransform {
 
 
       trialPanning = false;
-      rangeChange(RangeListener.BOTH);
+      rangeChange();
    }
 
 
@@ -1041,8 +1053,8 @@ public final class WorldTransform {
 
 public boolean visible3D(double x, double y, double z) {
 	// TODO Auto-generated method stub
-	  	return (Math.abs (1.5 * dpdwx * (xProj(x,y,z) - wcx)) < width &&
-	            Math.abs (1.5 * dpdwy * (yProj(x,y,z) - wcy)) < height);
+	  	return (Math.abs (1.5 * dpdwx * (xProj(x,y,z) - wcx)) < canvasWidth &&
+	            Math.abs (1.5 * dpdwy * (yProj(x,y,z) - wcy)) < canvasHeight);
 
 }
 

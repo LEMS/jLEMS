@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import org.lemsml.jlems.logging.E;
  
 
-public class DataDisplay extends BasePanel implements ModeSettable, RangeListener, Repaintable {
+public class DataDisplay extends BasePanel implements ModeSettable, Repaintable, PaintListener {
 
    static final long serialVersionUID = 1001;
 
@@ -26,9 +26,7 @@ public class DataDisplay extends BasePanel implements ModeSettable, RangeListene
    LeftRightSplitPanel lr;
 
    GraphColors gcols;
-
-   Dimension prefDim;
-
+ 
    RangeWatcher rangeWatcher;
 
    static boolean interactive = true;
@@ -36,17 +34,25 @@ public class DataDisplay extends BasePanel implements ModeSettable, RangeListene
       interactive = false;
    }
 
-   public DataDisplay(int w, int h) {
+   public DataDisplay() {
       super();
- 
+       
       gcols = new GraphColors();
       int leftmargin = 64;
-      int bottommargin = 22;
-      xAxisCanvas = new XAxisCanvas(w - leftmargin, bottommargin);
-      yAxisCanvas = new YAxisCanvas(leftmargin, h - bottommargin);
-      pwCanvas = new PickWorldCanvas(w - leftmargin, h - bottommargin, interactive);
+      int bottommargin = 32;
+      xAxisCanvas = new XAxisCanvas();
+      yAxisCanvas = new YAxisCanvas();
+      
+      xAxisCanvas.setMinimumSize(new Dimension(200, bottommargin));
+      yAxisCanvas.setMinimumSize(new Dimension(leftmargin, 200));
+      
+      xAxisCanvas.setPreferredSize(new Dimension(200, bottommargin));
+      yAxisCanvas.setPreferredSize(new Dimension(leftmargin, 200));
+      
+      
+      pwCanvas = new PickWorldCanvas(interactive);
 
-      cornerPanel = new CornerPanel(leftmargin, bottommargin, pwCanvas);
+      cornerPanel = new CornerPanel();
 
 
       ab1 = new AboveBelowSplitPanel(yAxisCanvas, cornerPanel, gcols);
@@ -54,20 +60,12 @@ public class DataDisplay extends BasePanel implements ModeSettable, RangeListene
       ab2 = new AboveBelowSplitPanel(pwCanvas, xAxisCanvas, gcols);
 
 
-      ab1.setResizeWeight(1.0);
-      ab2.setResizeWeight(1.0);
-
-
-      setPrefSize(w, h);
-
-      // NB calls setDividerLocation which has side effect of starting event thread
-      ab1.setSplitPanelFollower(ab2);
-      ab2.setSplitPanelFollower(ab1);
-
+      ab1.setResizeWeight(0.95);
+      ab2.setResizeWeight(0.95);
 
       lr = new LeftRightSplitPanel(ab1, ab2, gcols);
 
-      lr.setResizeWeight(0.1);
+      lr.setResizeWeight(0.0);
 
       setLayout(new BorderLayout(0, 0));
       add("Center", lr);
@@ -75,6 +73,8 @@ public class DataDisplay extends BasePanel implements ModeSettable, RangeListene
 
       pwCanvas.addRangeListener(xAxisCanvas);
       pwCanvas.addRangeListener(yAxisCanvas);
+      
+      pwCanvas.addPaintListener(this);
 
    }
 
@@ -88,28 +88,15 @@ public class DataDisplay extends BasePanel implements ModeSettable, RangeListene
       repaint();
    }
 
-   public void addRangeWatcher(RangeWatcher rw) {
-      if (rangeWatcher == null) {
-         pwCanvas.addRangeListener(this);
-         rangeWatcher = rw;
-      } else {
-         E.error("cant add another range watcher - already watching");
-      }
-   }
+  public void painted() {
+	  int hc = pwCanvas.getHeight();
+	  int ha = yAxisCanvas.getHeight();
+	  if (ha != hc) {
+		  ab1.setDividerLocation(hc);
+	  }
+  }
 
-   public void rangeChanged(int mode, double[] newLimits) {
-      if (rangeWatcher != null) {
-         rangeWatcher.rangeChanged();
-      }
-   }
-
-
-
-
-   public Dimension getPreferredSize() {
-      return prefDim;
-   }
-
+ 
 
    public void setBg(Color c) {
       setDataBg(c);
@@ -205,9 +192,15 @@ public class DataDisplay extends BasePanel implements ModeSettable, RangeListene
    }
 
 
+   public void setXXYYLimits(double[] d) {
+	   double[] xyxy = {d[0], d[2], d[1], d[3]};
+	   setLimits(xyxy);
+	}
+
 
    public void setLimits(double[] xyxy) {
-      pwCanvas.setXRange(xyxy[0], xyxy[2]);
+	  pwCanvas.syncSize(); 
+	  pwCanvas.setXRange(xyxy[0], xyxy[2]);
       pwCanvas.setYRange(xyxy[1], xyxy[3]);
       pwCanvas.requestRepaint();
    }
@@ -247,12 +240,15 @@ public class DataDisplay extends BasePanel implements ModeSettable, RangeListene
 
    public static void main(String[] argv) {
       JFrame f = new JFrame();
-      DataDisplay wc = new DataDisplay(500, 300);
-      wc.setPaintInstructor(new Demo1());
+      DataDisplay dataDisplay = new DataDisplay();
+      f.setPreferredSize(new Dimension(500, 300));
+      dataDisplay.setPaintInstructor(new Demo1());
 
-      f.getContentPane().add(wc);
+      f.getContentPane().add(dataDisplay);
       f.pack();
       f.setVisible(true);
+      
+      
    }
 
 
@@ -268,26 +264,7 @@ public class DataDisplay extends BasePanel implements ModeSettable, RangeListene
    public void syncSizes() {
       pwCanvas.syncSize();
    }
-
-   public final void setPrefSize(int w, int h) {
-
-      prefDim = new Dimension(w, h);
-      setPreferredSize(prefDim);
-
-      int leftmargin = 64;
-      int bottommargin = 22;
-      xAxisCanvas.setPreferredSize(w - leftmargin, bottommargin);
-      yAxisCanvas.setPreferredSize(leftmargin, h - bottommargin);
-      pwCanvas.setPreferredSize(w - leftmargin, h - bottommargin);
-      xAxisCanvas.setMinimumSize(new Dimension(100, bottommargin - 20));
-      yAxisCanvas.setMinimumSize(new Dimension(leftmargin - 20, 100));
-      cornerPanel.setMinimumSize(new Dimension(leftmargin - 20, bottommargin - 20));
-
-
-      // NB - these cause the AWT event thread to be started (which delays exit in batch mode)
-      ab1.setDividerLocation(h - leftmargin);
-      ab2.setDividerLocation(h - bottommargin);
-   }
+ 
 
 public void frameData() {
 	 pwCanvas.reframe();

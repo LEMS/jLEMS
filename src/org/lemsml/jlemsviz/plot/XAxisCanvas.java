@@ -24,8 +24,8 @@ public class XAxisCanvas extends BaseCanvas implements RangeListener {
    int ntick = 5;
 
 
-   public XAxisCanvas(int w, int h) {
-      super(w, h);
+   public XAxisCanvas() {
+      super();
    }
 
 
@@ -34,18 +34,14 @@ public class XAxisCanvas extends BaseCanvas implements RangeListener {
    }
 
 
-   public void rangeChanged(int mode, double[] xyxylims) {
-      if (mode == RangeListener.X || mode == RangeListener.BOTH) {
-         xlow = xyxylims[0];
-         xhigh = xyxylims[2];
-
-         repaint();
-      }
+   public void rangeChanged(double[] xyxylims) {
+	   xlow = xyxylims[0];
+	   xhigh = xyxylims[2];
+	   repaint();
    }
 
 
    public void paint2D(Graphics2D g) {
-
       drawAxis(g);
    }
 

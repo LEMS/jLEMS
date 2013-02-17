@@ -86,7 +86,7 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 		
 		
 		JMenu jmmouse = new JMenu("Mouse");
-		String[] ma = { "Pan", "Zoom", "Box", "Multi" };
+		String[] ma = {"Pan", "Zoom", "Box", "Multi" };
 		addToMenu(ma, jmmouse);
 		jmb.add(jmmouse);
 		
@@ -96,7 +96,7 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 		
 		
 		
-		dataDisplay = new DataDisplay(500, 400);
+		dataDisplay = new DataDisplay();
 		ctr.add(dataDisplay, BorderLayout.CENTER);
 
 		dataDisplay.setBg(mainBackground);
@@ -189,8 +189,7 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 	public void setRegion(double[] d) {
 		if (d != null && d.length == 4) {
 			region = d;
-			dataDisplay.setXRange(d[0], d[1]);
-			dataDisplay.setYRange(d[2], d[3]);
+			dataDisplay.setXXYYLimits(d);
 			setRange = true;
 		}
 	}

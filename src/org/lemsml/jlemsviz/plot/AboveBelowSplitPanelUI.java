@@ -17,16 +17,18 @@ GraphColors gcols;
       gcols = gc;
    }
 
-
    public static ComponentUI createUI(JComponent jcomponent) {
          return new AboveBelowSplitPanelUI(null);
    }
 
+   
    public BasicSplitPaneDivider createDefaultDivider() {
       return new HorizontalAxisGraphDivider(this, gcols);
    }
 
 
+
+/*
    public void paint(Graphics graphics, JComponent jcomponent) {
 	   // nothing to do
    }
@@ -35,6 +37,6 @@ GraphColors gcols;
    protected void uninstallDefaults() {
 	   // ignore
    }
-
+*/
 }
 

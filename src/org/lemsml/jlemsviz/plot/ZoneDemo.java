@@ -2,9 +2,10 @@
 
 package org.lemsml.jlemsviz.plot;
  
+import java.awt.Dimension;
+
 import javax.swing.JFrame;
-
-
+ 
 
 public class ZoneDemo implements BuildPaintInstructor, PickListener {
 
@@ -22,8 +23,8 @@ public class ZoneDemo implements BuildPaintInstructor, PickListener {
 
    public void init() {
       JFrame f = new JFrame();
-      DataDisplay wc = new DataDisplay(500, 300);
-
+      DataDisplay wc = new DataDisplay();
+      f.setPreferredSize(new Dimension(500, 300));
       wc.setBuildPaintInstructor(this);
 
       wc.setPickListener(this);

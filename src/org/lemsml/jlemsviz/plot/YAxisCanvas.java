@@ -27,8 +27,8 @@ public class YAxisCanvas extends BaseCanvas
    AffineTransform normalTransform;
 
 
-   public YAxisCanvas(int w, int h) {
-      super(w, h);
+   public YAxisCanvas() {
+      super();
 
       upTransform = new AffineTransform();
       upTransform.setToRotation(-1 * Math.PI/2.);
@@ -41,13 +41,12 @@ public class YAxisCanvas extends BaseCanvas
    }
 
 
-   public void rangeChanged(int mode, double[] xyxylims) {
-      if (mode == RangeListener.X || mode == RangeListener.BOTH) {
+   public void rangeChanged(double[] xyxylims) {
+     
 	 ylow = xyxylims[1];
 	 yhigh = xyxylims[3];
 	 repaint();
-
-      }
+ 
    }
 
 

@@ -23,12 +23,17 @@ class HorizontalAxisGraphDivider extends BasicSplitPaneDivider {
       int w = getWidth();
       int h = getHeight();
 
+      g.setColor(gcols.getBorderBg());
+      g.fillRect(0, 0, w, h);
 
+      
+      /*
       g.setColor(gcols.getGraphBg());
       g.fillRect(0, 0, w, h);
 
       g.setColor(gcols.getBorderFg());
       g.drawLine(0, h-1, w, h-1);
+      */
    }
 
 

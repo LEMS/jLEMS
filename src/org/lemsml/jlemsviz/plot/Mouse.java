@@ -7,12 +7,14 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 import org.lemsml.jlems.logging.E;
  
 
 
-public final class Mouse implements MouseListener, MouseMotionListener {
+public final class Mouse implements MouseListener, MouseMotionListener, MouseWheelListener {
 
    public final static int LEFT = 1;
    public final static int MIDDLE = 2;
@@ -28,15 +30,15 @@ public final class Mouse implements MouseListener, MouseMotionListener {
    private int xCurrent;
    private int yCurrent;
 
+   
+   private int scrollUnits;
+   
    private boolean down;
   // private boolean onCanvas;
 
   //  private long timeDown;
  // private long periodDownToDown;
-
-   private int nHandler;
-   private BaseMouseHandler[] handlers;
-
+ 
 
    private BaseMouseHandler activeHandler;
    private BaseMouseHandler motionHandler;
@@ -55,11 +57,16 @@ public final class Mouse implements MouseListener, MouseMotionListener {
       if (interactive) {
          canvas.addMouseListener(this);
          canvas.addMouseMotionListener(this);
+         canvas.addMouseWheelListener(this);
       }
-
-      handlers = new BaseMouseHandler[10];
+ 
    }
 
+   
+   public void setHandler(BaseMouseHandler h) {
+	   activeHandler = h;
+   }
+   
 
    public void setClickListener(ClickListener cl) {
       clickListener = cl;
@@ -70,29 +77,7 @@ public final class Mouse implements MouseListener, MouseMotionListener {
       canvas.removeMouseListener(this);
       canvas.removeMouseMotionListener(this);
    }
-
-
-   public void addHandler(BaseMouseHandler h) {
-      if (nHandler >= handlers.length) {
-         E.error("Mouse handler array too small");
-      } else {
-         handlers[nHandler++] = h;
-      }
-   }
-
-
-   public void prependHandler(BaseMouseHandler h) {
-      if (nHandler >= handlers.length) {
-         E.error("Mouse handler array too small");
-      } else {
-         for (int i = nHandler; i > 0; i--) {
-            handlers[i] = handlers[i - 1];
-         }
-         handlers[0] = h;
-         nHandler += 1;
-      }
-   }
-
+ 
 
 
    private void requestRepaint() {
@@ -162,14 +147,9 @@ public final class Mouse implements MouseListener, MouseMotionListener {
 
       readPosition(e);
 
-
-      for (int i = 0; i < nHandler; i++) {
-         BaseMouseHandler mh = handlers[i];
-         if (mh.isActive() && mh.motionAware()) {
-            if (mh.motionChange(this)) {
-
-               motionHandler = mh;
-
+      if (motionHandler != null) {
+            if (motionHandler.motionChange(this)) {
+ 
                // TODO this is lazy - the mh should be
                // allowed to say if it wants a complete repaint or
                // just an image without itself to paint on.
@@ -177,16 +157,14 @@ public final class Mouse implements MouseListener, MouseMotionListener {
 
             }
          }
-      }
+     
    }
 
 
 
    public void mousePressed(MouseEvent e) {
       down = true;
-
-      motionHandler = null;
-
+ 
       readButton(e);
       readPosition(e);
       readPressPosition(e);
@@ -194,35 +172,15 @@ public final class Mouse implements MouseListener, MouseMotionListener {
       // long tp = e.getWhen();
      // periodDownToDown = tp - timeDown;
      // timeDown = tp;
-
-      activeHandler = null;
-
-      for (int i = 0; i < nHandler; i++) {
-         BaseMouseHandler mh = handlers[i];
-
-         if (mh.isActive()) {
-
-            mh.setClaimUndecided();
-
-            mh.init(this);
-            if (mh.isIn()) {
-               activeHandler = mh;
-               break;
-            }
-         }
+ 
+      if (activeHandler != null) {
+    	  activeHandler.init(this);
       }
 
       if (activeHandler != null) {
          activeHandler.applyOnDown(this);
       }
-
-      for (BaseMouseHandler mh : handlers) {
-            if (mh == activeHandler) {
-
-            } else if (mh != null) {
-               mh.missedPress(this);
-            }
-      }
+ 
 
    }
 
@@ -233,26 +191,7 @@ public final class Mouse implements MouseListener, MouseMotionListener {
          return;
       }
       readPosition(e);
-
-      if (activeHandler == null) {
-         for (int i = 0; i < nHandler; i++) {
-            BaseMouseHandler mh = handlers[i];
-
-            if (mh.isActive()) {
-               if (mh.isOut()) {
-                  // eliminated itself;
-
-               } else {
-                  mh.advance(this);
-                  if (mh.isIn()) {
-                     activeHandler = mh;
-                     break;
-                  }
-               }
-            }
-         }
-      }
-
+ 
       if (activeHandler != null) {
          activeHandler.applyOnDrag(this);
 
@@ -277,29 +216,12 @@ public final class Mouse implements MouseListener, MouseMotionListener {
       }
 
       readPosition(e);
-
-      if (activeHandler == null) {
-         for (int i = 0; i < nHandler; i++) {
-            BaseMouseHandler mh = handlers[i];
-            if (mh.isActive()) {
-               if (mh.isOut()) {
-
-               } else {
-                  mh.release(this);
-                  if (mh.isIn()) {
-                     activeHandler = mh;
-                     break;
-                  }
-               }
-            }
-         }
-      }
-
+ 
       if (activeHandler != null) {
          activeHandler.applyOnRelease(this);
       }
 
-      activeHandler = null;
+    
       down = false;
       requestRepaint();
 
@@ -309,6 +231,42 @@ public final class Mouse implements MouseListener, MouseMotionListener {
    }
 
 
+   
+   
+
+   @Override	
+   public void mouseWheelMoved(MouseWheelEvent e) {
+	   // TODO Auto-generated method stub
+	   scrollUnits = e.getWheelRotation();
+	   readPosition(e);
+	    
+	      if (activeHandler == null) {
+	    	  
+	    	  
+	      } else {
+	    	 updateCanvasDimensions();
+	    	  
+	    	  activeHandler.applyOnScrollWheel(this);
+
+	         if (activeHandler.getRepaintStatus() == BaseMouseHandler.FULL) {
+	            requestRepaint();
+
+	         } else if (activeHandler.getRepaintStatus() == BaseMouseHandler.BUFFERED) {
+	            // should do some ting more economical here EFF
+	            requestRepaint();
+
+	         } else {
+	            // nothing to do...
+	         }
+	      }
+   }
+
+   
+   
+   
+   
+   
+   
 
    private void readPosition(MouseEvent e) {
       xCurrent = e.getX();
@@ -348,6 +306,10 @@ public final class Mouse implements MouseListener, MouseMotionListener {
       return yCurrent;
    }
 
+   
+   int getScrollUnits() {
+	   return scrollUnits;
+   }
 
    int getXDown() {
       return xDown;
@@ -432,6 +394,7 @@ public final class Mouse implements MouseListener, MouseMotionListener {
    public void restoreAA() {
 	   canvas.restoreAA();
    }
+
 
 
 }

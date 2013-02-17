@@ -46,11 +46,13 @@ public abstract class AbstractStateChange extends ExpressionValued {
 		if (stateVariables.hasName(variable)) {
 			r_variable = stateVariables.getByName(variable);
 		} else {
-			StringBuilder error = new StringBuilder("Can't find variable " + variable+" for state variable "+ r_variable+"\nState variables:");
+			StringBuilder sb = new StringBuilder();
+			sb.append("Can't find state variable " + variable + " in " + this + "\n");
+			sb.append("Known state variables:\n");
 			for (StateVariable sv:stateVariables) {
-				error.append("\n    "+sv.getName()+": "+sv);
+				sb.append("    " + sv.getName() + ": " + sv + "\n");
 			}
-			throw new ContentError(error.toString());
+			throw new ContentError(sb.toString());
 		}
 		parseTree = parser.parseExpression(value);
 	}

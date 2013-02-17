@@ -10,8 +10,9 @@ public final class Bounce {
 	}
 	
 	public static void main(String[] argv) {
-	
+
 		VizExample.run("bounce.xml");
+		
 	
 	}
 	 

@@ -18,17 +18,21 @@ public class PickWorldCanvas extends WorldCanvas {
    BuildPaintInstructor buildPaintInstructor;
 
    GridPainter gridPainter;
+   
+   PaintListener paintListener = null;
 
    boolean drawGrid = true;
 
 
-   public PickWorldCanvas(int w, int h, boolean interact) {
-      super(w, h, interact);
+   public PickWorldCanvas(boolean interact) {
+      super(interact);
 
       pickStore = new PickStore();
       builder = new Builder(getPainter(), pickStore);
       pickHandler = new PickHandler(pickStore, getWorldTransform());
-      prependHandler(pickHandler);
+     
+      // prependHandler(pickHandler);
+      
       gridPainter = new GridPainter();
 
    }
@@ -118,6 +122,10 @@ public class PickWorldCanvas extends WorldCanvas {
       } else if (paintInstructor != null) {
          paintInstructor.instruct(painter);
       }
+      
+      if (paintListener != null) {
+    	  paintListener.painted();
+      }
    }
 
 
@@ -164,6 +172,12 @@ public class PickWorldCanvas extends WorldCanvas {
       } 
     
    }
+
+
+public void addPaintListener(PaintListener pl) {
+	paintListener = pl;
+	
+}
 
  
 

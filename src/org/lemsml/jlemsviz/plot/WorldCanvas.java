@@ -15,6 +15,7 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
 
 
    public static final String PAN = "pan";
+   public static final String ALL = "all";
    public static final String EZOOM = "zoom";
    public static final String BOX = "box";
    public static final String ROLL = "roll";
@@ -30,14 +31,7 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
    protected PaintInstructor paintInstructor;
    protected Mouse mouse;
 
-
-   private BoxSelectionHandler boxSelectionHandler;
-   private PanHandler panHandler;
-   private ClickZoomHandler clickZoomHandler;
-   private RollHandler rollHandler;
-   private TurntableHandler turntableHandler;
-
-   private BaseMouseHandler[] handlers;
+ 
 
    private boolean antialias = false;
    private boolean tooltips = true;
@@ -47,26 +41,23 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
    private boolean userAntialias;
 
 
-   public WorldCanvas(int w, int h) {
-      this(w, h, true);
+   public WorldCanvas() {
+      this(true);
    }
 
 
-   public WorldCanvas(int w, int h, boolean interactive) {
-      super(w, h);
+   public WorldCanvas(boolean interactive) {
+      super();
 
 
       mouse = new Mouse(this, interactive);
 
 
       wt = new WorldTransform();
-      wt.setWidth(w);
-      wt.setHeight(h);
+   
 
       painter = new Painter(wt);
-
-      addWorldHandlers();
-
+ 
       setMouseMode("pan");
    }
 
@@ -121,13 +112,7 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
       repaint();
    }
 
-
-   public void syncSize() {
-      wt.setWidth(getWidth());
-      wt.setHeight(getHeight());
-   }
-
-
+ 
    public void reluctantReframe() {
        if (reframeBox == null) {
           reframe();
@@ -156,11 +141,14 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
 
 
       } else if (box.hasData()) {
-         reframeBox = box.makeCopy();
+    	  System.out.println("framing " + getHeight());
+    	  syncSize();
+    	  
+    	  reframeBox = box.makeCopy();
          box.pad();
          painter.reframe(box);
          repaint();
-
+         
       } else {
          // ok? - mesage? TODO
       }
@@ -194,11 +182,7 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
       return wt;
    }
 
-
-   public void prependHandler(BaseMouseHandler mhandler) {
-      mouse.prependHandler(mhandler);
-   }
-
+ 
 
    public void setClickListener(ClickListener cl) {
       mouse.setClickListener(cl);
@@ -210,71 +194,40 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
 
 
 
-   private final void addWorldHandlers() {
-      panHandler = new PanHandler();
-      addHandler(panHandler);
-
-      clickZoomHandler = new ClickZoomHandler();
-      addHandler(clickZoomHandler);
-
-      boxSelectionHandler = new BoxSelectionHandler();
-      addHandler(boxSelectionHandler);
-
-      TurnZoomHandler turnZoomHandler = new TurnZoomHandler();
-      addHandler(turnZoomHandler);
-
-      // TODO - only if 3d?
-      rollHandler = new RollHandler();
-      addHandler(rollHandler);
-
-      turntableHandler = new TurntableHandler();
-      addHandler(turntableHandler);
-
-
-      BaseMouseHandler[] ha = { panHandler, clickZoomHandler, boxSelectionHandler,
-    		  			   turnZoomHandler, rollHandler, turntableHandler };
-      handlers = ha;
-   }
+   
 
 
 
    public final void setMouseMode(String s) {
-      for (int i = 0; i < handlers.length; i++) {
-         handlers[i].deactivate();
-      }
-
-      if (s == null) {
-         E.error("null mouse mode ");
-
-      } else if (s.equals(MULTI)) {
-         for (int i = 0; i < handlers.length; i++) {
-            handlers[i].activate();
-         }
-
-      } else if (s.equals(PAN)) {
-         panHandler.simpleActivate();
+     
+ 
+      if (s.equals(PAN) || s.equals(ALL)) {
+    	 setMouseHandler(new PanZoomHandler());
+     
 
       } else if (s.equals(EZOOM)) {
-         clickZoomHandler.activateInOut();
+    	  setMouseHandler(new ClickZoomHandler());
 
       } else if (s.equals(BOX)) {
-         boxSelectionHandler.simpleActivate();
-
+    	  setMouseHandler(new BoxSelectionHandler());
+    	  
       } else if (s.equals(ROLL)) {
-    	  rollHandler.simpleActivate();
+    	setMouseHandler(new RollHandler());
 
       } else if (s.equals(ETURN)) {
-          turntableHandler.simpleActivate();
+         setMouseHandler(new TurnZoomHandler());
 
       } else if (s.equals(ZOOMIN)) {
-          clickZoomHandler.activateIn();
-          
+    	  ClickZoomHandler czh = new ClickZoomHandler();
+    	  setMouseHandler(czh);
+    	  czh.activateIn();
+    	  
       } else if (s.equals(ZOOMOUT)) {
-          clickZoomHandler.activateOut();
+    	  ClickZoomHandler czh = new ClickZoomHandler();
+    	  setMouseHandler(czh);
+    	  czh.activateOut();
       
-      } else {
-         E.error("unhandled mouse mode " + s);
-      }
+      }  
    }
 
 
@@ -291,20 +244,17 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
 
    public void ensureCovers(double[] xr, double[] yr) {
       wt.ensureCovers(xr[0], yr[0], xr[1], yr[1]);
-      wt.notifyRangeChange();
    }
 
 
    public void setXRange(double low, double high) {
       wt.setXRange(low, high);
-      wt.notifyRangeChange();
-   }
+    }
 
 
    public void setYRange(double low, double high) {
       wt.setYRange(low, high);
-      wt.notifyRangeChange();
-   }
+     }
 
 
    public void setFixedAspectRatio(double ar) {
@@ -330,8 +280,8 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
 
 
 
-   public final void addHandler(BaseMouseHandler mh) {
-      mouse.addHandler(mh);
+   public final void setMouseHandler(BaseMouseHandler mh) {
+      mouse.setHandler(mh);
    }
 
 
@@ -345,11 +295,17 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
       paintInstructor = pi;
    }
 
+   
+   public void syncSize() {
+	   wt.setWidth(getWidth());
+	   wt.setHeight(getHeight());
+   }
+   
+    
 
    public void paintComponent(Graphics g0) {
-      wt.setWidth(getWidth());
-      wt.setHeight(getHeight());
-
+	   syncSize();
+	   
       g0.setColor(getDataBackground());
       g0.fillRect(0, 0, getWidth(), getHeight());
       Graphics2D g = (Graphics2D)g0;
@@ -364,7 +320,7 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
       postPaint(g);
 
       mouse.echoPaint(g);
-
+ 
    }
 
 
@@ -490,7 +446,7 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
 	}
 
    public void setRollCenter(double x, double y, double z) {
-	   rollHandler.setRollCenter(x, y, z);
+	   // rollHandler.setRollCenter(x, y, z);
    }
 
 

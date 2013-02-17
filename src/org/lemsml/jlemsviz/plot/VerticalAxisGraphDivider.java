@@ -29,9 +29,14 @@ class VerticalAxisGraphDivider extends BasicSplitPaneDivider {
       int w = getWidth();
       int h = getHeight();
 
-      g.setColor(gcols.getGraphBg());
+//      g.setColor(gcols.getGraphBg());
+ //     g.fillRect(0, 0, w, h);
+
+      g.setColor(gcols.getBorderBg());
       g.fillRect(0, 0, w, h);
 
+      
+      /*
       g.setColor(gcols.getBorderFg());
       int iloc = absp.getDividerLocation();
       g.drawLine(0, 0, 0, iloc + 2);
@@ -39,6 +44,7 @@ class VerticalAxisGraphDivider extends BasicSplitPaneDivider {
 
       g.setColor(gcols.getBorderBg());
       g.fillRect(0, iloc+3, w, h - (iloc+3));
+      */
    }
 
 

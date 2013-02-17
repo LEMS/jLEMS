@@ -145,4 +145,9 @@ public class BaseMouseHandler {
 	   // ingore
    }
 
+
+   public void applyOnScrollWheel(Mouse mouse) {
+ 	
+   }
+
 }

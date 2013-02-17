@@ -6,20 +6,13 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
  
 
-public final class CornerPanel extends BasePanel { // implements IntActor {
+public final class CornerPanel extends BasePanel {  
    static final long serialVersionUID = 1001;
-
-   PickWorldCanvas pickWorldCanvas;
-
-   IconButton ibut;
-
-   public CornerPanel(int w, int h, PickWorldCanvas pwc) {
+ 
+   
+   public CornerPanel() {
       super();
-
-      setPreferredSize(new Dimension(w, h));
-
-      pickWorldCanvas = pwc;
-
+  
       setLayout(new FlowLayout(FlowLayout.RIGHT));
 
 
@@ -32,17 +25,10 @@ public final class CornerPanel extends BasePanel { // implements IntActor {
 
    public void setBg(Color c) {
       setBackground(c);
-      if (ibut != null) {
-         ibut.setBg(c);
-      }
+      
    }
 
-
-   public void intAction(int imode) {
-      pickWorldCanvas.viewAction("frame");
-   }
-
-
+ 
 
 
 }

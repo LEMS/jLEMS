@@ -27,7 +27,7 @@ public class CanvasTest implements PaintInstructor {
 
   public static void main(String[] argv) {
       JFrame f = new JFrame();
-      WorldCanvas wc = new WorldCanvas(800, 800);
+      WorldCanvas wc = new WorldCanvas();
       f.getContentPane().add(wc);
       f.pack();
       f.setVisible(true);

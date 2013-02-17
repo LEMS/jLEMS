@@ -16,11 +16,7 @@ import org.lemsml.jlems.logging.E;
 
 public class BaseCanvas extends BasePanel implements Repaintable {
    static final long serialVersionUID = 1001;
-
-   int prefw;
-   int prefh;
-
-
+ 
    Color bgColor;
    Color fgColor;
 
@@ -29,24 +25,16 @@ public class BaseCanvas extends BasePanel implements Repaintable {
 
 
 
-   public BaseCanvas(int w, int h) {
+   public BaseCanvas() {
       super();
       bgColor = Color.black;
       fgColor = Color.white;
-
-      setPreferredSize(new Dimension(w, h));
-      prefw = w;
-      prefh = h;
-
+ 
       setBackground(bgColor);
       setFont(new Font ("sansserif", Font.PLAIN, 12));
    }
 
-   public void setPreferredSize(int w, int h) {
-      prefw = w;
-      prefh = h;
-      setPreferredSize(new Dimension(prefw, prefh));
-   }
+  
 
    public void setBg(Color c) {
       bgColor = c;

@@ -225,6 +225,20 @@ public class Dynamics  {
 				countExposure(sv.getExposure(), exposedHM);
 			}
 		}
+		
+		for (StateScalarField scf : stateScalarFields) {
+			scf.resolve(r_type, lems.getDimensions());
+		}
+		
+		for (DerivedScalarField dcf : derivedScalarFields) {
+			dcf.resolve(r_type, lems.getDimensions());
+		}
+		
+		for (DerivedPunctateField dpf : derivedPunctateFields) {
+			dpf.resolve(r_type, lems.getDimensions());
+		}
+		
+		
 		for (TimeDerivative sd : timeDerivatives) {
 			sd.resolve(stateVariables, valHM, parser);
 		}
