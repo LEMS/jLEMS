@@ -1,16 +1,20 @@
 package org.lemsml.examplemains;
+
  
 
-public final class Example11 {
+public final class Morphology {
 	
-	private Example11() {
+	
+	private Morphology() {
 		
 	}
 	
 	public static void main(String[] argv) {
-	 
-		VizExample.runTree("morphology.xml");
+	
+		VizExample.run("morphology.xml");
+	
 	}
+	 
     
     
 }

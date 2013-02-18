@@ -105,6 +105,14 @@ fall back to using the distal point of the parent segment -->
 	<Parameter name="conductivity" dimension="conductivity"/>
 	<Children name="inputs" type="PointConductance"/>
 	
+	<SimulatorShortcut for="jLEMS">
+		<CableCell conductivityField="conductivity" capacitanceField="membraneCapacitance"
+					morphologyField="morphology" morphologyFormat="proximal,distal,x,y,z,r">
+			<InputSource field="inputs" format=""/>
+		</CableCell>
+	</SimulatorShortcut>
+	
+	
 	<!--  the equations will actually be solved over the 1-dimensional space 
 	that is the skeleton the 3-D tree volume in the morphology specification 
 	"Skeleton" is another primary geometrical construct understood by LEMS along with 
