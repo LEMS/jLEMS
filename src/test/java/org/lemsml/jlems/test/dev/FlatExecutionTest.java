@@ -2,6 +2,7 @@ package org.lemsml.jlems.test.dev;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import org.junit.Test;
 import org.lemsml.jlems.expression.ParseError;
@@ -56,8 +57,9 @@ public class FlatExecutionTest {
 		DefaultLogger.initialize();
 		FileResultWriterFactory.initialize();
     	
-		File fdir = new File("examples");
-		File fex = new File(fdir, "ex-flat.xml");
+		
+		URL url = this.getClass().getResource("/ex-flat.xml");
+		File fex = new File(url.getFile());
 		 
 		runComponentFlattened(fex, "na");
     

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import org.junit.Test;
 import org.junit.runner.Result;
@@ -30,11 +31,13 @@ public class LemsExamplesReaderTest {
 	@Test
 	public void testReadFromString() throws ParseException, BuildException,
 			ContentError, XMLException, IOException, ParseError, ConnectionError, RuntimeError {
-
-		File fdir = new File("examples");
+		
+		URL url = this.getClass().getResource("/");
+		File fdir = new File(url.getFile());
+		
 		for (File fx : fdir.listFiles()) {
 			
-			if (fx.getName().startsWith("example")) {
+			if (fx.getName().startsWith("example") && fx.isFile()) {
  				FileInclusionReader fir = new FileInclusionReader(fx);
 				String fullText = fir.read();
 				

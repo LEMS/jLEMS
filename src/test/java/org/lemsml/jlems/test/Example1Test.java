@@ -9,6 +9,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import org.junit.Test;
 import org.junit.runner.Result;
@@ -36,8 +37,9 @@ public class Example1Test {
 
    
     public boolean executeExample(String filename) throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException, XMLException {
-    	File fdir = new File("examples");
-    	File f = new File(fdir, filename);
+		URL url = this.getClass().getResource("/"+filename);
+		File f = new File(url.getFile());
+
     	FileInclusionReader fir = new FileInclusionReader(f);
     	Sim sim = new Sim(fir.read());
 

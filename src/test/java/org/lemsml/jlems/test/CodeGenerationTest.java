@@ -4,7 +4,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.lemsml.javagen.JavaGenerator;
 import org.lemsml.jlems.codger.StateTypeGenerator;
@@ -45,8 +47,9 @@ public class CodeGenerationTest {
     
     @Test
     public void runExample1() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException {
-    	File f1 = new File("examples/example1.xml");
-    	
+		URL url = this.getClass().getResource("/ex-example1.xml");
+		Assert.assertNotNull(url);
+		File f1 = new File(url.getFile());
     	File f2 = new File("src");
  		boolean ret = generateFromFile(f1, "na", f2);
  		assertTrue("Example 1", ret);

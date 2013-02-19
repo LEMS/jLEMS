@@ -1,4 +1,5 @@
- 
+package src;
+
 public class E {
 
 	public static void error(String string) {

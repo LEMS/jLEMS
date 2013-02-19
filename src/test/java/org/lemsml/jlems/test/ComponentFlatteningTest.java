@@ -2,6 +2,7 @@ package org.lemsml.jlems.test;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import org.junit.Test;
 import org.lemsml.jlems.expression.ParseError;
@@ -50,8 +51,9 @@ public class ComponentFlatteningTest {
     
     @Test
     public void runExample1() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException {
-    	File f1 = new File("examples/example1.xml");
- 		flattenFromFile(f1, "na");
+    	URL url = this.getClass().getResource("/example1.xml");
+		File f1 = new File(url.getFile());
+		flattenFromFile(f1, "na");
     }
     
     
