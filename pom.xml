@@ -4,6 +4,7 @@
 	<groupId>org.lemsml</groupId>
 	<artifactId>jlems</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>bundle</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
