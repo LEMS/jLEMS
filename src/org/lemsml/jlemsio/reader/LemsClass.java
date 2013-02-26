@@ -12,4 +12,11 @@ public class LemsClass {
 		section = sec;
 	}
 	
+	
+	public String getName() {
+		String ret = jclass.getSimpleName();
+		return ret;
+	}
+	
+	
 }
