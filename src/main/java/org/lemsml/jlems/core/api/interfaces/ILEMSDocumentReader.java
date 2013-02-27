@@ -5,6 +5,8 @@ package org.lemsml.jlems.core.api.interfaces;
 
 import java.net.URL;
 
+import org.lemsml.jlems.model.LemsDoc;
+
 /**
  * @author matteocantarelli
  *
@@ -12,6 +14,6 @@ import java.net.URL;
 public interface ILEMSDocumentReader
 {
 	//reading models
-	public ILEMSDocument readModel(URL model);
+	public LemsDoc readModel(URL model);
 	
 }

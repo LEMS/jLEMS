@@ -61,7 +61,9 @@ public class LemsModelGenerator
 		StringBuilder sb = new StringBuilder();
 
 		StringBuilder msb = new StringBuilder();
-
+		sb.append("//-----------------------------------------------\n");
+		sb.append("//         GENERATED CODE, DONT'MODIFY\n");
+		sb.append("//-----------------------------------------------\n");
 		sb.append("package org.lemsml.jlems.model;\n\n");
 		Class<?> c = lc.jclass;
 
