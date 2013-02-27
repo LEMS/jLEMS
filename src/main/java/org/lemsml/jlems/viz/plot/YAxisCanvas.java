@@ -7,7 +7,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
-import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.core.logging.E;
  
 
 public class YAxisCanvas extends BaseCanvas

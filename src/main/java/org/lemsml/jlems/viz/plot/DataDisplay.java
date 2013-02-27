@@ -7,7 +7,7 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
-import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.core.logging.E;
  
 
 public class DataDisplay extends BasePanel implements ModeSettable, Repaintable, PaintListener {

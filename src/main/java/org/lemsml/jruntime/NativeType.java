@@ -1,8 +1,8 @@
 package org.lemsml.jruntime;
 
-import org.lemsml.jlems.run.GeneratedInstance;
-import org.lemsml.jlems.run.RuntimeType;
-import org.lemsml.jlems.run.StateRunnable;
+import org.lemsml.jlems.core.run.GeneratedInstance;
+import org.lemsml.jlems.core.run.RuntimeType;
+import org.lemsml.jlems.core.run.StateRunnable;
 
 public class NativeType implements RuntimeType {
 

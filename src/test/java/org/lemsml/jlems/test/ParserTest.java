@@ -8,14 +8,14 @@ import java.util.HashMap;
 
 import org.junit.Test;
 import org.junit.runner.Result;
-import org.lemsml.jlems.expression.AndNode;
-import org.lemsml.jlems.expression.OrNode;
-import org.lemsml.jlems.expression.ParseError;
-import org.lemsml.jlems.expression.ParseTree;
-import org.lemsml.jlems.expression.Parser;
-import org.lemsml.jlems.sim.ContentError;
+import org.lemsml.jlems.core.expression.AndNode;
+import org.lemsml.jlems.core.expression.OrNode;
+import org.lemsml.jlems.core.expression.ParseError;
+import org.lemsml.jlems.core.expression.ParseTree;
+import org.lemsml.jlems.core.expression.Parser;
+import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.io.logging.DefaultLogger;
-import org.lemsml.jlems.logging.E;
 
 /**
  * 

@@ -8,7 +8,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.core.logging.E;
  
 
 public class XAxisCanvas extends BaseCanvas implements RangeListener {

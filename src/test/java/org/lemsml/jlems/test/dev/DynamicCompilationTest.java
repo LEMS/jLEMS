@@ -3,8 +3,8 @@ package org.lemsml.jlems.test.dev;
 import java.io.File;
 
 import org.codehaus.commons.compiler.jdk.JavaSourceClassLoader;
-import org.lemsml.jlems.logging.E;
-import org.lemsml.jlems.run.GeneratedInstance;
+import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jlems.core.run.GeneratedInstance;
 
 
 public class DynamicCompilationTest {

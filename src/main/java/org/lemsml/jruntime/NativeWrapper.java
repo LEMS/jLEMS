@@ -3,20 +3,20 @@ package org.lemsml.jruntime;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.lemsml.jlems.display.LineDisplay;
-import org.lemsml.jlems.logging.E;
-import org.lemsml.jlems.run.ConnectionError;
-import org.lemsml.jlems.run.DoublePointer;
-import org.lemsml.jlems.run.GeneratedInstance;
-import org.lemsml.jlems.run.InPort;
-import org.lemsml.jlems.run.InstanceSet;
-import org.lemsml.jlems.run.MultiInstance;
-import org.lemsml.jlems.run.OutPort;
-import org.lemsml.jlems.run.RuntimeError;
-import org.lemsml.jlems.run.StateInstance;
-import org.lemsml.jlems.run.StateRunnable;
-import org.lemsml.jlems.run.StateWrapper;
-import org.lemsml.jlems.sim.ContentError;
+import org.lemsml.jlems.core.display.LineDisplay;
+import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jlems.core.run.ConnectionError;
+import org.lemsml.jlems.core.run.DoublePointer;
+import org.lemsml.jlems.core.run.GeneratedInstance;
+import org.lemsml.jlems.core.run.InPort;
+import org.lemsml.jlems.core.run.InstanceSet;
+import org.lemsml.jlems.core.run.MultiInstance;
+import org.lemsml.jlems.core.run.OutPort;
+import org.lemsml.jlems.core.run.RuntimeError;
+import org.lemsml.jlems.core.run.StateInstance;
+import org.lemsml.jlems.core.run.StateRunnable;
+import org.lemsml.jlems.core.run.StateWrapper;
+import org.lemsml.jlems.core.sim.ContentError;
 
 public class NativeWrapper implements StateRunnable {
 

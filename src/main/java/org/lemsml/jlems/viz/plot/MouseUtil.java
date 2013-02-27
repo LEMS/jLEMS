@@ -3,7 +3,7 @@ package org.lemsml.jlems.viz.plot;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 
-import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.core.logging.E;
 
 
 public final class MouseUtil {

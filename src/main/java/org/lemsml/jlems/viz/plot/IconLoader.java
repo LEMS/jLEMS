@@ -5,7 +5,7 @@ package org.lemsml.jlems.viz.plot;
 import java.net.URL;
 import java.util.HashMap;
 
-import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.viz.plot.images.IconRoot;
   
 

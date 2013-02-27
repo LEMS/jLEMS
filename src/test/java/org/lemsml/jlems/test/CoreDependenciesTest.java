@@ -9,19 +9,19 @@ import java.io.File;
 import java.io.IOException;
 
 import org.junit.Assert;
+import org.junit.Test;
 import org.junit.runner.Result;
+import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.io.logging.DefaultLogger;
 import org.lemsml.jlems.io.util.FileUtil;
-import org.lemsml.jlems.logging.E;
 
 public class CoreDependenciesTest
 {
 
-	// @Test
-	// FIXME Illegal import
+	 @Test
 	public void testCoreDependencies() throws IOException, DependencyException
 	{
-		File fsrc = new File("src/main/java/org/lemsml/jlems");
+		File fsrc = new File("src/main/java/org/lemsml/jlems/core");
 		int nfiles = checkDirectory(fsrc);
 		E.info("Checked dependencies in " + nfiles + " source files");
 	}

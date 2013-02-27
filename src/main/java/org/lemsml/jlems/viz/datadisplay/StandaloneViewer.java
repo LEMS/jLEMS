@@ -22,11 +22,11 @@ import javax.swing.JRadioButton;
 import javax.swing.UIManager;
 import javax.swing.plaf.ColorUIResource;
 
-import org.lemsml.jlems.display.DataViewPort;
-import org.lemsml.jlems.display.DataViewer;
+import org.lemsml.jlems.core.display.DataViewPort;
+import org.lemsml.jlems.core.display.DataViewer;
+import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.io.data.FormattedDataUtil;
 import org.lemsml.jlems.io.util.FileUtil;
-import org.lemsml.jlems.logging.E;
 import org.lemsml.jlems.viz.plot.DataDisplay;
 import org.lemsml.jlems.viz.plot.DisplayLine;
 import org.lemsml.jlems.viz.plot.DisplayList;

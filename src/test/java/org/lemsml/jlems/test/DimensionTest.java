@@ -6,14 +6,14 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.junit.runner.Result;
-import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.core.expression.ParseError;
+import org.lemsml.jlems.core.sim.ContentError;
+import org.lemsml.jlems.core.type.Dimension;
+import org.lemsml.jlems.core.type.DimensionalQuantity;
+import org.lemsml.jlems.core.type.LemsCollection;
+import org.lemsml.jlems.core.type.QuantityReader;
+import org.lemsml.jlems.core.type.Unit;
 import org.lemsml.jlems.io.logging.DefaultLogger;
-import org.lemsml.jlems.sim.ContentError;
-import org.lemsml.jlems.type.Dimension;
-import org.lemsml.jlems.type.DimensionalQuantity;
-import org.lemsml.jlems.type.LemsCollection;
-import org.lemsml.jlems.type.QuantityReader;
-import org.lemsml.jlems.type.Unit;
 
 /**
  * 

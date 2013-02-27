@@ -1,8 +1,8 @@
 package org.lemsml.jlems.io.reader;
 
+import org.lemsml.jlems.core.sim.AbstractInclusionReader;
+import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.io.util.JUtil;
-import org.lemsml.jlems.sim.AbstractInclusionReader;
-import org.lemsml.jlems.sim.ContentError;
 
 public class PathInclusionReader extends AbstractInclusionReader {
  

@@ -1,10 +1,10 @@
 package org.lemsml.jlems.io.out;
 
-import org.lemsml.jlems.display.DataViewer;
-import org.lemsml.jlems.display.DataViewerFactory;
-import org.lemsml.jlems.out.ResultWriter;
-import org.lemsml.jlems.out.ResultWriterFactory;
-import org.lemsml.jlems.run.RuntimeOutput;
+import org.lemsml.jlems.core.display.DataViewer;
+import org.lemsml.jlems.core.display.DataViewerFactory;
+import org.lemsml.jlems.core.out.ResultWriter;
+import org.lemsml.jlems.core.out.ResultWriterFactory;
+import org.lemsml.jlems.core.run.RuntimeOutput;
 
 public final class FileResultWriterFactory extends ResultWriterFactory {
 

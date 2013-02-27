@@ -10,7 +10,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
-import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.core.logging.E;
  
 
 

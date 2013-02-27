@@ -5,15 +5,15 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import org.lemsml.jlems.logging.E;
-import org.lemsml.jlems.serial.WrapperElement;
-import org.lemsml.jlems.sim.ContentError;
-import org.lemsml.jlems.type.Attribute;
-import org.lemsml.jlems.type.BodyValued;
-import org.lemsml.jlems.type.Component;
-import org.lemsml.jlems.type.Inheritor;
-import org.lemsml.jlems.type.LemsCollection;
-import org.lemsml.jlems.xml.XMLElement;
+import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jlems.core.serial.WrapperElement;
+import org.lemsml.jlems.core.sim.ContentError;
+import org.lemsml.jlems.core.type.Attribute;
+import org.lemsml.jlems.core.type.BodyValued;
+import org.lemsml.jlems.core.type.Component;
+import org.lemsml.jlems.core.type.Inheritor;
+import org.lemsml.jlems.core.type.LemsCollection;
+import org.lemsml.jlems.core.xml.XMLElement;
 
 public class XMLSerializer {
 

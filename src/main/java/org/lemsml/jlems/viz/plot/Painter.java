@@ -9,7 +9,7 @@ import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 
-import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.core.logging.E;
  
 
 public final class Painter {

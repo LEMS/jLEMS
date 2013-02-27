@@ -6,8 +6,8 @@ import java.util.Locale;
 
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
+import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.io.logging.DefaultLogger;
-import org.lemsml.jlems.logging.E;
 
 public final class MainTest {
 

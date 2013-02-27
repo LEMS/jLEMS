@@ -1,7 +1,7 @@
 
 package org.lemsml.jlems.viz.plot;
 
-import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.core.logging.E;
  
 
 

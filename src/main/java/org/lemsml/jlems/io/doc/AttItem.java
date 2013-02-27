@@ -1,6 +1,6 @@
 package org.lemsml.jlems.io.doc;
 
-import org.lemsml.jlems.xml.XMLElement;
+import org.lemsml.jlems.core.xml.XMLElement;
 
 public class AttItem {
 

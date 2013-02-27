@@ -23,8 +23,8 @@ import java.util.jar.Manifest;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import org.lemsml.jlems.logging.E;
-import org.lemsml.jlems.sim.ContentError;
+import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jlems.core.sim.ContentError;
  
 
 

@@ -8,21 +8,21 @@ import java.net.URL;
 
 import org.junit.Test;
 import org.junit.runner.Result;
-import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.core.expression.ParseError;
+import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jlems.core.run.ConnectionError;
+import org.lemsml.jlems.core.run.RuntimeError;
+import org.lemsml.jlems.core.sim.ContentError;
+import org.lemsml.jlems.core.sim.LemsProcess;
+import org.lemsml.jlems.core.sim.ParseException;
+import org.lemsml.jlems.core.sim.Sim;
+import org.lemsml.jlems.core.type.BuildException;
+import org.lemsml.jlems.core.type.Lems;
+import org.lemsml.jlems.core.xml.XMLElementReader;
+import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.logging.DefaultLogger;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
 import org.lemsml.jlems.io.xmlio.XMLSerializer;
-import org.lemsml.jlems.logging.E;
-import org.lemsml.jlems.run.ConnectionError;
-import org.lemsml.jlems.run.RuntimeError;
-import org.lemsml.jlems.sim.ContentError;
-import org.lemsml.jlems.sim.LemsProcess;
-import org.lemsml.jlems.sim.ParseException;
-import org.lemsml.jlems.sim.Sim;
-import org.lemsml.jlems.type.BuildException;
-import org.lemsml.jlems.type.Lems;
-import org.lemsml.jlems.xml.XMLElementReader;
-import org.lemsml.jlems.xml.XMLException;
  
 
 

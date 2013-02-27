@@ -4,7 +4,7 @@ package org.lemsml.jlems.viz.plot;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.core.logging.E;
  
 
 public class PickWorldCanvas extends WorldCanvas {

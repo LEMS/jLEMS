@@ -7,15 +7,15 @@ import java.net.URL;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.Result;
+import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jlems.core.sim.ContentError;
+import org.lemsml.jlems.core.sim.ParseException;
+import org.lemsml.jlems.core.type.BuildException;
+import org.lemsml.jlems.core.xml.TextElementReader;
+import org.lemsml.jlems.core.xml.XMLElement;
+import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.logging.DefaultLogger;
 import org.lemsml.jlems.io.util.FileUtil;
-import org.lemsml.jlems.logging.E;
-import org.lemsml.jlems.sim.ContentError;
-import org.lemsml.jlems.sim.ParseException;
-import org.lemsml.jlems.type.BuildException;
-import org.lemsml.jlems.xml.TextElementReader;
-import org.lemsml.jlems.xml.XMLElement;
-import org.lemsml.jlems.xml.XMLException;
 
 public class TextReaderTest
 {

@@ -2,15 +2,15 @@ package org.lemsml.examplemains;
 
 import java.io.File;
 
-import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.core.expression.ParseError;
+import org.lemsml.jlems.core.run.ConnectionError;
+import org.lemsml.jlems.core.run.RuntimeError;
+import org.lemsml.jlems.core.sim.ContentError;
+import org.lemsml.jlems.core.sim.ParseException;
+import org.lemsml.jlems.core.type.BuildException;
+import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.examples.ProcessFileExample;
 import org.lemsml.jlems.io.logging.DefaultLogger;
-import org.lemsml.jlems.run.ConnectionError;
-import org.lemsml.jlems.run.RuntimeError;
-import org.lemsml.jlems.sim.ContentError;
-import org.lemsml.jlems.sim.ParseException;
-import org.lemsml.jlems.type.BuildException;
-import org.lemsml.jlems.xml.XMLException;
  
 
 public final class Example9 {

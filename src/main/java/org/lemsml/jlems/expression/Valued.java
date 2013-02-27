@@ -1,9 +1,0 @@
-package org.lemsml.jlems.expression;
-
-import org.lemsml.jlems.type.Named;
-
-public interface Valued extends Named {
-
-	double getValue();	
-	
-}

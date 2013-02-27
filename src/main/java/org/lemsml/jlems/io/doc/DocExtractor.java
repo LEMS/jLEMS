@@ -9,16 +9,16 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 
-import org.lemsml.jlems.annotation.ModelElement;
-import org.lemsml.jlems.annotation.ModelProperty;
+import org.lemsml.jlems.core.annotation.ModelElement;
+import org.lemsml.jlems.core.annotation.ModelProperty;
+import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jlems.core.type.Component;
+import org.lemsml.jlems.core.type.LemsCollection;
+import org.lemsml.jlems.core.xml.XMLElement;
 import org.lemsml.jlems.io.logging.DefaultLogger;
 import org.lemsml.jlems.io.reader.LemsClass;
 import org.lemsml.jlems.io.reader.LemsClasses;
 import org.lemsml.jlems.io.util.FileUtil;
-import org.lemsml.jlems.logging.E;
-import org.lemsml.jlems.type.Component;
-import org.lemsml.jlems.type.LemsCollection;
-import org.lemsml.jlems.xml.XMLElement;
 
 
 

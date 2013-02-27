@@ -1,16 +1,16 @@
 package org.lemsml.jlems.viz;
  
-import org.lemsml.jlems.expression.ParseError;
+import org.lemsml.jlems.core.expression.ParseError;
+import org.lemsml.jlems.core.run.ConnectionError;
+import org.lemsml.jlems.core.run.RuntimeError;
+import org.lemsml.jlems.core.sim.ContentError;
+import org.lemsml.jlems.core.sim.ParseException;
+import org.lemsml.jlems.core.type.BuildException;
+import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.Main;
 import org.lemsml.jlems.io.logging.DefaultLogger;
 import org.lemsml.jlems.io.out.FileResultWriterFactory;
-import org.lemsml.jlems.run.ConnectionError;
-import org.lemsml.jlems.run.RuntimeError;
-import org.lemsml.jlems.sim.ContentError;
-import org.lemsml.jlems.sim.ParseException;
-import org.lemsml.jlems.type.BuildException;
 import org.lemsml.jlems.viz.datadisplay.SwingDataViewerFactory;
-import org.lemsml.jlems.xml.XMLException;
 
 public final class VizMain {
  

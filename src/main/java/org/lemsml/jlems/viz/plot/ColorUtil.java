@@ -5,7 +5,7 @@ package org.lemsml.jlems.viz.plot;
 
 import java.awt.Color;
 
-import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.core.logging.E;
  
 
 public final class ColorUtil {

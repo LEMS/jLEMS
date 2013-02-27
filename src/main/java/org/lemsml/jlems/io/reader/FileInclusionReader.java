@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.lemsml.jlems.core.sim.AbstractInclusionReader;
+import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.io.util.FileUtil;
-import org.lemsml.jlems.sim.AbstractInclusionReader;
-import org.lemsml.jlems.sim.ContentError;
 
 
 public class FileInclusionReader extends AbstractInclusionReader {

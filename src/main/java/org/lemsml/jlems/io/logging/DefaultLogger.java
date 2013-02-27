@@ -4,9 +4,9 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import java.util.logging.StreamHandler;
 
-import org.lemsml.jlems.logging.E;
-import org.lemsml.jlems.logging.MessageHandler;
-import org.lemsml.jlems.logging.MessageType;
+import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jlems.core.logging.MessageHandler;
+import org.lemsml.jlems.core.logging.MessageType;
  
 
 public final class DefaultLogger implements MessageHandler {

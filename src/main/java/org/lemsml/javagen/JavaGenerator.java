@@ -4,10 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.lemsml.jlems.codger.StateTypeGenerator;
-import org.lemsml.jlems.codger.metaclass.CodeUnit;
+import org.lemsml.jlems.core.codger.StateTypeGenerator;
+import org.lemsml.jlems.core.codger.metaclass.CodeUnit;
+import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.io.util.FileUtil;
-import org.lemsml.jlems.logging.E;
 
 public class JavaGenerator {
 

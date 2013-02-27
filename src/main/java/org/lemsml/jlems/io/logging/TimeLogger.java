@@ -1,6 +1,6 @@
 package org.lemsml.jlems.io.logging;
 
-import org.lemsml.jlems.logging.E;
+import org.lemsml.jlems.core.logging.E;
 
 public class TimeLogger {
 
