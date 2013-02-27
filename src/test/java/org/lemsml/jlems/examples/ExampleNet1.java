@@ -1,4 +1,4 @@
-package org.lemsml.examplemains;
+package org.lemsml.jlems.examples;
 
  
 
