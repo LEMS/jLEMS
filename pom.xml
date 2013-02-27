@@ -70,7 +70,6 @@
 						<goals>
 							<goal>java</goal>
 						</goals>
-
 					</execution>
 				</executions>
 				<configuration>

@@ -6,7 +6,7 @@ package org.lemsml.jlems.core.api.interfaces;
 import java.util.List;
 
 import org.lemsml.jlems.core.api.LEMSBuildException;
-import org.lemsml.jlems.model.LemsDoc;
+import org.lemsml.jlems.core.type.Lems;
 
 /**
  * @author matteocantarelli
@@ -15,7 +15,7 @@ import org.lemsml.jlems.model.LemsDoc;
 public interface ILEMSBuilder
 {
 	//init the simulator
-	public void addDocument(List<LemsDoc> lemsDocument);
+	public void addDocument(List<Lems> lemsDocument);
 		
 	public List<ILEMSState> createLEMSStates(ILEMSBuildOptions options) throws LEMSBuildException;
 	
