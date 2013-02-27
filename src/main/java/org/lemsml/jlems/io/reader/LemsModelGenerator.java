@@ -6,7 +6,17 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jlems.core.type.About;
+import org.lemsml.jlems.core.type.AnalogPort;
+import org.lemsml.jlems.core.type.Attribute;
+import org.lemsml.jlems.core.type.Component;
 import org.lemsml.jlems.core.type.LemsCollection;
+import org.lemsml.jlems.core.type.Meta;
+import org.lemsml.jlems.core.type.ParamValue;
+import org.lemsml.jlems.core.type.dynamics.Equilibrium;
+import org.lemsml.jlems.core.type.dynamics.RequiredVar;
+import org.lemsml.jlems.core.type.procedure.Statement;
+import org.lemsml.jlems.core.type.structure.BuildElement;
 import org.lemsml.jlems.io.util.FileUtil;
 
 public class LemsModelGenerator
@@ -20,14 +30,30 @@ public class LemsModelGenerator
 
 		for (LemsClass lc : alc)
 		{
-			String fnm = lc.getName() + "Doc.java";
-			File fcl = new File(destdir, fnm);
-
-			String ssrc = generateSingleModelSource(lc);
-			FileUtil.writeStringToFile(ssrc, fcl);
-
-			E.info("Written " + fcl.getAbsolutePath());
+			process(destdir, lc);
 		}
+		
+		process(destdir, new LemsClass(BuildElement.class, null));
+		process(destdir, new LemsClass(AnalogPort.class, null));
+		process(destdir, new LemsClass(About.class, null));
+		process(destdir, new LemsClass(Meta.class, null));
+		process(destdir, new LemsClass(Equilibrium.class, null));
+		process(destdir, new LemsClass(Statement.class, null));
+		process(destdir, new LemsClass(Component.class, null));
+		process(destdir, new LemsClass(RequiredVar.class, null));
+		process(destdir, new LemsClass(Attribute.class, null));
+		process(destdir, new LemsClass(ParamValue.class, null));
+	}
+
+	private void process(File destdir, LemsClass lc) throws IOException
+	{
+		String fnm = lc.getName() + "Doc.java";
+		File fcl = new File(destdir, fnm);
+
+		String ssrc = generateSingleModelSource(lc);
+		FileUtil.writeStringToFile(ssrc, fcl);
+
+		E.info("Written " + fcl.getAbsolutePath());
 	}
 
 	private String generateSingleModelSource(LemsClass lc)
@@ -107,7 +133,7 @@ public class LemsModelGenerator
 						String ccnm = getListClassName(f.getName())+"Doc";
 						String lccnm = "_"+lowerCase(ccnm) + "s";
 						sb.append("\tprivate ArrayList<" + ccnm + "> " + lccnm + " = new ArrayList<" + ccnm + ">();\n\n");
-						msb.append("\tprivate List<" + ccnm + "> get" + capitalize(lccnm.substring(1)) + "() {\n");
+						msb.append("\tpublic List<" + ccnm + "> get" + capitalize(lccnm.substring(1)) + "() {\n");
 						msb.append("\t\treturn " + lccnm + ";\n");
 						msb.append("\t}\n\n");
 					}
