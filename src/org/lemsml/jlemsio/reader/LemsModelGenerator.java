@@ -44,7 +44,7 @@ public class LemsModelGenerator {
 			sb.append("import java.util.List;\n");
 		}
 			
-		sb.append("public class " + lc.getName() + " {\n\n\n");
+		sb.append("public class " + lc.getName() + " {\n\n");
 		
 		
 		
@@ -78,21 +78,20 @@ public class LemsModelGenerator {
 					sb.append("    private " + dec + " " + f.getName() + ";\n");
 				
 					
-					msb.append("      public void set" + capname + "(" + dec + " v) {\n");
-					msb.append("          " + fname + " = v;\n");
-					msb.append("      }\n");
+					msb.append("    public void set" + capname + "(" + dec + " v) {\n");
+					msb.append("        " + fname + " = v;\n");
+					msb.append("    }\n\n");
 					
-					msb.append("      public " + dec + " get" + capname + "() {\n");
-					msb.append("          return " + fname + ";\n");
-					msb.append("      }\n");
-					
+					msb.append("    public " + dec + " get" + capname + "() {\n");
+					msb.append("        return " + fname + ";\n");
+					msb.append("    }\n\n");
 					
 				}
-				
 			}
 		}
 		}
 		
+		sb.append("\n");
 		
 		if (hasListFields(c)) {
 			for (Field f : c.getFields()) {
@@ -106,8 +105,12 @@ public class LemsModelGenerator {
 					
 						msb.append("    public List<" + ccnm + "> get" + capitalize(lccnm) + "() {\n");
 						msb.append("      return " + lccnm +";\n");
-						msb.append("    }\n");
+						msb.append("    }\n\n");
 					
+						
+						msb.append("    public void add" + ccnm + "(" + ccnm + " v){\n");
+						msb.append("      " + lccnm + ".add(v);\n");
+						msb.append("    }\n\n");
 					}
 				}
 			}

@@ -90,10 +90,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 
 	public LemsCollection<PairCollection> pairCollections = new LemsCollection<PairCollection>();
 
-	// nineml compatibility - duplicates some of exposure but has other stuff too
-	public LemsCollection<AnalogPort> analogPorts = new LemsCollection<AnalogPort>();
-	
-	
+	 	
 	private final LemsCollection<Component> cpts = new LemsCollection<Component>();
 
 	private final LemsCollection<FinalParam> finalParams = new LemsCollection<FinalParam>();
@@ -236,31 +233,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 
 	public void resolve(Lems lems, Parser p) throws ContentError, ParseError {
 
-		for (AnalogPort ap : analogPorts) {
-			if (ap.mode.equals("send")) {
-				Exposure ex = new Exposure();
-				ex.setName(ap.name);
-				ex.setDimension(ap.dimension);
-				
-				exposures.add(ex);
-			
-			} else if (ap.mode.equals("reduce")) {
-				if (ap.reduce_op.equals("+")) {
-					for (Dynamics b : dynamicses) {				
-						DerivedVariable dv = new DerivedVariable(ap.name);
-						dv.value = "0";
-						dv.reduce = "add";
-						b.addDerivedVariable(dv);  
-					}
-				} else {
-					E.warning("unhandled " + ap);
-				}
-				
-			} else {
-				E.shortWarning("Ignoring analog port: " + ap);
-			}
-		}
-		
+		 
 		
 		
 		for (Parameter dp : parameters) {

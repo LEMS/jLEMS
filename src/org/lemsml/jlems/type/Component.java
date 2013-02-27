@@ -15,12 +15,6 @@ import org.lemsml.jlems.xml.XMLElement;
 
 
 public class Component implements Attributed, IDd, Summaried, Namable, Parented {
-
-	
-	// TODO RCC - I don't think these should be here. The caller should know about the keywords.
-	
-    public static final String THIS_COMPONENT = "this";
-    public static final String PARENT_COMPONENT = "parent";
  
     
 	@ModelProperty(info="")
@@ -836,14 +830,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		String ret = null;
 
         //E.info("--- Get string value ("+sn+") on component ref "+this);
-
-        if (sn.equals(THIS_COMPONENT)) {
-            return THIS_COMPONENT;
-        }
-
-        if (sn.equals(PARENT_COMPONENT)) {
-            return PARENT_COMPONENT;
-        }
+ 
  
 		if (refHM.containsKey(sn)) {
 			ret = refHM.get(sn).getID();

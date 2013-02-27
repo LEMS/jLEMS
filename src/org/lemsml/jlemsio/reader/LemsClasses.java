@@ -2,11 +2,13 @@ package org.lemsml.jlemsio.reader;
  
 import java.util.ArrayList;
 
+import org.lemsml.jlems.type.About;
 import org.lemsml.jlems.type.Assertion;
 import org.lemsml.jlems.type.Attachments;
 import org.lemsml.jlems.type.Child;
 import org.lemsml.jlems.type.Children;
 import org.lemsml.jlems.type.Collection;
+import org.lemsml.jlems.type.Component;
 import org.lemsml.jlems.type.ComponentReference;
 import org.lemsml.jlems.type.ComponentType;
 import org.lemsml.jlems.type.ComponentTypeReference;
@@ -21,6 +23,7 @@ import org.lemsml.jlems.type.IntegerParameter;
 import org.lemsml.jlems.type.Lems;
 import org.lemsml.jlems.type.Link;
 import org.lemsml.jlems.type.Location;
+import org.lemsml.jlems.type.Meta;
 import org.lemsml.jlems.type.PairCollection;
 import org.lemsml.jlems.type.Parameter;
 import org.lemsml.jlems.type.Path;
@@ -36,6 +39,7 @@ import org.lemsml.jlems.type.dynamics.DerivedPunctateField;
 import org.lemsml.jlems.type.dynamics.DerivedScalarField;
 import org.lemsml.jlems.type.dynamics.DerivedVariable;
 import org.lemsml.jlems.type.dynamics.Dynamics;
+import org.lemsml.jlems.type.dynamics.Equilibrium;
 import org.lemsml.jlems.type.dynamics.EventConnection;
 import org.lemsml.jlems.type.dynamics.EventOut;
 import org.lemsml.jlems.type.dynamics.KineticScheme;
@@ -128,8 +132,8 @@ public final class LemsClasses {
 		ret.add(new LemsClass(Dimension.class, section));
 		ret.add(new LemsClass(Unit.class, section));
 		ret.add(new LemsClass(Assertion.class, section));
-
-	 
+		ret.add(new LemsClass(Component.class, section));
+		
 		return ret;
 	}
 	
@@ -154,6 +158,7 @@ public final class LemsClasses {
 	 	
 	 	ret.add(new LemsClass(ConditionalDerivedVariable.class, section));
 	 	ret.add(new LemsClass(Case.class, section));
+	 	ret.add(new LemsClass(Equilibrium.class, section));
 	 	
 	 	ret.add(new LemsClass(StateScalarField.class, section));
 	 	ret.add(new LemsClass(DerivedScalarField.class, section));
@@ -212,6 +217,8 @@ public final class LemsClasses {
 		ret.add(new LemsClass(Attachments.class, section));
  		ret.add(new LemsClass(Insertion.class, section));
 		ret.add(new LemsClass(IntegerParameter.class, section));
+		ret.add(new LemsClass(About.class, section));
+		ret.add(new LemsClass(Meta.class, section));
 		return ret;
 	}
 
