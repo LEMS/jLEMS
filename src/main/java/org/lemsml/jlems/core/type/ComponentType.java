@@ -55,10 +55,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 
 	public LemsCollection<ComponentTypeReference> componentTypeReferences = new LemsCollection<ComponentTypeReference>();
 
-	
 	public LemsCollection<Location> locations = new LemsCollection<Location>();
-	
-	public boolean internalthingthatdoesnthavetobeinthedocument;
 	
 	public LemsCollection<Property> propertys = new LemsCollection<Property>();
  	
