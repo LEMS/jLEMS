@@ -2,3 +2,7 @@ results
 uplems
 /build
 /builtjars
+target
+tst.txt
+.DS_Store
+src/main/java/META-INF
