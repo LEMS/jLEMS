@@ -6,14 +6,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import org.lemsml.jlems.core.logging.E;
-import org.lemsml.jlems.core.type.About;
-import org.lemsml.jlems.core.type.AnalogPort;
 import org.lemsml.jlems.core.type.Attribute;
-import org.lemsml.jlems.core.type.Component;
 import org.lemsml.jlems.core.type.LemsCollection;
-import org.lemsml.jlems.core.type.Meta;
 import org.lemsml.jlems.core.type.ParamValue;
-import org.lemsml.jlems.core.type.dynamics.Equilibrium;
 import org.lemsml.jlems.core.type.dynamics.RequiredVar;
 import org.lemsml.jlems.core.type.procedure.Statement;
 import org.lemsml.jlems.core.type.structure.BuildElement;

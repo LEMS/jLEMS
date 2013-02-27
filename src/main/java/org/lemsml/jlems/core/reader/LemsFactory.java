@@ -436,8 +436,6 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.collections.add((Collection)obj);
             } else if (obj instanceof PairCollection) {
                 ret.pairCollections.add((PairCollection)obj);
-            } else if (obj instanceof AnalogPort) {
-                ret.analogPorts.add((AnalogPort)obj);
             } else if (obj instanceof About) {
                 ret.abouts.add((About)obj);
             } else if (obj instanceof Meta) {
