@@ -15,7 +15,14 @@ import org.lemsml.jlems.core.type.Lems;
  */
 public interface ILEMSDocumentReader
 {
-	//reading models
-	public Lems readModel(URL model) throws IOException, ContentError;
+	
+	/**
+	 * Read a LEMS model from a URL into an object
+	 * @param modelURL the URL of the model to read
+	 * @return the lems model
+	 * @throws IOException
+	 * @throws ContentError
+	 */
+	public Lems readModel(URL modelURL) throws IOException, ContentError;
 	
 }
