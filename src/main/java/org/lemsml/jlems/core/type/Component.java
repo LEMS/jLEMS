@@ -87,7 +87,14 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	// RuntimeType can be a NativeType for code generated components
 	private RuntimeType runtimeType;
 	
+    public Component() {
+    }
 	
+    public Component(String id, ComponentType componentType) {
+        this.id = id;
+        this.r_type = componentType;
+        this.type = r_type.getName();
+    }
 	
 	public void setID(String s) {
 		id = s;

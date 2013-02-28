@@ -18,7 +18,15 @@ public class OnCondition extends PointResponse   {
  
 	
 	public Trigger trigger;
-	 
+
+	
+    public OnCondition() {
+    }
+
+    public OnCondition(String test) {
+        this.test = test;
+
+    }
    
 	
 	public void resolve(Dynamics bhv, LemsCollection<StateVariable> stateVariables, HashMap<String, Valued> valHM, Parser parser) throws ContentError, ParseError {

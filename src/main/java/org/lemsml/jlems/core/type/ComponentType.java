@@ -112,7 +112,17 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	
 	boolean resolved = false;
 
- 
+	 
+	public ComponentType() {
+		super();
+		
+	}
+	 
+	public ComponentType(String s) {
+		name = s;
+		
+	}
+	
 	
 	protected void setName(String s) {
 		name = s;

@@ -21,7 +21,20 @@ public class Parameter implements Named {
     
     public String exposure;
 
- 
+
+    public Parameter() {
+    }
+
+    public Parameter(String name, String dimension) {
+        this.name = name;
+        this.dimension = dimension;
+    }
+
+    public Parameter(String name, Dimension dimension) {
+        this.name = name;
+        this.dimension = dimension.getName();
+        this.r_dimension = dimension;
+    }
   
 
     public void resolve(LemsCollection<Dimension> dimensions) throws ContentError {

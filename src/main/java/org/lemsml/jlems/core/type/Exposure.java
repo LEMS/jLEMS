@@ -17,7 +17,23 @@ public class Exposure implements Named {
     public String description;
     public Dimension r_dimension;
 
-   
+    public Exposure() {
+    }
+
+    public Exposure(String name) {
+        this.name = name;
+    }
+
+    public Exposure(String name, Dimension dimension) {
+        this.name = name;
+        this.r_dimension = dimension;
+        this.dimension = dimension.getName();
+    }
+
+    public Exposure(String n, String d) {
+        name = n;
+        dimension = d;
+    }
     
      
 

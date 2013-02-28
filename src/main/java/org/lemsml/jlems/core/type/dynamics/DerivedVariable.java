@@ -51,16 +51,33 @@ public class DerivedVariable extends ExpressionValued implements Valued {
 			"See 'reduce' for what happens in this case")
 	public boolean required = true;
 	
-	
-	public DerivedVariable() {
-		super();
+   public DerivedVariable() {
     }
 
     public DerivedVariable(String s) {
-    	super();
-    	name = s;
+        this.name = s;
     }
-    
+
+    public DerivedVariable(String s, String d) {
+        this(s);
+        dimension = d;
+    }
+
+    public DerivedVariable(String name, Dimension d, String value) {
+        this(name);
+        this.value = value;
+        this.r_dimension = d;
+        this.dimension = d.getName();
+
+    }
+
+    public DerivedVariable(String name, Dimension d, String value, String exposure) {
+        this(name, d, value);
+        this.r_exposure = new Exposure(exposure, d);
+        this.exposure = r_exposure.getName();
+    }
+	
+
      
 	
 	public String getName() {

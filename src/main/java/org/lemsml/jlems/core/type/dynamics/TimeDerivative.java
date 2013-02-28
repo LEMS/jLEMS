@@ -8,7 +8,20 @@ import org.lemsml.jlems.core.type.Dimension;
 public class TimeDerivative extends AbstractStateChange {
 
 	 
-  
+	
+	public TimeDerivative() {
+		super();
+	}
+	
+    public TimeDerivative(String vnm) {
+    	super(vnm);
+    }
+
+    
+    public TimeDerivative(String vnm, String value) {
+        this(vnm);
+        this.value = value;
+    }
 
 	 
 	public Dimension getStateVariableDimensionMultiplier() {

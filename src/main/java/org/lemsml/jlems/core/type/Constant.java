@@ -32,6 +32,16 @@ public class Constant implements Named, Valued  {
 
 	private double p_value;
 	
+    public Constant() {
+        
+    }
+
+    public Constant(String name, Dimension dimension, String value) {
+        this.name = name;
+        this.dimension = dimension.getName();
+        this.r_dimension = dimension;
+        this.value = value;
+    }
     
 
     public String toString() {
