@@ -15,13 +15,14 @@ public final class ComponentWriter {
 		ComponentType ctype = cpt.getComponentType();
 		if (ctype == null) {
 			// return "ERROR in component: "+toString();
-			sb.append(cpt.getID() + " (" + cpt.type + ": ");
+			sb.append(cpt.getID() + " (Type: " + cpt.type);
 		} else {
-			sb.append(cpt.getID() + " (" + ctype.getName() + ": ");
+			sb.append(cpt.getID() + " (Type: " + ctype.getName());
 		}
 		
 		LemsCollection<ParamValue> paramValues = cpt.getParamValues();
-		if (paramValues != null) {
+		if (paramValues != null && !paramValues.isEmpty()) {
+			sb.append(": ");
 			for (ParamValue pv : paramValues) {
 				String si = "SI ";
 				if (pv.getDimensionName() == null) {
