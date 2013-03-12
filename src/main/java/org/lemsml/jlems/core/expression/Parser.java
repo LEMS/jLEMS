@@ -111,6 +111,14 @@ public class Parser {
 			E.info("Parsing: " + e);
 		}
         e = e.trim();
+        
+        try {
+        	// Quick check if it can be parsed as a double => a constant node
+        	return new ParseTree(new ConstantNode(Double.parseDouble(e)+""));
+        	
+        } catch (NumberFormatException ex) {
+        	// just continue...
+        }
 
         if (e.lastIndexOf("(") == 0 && e.indexOf(")") == e.length()-1) {
             e = e.substring(1, e.length()-1);
