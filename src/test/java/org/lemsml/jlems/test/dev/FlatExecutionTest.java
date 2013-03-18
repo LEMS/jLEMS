@@ -28,24 +28,15 @@ import org.lemsml.jlems.viz.datadisplay.SwingDataViewerFactory;
 public class FlatExecutionTest {
 
 	
-	 
-/*
-    public static void main(String[] args) {
-    	DefaultLogger.initialize();
-    	
-    	ComponentFlatteningTest ct = new ComponentFlatteningTest();
-        Result r = org.junit.runner.JUnitCore.runClasses(ct.getClass());
-        MainTest.checkResults(r);
-
-    }
-*/
+	static boolean useGui = false;
 	
 	 
     public static void main(String[] args) throws ContentError, ParseError, ConnectionError, RuntimeError, IOException, ParseException, BuildException, XMLException {
+    	
     	DefaultLogger.initialize();
- 
+    	useGui = true;
     	FlatExecutionTest cft = new FlatExecutionTest();
-    		cft.run();
+    	cft.run();
     	 
     }
     
@@ -53,16 +44,18 @@ public class FlatExecutionTest {
     
     @Test
     public void run() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException {
-    	SwingDataViewerFactory.initialize();
-		DefaultLogger.initialize();
-		FileResultWriterFactory.initialize();
     	
+    	if (useGui) {
+    		SwingDataViewerFactory.initialize();
+			DefaultLogger.initialize();
+			FileResultWriterFactory.initialize();
+	    }
+	    	
 		
 		URL url = this.getClass().getResource("/ex-flat.xml");
 		File fex = new File(url.getFile());
 		 
 		runComponentFlattened(fex, "na");
-    
     
     }
 
