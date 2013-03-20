@@ -13,12 +13,12 @@ Clone the repository:
 
     git clone git://github.com/LEMS/jLEMS.git
 
-Build with Ant (http://ant.apache.org):
+Install with Maven:
 
     cd jLEMS
-    ant viz-jar
+    mvn install
 
 Run an example:
 
-    ./lems examples/example1.xml        (Linux/Mac)
-    lems.bat examples\example1.xml      (Windows)
+    ./lems src/test/resources/example1.xml        (Linux/Mac)
+    lems.bat src\test\resources\example1.xml      (Windows)
