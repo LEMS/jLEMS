@@ -411,6 +411,10 @@ public class Lems {
 		dimensions.add(d);
 	}
 
+	public void addUnit(Unit u) {
+		units.add(u);
+	}
+
 
 	public void setTargetComponent(Component cp) throws ContentError {
 		targets = new LemsCollection<Target>();

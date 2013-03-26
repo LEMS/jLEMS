@@ -21,6 +21,16 @@ public class Child implements Named {
     public String substitute;
     
 
+    public Child() {
+    }
+    
+    public Child(String name, ComponentType type) {
+    	this.name = name;
+    	this.r_type = type;
+    	this.type = type.getName();
+    }
+    
+
     @Override
     public String toString() {
         return "Child {" + name + ", type=" + type + "}";
