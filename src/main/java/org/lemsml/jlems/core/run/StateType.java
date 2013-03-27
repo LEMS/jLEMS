@@ -418,8 +418,13 @@ public class StateType implements RuntimeType {
 			
 		evalDerived(uin, varHM, parent);
 		
+		
 		for (VariableROC vroc : rates) {
-			varHM.get(vroc.varname).set(varHM.get(vroc.varname).get() + dt * vroc.evalptr(varHM));
+			vroc.work = vroc.evalptr(varHM);
+		}
+		
+		for (VariableROC vroc : rates) {
+			varHM.get(vroc.varname).set(varHM.get(vroc.varname).get() + dt * vroc.work);
 		}
 	 
 		for (ConditionAction ca : conditionResponses) {

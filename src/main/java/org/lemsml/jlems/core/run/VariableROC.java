@@ -10,6 +10,8 @@ public class VariableROC {
 	String varname;
 	DoubleEvaluator rateexp;
 	
+	protected double work;
+	
 	public VariableROC(String name, DoubleEvaluator das) {
 		varname = name;
 		rateexp = das;
