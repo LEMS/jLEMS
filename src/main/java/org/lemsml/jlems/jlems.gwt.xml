@@ -23,7 +23,7 @@
 	 -->
 
   <!-- Specify the paths for translatable code                    -->
-  <source path='jlems/core'/>
+  <source path='core'/>
 
 <!-- 
   <source path='shared'/>

@@ -16,7 +16,7 @@ public final class VizExample {
 	}
 	
 	public static void run(String s) {
-		run("examples", s);
+		run("src/test/resources", s);
 	}
 	
 	
