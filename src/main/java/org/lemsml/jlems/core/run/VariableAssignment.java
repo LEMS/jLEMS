@@ -34,4 +34,14 @@ public class VariableAssignment {
 		VariableAssignment ret = new VariableAssignment(varname, valexp);
 		return ret;
 	}
+	
+	
+	public VariableAssignment makeFlat(String pfx) {
+		// TODO - null here?
+		VariableAssignment ret = new VariableAssignment(pfx + varname, 
+				valexp.makePrefixedCopy(pfx, null));		 
+		return ret;
+	}
+	
+
 }

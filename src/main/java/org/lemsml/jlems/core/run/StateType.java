@@ -990,6 +990,14 @@ public class StateType implements RuntimeType {
 		for (VariableROC vroc : rates) {
 			fl.add(vroc.makeFlat(fullpfx, indHS));
 		}
+		
+		
+		for (ActionBlock ab : initBlocks) {
+			for (VariableAssignment va : ab.getAssignments()) {
+				fl.addInitializationAssignment(va.makeFlat(fullpfx));
+			}
+		}
+		
 	}
 	
 	
