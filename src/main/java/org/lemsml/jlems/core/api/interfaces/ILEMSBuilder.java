@@ -3,10 +3,10 @@
  */
 package org.lemsml.jlems.core.api.interfaces;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Map;
 
 import org.lemsml.jlems.core.api.LEMSBuildException;
-import org.lemsml.jlems.core.type.Lems;
 
 /**
  * @author matteocantarelli
@@ -14,13 +14,13 @@ import org.lemsml.jlems.core.type.Lems;
  */
 public interface ILEMSBuilder
 {
-	//init the simulator
-	public void addDocument(List<Lems> lemsDocument);
+
+	public void addDocument(ILEMSDocument lemsDocument);
 		
-	public List<ILEMSState> createLEMSStates(ILEMSBuildOptions options) throws LEMSBuildException;
+	public Map<ILEMSStateType, ILEMSDocument> createLEMSStates(ILEMSBuildOptions options) throws LEMSBuildException;
 	
-	public ILEMSInstance createExecutableInstances() throws LEMSBuildException;
+	public Collection<ILEMSStateInstance> createExecutableInstance(Map<ILEMSStateType, ILEMSDocument> stateMap, ILEMSBuildOptions options) throws LEMSBuildException;
 	
-	public ILEMSInstance build() throws LEMSBuildException; 
+	public Collection<ILEMSStateInstance> build(ILEMSBuildOptions options) throws LEMSBuildException; 
 	
 }

@@ -45,14 +45,11 @@ public class Sim extends LemsProcess {
     EventManager eventManager;
     
   
-    
-    
     public Sim(String srcStr) {
     	super(srcStr);
     }
  
- 	
-    	
+
     public void build() throws ContentError, ConnectionError, ParseError {
     	
     	applySubstitutions();
@@ -85,7 +82,6 @@ public class Sim extends LemsProcess {
  	    	}
 	    }
 	     
-	 
 	    // collect everything in the StateType tree that records something
 	    ArrayList<RuntimeOutput> runtimeOutputs = new ArrayList<RuntimeOutput>();
 	    OutputCollector oco = new OutputCollector(runtimeOutputs);
@@ -127,14 +123,11 @@ public class Sim extends LemsProcess {
     }
   
 
-    
     public void run(RunConfig rc, boolean flatten) throws ConnectionError, ContentError, RuntimeError, ParseError {
    	    	
   		StateType raw = rc.getTarget();
   		
-  	
   		Component cpt = rc.getControlComponent();
-  		
   		
   		boolean mflat = flatten;
 
@@ -161,8 +154,7 @@ public class Sim extends LemsProcess {
   		}
   		}
   		
-  		
-  		
+
   		if (mflat) {
   			targetBehavior = raw.getConsolidatedStateType("root");
   		} else {
@@ -170,14 +162,10 @@ public class Sim extends LemsProcess {
   		}
   		
   	    StateInstance rootState = lems.build(targetBehavior, eventManager);
-  	
   	    RunnableAccessor ra = new RunnableAccessor(rootState);
-  	       
   	    ArrayList<RuntimeRecorder> recorders = rc.getRecorders();
   	    
-  	    
-  	    
-  	    
+
   	    for (RuntimeRecorder rr : recorders) {
   	    	String disp = rr.getDisplay();
   	    	if (dvHM.containsKey(disp)) {

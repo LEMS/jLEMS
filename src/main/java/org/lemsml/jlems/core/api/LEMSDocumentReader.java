@@ -1,23 +1,28 @@
 package org.lemsml.jlems.core.api;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Scanner;
 
+import org.lemsml.jlems.core.api.interfaces.ILEMSDocument;
 import org.lemsml.jlems.core.api.interfaces.ILEMSDocumentReader;
 import org.lemsml.jlems.core.reader.LemsFactory;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.Lems;
 import org.lemsml.jlems.core.xml.XMLElement;
 import org.lemsml.jlems.core.xml.XMLElementReader;
+import org.lemsml.jlems.io.reader.FileInclusionReader;
 
 public class LEMSDocumentReader implements ILEMSDocumentReader
 {
 
 	@Override
-	public Lems readModel(URL modelURL) throws IOException, ContentError
+	public ILEMSDocument readModel(URL modelURL) throws IOException, ContentError
 	{
-		String modelString = new Scanner(modelURL.openStream(), "UTF-8").useDelimiter("\\A").next();
+		File f = new File(modelURL.getFile());
+		FileInclusionReader fir = new FileInclusionReader(f);
+		String modelString = fir.read();
 
 		// TODO tmp - make reader cope without extra spaces
 		XMLElementReader exmlr = new XMLElementReader(modelString + "    ");

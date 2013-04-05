@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import org.lemsml.jlems.core.api.interfaces.ILEMSStateInstance;
 import org.lemsml.jlems.core.display.LineDisplay;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 
-public class StateInstance implements StateRunnable {
+public class StateInstance implements StateRunnable, ILEMSStateInstance {
 
 	StateType uclass;
 	String id;

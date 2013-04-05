@@ -3,6 +3,8 @@
  */
 package org.lemsml.jlems.core.api.interfaces;
 
+import org.lemsml.jlems.core.api.LEMSExecutionException;
+
 /**
  * @author matteocantarelli
  *
@@ -10,5 +12,5 @@ package org.lemsml.jlems.core.api.interfaces;
 public interface ILEMSSimulator
 {
 
-	public void advance(ILEMSInstance model, ILEMSRunConfiguration config );
+	public void advance(ILEMSStateInstance model, ILEMSRunConfiguration config ) throws LEMSExecutionException;
 }
