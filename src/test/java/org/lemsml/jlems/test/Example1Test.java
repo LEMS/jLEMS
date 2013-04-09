@@ -61,7 +61,7 @@ public class Example1Test {
     	
     	Example1Test ct = new Example1Test();
         Result r = org.junit.runner.JUnitCore.runClasses(ct.getClass());
-        MainTest.checkResults(r);
+        Main.checkResults(r);
 
     }
 

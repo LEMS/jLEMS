@@ -70,7 +70,7 @@ public class CoreDependenciesTest
 
 		CoreDependenciesTest ct = new CoreDependenciesTest();
 		Result r = org.junit.runner.JUnitCore.runClasses(ct.getClass());
-		MainTest.checkResults(r);
+		Main.checkResults(r);
 
 	}
 

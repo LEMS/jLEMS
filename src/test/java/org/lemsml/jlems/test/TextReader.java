@@ -17,7 +17,7 @@ import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.logging.DefaultLogger;
 import org.lemsml.jlems.io.util.FileUtil;
 
-public class TextReaderTest
+public class TextReader
 {
 
 	//@Test 
@@ -42,10 +42,10 @@ public class TextReaderTest
 	{
 		DefaultLogger.initialize();
 
-		TextReaderTest ct = new TextReaderTest();
+		TextReader ct = new TextReader();
 
 		Result r = org.junit.runner.JUnitCore.runClasses(ct.getClass());
-		MainTest.checkResults(r);
+		Main.checkResults(r);
 
 	}
 

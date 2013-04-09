@@ -27,14 +27,14 @@ import org.lemsml.jlems.viz.datadisplay.SwingDataViewerFactory;
 import org.lemsml.jruntime.NativeType;
 
 
-public class DynamicExecutionTest {
+public class DynamicExecution {
 
 	
 	public static void main(String[] argv) {
 		DefaultLogger.initialize();
 		SwingDataViewerFactory.initialize();
 		
-		DynamicExecutionTest dct = new DynamicExecutionTest();
+		DynamicExecution dct = new DynamicExecution();
 		try {
 			File f1 = new File("examples/example1.xml");
 			dct.generateAndRun(f1);
