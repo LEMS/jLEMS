@@ -39,24 +39,20 @@ import org.lemsml.jlems.core.sim.RunnableAccessor;
 public class LEMSSimulator implements ILEMSSimulator
 {
 
+
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.lemsml.jlems.core.api.interfaces.ILEMSSimulator#advance(org.lemsml.jlems.core.api.interfaces.ILEMSStateInstance, org.lemsml.jlems.core.api.interfaces.ILEMSRunConfiguration)
 	 */
 	@Override
-	public void advance(ILEMSStateInstance instance, ILEMSRunConfiguration config) throws LEMSExecutionException
+	public void advance(ILEMSStateInstance instance, Results results, ILEMSRunConfiguration config) throws LEMSExecutionException
 	{
-
-		Map<String, DataViewer> dvHM=new HashMap<String, DataViewer>();
-		Map<String, ResultWriter> rwHM=new HashMap<String, ResultWriter>();
 		EventManager eventManager = EventManager.getInstance();
-
-		List<ResultWriter> resultWriters = new ArrayList<ResultWriter>();
 
 		StateInstance rootState = (StateInstance) instance;
 		
-		setup(dvHM, rwHM, resultWriters, rootState.getStateType());
+		
 		RunConfig rc = (RunConfig) config;
 
 		RunnableAccessor ra = new RunnableAccessor(rootState);
@@ -65,11 +61,11 @@ public class LEMSSimulator implements ILEMSSimulator
 		for (RuntimeRecorder rr : recorders)
 		{
 			String disp = rr.getDisplay();
-			if (dvHM.containsKey(disp))
+			if (results.getDvHM().containsKey(disp))
 			{
 				try
 				{
-					rr.connectRunnable(ra, dvHM.get(disp));
+					rr.connectRunnable(ra, results.getDvHM().get(disp));
 				}
 				catch (ConnectionError e)
 				{
@@ -78,9 +74,9 @@ public class LEMSSimulator implements ILEMSSimulator
 				}
 
 			}
-			else if (rwHM.containsKey(disp))
+			else if (results.getRwHM().containsKey(disp))
 			{
-				ResultWriter rw = rwHM.get(disp);
+				ResultWriter rw = results.getRwHM().get(disp);
 				rw.addedRecorder();
 				try
 				{
@@ -91,7 +87,7 @@ public class LEMSSimulator implements ILEMSSimulator
 					throw new LEMSExecutionException(e);
 				}
 
-				E.info("Connected runnable to " + disp + " " + rwHM.get(disp));
+				E.info("Connected runnable to " + disp + " " + results.getRwHM().get(disp));
 
 			}
 			else
@@ -108,7 +104,7 @@ public class LEMSSimulator implements ILEMSSimulator
 			rootState.initialize(null);
 			eventManager.advance(t);
 			rootState.advance(null, t, dt);
-			for (ResultWriter rw : resultWriters)
+			for (ResultWriter rw : results.getResultWriters())
 			{
 				rw.advance(t);
 			}
@@ -118,7 +114,7 @@ public class LEMSSimulator implements ILEMSSimulator
 				rr.appendState(t);
 			}
 
-			for (ResultWriter rw : resultWriters)
+			for (ResultWriter rw : results.getResultWriters())
 			{
 				rw.close();
 			}
@@ -135,36 +131,6 @@ public class LEMSSimulator implements ILEMSSimulator
 
 	}
 
-	private void setup(Map<String, DataViewer> dvHM, Map<String, ResultWriter> rwHM, List<ResultWriter> resultWriters, StateType rootState)
-	{
-		// collect everything in the StateType tree that makes a display
-		ArrayList<RuntimeDisplay> runtimeDisplays = new ArrayList<RuntimeDisplay>();
-		DisplayCollector oc = new DisplayCollector(runtimeDisplays);
-		rootState.visitAll(oc);
 
-		// build the displays and keep them in dvHM
-		for (RuntimeDisplay ro : runtimeDisplays)
-		{
-			DataViewer dv = DataViewerFactory.getFactory().newDataViewer(ro.getTitle());
-			dvHM.put(ro.getID(), dv);
-			if (dv instanceof DataViewPort)
-			{
-				((DataViewPort) dv).setRegion(ro.getBox());
-			}
-		}
-
-		// collect everything in the StateType tree that records something
-		ArrayList<RuntimeOutput> runtimeOutputs = new ArrayList<RuntimeOutput>();
-		OutputCollector oco = new OutputCollector(runtimeOutputs);
-		rootState.visitAll(oco);
-
-		// build the displays and keep them in dvHM
-		for (RuntimeOutput ro : runtimeOutputs)
-		{
-			ResultWriter rw = ResultWriterFactory.getFactory().newResultWriter(ro);
-			rwHM.put(ro.getID(), rw);
-			resultWriters.add(rw);
-		}
-	}
 
 }

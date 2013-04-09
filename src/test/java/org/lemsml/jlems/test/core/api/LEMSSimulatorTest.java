@@ -21,6 +21,7 @@ import org.lemsml.jlems.core.api.LEMSBuilder;
 import org.lemsml.jlems.core.api.LEMSDocumentReader;
 import org.lemsml.jlems.core.api.LEMSExecutionException;
 import org.lemsml.jlems.core.api.LEMSSimulator;
+import org.lemsml.jlems.core.api.Results;
 import org.lemsml.jlems.core.api.interfaces.ILEMSBuildOptions;
 import org.lemsml.jlems.core.api.interfaces.ILEMSDocument;
 import org.lemsml.jlems.core.api.interfaces.ILEMSRunConfiguration;
@@ -51,21 +52,24 @@ public class LEMSSimulatorTest
 		{
 			ILEMSDocument model = reader.readModel(this.getClass().getResource("/example1.xml"));
 			assertNotNull(model);
+			
 			builder.addDocument(model);
 			ILEMSBuildOptions options = new LEMSBuildOptions();
 			options.addBuildOption(LEMSBuildOptionsEnum.FLATTEN);
 			
 			Map<ILEMSStateType, ILEMSDocument> stateMap = builder.createLEMSStates(options);
 			Collection<ILEMSStateInstance> stateInstances = builder.createExecutableInstance(stateMap, options);
+			
 			assertNotNull(stateInstances);
 			assertFalse(stateInstances.isEmpty());
 			
 			List<RunConfig> runConfigs = new ArrayList<RunConfig>();
+			Results results=null;
 			for(ILEMSStateType stateType:stateMap.keySet())
 			{
-				
 				RunConfigCollector rcc = new RunConfigCollector(runConfigs);
 				((StateType)stateType).visitAll(rcc);
+				results=new Results((StateType)stateType);	
 			}
 
 			ILEMSSimulator simulator = new LEMSSimulator();
@@ -77,7 +81,7 @@ public class LEMSSimulatorTest
 					{
 						for (int i = 0; i < 100; i++)
 						{
-							simulator.advance(instance, rc);
+							simulator.advance(instance, results, rc);
 						}
 					}
 					catch (LEMSExecutionException e)
