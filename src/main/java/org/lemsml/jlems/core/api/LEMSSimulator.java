@@ -82,10 +82,16 @@ public class LEMSSimulator implements ILEMSSimulator
 		{
 			rootState.initialize(null);
 
-			for (double t = 0; t < config.getRuntime(); t += config.getTimestep())
+			E.info("Simulation start");
+			
+			int steps=0;
+			for (double t = 0; t < config.getRuntime(); t += config.getTimestep(), steps++)
 			{
-
-				eventManager.advance(t);
+				if (t > 0)
+				{
+					eventManager.advance(t);
+					rootState.advance(null, t, config.getTimestep());
+				}
 				results.advanceResultWriters(t);
 
 				for (RuntimeRecorder rr : recorders)
@@ -93,8 +99,10 @@ public class LEMSSimulator implements ILEMSSimulator
 					rr.appendState(t);
 				}
 
-				results.closeResultWriters();
 			}
+			E.info("Simulation end, "+steps+" steps simulated!");
+			
+			results.closeResultWriters();
 		}
 		catch (RuntimeError e)
 		{

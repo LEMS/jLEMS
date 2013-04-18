@@ -29,6 +29,7 @@ import org.lemsml.jlems.core.api.interfaces.ILEMSSimulator;
 import org.lemsml.jlems.core.api.interfaces.ILEMSStateInstance;
 import org.lemsml.jlems.core.api.interfaces.ILEMSStateType;
 import org.lemsml.jlems.core.sim.ContentError;
+import org.lemsml.jlems.viz.datadisplay.SwingDataViewerFactory;
 
 /**
  * @author matteocantarelli
@@ -42,7 +43,7 @@ public class LEMSSimulatorTest
 	 */
 	@Test
 	public void testRun()
-	{
+	{	
 		LEMSDocumentReader reader = new LEMSDocumentReader();
 		LEMSBuilder builder = new LEMSBuilder();
 		try
