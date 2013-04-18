@@ -9,11 +9,13 @@ import java.io.IOException;
 import java.util.Collection;
 
 import org.junit.Test;
+import org.lemsml.jlems.core.api.LEMSBuildConfiguration;
 import org.lemsml.jlems.core.api.LEMSBuildException;
 import org.lemsml.jlems.core.api.LEMSBuildOptions;
 import org.lemsml.jlems.core.api.LEMSBuildOptionsEnum;
 import org.lemsml.jlems.core.api.LEMSBuilder;
 import org.lemsml.jlems.core.api.LEMSDocumentReader;
+import org.lemsml.jlems.core.api.interfaces.ILEMSBuildConfiguration;
 import org.lemsml.jlems.core.api.interfaces.ILEMSBuildOptions;
 import org.lemsml.jlems.core.api.interfaces.ILEMSDocument;
 import org.lemsml.jlems.core.api.interfaces.ILEMSStateInstance;
@@ -40,8 +42,9 @@ public class LEMSBuilderTest
 			assertNotNull(model);
 			builder.addDocument(model);
 			ILEMSBuildOptions options=new LEMSBuildOptions();
+			ILEMSBuildConfiguration config = new LEMSBuildConfiguration("net1");
 			options.addBuildOption(LEMSBuildOptionsEnum.FLATTEN);
-			Collection<ILEMSStateInstance> stateInstance = builder.build(options);
+			Collection<ILEMSStateInstance> stateInstance = builder.build(config,options);
 			assertNotNull(stateInstance);
 			assertFalse(stateInstance.isEmpty());
 		}

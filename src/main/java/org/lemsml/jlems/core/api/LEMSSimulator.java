@@ -4,32 +4,21 @@
 package org.lemsml.jlems.core.api;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
+import org.lemsml.jlems.core.api.interfaces.ILEMSResultsContainer;
 import org.lemsml.jlems.core.api.interfaces.ILEMSRunConfiguration;
 import org.lemsml.jlems.core.api.interfaces.ILEMSSimulator;
 import org.lemsml.jlems.core.api.interfaces.ILEMSStateInstance;
-import org.lemsml.jlems.core.display.DataViewPort;
 import org.lemsml.jlems.core.display.DataViewer;
-import org.lemsml.jlems.core.display.DataViewerFactory;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.out.ResultWriter;
-import org.lemsml.jlems.core.out.ResultWriterFactory;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.EventManager;
 import org.lemsml.jlems.core.run.RunConfig;
-import org.lemsml.jlems.core.run.RuntimeDisplay;
 import org.lemsml.jlems.core.run.RuntimeError;
-import org.lemsml.jlems.core.run.RuntimeOutput;
 import org.lemsml.jlems.core.run.RuntimeRecorder;
 import org.lemsml.jlems.core.run.StateInstance;
-import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
-import org.lemsml.jlems.core.sim.DisplayCollector;
-import org.lemsml.jlems.core.sim.OutputCollector;
-import org.lemsml.jlems.core.sim.RunConfigCollector;
 import org.lemsml.jlems.core.sim.RunnableAccessor;
 
 /**
@@ -39,84 +28,72 @@ import org.lemsml.jlems.core.sim.RunnableAccessor;
 public class LEMSSimulator implements ILEMSSimulator
 {
 
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.lemsml.jlems.core.api.interfaces.ILEMSSimulator#advance(org.lemsml.jlems.core.api.interfaces.ILEMSStateInstance, org.lemsml.jlems.core.api.interfaces.ILEMSRunConfiguration)
-	 */
 	@Override
-	public void advance(ILEMSStateInstance instance, Results results, ILEMSRunConfiguration config) throws LEMSExecutionException
+	public void run(ILEMSRunConfiguration config, ILEMSStateInstance instance, ILEMSResultsContainer results) throws LEMSExecutionException
 	{
 		EventManager eventManager = EventManager.getInstance();
-
 		StateInstance rootState = (StateInstance) instance;
-		
-		
-		RunConfig rc = (RunConfig) config;
+		RunConfig runConfig = (RunConfig) config; // FIXME: runconfig should not contain runtime recorders
+		RunnableAccessor runnableAccessor = new RunnableAccessor(rootState);
 
-		RunnableAccessor ra = new RunnableAccessor(rootState);
-		ArrayList<RuntimeRecorder> recorders = rc.getRecorders();
+		ArrayList<RuntimeRecorder> recorders = runConfig.getRecorders();
 
-		for (RuntimeRecorder rr : recorders)
+		for (RuntimeRecorder runtimeRecorder : recorders)
 		{
-			String disp = rr.getDisplay();
-			if (results.getDvHM().containsKey(disp))
-			{
-				try
-				{
-					rr.connectRunnable(ra, results.getDvHM().get(disp));
-				}
-				catch (ConnectionError e)
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			String disp = runtimeRecorder.getDisplay();
 
-			}
-			else if (results.getRwHM().containsKey(disp))
+			DataViewer dataViewer = results.getDataViewer(disp);
+			if (dataViewer != null)
 			{
-				ResultWriter rw = results.getRwHM().get(disp);
-				rw.addedRecorder();
 				try
 				{
-					rr.connectRunnable(ra, rw);
+					runtimeRecorder.connectRunnable(runnableAccessor, dataViewer);
 				}
 				catch (ConnectionError e)
 				{
 					throw new LEMSExecutionException(e);
 				}
 
-				E.info("Connected runnable to " + disp + " " + results.getRwHM().get(disp));
-
 			}
-			else
+
+			ResultWriter resultWriter = results.getResultWriter(disp);
+			if (resultWriter != null)
 			{
-				throw new LEMSExecutionException(new ConnectionError("No such data viewer " + disp + " needed for " + rr));
+				resultWriter.addedRecorder();
+				try
+				{
+					runtimeRecorder.connectRunnable(runnableAccessor, resultWriter);
+				}
+				catch (ConnectionError e)
+				{
+					throw new LEMSExecutionException(e);
+				}
+
+				E.info("Connected runnable to " + disp + " " + resultWriter);
+			}
+
+			if (dataViewer == null && resultWriter == null)
+			{
+				throw new LEMSExecutionException(new ConnectionError("No data viewer or result writer " + disp + " for " + runtimeRecorder + " was found"));
 			}
 		}
-
-		double dt = rc.getTimestep();
-		double t = 0;
 
 		try
 		{
 			rootState.initialize(null);
-			eventManager.advance(t);
-			rootState.advance(null, t, dt);
-			for (ResultWriter rw : results.getResultWriters())
-			{
-				rw.advance(t);
-			}
 
-			for (RuntimeRecorder rr : recorders)
+			for (double t = 0; t < config.getRuntime(); t += config.getTimestep())
 			{
-				rr.appendState(t);
-			}
 
-			for (ResultWriter rw : results.getResultWriters())
-			{
-				rw.close();
+				eventManager.advance(t);
+				results.advanceResultWriters(t);
+
+				for (RuntimeRecorder rr : recorders)
+				{
+					rr.appendState(t);
+				}
+
+				results.closeResultWriters();
 			}
 		}
 		catch (RuntimeError e)
@@ -127,10 +104,6 @@ public class LEMSSimulator implements ILEMSSimulator
 		{
 			throw new LEMSExecutionException(e);
 		}
-
-
 	}
-
-
 
 }

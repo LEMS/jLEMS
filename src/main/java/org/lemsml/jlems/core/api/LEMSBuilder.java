@@ -6,19 +6,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.lemsml.jlems.core.api.interfaces.ILEMSBuildConfiguration;
 import org.lemsml.jlems.core.api.interfaces.ILEMSBuildOptions;
 import org.lemsml.jlems.core.api.interfaces.ILEMSBuilder;
 import org.lemsml.jlems.core.api.interfaces.ILEMSDocument;
+import org.lemsml.jlems.core.api.interfaces.ILEMSResultsContainer;
+import org.lemsml.jlems.core.api.interfaces.ILEMSRunConfiguration;
 import org.lemsml.jlems.core.api.interfaces.ILEMSStateInstance;
 import org.lemsml.jlems.core.api.interfaces.ILEMSStateType;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.Constants;
+import org.lemsml.jlems.core.run.RunConfig;
 import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.StateInstance;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
+import org.lemsml.jlems.core.sim.RunConfigCollector;
 import org.lemsml.jlems.core.type.Component;
 import org.lemsml.jlems.core.type.ComponentType;
 import org.lemsml.jlems.core.type.Lems;
@@ -36,7 +41,6 @@ public class LEMSBuilder implements ILEMSBuilder
 {
 
 	private List<ILEMSDocument> _documents = null;
-
 
 	/*
 	 * (non-Javadoc)
@@ -59,10 +63,10 @@ public class LEMSBuilder implements ILEMSBuilder
 	 * @see org.lemsml.jlems.core.api.interfaces.ILEMSBuilder#build(org.lemsml.jlems.core.api.interfaces.ILEMSBuildOptions)
 	 */
 	@Override
-	public Collection<ILEMSStateInstance> build(ILEMSBuildOptions options) throws LEMSBuildException
+	public Collection<ILEMSStateInstance> build(ILEMSBuildConfiguration config, ILEMSBuildOptions options) throws LEMSBuildException
 	{
 		// FIXME ILEMSBuildOptions should be used to control the flow in case we decide to flatten or not for instance
-		return createExecutableInstance(createLEMSStates(options),options);
+		return createExecutableInstance(createLEMSStates(config,options), options);
 	}
 
 	/*
@@ -71,7 +75,7 @@ public class LEMSBuilder implements ILEMSBuilder
 	 * @see org.lemsml.jlems.core.api.interfaces.ILEMSBuilder#createLEMSStates(org.lemsml.jlems.core.api.interfaces.ILEMSBuildOptions)
 	 */
 	@Override
-	public Map<ILEMSStateType, ILEMSDocument> createLEMSStates(ILEMSBuildOptions options) throws LEMSBuildException
+	public Map<ILEMSStateType, ILEMSDocument> createLEMSStates(ILEMSBuildConfiguration config, ILEMSBuildOptions options) throws LEMSBuildException
 	{
 		Map<ILEMSStateType, ILEMSDocument> stateMap = new HashMap<ILEMSStateType, ILEMSDocument>();
 		for (ILEMSDocument lemsDoc : _documents)
@@ -93,61 +97,62 @@ public class LEMSBuilder implements ILEMSBuilder
 				throw new LEMSBuildException(e);
 			}
 
-			// Is target always a requirement? Why do we need a target to find component and component types?
-			for (Target dr : lems.getTargets())
+			for (Component cpt : lems.getComponents())
 			{
-				Component cpt = dr.getComponent();
-				ComponentType ct = cpt.getComponentType();
-				try
+
+				if (cpt.getID().equals(config.getSpecifiedTarget()))
 				{
-					// all the knowledge of how to build a state type should be outside the document
-					StateType stateType=ct.makeStateType(cpt);
-					
-
-					boolean mflat = options.isOn(LEMSBuildOptionsEnum.FLATTEN);
-
-					if (cpt != null)
+					ComponentType ct = cpt.getComponentType();
+					try
 					{
-						E.info("checking metas " + cpt.getID() + " " + cpt.metas.size());
+						// all the knowledge of how to build a state type should be outside the document
+						StateType stateType = ct.makeStateType(cpt);
 
-						for (Meta m : cpt.metas.getContents())
+						boolean mflat = options.isOn(LEMSBuildOptionsEnum.FLATTEN);
+
+						if (cpt != null)
 						{
-							//FIXME this kind of parsing once that the model is built is suspicious
-							HashMap<String, String> hm = m.getAttributes();
-							if (hm.containsKey("method")) //FIXME Strings are EVIL
+							E.info("checking metas " + cpt.getID() + " " + cpt.metas.size());
+
+							for (Meta m : cpt.metas.getContents())
 							{
-								String val = hm.get("method").toLowerCase(); //FIXME Strings are EVIL
-								if (val.equals("rk4")) //FIXME Strings are EVIL
+								// FIXME this kind of parsing once that the model is built is suspicious
+								HashMap<String, String> hm = m.getAttributes();
+								if (hm.containsKey("method")) // FIXME Strings are EVIL
 								{
-									mflat = mflat && true; // the result of attempt a flattening depends on whether it is required to begin with
-									E.info("Got meta for jlems: " + val);
+									String val = hm.get("method").toLowerCase(); // FIXME Strings are EVIL
+									if (val.equals("rk4")) // FIXME Strings are EVIL
+									{
+										mflat = mflat && true; // the result of attempt a flattening depends on whether it is required to begin with
+										E.info("Got meta for jlems: " + val);
 
-								}
-								else if (val.equals("eulertree")) //FIXME Strings are EVIL
-								{
-									mflat = mflat && false; // the result of attempt a flattening depends on whether it is required to begin with
-									E.info("Got meta for jlems: " + val);
+									}
+									else if (val.equals("eulertree")) // FIXME Strings are EVIL
+									{
+										mflat = mflat && false; // the result of attempt a flattening depends on whether it is required to begin with
+										E.info("Got meta for jlems: " + val);
 
+									}
+									else
+									{
+										E.warning("unrecognized method " + val);
+									}
 								}
-								else
-								{
-									E.warning("unrecognized method " + val);
-								}
+
 							}
-
 						}
+
+						stateMap.put(stateType, lems);
+
 					}
-
-					stateMap.put(stateType, lems);
-
-				}
-				catch (ContentError e)
-				{
-					throw new LEMSBuildException(e);
-				}
-				catch (ParseError e)
-				{
-					throw new LEMSBuildException(e);
+					catch (ContentError e)
+					{
+						throw new LEMSBuildException(e);
+					}
+					catch (ParseError e)
+					{
+						throw new LEMSBuildException(e);
+					}
 				}
 			}
 
@@ -174,18 +179,18 @@ public class LEMSBuilder implements ILEMSBuilder
 			// If it's not possible to have this process stateless (why?) then the state should be stored in the builder class and not in Lems objects.
 			// All of this will have to change when we split model and logic
 			boolean mflat = options.isOn(LEMSBuildOptionsEnum.FLATTEN);
-			StateType targetBehavior=((StateType)stateTypeDoc);
+			StateType targetBehavior = ((StateType) stateTypeDoc);
 			if (mflat)
 			{
-				targetBehavior = ((StateType)stateTypeDoc).getConsolidatedStateType("root");
+				targetBehavior = ((StateType) stateTypeDoc).getConsolidatedStateType("root");
 			}
-			
+
 			Lems lems = (Lems) stateMap.get(stateTypeDoc); // FIXME Castings like this show there is something wrong...
 			Constants.setConstantsHM(lems.getConstantsValueHM());
 			try
 			{
 				StateInstance stateInstance = targetBehavior.newInstance(); // again this should all be documents without logic
-				stateInstance.checkBuilt(); // what does this do?
+				stateInstance.checkBuilt(); // this checks that all the other components that are needed have also been built
 				stateInstances.add(stateInstance);
 			}
 			catch (ContentError e)
@@ -202,6 +207,60 @@ public class LEMSBuilder implements ILEMSBuilder
 			}
 		}
 		return stateInstances;
+	}
+
+	@Override
+	public ILEMSRunConfiguration getRunConfiguration(ILEMSDocument lemsDocument) throws LEMSBuildException
+	{
+		Lems lems = (Lems) lemsDocument;
+		lems.setResolveModeLoose();
+		
+		Target target;
+		try
+		{
+			target = lems.getTarget();
+			Component cpt=target.getComponent();
+			ComponentType ct=cpt.getComponentType();
+			StateType stateType = ct.makeStateType(cpt);
+			List<RunConfig> runConfigs = new ArrayList<RunConfig>();
+			RunConfigCollector rcc = new RunConfigCollector(runConfigs);
+			stateType.visitAll(rcc);
+			return runConfigs.get(0);
+		}
+		catch (ContentError e)
+		{
+			throw new LEMSBuildException(e);
+		}
+		catch (ParseError e)
+		{
+			throw new LEMSBuildException(e);
+		}
+	}
+	
+
+	@Override
+	public ILEMSResultsContainer getResultsContainer(ILEMSDocument lemsDocument) throws LEMSBuildException
+	{
+		Lems lems = (Lems) lemsDocument;
+		lems.setResolveModeLoose();
+		
+		Target target;
+		try
+		{
+			target = lems.getTarget();
+			Component cpt=target.getComponent();
+			ComponentType ct=cpt.getComponentType();
+			StateType stateType = ct.makeStateType(cpt);
+			return new LEMSResultsContainer(stateType);
+		}
+		catch (ContentError e)
+		{
+			throw new LEMSBuildException(e);
+		}
+		catch (ParseError e)
+		{
+			throw new LEMSBuildException(e);
+		}
 	}
 
 }

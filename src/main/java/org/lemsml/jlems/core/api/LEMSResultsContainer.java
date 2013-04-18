@@ -2,15 +2,16 @@ package org.lemsml.jlems.core.api;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import org.lemsml.jlems.core.api.interfaces.ILEMSResultsContainer;
 import org.lemsml.jlems.core.display.DataViewPort;
 import org.lemsml.jlems.core.display.DataViewer;
 import org.lemsml.jlems.core.display.DataViewerFactory;
 import org.lemsml.jlems.core.out.ResultWriter;
 import org.lemsml.jlems.core.out.ResultWriterFactory;
 import org.lemsml.jlems.core.run.RuntimeDisplay;
+import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.RuntimeOutput;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.DisplayCollector;
@@ -20,14 +21,13 @@ import org.lemsml.jlems.core.sim.OutputCollector;
  * @author matteocantarelli
  *
  */
-public class Results
+public class LEMSResultsContainer implements ILEMSResultsContainer
 {
 
 	private Map<String, DataViewer> _dvHM=new HashMap<String, DataViewer>();
 	private Map<String, ResultWriter> _rwHM=new HashMap<String, ResultWriter>();
-	private List<ResultWriter> _resultWriters = new ArrayList<ResultWriter>();
 	
-	public Results(StateType rootStateType)
+	public LEMSResultsContainer(StateType rootStateType)
 	{
 		super();
 		createOutputConfig(rootStateType);
@@ -61,23 +61,53 @@ public class Results
 		{
 			ResultWriter rw = ResultWriterFactory.getFactory().newResultWriter(ro);
 			_rwHM.put(ro.getID(), rw);
-			_resultWriters.add(rw);
 		}
 	}
 
-	public Map<String, DataViewer> getDvHM()
+	@Override
+	public void closeResultWriters() throws LEMSExecutionException
 	{
-		return _dvHM;
+
+		for (ResultWriter rw : _rwHM.values())
+		{
+			try
+			{
+				rw.close();
+			}
+			catch (RuntimeError e)
+			{
+				throw new LEMSExecutionException(e);
+			}
+		}
+		
 	}
 
-	public Map<String, ResultWriter> getRwHM()
+	@Override
+	public DataViewer getDataViewer(String dataViewer)
 	{
-		return _rwHM;
+		return _dvHM.get(dataViewer);
 	}
 
-	public List<ResultWriter> getResultWriters()
+	@Override
+	public ResultWriter getResultWriter(String resultWriter)
 	{
-		return _resultWriters;
+		return _rwHM.get(resultWriter);
+	}
+
+	@Override
+	public void advanceResultWriters(double timeStep) throws LEMSExecutionException
+	{
+		for (ResultWriter rw : _rwHM.values())
+		{
+			try
+			{
+				rw.advance(timeStep);
+			}
+			catch (RuntimeError e)
+			{
+				throw new LEMSExecutionException(e);
+			}
+		}
 	}
 	
 	

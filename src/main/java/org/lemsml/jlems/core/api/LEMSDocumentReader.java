@@ -3,7 +3,6 @@ package org.lemsml.jlems.core.api;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Scanner;
 
 import org.lemsml.jlems.core.api.interfaces.ILEMSDocument;
 import org.lemsml.jlems.core.api.interfaces.ILEMSDocumentReader;
@@ -22,6 +21,7 @@ public class LEMSDocumentReader implements ILEMSDocumentReader
 	{
 		File f = new File(modelURL.getFile());
 		FileInclusionReader fir = new FileInclusionReader(f);
+		//FIXME: If the included files will be passed as URL then we'll need something like a URLInclusionReader
 		String modelString = fir.read();
 
 		// TODO tmp - make reader cope without extra spaces

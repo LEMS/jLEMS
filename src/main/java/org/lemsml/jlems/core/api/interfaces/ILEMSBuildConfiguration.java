@@ -7,11 +7,9 @@ package org.lemsml.jlems.core.api.interfaces;
  * @author matteocantarelli
  *
  */
-public interface ILEMSRunConfiguration
+public interface ILEMSBuildConfiguration
 {
 
-	public double getTimestep();
-	
-	public double getRuntime();
+	public String getSpecifiedTarget();
 	
 }
