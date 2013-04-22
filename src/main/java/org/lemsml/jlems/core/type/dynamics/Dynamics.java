@@ -126,7 +126,7 @@ public class Dynamics  {
 			valHM = new HashMap<String, Valued>();
 			ComponentType extt = r_type.getExtends();
 			if (extt != null) {
-				if (extt.hasBehavior()) {
+				if (extt.hasDynamics()) {
 					Dynamics b = extt.getDynamics();
 					HashMap<String, Valued> extHM = b.getValHM();
 					for (String s : extHM.keySet()) {

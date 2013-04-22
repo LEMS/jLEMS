@@ -623,11 +623,11 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	}
 
 	
-	public boolean hasBehavior() {
+	public boolean hasDynamics() {
 		boolean ret = false;
 		if (dynamicses.size() > 0) {
 			ret = true;
-		} else if (r_extends != null && r_extends.hasBehavior()) {
+		} else if (r_extends != null && r_extends.hasDynamics()) {
 			ret = true;
 		}
 		return ret;
@@ -838,8 +838,9 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		
 	}
 
-	public void addBehavior(Dynamics b) {
-		dynamicses.add(b);
+
+	public void addDynamics(Dynamics d) {
+		dynamicses.add(d);
 	}
 
 	public void addExposure(Exposure expo) {
@@ -877,7 +878,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 
 		StateType ret = null;
 		
-		if (hasBehavior()) {
+		if (hasDynamics()) {
 			Dynamics bv = getDynamics();
 			ret = bv.makeStateType(cpt, fixedHM);
 

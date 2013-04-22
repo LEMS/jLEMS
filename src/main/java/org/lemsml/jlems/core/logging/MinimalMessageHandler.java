@@ -1,6 +1,7 @@
 package org.lemsml.jlems.core.logging;
 
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 /*
 import java.util.logging.SimpleFormatter;
 import java.util.logging.StreamHandler;
@@ -16,10 +17,20 @@ public class MinimalMessageHandler implements MessageHandler {
 	private static final Logger infoLogger = Logger.getLogger("info");
 	 
 	
-	 
+	private static boolean veryMinimal = false;
+	
+	public static void setVeryMinimal(boolean vm) {
+		veryMinimal = vm;
+	}
+	
 	
 	
 	public void msg(MessageType type, String txt) {
+		
+		if (veryMinimal) {
+			System.out.println("(" + type.name() + ") " + txt);
+			return;
+		}
 
 		String fmsg = " (" + type.name() + ") " + txt;
  		
@@ -41,6 +52,21 @@ public class MinimalMessageHandler implements MessageHandler {
 	public void msg(final String txt) {
 		msg(MessageType.LOG, txt);
 	}
+	
+
+    public static void main(String[] args) throws Exception {
+    	System.out.println("Testing logger...");
+    	MinimalMessageHandler mmh = new MinimalMessageHandler();
+
+    	mmh.msg(MessageType.INFO, "Some info");
+    	
+    	MinimalMessageHandler.setVeryMinimal(true);
+
+    	mmh.msg(MessageType.INFO, "Some more info");
+    	mmh.msg(MessageType.ERROR, "Some error");
+    	
+    	
+    }
 
 
 }
