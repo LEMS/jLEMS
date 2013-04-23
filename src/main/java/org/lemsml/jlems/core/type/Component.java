@@ -16,6 +16,9 @@ import org.lemsml.jlems.core.xml.XMLElement;
 
 public class Component implements Attributed, IDd, Summaried, Namable, Parented {
  
+
+    public static final String THIS_COMPONENT = "this";
+    public static final String PARENT_COMPONENT = "parent";
     
 	@ModelProperty(info="")
 	public String id;
@@ -837,7 +840,14 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		String ret = null;
 
         //E.info("--- Get string value ("+sn+") on component ref "+this);
- 
+
+        if (sn.equals(THIS_COMPONENT)) {
+            return THIS_COMPONENT;
+        }
+
+        if (sn.equals(PARENT_COMPONENT)) {
+            return PARENT_COMPONENT;
+        }
  
 		if (refHM.containsKey(sn)) {
 			ret = refHM.get(sn).getID();

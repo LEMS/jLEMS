@@ -1,4 +1,4 @@
-export CLASSPATH=.:./target/jlems-0.9.3.jar:$LEMS_HOME/target/jlems-0.9.3.jar
+export CLASSPATH=.:./target/jlems-0.9.4.jar:$LEMS_HOME/target/jlems-0.9.4.jar
 
 echo Running the LEMS application...
 
