@@ -3,9 +3,9 @@
  */
 package org.lemsml.jlems.core.api.interfaces;
 
-import org.lemsml.jlems.core.api.LEMSExecutionException;
-import org.lemsml.jlems.core.display.DataViewer;
-import org.lemsml.jlems.core.out.ResultWriter;
+import java.util.List;
+
+import org.lemsml.jlems.core.api.AValue;
 
 /**
  * @author matteocantarelli
@@ -14,12 +14,11 @@ import org.lemsml.jlems.core.out.ResultWriter;
 public interface ILEMSResultsContainer
 {
 
-	public DataViewer getDataViewer(String displayViewer);
+	public void addStateValue(IStateIdentifier state, AValue value);
+	
+	public List<AValue> getStateValues(IStateIdentifier state);
+	
+	public AValue getStateValue(IStateIdentifier state, int timeStep);
 
-	public ResultWriter getResultWriter(String resultWriter);
-
-	public void closeResultWriters() throws LEMSExecutionException;
-
-	public void advanceResultWriters(double t) throws LEMSExecutionException;
 
 }

@@ -10,25 +10,20 @@ import org.lemsml.jlems.core.api.interfaces.ILEMSBuildConfiguration;
 import org.lemsml.jlems.core.api.interfaces.ILEMSBuildOptions;
 import org.lemsml.jlems.core.api.interfaces.ILEMSBuilder;
 import org.lemsml.jlems.core.api.interfaces.ILEMSDocument;
-import org.lemsml.jlems.core.api.interfaces.ILEMSResultsContainer;
-import org.lemsml.jlems.core.api.interfaces.ILEMSRunConfiguration;
 import org.lemsml.jlems.core.api.interfaces.ILEMSStateInstance;
 import org.lemsml.jlems.core.api.interfaces.ILEMSStateType;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.Constants;
-import org.lemsml.jlems.core.run.RunConfig;
 import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.StateInstance;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
-import org.lemsml.jlems.core.sim.RunConfigCollector;
 import org.lemsml.jlems.core.type.Component;
 import org.lemsml.jlems.core.type.ComponentType;
 import org.lemsml.jlems.core.type.Lems;
 import org.lemsml.jlems.core.type.Meta;
-import org.lemsml.jlems.core.type.Target;
 
 /**
  * This class implements the API interface to build a LEMS document. At the moment we don't have separate document classes which just contain the data that can be simulated but this class and the API
@@ -209,58 +204,5 @@ public class LEMSBuilder implements ILEMSBuilder
 		return stateInstances;
 	}
 
-	@Override
-	public ILEMSRunConfiguration getRunConfiguration(ILEMSDocument lemsDocument) throws LEMSBuildException
-	{
-		Lems lems = (Lems) lemsDocument;
-		lems.setResolveModeLoose();
-		
-		Target target;
-		try
-		{
-			target = lems.getTarget();
-			Component cpt=target.getComponent();
-			ComponentType ct=cpt.getComponentType();
-			StateType stateType = ct.makeStateType(cpt);
-			List<RunConfig> runConfigs = new ArrayList<RunConfig>();
-			RunConfigCollector rcc = new RunConfigCollector(runConfigs);
-			stateType.visitAll(rcc);
-			return runConfigs.get(0);
-		}
-		catch (ContentError e)
-		{
-			throw new LEMSBuildException(e);
-		}
-		catch (ParseError e)
-		{
-			throw new LEMSBuildException(e);
-		}
-	}
-	
-
-	@Override
-	public ILEMSResultsContainer getResultsContainer(ILEMSDocument lemsDocument) throws LEMSBuildException
-	{
-		Lems lems = (Lems) lemsDocument;
-		lems.setResolveModeLoose();
-		
-		Target target;
-		try
-		{
-			target = lems.getTarget();
-			Component cpt=target.getComponent();
-			ComponentType ct=cpt.getComponentType();
-			StateType stateType = ct.makeStateType(cpt);
-			return new LEMSResultsContainer(stateType);
-		}
-		catch (ContentError e)
-		{
-			throw new LEMSBuildException(e);
-		}
-		catch (ParseError e)
-		{
-			throw new LEMSBuildException(e);
-		}
-	}
 
 }
