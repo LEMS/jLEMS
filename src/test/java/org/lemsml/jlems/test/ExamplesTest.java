@@ -25,6 +25,7 @@ import org.lemsml.jlems.core.type.BuildException;
 import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.logging.DefaultLogger;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
+import org.lemsml.jlems.viz.datadisplay.SwingDataViewerFactory;
  
 public class ExamplesTest {
 
