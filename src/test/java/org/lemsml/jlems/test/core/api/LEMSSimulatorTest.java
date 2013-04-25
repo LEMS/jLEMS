@@ -78,8 +78,8 @@ public class LEMSSimulatorTest
 				runConfig.addStateRecord(new StateRecord(hhpopv));
 				
 				ILEMSResultsContainer results=new LEMSResultsContainer();
-				
-				simulator.run(runConfig, instance, results);
+				simulator.initialize(instance,runConfig);
+				simulator.run(results);
 				
 				assertNotNull(results.getStateValues(tsince));
 				assertNotNull(results.getStateValues(p3v));
@@ -141,7 +141,8 @@ public class LEMSSimulatorTest
 				
 				ILEMSResultsContainer results=new LEMSResultsContainer();
 				
-				simulator.run(runConfig, instance, results);
+				simulator.initialize(instance,runConfig);
+				simulator.run(results);
 				
 				assertNotNull(results.getStateValues(tsince));
 				assertNotNull(results.getStateValues(p3v));
@@ -206,7 +207,8 @@ public class LEMSSimulatorTest
 				
 				ILEMSResultsContainer results=new LEMSResultsContainer();
 				
-				simulator.run(runConfig, instance, results);
+				simulator.initialize(instance,runConfig);
+				simulator.run(results);
 				
 				assertNotNull(results.getStateValues(p1tsince));
 				assertNotNull(results.getStateValues(p2tsince));
@@ -265,7 +267,8 @@ public class LEMSSimulatorTest
 				
 				ILEMSResultsContainer results=new LEMSResultsContainer();
 				
-				simulator.run(runConfig, instance, results);
+				simulator.initialize(instance,runConfig);
+				simulator.run(results);
 				
 				assertNotNull(results.getStateValues(v));
 
@@ -322,7 +325,8 @@ public class LEMSSimulatorTest
 				
 				ILEMSResultsContainer results=new LEMSResultsContainer();
 				
-				simulator.run(runConfig, instance, results);
+				simulator.initialize(instance,runConfig);
+				simulator.run(results);
 				
 				assertNotNull(results.getStateValues(v));
 
@@ -383,7 +387,8 @@ public class LEMSSimulatorTest
 				
 				ILEMSResultsContainer results=new LEMSResultsContainer();
 				
-				simulator.run(runConfig, instance, results);
+				simulator.initialize(instance,runConfig);
+				simulator.run(results);
 				
 				assertNotNull(results.getStateValues(v));
 				assertNotNull(results.getStateValues(nageff));
@@ -443,7 +448,8 @@ public class LEMSSimulatorTest
 				
 				ILEMSResultsContainer results=new LEMSResultsContainer();
 				
-				simulator.run(runConfig, instance, results);
+				simulator.initialize(instance,runConfig);
+				simulator.run(results);
 				
 				assertNotNull(results.getStateValues(tsince));
 				assertNotNull(results.getStateValues(p3v));
@@ -503,7 +509,8 @@ public class LEMSSimulatorTest
 				
 				ILEMSResultsContainer results=new LEMSResultsContainer();
 				
-				simulator.run(runConfig, instance, results);
+				simulator.initialize(instance,runConfig);
+				simulator.run(results);
 				
 				assertNotNull(results.getStateValues(tsince));
 				assertNotNull(results.getStateValues(p3v));
@@ -563,7 +570,8 @@ public class LEMSSimulatorTest
 				
 				ILEMSResultsContainer results=new LEMSResultsContainer();
 				
-				simulator.run(runConfig, instance, results);
+				simulator.initialize(instance,runConfig);
+				simulator.run(results);
 				
 				assertNotNull(results.getStateValues(v));
 				assertNotNull(results.getStateValues(nageff));

@@ -23,5 +23,7 @@ public interface ILEMSDocumentReader
 	 * @throws ContentError
 	 */
 	public ILEMSDocument readModel(URL modelURL) throws IOException, ContentError;
+
+	public ILEMSDocument readModel(String modelString) throws IOException, ContentError;
 	
 }

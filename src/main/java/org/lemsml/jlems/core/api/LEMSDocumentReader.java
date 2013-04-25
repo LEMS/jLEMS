@@ -22,10 +22,15 @@ public class LEMSDocumentReader implements ILEMSDocumentReader
 		File f = new File(modelURL.getFile());
 		FileInclusionReader fir = new FileInclusionReader(f);
 		//FIXME: If the included files will be passed as URL then we'll need something like a URLInclusionReader
-		String modelString = fir.read();
 
+		return readModel(fir.read());
+	}
+	
+	@Override
+	public ILEMSDocument readModel(String modelContent) throws IOException, ContentError
+	{
 		// TODO tmp - make reader cope without extra spaces
-		XMLElementReader exmlr = new XMLElementReader(modelString + "    ");
+		XMLElementReader exmlr = new XMLElementReader(modelContent + "    ");
 		XMLElement xel = exmlr.getRootElement();
 
 		LemsFactory lf = new LemsFactory();

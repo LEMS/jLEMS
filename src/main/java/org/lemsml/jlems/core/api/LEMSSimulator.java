@@ -24,44 +24,48 @@ import org.lemsml.jlems.core.sim.RunnableAccessor;
 public class LEMSSimulator implements ILEMSSimulator
 {
 
-	@Override
-	public void run(ILEMSRunConfiguration config, ILEMSStateInstance instance, ILEMSResultsContainer results) throws LEMSExecutionException
-	{
-		EventManager eventManager = EventManager.getInstance();
-		StateInstance rootState = (StateInstance) instance;
-		RunnableAccessor runnableAccessor = new RunnableAccessor(rootState);
+	private EventManager _eventManager;
+	private StateInstance _rootState;
+	private RunnableAccessor _runnableAccessor;
+	private ILEMSRunConfiguration _config;
+	private int _step=0;
 
+	@Override
+	public void run(ILEMSResultsContainer results) throws LEMSExecutionException
+	{
+		E.info("Simulation start");
+		for(double t = 0; t < _config.getRuntime(); t += _config.getTimestep())
+		{
+			if(t > 0)
+			{
+				advance(results);
+			}
+		}
+		E.info("Simulation end, " + _step + " steps simulated!");
+	}
+
+	@Override
+	public void advance(ILEMSResultsContainer results) throws LEMSExecutionException
+	{
 		try
 		{
-			rootState.initialize(null);
+			_eventManager.advance(_step);
+			
+			_rootState.advance(null, _step*_config.getTimestep(), _config.getTimestep());
 
-			E.info("Simulation start");
-
-			int steps = 0;
-			for(double t = 0; t < config.getRuntime(); t += config.getTimestep(), steps++)
+			if(_config.getRecordedStates() != null)
 			{
-				if(t > 0)
+				for(IStateRecord stateToRecord : _config.getRecordedStates())
 				{
-					eventManager.advance(t);
-					rootState.advance(null, t, config.getTimestep());
-
-					if(config.getRecordedStates() != null)
+					if(stateToRecord.record(_step))
 					{
-						for(IStateRecord stateToRecord : config.getRecordedStates())
-						{
-							if(stateToRecord.record(steps))
-							{
-								StateWrapper sw = runnableAccessor.getStateWrapper(stateToRecord.getState().getStatePath());
-								double value = sw.getValue();
-								results.addStateValue(stateToRecord.getState(), new DoubleValue(value));
-							}
-						}
+						StateWrapper sw = _runnableAccessor.getStateWrapper(stateToRecord.getState().getStatePath());
+						double value = sw.getValue();
+						results.addStateValue(stateToRecord.getState(), new DoubleValue(value));
 					}
 				}
 			}
-			
-			E.info("Simulation end, " + steps + " steps simulated!");
-
+			_step++;
 		}
 		catch(RuntimeError e)
 		{
@@ -75,6 +79,29 @@ public class LEMSSimulator implements ILEMSSimulator
 		{
 			throw new LEMSExecutionException(e);
 		}
+
 	}
 
+
+	@Override
+	public void initialize(ILEMSStateInstance instance, ILEMSRunConfiguration config) throws LEMSExecutionException
+	{
+		_eventManager = EventManager.getInstance();
+		_rootState = (StateInstance) instance;
+		_runnableAccessor = new RunnableAccessor(_rootState);
+		_config = config;
+		try
+		{
+			_rootState.initialize(null);
+		}
+		catch(RuntimeError e)
+		{
+			throw new LEMSExecutionException(e);
+		}
+		catch(ContentError e)
+		{
+			throw new LEMSExecutionException(e);
+		}
+
+	}
 }
