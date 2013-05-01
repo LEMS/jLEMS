@@ -667,7 +667,7 @@ public final class WorldTransform {
       setXRange(b.getXmin(), b.getXmax());
       setYRange(b.getYmin(), b.getYmax());
       
-      System.out.println("wt set ranges " + b.getXmin() + " " + b.getXmax());
+      //System.out.println("wt set ranges " + b.getXmin() + " " + b.getXmax());
       
       notifyRangeChange();
    }

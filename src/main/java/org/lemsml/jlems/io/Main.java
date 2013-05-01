@@ -1,6 +1,7 @@
 package org.lemsml.jlems.io;
  
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
 import org.lemsml.jlems.core.expression.ParseError;
@@ -11,14 +12,19 @@ import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.sim.ParseException;
 import org.lemsml.jlems.core.sim.Sim;
 import org.lemsml.jlems.core.type.BuildException;
+import org.lemsml.jlems.core.type.Lems;
+import org.lemsml.jlems.core.type.Target;
 import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
+import org.lemsml.jlems.io.util.FileUtil;
  
 
 public final class Main {
 
-	 static String usage = "USAGE: java -jar lems-0.X.X.jar [-cp folderpaths] model-file\n";
-	
+	 public static final String VERSION = "0.9.4";
+	 
+	 static String usage = "USAGE: java -jar target/jlems-"+VERSION+".jar [-cp folderpaths] model-file\n";
+	 
 
 	 private Main() {
 		 
@@ -36,7 +42,6 @@ public final class Main {
             showUsage();
             System.exit(1);
         }
-        
         
         HashMap<String, String> argMap = parseArguments(argv);
         
@@ -72,14 +77,19 @@ public final class Main {
             
         sim.readModel();
         sim.build();
+        
             
         boolean doRun = true;
             
         if (doRun) {
         	sim.run();
-        	E.info("Finished reading, building, running & displaying LEMS model");
-        }       
+        	E.info("Finished reading, building, running and displaying the LEMS model");
+        }    
+        	
+        IOUtil.saveReportAndTimesFile(sim);
+        
     }
+    
     
      
     private static HashMap<String, String> parseArguments(String[] argv) {
