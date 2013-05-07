@@ -1,5 +1,7 @@
 package org.lemsml.jlems.test;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -8,6 +10,7 @@ import org.junit.runner.Result;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
+import org.lemsml.jlems.core.xml.XMLElementReader;
 import org.lemsml.jlems.io.logging.DefaultLogger;
 import org.lemsml.jlems.io.util.FileUtil;
 
@@ -33,8 +36,10 @@ public class VersionTest {
     	assert(lemsBatScript.contains(org.lemsml.jlems.io.Main.VERSION));
     	
     	String pomFile = FileUtil.readStringFromFile(new File("pom.xml"));
+
+    	XMLElementReader xer = new XMLElementReader(pomFile);
+    	assertEquals(org.lemsml.jlems.io.Main.VERSION, xer.getRootElement().getElement("version").getBody());
     	
-    	assert(pomFile.contains("<version>"+org.lemsml.jlems.io.Main.VERSION+"</version>"));
 
 		E.info("Version usage ok...");
 	}

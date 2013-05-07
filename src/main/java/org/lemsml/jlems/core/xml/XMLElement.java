@@ -134,6 +134,10 @@ public class XMLElement {
 		return type;
 	}
 
+	public String getBody() {
+		return body;
+	}
+
 	public ArrayList<XMLElement> getElements() {
 		return children;
 	}

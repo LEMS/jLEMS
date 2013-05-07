@@ -10,17 +10,29 @@ import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.io.util.FileUtil;
 import org.lemsml.jlems.io.util.JUtil;
 
-
+/*
+ * Will be replaced by features in api branch!
+ */
 public class JarResourceInclusionReader extends AbstractInclusionReader {
 
-    private final File rootFile;
+    private File rootFile;
     
     private static ArrayList<File> searchDirs = new ArrayList<File>();
     private static ArrayList<String> searchPathsInJar = new ArrayList<String>();
 
-    private final File prefDir;
+    private File prefDir;
+    
+    private String content;
 
     
+    public JarResourceInclusionReader(String content) {
+    	this.content = content;
+    	rootFile = null;
+    	prefDir = null;
+
+        searchDirs.add(new File(System.getProperty("user.dir")));
+    }
+        
     public JarResourceInclusionReader(File f) {
     	super();
     	rootFile = f;
@@ -36,11 +48,13 @@ public class JarResourceInclusionReader extends AbstractInclusionReader {
     }
 
     public static void addSearchPathInJar(String path) {
+        if (!searchPathsInJar.contains(path)) 
     	searchPathsInJar.add(path);
     }
 
     public static void addSearchPath(File f) {
-        searchDirs.add(f);
+        if (!searchDirs.contains(f)) 
+        	searchDirs.add(f);
     }
 
     public void addSearchPath(String s) {
@@ -65,10 +79,10 @@ public class JarResourceInclusionReader extends AbstractInclusionReader {
         	String toTry = path+"/"+s;
         	try {
         		ret = JUtil.getRelativeResource(toTry);
-        		///System.out.println("Resource found in jar: "+toTry);
+        		System.out.println("Resource found in jar: "+toTry);
                 return ret;
         	} catch (ContentError ce) {
-        		///System.out.println("Resource not found in jar: "+toTry);
+        		System.out.println("Resource not found in jar: "+toTry);
         	}
         }
         
@@ -131,6 +145,10 @@ public class JarResourceInclusionReader extends AbstractInclusionReader {
     
     public String getRootContent() throws ContentError {
         try {
+        	if (content!=null) {
+        		return content;
+        	}
+        		
             return FileUtil.readStringFromFile(rootFile);
         }
         catch (IOException ex) {
