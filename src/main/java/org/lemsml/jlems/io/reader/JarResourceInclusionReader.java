@@ -79,10 +79,10 @@ public class JarResourceInclusionReader extends AbstractInclusionReader {
         	String toTry = path+"/"+s;
         	try {
         		ret = JUtil.getRelativeResource(toTry);
-        		System.out.println("Resource found in jar: "+toTry);
+        		//System.out.println("Resource found in jar: "+toTry);
                 return ret;
         	} catch (ContentError ce) {
-        		System.out.println("Resource not found in jar: "+toTry);
+        		//System.out.println("Resource not found in jar: "+toTry);
         	}
         }
         
