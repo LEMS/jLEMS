@@ -4,7 +4,7 @@
 package org.lemsml.jlems.core.api;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import org.lemsml.jlems.core.api.interfaces.ILEMSRunConfiguration;
 import org.lemsml.jlems.core.api.interfaces.IStateRecord;
@@ -17,7 +17,7 @@ public class LEMSRunConfiguration implements ILEMSRunConfiguration
 {
 	private double _timeStep;
 	private double _runtime; 
-	private Collection<IStateRecord> _statesToRecord;
+	private List<IStateRecord> _statesToRecord;
 
 	public LEMSRunConfiguration(double timeStep, double runtime)
 	{
@@ -61,7 +61,7 @@ public class LEMSRunConfiguration implements ILEMSRunConfiguration
 	 * @see org.lemsml.jlems.core.api.interfaces.ILEMSRunConfiguration#getRecordedStates()
 	 */
 	@Override
-	public Collection<IStateRecord> getRecordedStates()
+	public List<IStateRecord> getRecordedStates()
 	{
 		return _statesToRecord;
 	}

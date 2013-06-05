@@ -15,30 +15,34 @@ import org.lemsml.jlems.core.api.interfaces.IStateIdentifier;
 public class LEMSResultsContainer implements ILEMSResultsContainer
 {
 
-	private Map<IStateIdentifier, List<AValue>> _stateValues=new HashMap<IStateIdentifier, List<AValue>>();
+	private Map<IStateIdentifier, List<ALEMSValue>> _stateValues=new HashMap<IStateIdentifier, List<ALEMSValue>>();
 
 	@Override
-	public List<AValue> getStateValues(IStateIdentifier state)
+	public List<ALEMSValue> getStateValues(IStateIdentifier state)
 	{
 		return _stateValues.get(state);
 	}
 
 	@Override
-	public AValue getStateValue(IStateIdentifier state, int timeStep)
+	public ALEMSValue getStateValue(IStateIdentifier state, int timeStep)
 	{
 		return _stateValues.get(state).get(timeStep);
 	}
 
 	@Override
-	public void addStateValue(IStateIdentifier state, AValue value)
+	public void addStateValue(IStateIdentifier state, ALEMSValue value)
 	{
 		if(!_stateValues.containsKey(state))
 		{
-			_stateValues.put(state, new ArrayList<AValue>());
+			_stateValues.put(state, new ArrayList<ALEMSValue>());
 		}
 		_stateValues.get(state).add(value);
-				
-		
+	}
+
+	@Override
+	public Map<IStateIdentifier, List<ALEMSValue>> getStates()
+	{
+		return _stateValues;
 	}
 
 	

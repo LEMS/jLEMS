@@ -4,8 +4,9 @@
 package org.lemsml.jlems.core.api.interfaces;
 
 import java.util.List;
+import java.util.Map;
 
-import org.lemsml.jlems.core.api.AValue;
+import org.lemsml.jlems.core.api.ALEMSValue;
 
 /**
  * @author matteocantarelli
@@ -14,11 +15,13 @@ import org.lemsml.jlems.core.api.AValue;
 public interface ILEMSResultsContainer
 {
 
-	public void addStateValue(IStateIdentifier state, AValue value);
+	public void addStateValue(IStateIdentifier state, ALEMSValue value);
 	
-	public List<AValue> getStateValues(IStateIdentifier state);
+	public List<ALEMSValue> getStateValues(IStateIdentifier state);
 	
-	public AValue getStateValue(IStateIdentifier state, int timeStep);
+	public ALEMSValue getStateValue(IStateIdentifier state, int timeStep);
+
+	public Map<IStateIdentifier,List<ALEMSValue>> getStates();
 
 
 }

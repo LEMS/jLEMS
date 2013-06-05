@@ -3,10 +3,13 @@
  */
 package org.lemsml.jlems.core.api;
 
+import java.util.Collection;
+
 import org.lemsml.jlems.core.api.interfaces.ILEMSResultsContainer;
 import org.lemsml.jlems.core.api.interfaces.ILEMSRunConfiguration;
 import org.lemsml.jlems.core.api.interfaces.ILEMSSimulator;
 import org.lemsml.jlems.core.api.interfaces.ILEMSStateInstance;
+import org.lemsml.jlems.core.api.interfaces.IStateIdentifier;
 import org.lemsml.jlems.core.api.interfaces.IStateRecord;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.ConnectionError;
@@ -61,7 +64,7 @@ public class LEMSSimulator implements ILEMSSimulator
 					{
 						StateWrapper sw = _runnableAccessor.getStateWrapper(stateToRecord.getState().getStatePath());
 						double value = sw.getValue();
-						results.addStateValue(stateToRecord.getState(), new DoubleValue(value));
+						results.addStateValue(stateToRecord.getState(), new LEMSDoubleValue(value));
 					}
 				}
 			}
@@ -103,5 +106,12 @@ public class LEMSSimulator implements ILEMSSimulator
 			throw new LEMSExecutionException(e);
 		}
 
+	}
+
+	@Override
+	public Collection<IStateIdentifier> getAvailableStates()
+	{
+//		_runnableAccessor.getStateWrapper(path)
+		return null;
 	}
 }

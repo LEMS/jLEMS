@@ -3,12 +3,24 @@ package org.lemsml.jlems.core.api;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import org.lemsml.jlems.core.api.interfaces.ILEMSDocument;
 import org.lemsml.jlems.core.api.interfaces.ILEMSDocumentReader;
+import org.lemsml.jlems.core.api.interfaces.ILEMSRunConfiguration;
+import org.lemsml.jlems.core.expression.ParseError;
+import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.reader.LemsFactory;
+import org.lemsml.jlems.core.run.RunConfig;
+import org.lemsml.jlems.core.run.RuntimeDisplay;
+import org.lemsml.jlems.core.run.RuntimeRecorder;
+import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
+import org.lemsml.jlems.core.sim.DisplayCollector;
+import org.lemsml.jlems.core.sim.RunConfigCollector;
+import org.lemsml.jlems.core.type.Component;
 import org.lemsml.jlems.core.type.Lems;
+import org.lemsml.jlems.core.type.Target;
 import org.lemsml.jlems.core.xml.XMLElement;
 import org.lemsml.jlems.core.xml.XMLElementReader;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
@@ -21,11 +33,11 @@ public class LEMSDocumentReader implements ILEMSDocumentReader
 	{
 		File f = new File(modelURL.getFile());
 		FileInclusionReader fir = new FileInclusionReader(f);
-		//FIXME: If the included files will be passed as URL then we'll need something like a URLInclusionReader
+		// FIXME: If the included files will be passed as URL then we'll need something like a URLInclusionReader
 
 		return readModel(fir.read());
 	}
-	
+
 	@Override
 	public ILEMSDocument readModel(String modelContent) throws IOException, ContentError
 	{
@@ -36,6 +48,65 @@ public class LEMSDocumentReader implements ILEMSDocumentReader
 		LemsFactory lf = new LemsFactory();
 		Lems lems = lf.buildLemsFromXMLElement(xel);
 		return lems;
+	}
+
+	public static ILEMSRunConfiguration getLEMSRunConfiguration(ILEMSDocument lemsDocument) throws ContentError, ParseError
+	{
+		Lems lems = (Lems) lemsDocument;
+
+		Target dr = lems.getTarget();
+		Component simCpt = dr.getComponent();
+
+		if(simCpt == null)
+		{
+			E.error("No such component: " + dr.component + " as referred to by default simulation.");
+			E.error(lems.textSummary());
+			throw new ContentError("No such component " + dr.component);
+		}
+		StateType rootBehavior = simCpt.getStateType();
+
+		// collect everything in the StateType tree that makes a display
+		ArrayList<RuntimeDisplay> runtimeDisplays = new ArrayList<RuntimeDisplay>();
+		DisplayCollector oc = new DisplayCollector(runtimeDisplays);
+		rootBehavior.visitAll(oc);
+
+		ArrayList<RunConfig> runConfigs = new ArrayList<RunConfig>();
+		RunConfigCollector rcc = new RunConfigCollector(runConfigs);
+		rootBehavior.visitAll(rcc);
+
+		ILEMSRunConfiguration runConfig = new LEMSRunConfiguration(runConfigs.get(0).getTimestep(), runConfigs.get(0).getRuntime());
+		for(RuntimeRecorder rtr : runConfigs.get(0).getRecorders())
+		{
+			runConfig.addStateRecord(new StateRecord(new StateIdentifier(rtr.getQuantity())));
+		}
+		return runConfig;
+	}
+
+	public static String getTarget(ILEMSDocument lemsDocument) throws ContentError, ParseError
+	{
+		Lems lems = (Lems) lemsDocument;
+
+		Target dr = lems.getTarget();
+		Component simCpt = dr.getComponent();
+
+		if(simCpt == null)
+		{
+			E.error("No such component: " + dr.component + " as referred to by default simulation.");
+			E.error(lems.textSummary());
+			throw new ContentError("No such component " + dr.component);
+		}
+		StateType rootBehavior = simCpt.getStateType();
+
+		// collect everything in the StateType tree that makes a display
+		ArrayList<RuntimeDisplay> runtimeDisplays = new ArrayList<RuntimeDisplay>();
+		DisplayCollector oc = new DisplayCollector(runtimeDisplays);
+		rootBehavior.visitAll(oc);
+
+		ArrayList<RunConfig> runConfigs = new ArrayList<RunConfig>();
+		RunConfigCollector rcc = new RunConfigCollector(runConfigs);
+		rootBehavior.visitAll(rcc);
+		
+		return runConfigs.get(0).getTarget().getComponentID();
 	}
 
 }

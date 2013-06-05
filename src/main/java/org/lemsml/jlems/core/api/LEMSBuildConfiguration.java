@@ -12,13 +12,17 @@ import org.lemsml.jlems.core.api.interfaces.ILEMSBuildConfiguration;
 public class LEMSBuildConfiguration implements ILEMSBuildConfiguration
 {
 
+	private String _target;
+	
 	public LEMSBuildConfiguration(String target)
 	{
 		super();
 		this._target = target;
 	}
 
-	private String _target;
+	public LEMSBuildConfiguration()
+	{
+	}
 	
 	/* (non-Javadoc)
 	 * @see org.lemsml.jlems.core.api.interfaces.ILEMSBuildConfiguration#getSpecifiedTarget()

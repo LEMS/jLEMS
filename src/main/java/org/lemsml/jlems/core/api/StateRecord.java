@@ -34,6 +34,12 @@ public class StateRecord implements IStateRecord
 		this._endTimeStep = -1;
 	}
 
+	@Override
+	public String toString()
+	{
+		return "StateRecord ["+ _state + " startTimeStep=" + _startTimeStep + ", endTimeStep=" + _endTimeStep + "]";
+	}
+
 	public StateRecord(IStateIdentifier state, int startTimeStep)
 	{
 		super();

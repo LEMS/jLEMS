@@ -3,7 +3,7 @@
  */
 package org.lemsml.jlems.core.api.interfaces;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * @author matteocantarelli
@@ -18,6 +18,6 @@ public interface ILEMSRunConfiguration
 	
 	public void addStateRecord(IStateRecord stateRecord);
 	
-	public Collection<IStateRecord> getRecordedStates();
+	public List<IStateRecord> getRecordedStates();
 	
 }
