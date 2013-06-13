@@ -3,6 +3,7 @@
  */
 package org.lemsml.jlems.core.api.interfaces;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
@@ -23,6 +24,8 @@ public interface ILEMSDocumentReader
 	 * @throws ContentError
 	 */
 	public ILEMSDocument readModel(URL modelURL) throws IOException, ContentError;
+	
+	public ILEMSDocument readModel(File modelFile) throws IOException, ContentError;
 
 	public ILEMSDocument readModel(String modelString) throws IOException, ContentError;
 	

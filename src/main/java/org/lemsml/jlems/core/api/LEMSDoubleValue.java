@@ -30,6 +30,12 @@ public class LEMSDoubleValue extends ALEMSValue
 	{
 		return _value;
 	}
+
+	@Override
+	public String toString()
+	{
+		return getStringValue();
+	}
 	
 	
 }

@@ -24,6 +24,7 @@ import org.lemsml.jlems.core.type.Target;
 import org.lemsml.jlems.core.xml.XMLElement;
 import org.lemsml.jlems.core.xml.XMLElementReader;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
+import org.lemsml.jlems.io.reader.URLInclusionReader;
 
 public class LEMSDocumentReader implements ILEMSDocumentReader
 {
@@ -31,11 +32,12 @@ public class LEMSDocumentReader implements ILEMSDocumentReader
 	@Override
 	public ILEMSDocument readModel(URL modelURL) throws IOException, ContentError
 	{
-		File f = new File(modelURL.getFile());
-		FileInclusionReader fir = new FileInclusionReader(f);
-		// FIXME: If the included files will be passed as URL then we'll need something like a URLInclusionReader
-
-		return readModel(fir.read());
+		if(modelURL.getProtocol().equals("file"))
+		{
+			return readModel(new File(modelURL.getPath()));
+		}
+		URLInclusionReader uir = new URLInclusionReader(modelURL);
+		return readModel(uir.read());
 	}
 
 	@Override
@@ -107,6 +109,13 @@ public class LEMSDocumentReader implements ILEMSDocumentReader
 		rootBehavior.visitAll(rcc);
 		
 		return runConfigs.get(0).getTarget().getComponentID();
+	}
+
+	@Override
+	public ILEMSDocument readModel(File modelFile) throws IOException, ContentError
+	{
+		FileInclusionReader fir = new FileInclusionReader(modelFile);
+		return readModel(fir.read());
 	}
 
 }
