@@ -10,9 +10,7 @@
 
 
     <ComponentType name="baseCell"
-        description="Base type of any cell which can be used in a population">
-
-    </ComponentType>
+        description="Base type of any cell which can be used in a population"/>
     
     <ComponentType name="iafTauRefCell"
         description="Integrate and fire cell which returns to its leak reversal potential of _leakReversal with a time course _tau. It has a refractory period of _refract after spiking">
