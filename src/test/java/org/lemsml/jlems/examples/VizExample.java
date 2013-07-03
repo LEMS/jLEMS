@@ -55,7 +55,7 @@ public final class VizExample {
 	public static void runWithMeta(String s) {
 		initIO();
 		TimeLogger tim = new TimeLogger();
-		File fdir = new File("examples");
+		File fdir = new File("src/test/resources");
 		RunFileExample fe = new RunFileExample(fdir, s);
 		
 		fe.runWithMeta();
