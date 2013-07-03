@@ -954,6 +954,10 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	
 	}
 
+	protected void addConstant(String name, Dimension dim, String value) {
+		 constants.add(new Constant(name, dim, value));
+	}
+
 	protected void addText(String txt) {
 		 texts.add(new Text(txt));
 	}

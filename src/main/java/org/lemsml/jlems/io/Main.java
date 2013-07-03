@@ -21,7 +21,7 @@ import org.lemsml.jlems.io.util.FileUtil;
 
 public final class Main {
 
-	 public static final String VERSION = "0.9.5.1";
+	 public static final String VERSION = "0.9.5.2";
 	 
 	 static String usage = "USAGE: java -jar target/jlems-"+VERSION+".jar [-cp folderpaths] model-file\n";
 	 

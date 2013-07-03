@@ -640,7 +640,13 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		if (pvn.indexOf("/") >= 0) {
 			ret = getPathParamValue(pvn.split("/"));
 		} else {
-			ret = paramValues.getByName(pvn);
+			if (paramValues==null) {
+				String warn = "No such param: " + pvn + " on " + getID() + ", existing params:"+paramValues;
+				E.warning(warn + "\n");
+				return null;
+			} else {
+				ret = paramValues.getByName(pvn);
+			}
 		}
 		if (ret == null) {
 			String warn = "No such param: " + pvn + " on " + getID() + ", existing params:";
