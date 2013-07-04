@@ -11,7 +11,9 @@ public final class ExRegimes {
 	
 	public static void main(String[] argv) {
 		
-		 VizExample.runWithMeta("test_regime_iaf.xml");
+//		 VizExample.runWithMeta("test_regime_iaf.xml");
+		 
+		 VizExample.run("test_regime_iaf.xml");
 	}
 	 
     
