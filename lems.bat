@@ -1,4 +1,8 @@
-set CLASSPATH=.;.\target\jlems-0.9.2.jar;%LEMS_HOME%\target\jlems-0.9.2.jar
+@echo off
+
+set LEMS_VERSION=0.9.5.2
+
+set CLASSPATH=.;.\target\jlems%LEMS_VERSION%-.jar;%LEMS_HOME%\target\jlems-%LEMS_VERSION%.jar
 
 echo Running the LEMS application...
 

@@ -285,6 +285,8 @@ public class ComponentRegime {
 	public ComponentRegime makeCopy(StateType p) {
 		ComponentRegime ret= new ComponentRegime(p, name, typeName);
 	
+		ret.setInitial(initial);
+		
 		for (String s : indeps) {
 			ret.addIndependentVariable(s);
 		}

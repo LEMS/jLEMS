@@ -236,6 +236,10 @@ public class LemsFactory extends AbstractLemsFactory {
             if (xn.equals("UNUSED")) {
             } else if (xn.equals("component")) {
                 ret.component = parseString(xv);
+            } else if (xn.equals("reportFile")) {
+                ret.reportFile = parseString(xv);
+            } else if (xn.equals("timesFile")) {
+                ret.timesFile = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
             }

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
 import org.lemsml.jlems.core.expression.Parser;
+import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.Child;
@@ -14,6 +15,7 @@ import org.lemsml.jlems.core.type.ComponentBuilder;
 import org.lemsml.jlems.core.type.ComponentReference;
 import org.lemsml.jlems.core.type.ComponentType;
 import org.lemsml.jlems.core.type.ComponentTypeBuilder;
+import org.lemsml.jlems.core.type.Constant;
 import org.lemsml.jlems.core.type.EventPort;
 import org.lemsml.jlems.core.type.Exposure;
 import org.lemsml.jlems.core.type.FinalParam;
@@ -98,16 +100,27 @@ public class ComponentFlattener {
 			String newText = flatName(t.getName(), prefix);
 			typeB.addText(newText);
 		}
+		
+		ArrayList<String> constantsAdded = new ArrayList<String>();
+		for (Constant ct : typ.getConstants()) {
+			String fname = flatName(ct.getName(), prefix);
+			constantsAdded.add(fname);
+			typeB.addConstant(fname, ct.getDimension(), ct.getStringValue());
+		}
 
 		for (FinalParam p : typ.getFinalParams()) {
 	 		String fname = flatName(p.getName(), prefix, varHM);
-			typeB.addParameter(fname, p.getDimension());
+	 		if (!constantsAdded.contains(fname)) {
+		 		E.info("+++ fname: "+fname+", p.getName: "+p.getName());
+				typeB.addParameter(fname, p.getDimension());
+	 		}
 		}
 
 		for (Exposure ex : typ.getExposures()) {
 			String fname = flatName(ex.getName(), prefix);
 			typeB.addExposure(fname, ex.getDimension());
 		}
+
 
 		for (Requirement req : typ.getRequirements()) {
 			typeB.ensureHasRequirement(req.getName(), req.getDimension());
@@ -140,8 +153,12 @@ public class ComponentFlattener {
 		for (ParamValue pv : cpt.getParamValues()) {
 	 		String fname = flatName(pv.getName(), prefix);
 			// TODO
-			String val = cpt.getAttributes().getByName(pv.getName()).getValue();
-			cbuilder.addParameter(fname, val);
+	 		if (cpt.getAttributes().getByName(pv.getName())!=null)
+	 		{
+		 		E.info("--- fname: "+fname+", pv.getName: "+pv.getName()+", attrs: "+cpt.getAttributes());
+				String val = cpt.getAttributes().getByName(pv.getName()).getValue();
+				cbuilder.addParameter(fname, val);
+	 		}
 		}
 
 		
@@ -164,6 +181,7 @@ public class ComponentFlattener {
 		 
 			String val = dv.getValueExpression();
 			String sel = dv.getSelect();
+			E.info("--------DerivedVariable, fname: " + fname+", val: "+val+", sel: "+sel);
 
 			
 			if (val != null) {
@@ -186,9 +204,18 @@ public class ComponentFlattener {
 						throw new ContentError("Unrecognized reduce: " + red);
 					}
 				
-					int iwc = sel.indexOf("[*]");
-					String rt = sel.substring(0, iwc);
-					String var = sel.substring(iwc + 4, sel.length());
+					String rt;
+					String var;
+					if (sel.indexOf("[*]")>0) {
+						int iwc = sel.indexOf("[*]");
+						rt = sel.substring(0, iwc);
+						var = sel.substring(iwc + 4, sel.length());
+					} else {
+						int iwc = sel.lastIndexOf("/");
+						rt = sel.substring(0, iwc);
+						var = sel.substring(iwc + 2, sel.length());
+					} 
+						
 					
 					ArrayList<String> items = new ArrayList<String>();
 					items.add(dflt);
@@ -239,6 +266,7 @@ public class ComponentFlattener {
 				typeB.addOnStart(vnm, val);
 			}
 		}
+
 	}
 	
 	

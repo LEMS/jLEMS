@@ -141,7 +141,7 @@ public class WorldCanvas extends BaseCanvas implements ModeSettable {
 
 
       } else if (box.hasData()) {
-    	  System.out.println("framing " + getHeight());
+    	  //System.out.println("framing " + getHeight());
     	  syncSize();
     	  
     	  reframeBox = box.makeCopy();

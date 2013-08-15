@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.lemsml</groupId>
 	<artifactId>jlems</artifactId>
-	<version>0.9.3</version>
+	<version>0.9.5.2</version>
 	<packaging>bundle</packaging>
 	<dependencies>
 		<dependency>
@@ -59,24 +59,6 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.2.1</version>
-				<executions>
-					<execution>
-						<id>generateLEMSModel</id>
-						<phase>install</phase>
-						<goals>
-							<goal>java</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<mainClass>org.lemsml.jlems.io.reader.LemsModelGenerator</mainClass>
-					<executable>maven</executable>
-				</configuration>
 			</plugin>
 		</plugins>
 		<pluginManagement>

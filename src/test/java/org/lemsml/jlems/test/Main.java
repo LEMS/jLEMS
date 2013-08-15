@@ -9,10 +9,10 @@ import org.junit.runner.notification.Failure;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.io.logging.DefaultLogger;
 
-public final class MainTest {
+public final class Main {
 
 	
-	private MainTest() {
+	private Main() {
 		
 	}
 	

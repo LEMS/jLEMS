@@ -103,7 +103,13 @@ public final class FileUtil
 	{
 		if (!f.exists())
 		{
-			f.createNewFile();
+            try {
+                f.createNewFile();
+                
+            } catch (IOException ex) {
+                E.error("Problem creating the file: "+f.getAbsolutePath()+"\n"+ex.getMessage());
+                return false;
+            }
 		}
 		String fnm = f.getName();
 		boolean ok = false;

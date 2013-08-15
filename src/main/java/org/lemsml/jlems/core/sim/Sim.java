@@ -21,7 +21,6 @@ import org.lemsml.jlems.core.run.RuntimeRecorder;
 import org.lemsml.jlems.core.run.StateInstance;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.type.Component;
-import org.lemsml.jlems.core.type.Lems;
 import org.lemsml.jlems.core.type.Meta;
 import org.lemsml.jlems.core.type.Target;
  
@@ -29,7 +28,7 @@ import org.lemsml.jlems.core.type.Target;
 
 public class Sim extends LemsProcess {
 
-   StateType rootBehavior;
+    StateType rootBehavior;
     StateType targetBehavior;
     
      
@@ -43,13 +42,19 @@ public class Sim extends LemsProcess {
     int maxExecutionTime = 0;
     
     EventManager eventManager;
+
+    public long simulationStartTime = -1; 
+    public long simulationEndTime = -1;  
+    public long simulationSaveTime = -1; 
+    public double[] times;
     
-  
+    
     public Sim(String srcStr) {
     	super(srcStr);
     }
  
-
+ 	
+    	
     public void build() throws ContentError, ConnectionError, ParseError {
     	
     	applySubstitutions();
@@ -82,6 +87,7 @@ public class Sim extends LemsProcess {
  	    	}
 	    }
 	     
+	 
 	    // collect everything in the StateType tree that records something
 	    ArrayList<RuntimeOutput> runtimeOutputs = new ArrayList<RuntimeOutput>();
 	    OutputCollector oco = new OutputCollector(runtimeOutputs);
@@ -98,6 +104,8 @@ public class Sim extends LemsProcess {
 	    runConfigs = new ArrayList<RunConfig>();
 	    RunConfigCollector rcc = new RunConfigCollector(runConfigs);
 	    rootBehavior.visitAll(rcc);
+
+	   
 	}
 
     
@@ -123,38 +131,39 @@ public class Sim extends LemsProcess {
     }
   
 
+    
     public void run(RunConfig rc, boolean flatten) throws ConnectionError, ContentError, RuntimeError, ParseError {
    	    	
   		StateType raw = rc.getTarget();
-  		
+  	
   		Component cpt = rc.getControlComponent();
   		
   		boolean mflat = flatten;
 
   		if (cpt != null) {
-  		E.info("checking metas " + cpt.getID() + " " + cpt.metas.size());
-  		
-  		for (Meta m : cpt.metas.getContents()) {
-  			HashMap<String, String> hm = m.getAttributes();
-  			if (hm.containsKey("method")) {
-  				String val = hm.get("method").toLowerCase();
-  				if (val.equals("rk4")) {
-  					mflat = true;
-  					E.info("Got meta for jlems: " + val);
-  					
-  				} else if (val.equals("eulertree")) {
-  					mflat = false; 
-  					E.info("Got meta for jlems: " + val);
-  					
-  				} else {
-  					E.warning("unrecognized method " + val);
-  				}
-  			}
-  			
+	  		E.info("checking metas " + cpt.getID() + " " + cpt.metas.size());
+	  		
+	  		for (Meta m : cpt.metas.getContents()) {
+	  			HashMap<String, String> hm = m.getAttributes();
+	  			if (hm.containsKey("method")) {
+	  				String val = hm.get("method").toLowerCase();
+	  				if (val.equals("rk4")) {
+	  					mflat = true;
+	  					E.info("Got meta for jlems: " + val);
+	  					
+	  				} else if (val.equals("eulertree")) {
+	  					mflat = false; 
+	  					E.info("Got meta for jlems: " + val);
+	  					
+	  				} else {
+	  					E.warning("unrecognized method " + val);
+	  				}
+	  			}
+	  			
+	  		}
   		}
-  		}
   		
-
+  		
   		if (mflat) {
   			targetBehavior = raw.getConsolidatedStateType("root");
   		} else {
@@ -162,10 +171,12 @@ public class Sim extends LemsProcess {
   		}
   		
   	    StateInstance rootState = lems.build(targetBehavior, eventManager);
+  	
   	    RunnableAccessor ra = new RunnableAccessor(rootState);
+  	       
   	    ArrayList<RuntimeRecorder> recorders = rc.getRecorders();
   	    
-
+  	    
   	    for (RuntimeRecorder rr : recorders) {
   	    	String disp = rr.getDisplay();
   	    	if (dvHM.containsKey(disp)) {
@@ -187,31 +198,32 @@ public class Sim extends LemsProcess {
         int nstep = (int) Math.round(rc.getRuntime() / dt);
 
  
-        long start = System.currentTimeMillis();
+        simulationStartTime = System.currentTimeMillis();
   
         double t = 0;
-        
+        times = new double[nstep+1];
        
         rootState.initialize(null);  
           
         long realTimeStart = System.currentTimeMillis();
         int nsDone = 0;
      
-        for (int istep = 0; istep < nstep; istep++) {
+        for (int istep = 0; istep <= nstep; istep++) {
         	if (istep > 0) {
         		eventManager.advance(t);
                 rootState.advance(null, t, dt);
         	}
+        	//System.out.println("Time: "+(float)t);
         	
         	
         	for (ResultWriter rw : resultWriters) {
         		rw.advance(t);
         	}
-        	
         	for (RuntimeRecorder rr : recorders) {
         		rr.appendState(t);
         	}
            
+        	times[istep] = t;
   
             t += dt;
             
@@ -226,13 +238,15 @@ public class Sim extends LemsProcess {
             nsDone = istep;
         }
         E.info("Finished " + nsDone + " steps");
-    	
         
+        simulationEndTime = System.currentTimeMillis();
+    	        
         for (ResultWriter rw : resultWriters) {
+    		rw.advance(t);
     		rw.close();
     	}
         
-        long end = System.currentTimeMillis();
+        simulationSaveTime = System.currentTimeMillis();
     }
 
     

@@ -12,6 +12,12 @@ public class Target   {
 	@ModelProperty(info="Reference to the entry point component")
 	public String component;
 	public Component r_component;
+
+	@ModelProperty(info="Optional attribute specifying file in which to save short report of simulation")
+	public String reportFile;
+	
+	@ModelProperty(info="Optional attribute specifying file in which to save times used in simulation")
+	public String timesFile;
     
  	
 	public void resolve(Lems lems) throws ContentError {

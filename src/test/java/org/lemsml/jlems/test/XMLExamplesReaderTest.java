@@ -60,7 +60,7 @@ public class XMLExamplesReaderTest {
 		DefaultLogger.initialize();
 		XMLExamplesReaderTest ct = new XMLExamplesReaderTest();
 		Result r = org.junit.runner.JUnitCore.runClasses(ct.getClass());
-		MainTest.checkResults(r);
+		Main.checkResults(r);
 
 	}
 

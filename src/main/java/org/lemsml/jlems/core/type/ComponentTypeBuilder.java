@@ -1,5 +1,6 @@
 package org.lemsml.jlems.core.type;
 
+import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.dynamics.DynamicsBuilder;
 import org.lemsml.jlems.core.type.dynamics.OnCondition;
@@ -25,6 +26,10 @@ public class ComponentTypeBuilder {
 
 	public void addText(String newText) {
 		target.addText(newText);
+		
+	}
+	public void addConstant(String name, Dimension dim, String value) {
+		target.addConstant(name, dim, value);
 		
 	}
 
@@ -118,6 +123,7 @@ public class ComponentTypeBuilder {
 
 
 	public void addOnStart(String vnm, String val) {
+		E.info("-------------    addOnStart: "+vnm+", "+val);
 		checkDynamics();
 		dynB.addOnStart(vnm, val);	
 	}

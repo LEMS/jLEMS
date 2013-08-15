@@ -32,7 +32,7 @@
 	<Text name="path"/>
 	<Text name="fileName"/>
 	
-	<Children type="OutputColumn"/>
+	<Children name="outputColumn" type="OutputColumn"/>
 	
 	<Simulation>
 		<DataWriter path="path" fileName="fileName"/>

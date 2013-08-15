@@ -20,6 +20,7 @@ import org.lemsml.jlems.core.type.Lems;
 import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.logging.DefaultLogger;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
+import org.lemsml.jlems.io.xmlio.XMLSerializer;
  
 
 
@@ -62,7 +63,7 @@ public class ComponentFlatteningTest {
     public void flattenFromFile(File f, String tgtid) throws ContentError,
     		ConnectionError, ParseError, IOException, RuntimeError, ParseException, 
     		BuildException, XMLException {
-    	E.info("Loading LEMS file from: " + f.getAbsolutePath());
+    	E.info("Loading a LEMS file from: " + f.getAbsolutePath());
 
         FileInclusionReader fir = new FileInclusionReader(f);
         Sim sim = new Sim(fir.read());
@@ -81,11 +82,11 @@ public class ComponentFlatteningTest {
         ComponentType ct = cf.getFlatType();
         Component cp = cf.getFlatComponent();
         
-        // String typeOut = XMLSerializer.serialize(ct);
-        // String cptOut = XMLSerializer.serialize(cp);
+        String typeOut = XMLSerializer.serialize(ct);
+        String cptOut = XMLSerializer.serialize(cp);
       
-        // E.info("Flat type: \n" + typeOut);
-        // E.info("Flat cpt: \n" + cptOut);
+        E.info("Flat type: \n" + typeOut);
+        E.info("Flat cpt: \n" + cptOut);
         
 		lems.addComponentType(ct);
 		lems.addComponent(cp);

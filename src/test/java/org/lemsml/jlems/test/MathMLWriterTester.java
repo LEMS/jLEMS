@@ -1,16 +1,7 @@
 package org.lemsml.jlems.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.HashMap;
-
-import org.junit.Test;
 import org.junit.runner.Result;
-import org.lemsml.jlems.core.expression.AndNode;
 import org.lemsml.jlems.core.expression.MathMLWriter;
-import org.lemsml.jlems.core.expression.OrNode;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
 import org.lemsml.jlems.core.expression.Parser;
@@ -21,7 +12,7 @@ import org.lemsml.jlems.io.logging.DefaultLogger;
 // not really a test - just for dev as yet
 
 
-public class MathMLWriterTest {
+public class MathMLWriterTester {
 
 	String[] expressions = {
 			"a + b",
@@ -69,7 +60,7 @@ public class MathMLWriterTest {
 
 	public static void main(String[] args) {
 		DefaultLogger.initialize();
-		MathMLWriterTest wt = new MathMLWriterTest();
+		MathMLWriterTester wt = new MathMLWriterTester();
 		try {
 			wt.generatMathML();
 		} catch (ParseError pe) {
@@ -81,9 +72,9 @@ public class MathMLWriterTest {
 	
 	
 	public void runJUnit() {	
-		MathMLWriterTest ct = new MathMLWriterTest();
+		MathMLWriterTester ct = new MathMLWriterTester();
 		Result r = org.junit.runner.JUnitCore.runClasses(ct.getClass());
-		MainTest.checkResults(r);
+		Main.checkResults(r);
 
 	}
 

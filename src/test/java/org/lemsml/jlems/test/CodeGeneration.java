@@ -26,14 +26,14 @@ import org.lemsml.jlems.io.reader.FileInclusionReader;
 
 // N.B. - not a test yet, just for development
 
-public class CodeGenerationTest
+public class CodeGeneration
 {
 
 	public static void main(String[] args) throws ContentError, ParseError, ConnectionError, RuntimeError, IOException, ParseException, BuildException, XMLException
 	{
 		DefaultLogger.initialize();
 
-		CodeGenerationTest cft = new CodeGenerationTest();
+		CodeGeneration cft = new CodeGeneration();
 		cft.runExample1();
 
 	}

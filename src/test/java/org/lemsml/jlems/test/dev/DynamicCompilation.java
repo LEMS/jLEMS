@@ -7,11 +7,11 @@ import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.GeneratedInstance;
 
 
-public class DynamicCompilationTest {
+public class DynamicCompilation {
 
 	
 	public static void main(String[] argv) {
-		DynamicCompilationTest dct = new DynamicCompilationTest();
+		DynamicCompilation dct = new DynamicCompilation();
 		try {
 			dct.compileAndLoad();
 		} catch (Exception ex) {

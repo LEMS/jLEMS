@@ -86,7 +86,7 @@ public class LemsExamplesReaderTest {
 		DefaultLogger.initialize();
 		LemsExamplesReaderTest ct = new LemsExamplesReaderTest();
 		Result r = org.junit.runner.JUnitCore.runClasses(ct.getClass());
-		MainTest.checkResults(r);
+		Main.checkResults(r);
 
 	}
 

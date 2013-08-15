@@ -144,7 +144,7 @@ public class ParserTest {
 		DefaultLogger.initialize();
 		ParserTest ct = new ParserTest();
 		Result r = org.junit.runner.JUnitCore.runClasses(ct.getClass());
-		MainTest.checkResults(r);
+		Main.checkResults(r);
 
 	}
 

@@ -81,7 +81,7 @@ public class DimensionTest {
 		DefaultLogger.initialize();
 		DimensionTest ct = new DimensionTest();
 		Result r = org.junit.runner.JUnitCore.runClasses(ct.getClass());
-		MainTest.checkResults(r);
+		Main.checkResults(r);
 
 	}
 
