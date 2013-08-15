@@ -70,7 +70,11 @@ public class JarResourceInclusionReader extends AbstractInclusionReader {
 	}
 
     
-    public String getRelativeContent(String s) throws ContentError {
+    public String getRelativeContent(String attribute, String s) throws ContentError {
+    	if(attribute.equals(URL))
+    	{
+    		throw new IllegalArgumentException("URL is not supported when using the FileInclusionReader!");
+    	}
     	String ret = "";
     	
         //E.info("Getting rel path for: "+s+", rootFile: "+ rootFile.getAbsolutePath()+", searchPathsInJar: "+ searchPathsInJar);
