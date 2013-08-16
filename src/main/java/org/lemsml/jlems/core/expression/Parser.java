@@ -8,8 +8,22 @@ import java.util.HashSet;
 import org.lemsml.jlems.core.logging.E;
 
 public class Parser {
+
+	public static final String SIN = "sin";
+	public static final String COS = "cos";
+	public static final String TAN = "tan";
+	public static final String EXP = "exp";
+	public static final String SQRT = "sqrt";
+	public static final String CEIL = "ceil";
+	public static final String SUM = "sum";
+	public static final String PRODUCT = "product";
+	public static final String LN = "ln";
+	public static final String LOG = "log";
+	public static final String RANDOM = "random";
+	public static final String FACTORIAL = "factorial";
+	public static final String ABS = "abs";
 	
-	static String[] sf = {"sin", "cos", "tan", "exp", "sqrt", "sum", "product", "ln", "log", "random"};
+    static String[] sf = {SIN, COS, TAN, EXP, SQRT, CEIL, SUM, PRODUCT, LN, LOG, RANDOM, FACTORIAL, ABS};
 	static HashSet<String> stdFuncs = new HashSet<String>();
 	
 	static HashMap<String, AbstractOperatorNode> opHM = new HashMap<String, AbstractOperatorNode>();	

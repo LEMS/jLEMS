@@ -52,35 +52,69 @@ public class FunctionNode extends AbstractUnaryNode implements DoubleParseTreeNo
 		}
 	}
 
- 
- 
 
 	public double call(double arg) {
+		return evaluate(arg, fname);
+	}
+ 
+
+	public static double evaluate(double arg, String fname) {
 		double ret = Double.NaN;
-		// "cos", "tan", "exp", "sum", "product", "ln"};
-		if (fname.equals("sin")) {
+		
+		if (fname.equals(Parser.SIN)) {
 			ret = Math.sin(arg);
 			
-		} else if (fname.equals("cos")) {
+		} else if (fname.equals(Parser.COS)) {
 			ret = Math.cos(arg);
 		
-		} else if (fname.equals("tan")) {
+		} else if (fname.equals(Parser.TAN)) {
 			ret = Math.tan(arg);
 		
-		} else if (fname.equals("ln") || fname.equals("log")) {
+		} else if (fname.equals(Parser.LN) || fname.equals(Parser.LOG)) {
+			if (arg<=0)
+			{
+				E.error("Log/ln of zero/negative number!!: " + arg);
+				return Double.NaN;
+			}
 			ret = Math.log(arg);
 		
-		} else if (fname.equals("exp")) {
+		} else if (fname.equals(Parser.EXP)) {
 			ret = Math.exp(arg);
 			
-		} else if (fname.equals("abs")) {
+		} else if (fname.equals(Parser.ABS)) {   
 			ret = Math.abs(arg);
 
-		} else if (fname.equals("sqrt")) {
+		} else if (fname.equals(Parser.SQRT)) {
+			if (arg<0)
+			{
+				E.error("Square root of negative number!!: " + arg);
+				return Double.NaN;
+			}
 			ret = Math.sqrt(arg);
+			
+		} else if (fname.equals(Parser.CEIL)) {
+			ret = Math.ceil(arg);
 
-		} else if (fname.equals("random")) {
+		} else if (fname.equals(Parser.RANDOM)) {
 			ret = arg * Lems.getRandomGenerator().nextDouble();
+
+		} else if (fname.equals(Parser.FACTORIAL)) {
+			if (arg!=(int)arg)
+			{
+				E.error("Factorial of non integer!!: " + arg);
+				return Double.NaN;
+			}
+			if (arg<0)
+			{
+				E.error("Factorial of negative number: " + arg);
+				return Double.NaN;
+			}
+			int intVal = (int)arg;
+			int fact = 1; 
+	        for (int i = 1; i <= intVal; i++) {
+	            fact *= i;
+	        }
+			ret = fact;
 
 		} else {
 			E.error("unrecognized function: " + fname);

@@ -68,7 +68,7 @@ public class VariableNode extends Node implements DoubleParseTreeNode {
 		if (dimHM.containsKey(svar)) {
 			ret = dimHM.get(svar);
 		} else {
-			throw new ContentError("No such variable in map: " + svar);
+			throw new ContentError("No such variable in map: " + svar+", existing vars: "+dimHM);
 		}
 		return ret;
 	}
@@ -79,7 +79,7 @@ public class VariableNode extends Node implements DoubleParseTreeNode {
 		if (dimHM.containsKey(svar)) {
 			ret = dimHM.get(svar);
 		} else {
-			throw new ContentError("No such variable in map: " + svar);
+			throw new ContentError("No such variable in map: " + svar+", existing vars: "+dimHM);
 		}
 		return ret;
 	}

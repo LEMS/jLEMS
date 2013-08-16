@@ -3,6 +3,7 @@ package org.lemsml.jlems.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.HashMap;
 
@@ -66,13 +67,38 @@ public class ParserTest {
 		eval = pt.makeFloatEvaluator().evalD(valHM);
 		res = 5e24;
 		assertEquals(res, eval, 0);
+
+		testEval("5e24", 5e24, valHM);
+		testEval("5e-24", 5e-24, valHM);
+		
+
+		testEval("ceil(1.00001)", 2, null);
+		testEval("ceil(0)", 0, null);
+		testEval("ceil(b/a)", 2, valHM);
+		
+
+		testEval("abs(2)", 2, valHM);
+		testEval("abs(-2)", 2, valHM);
+
+		testEval("factorial(2)", 2, valHM);
+		testEval("factorial(9)", 362880, valHM);
+		checkFailure("factorial(-10)", 0, null);
+
+		testEval("log(100)", Math.log(100), null);
+		checkFailure("log(-10)", 6, null);
+
+		testEval("sqrt(9)", 3, valHM);
+
+		checkFailure("sqrt(-10)", 0, null);
+		
 		
 
 
 		String[] tests = new String[] { "(v/VOLT)", "rate * exp((v - midpoint)/scale)", "(exp(73 * X))",
-				"( 0.76 ) / TIME_SCALE", "sqrt(4)", "exp (x * (-0.059))", "1.2 * 5 * 5.0e-3 * 6e34" };
+				"( 0.76 ) / TIME_SCALE", "sqrt(4)", "exp (x * (-0.059))", "1.2 * 5 * 5.0e-3 * 6e34", "ceil(2.4)" };
 
 		for (String test : tests) {
+			E.info("Parsing: " + test);
 			pt = p.parseExpression(test);
 			E.info("Parsed to: " + pt.toString());
 		}
@@ -92,6 +118,36 @@ public class ParserTest {
 		E.info("2 evaluates to " + eval2);
 
 		assertEquals(eval1, eval2, 0);
+		
+	}
+
+	private void checkFailure(String expr, double val, HashMap<String, Double> valHM)
+	{
+		try {
+	 		Parser p = new Parser();
+			E.info("- Parsing: "+expr+"; = "+val+"?");
+			ParseTree pt = p.parseExpression(expr);
+			if (valHM==null) valHM = new HashMap<String, Double>();
+			double eval = pt.makeFloatEvaluator().evalD(valHM);
+			E.info("- Parsed to: " + pt.toString()+", eval: "+eval);
+			if (Double.isNaN(eval))
+				return;
+			fail("Expression: "+expr+" was supposed to lead to an exception, but didn't!");
+		} catch (Exception e) {
+			//e.printStackTrace();
+		} 
+	}
+	
+	
+	private void testEval(String expr, double val, HashMap<String, Double> valHM) throws ParseError, ContentError
+	{
+ 		Parser p = new Parser();
+		E.info("- Parsing: "+expr+"; = "+val+"?");
+		ParseTree pt = p.parseExpression(expr);
+		if (valHM==null) valHM = new HashMap<String, Double>();
+		double eval = pt.makeFloatEvaluator().evalD(valHM);
+		E.info("- Parsed to: " + pt.toString()+", eval: "+eval);
+		assertEquals(val, eval, 0);
 	}
 
 	@Test
