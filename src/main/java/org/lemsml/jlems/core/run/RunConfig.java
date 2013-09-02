@@ -62,7 +62,7 @@ public class RunConfig {
 	}
 
 	public Component getControlComponent() {
-		E.missing();
+		//E.missing();
 		return null;
 	}
 	

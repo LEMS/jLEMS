@@ -17,7 +17,7 @@ public class PrintDataViewer implements DataViewer {
 	public void addPoint(String line, double x, double y) {
 		nrep += 1;
 		if (nrep <= 4) {
-			E.info("" + nrep + " point: " + line + " " + x + " " + y);
+			//E.info("" + nrep + " point: " + line + " " + x + " " + y);
 		}
 	}
 
