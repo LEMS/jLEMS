@@ -194,6 +194,14 @@ public class ParserTest {
 		valHM.put("X", -0.2);
 		res = pt.makeBooleanEvaluator().evalB(valHM);
 		assertFalse(src, res);
+		
+
+		src = "S1 .gt. 1.5E-5";
+		pt = p.parseCondition(src);
+		valHM = new HashMap<String, Double>();
+		valHM.put("S1", -0.2);
+		res = pt.makeBooleanEvaluator().evalB(valHM);
+		assertFalse(src, res);
 	}
 
 	public static void main(String[] args) {

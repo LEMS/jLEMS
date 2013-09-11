@@ -94,6 +94,7 @@ public class Parser {
 
 	public ParseTree parseCondition(String e) throws ParseError {
 		ParseTree ret = null;
+		//E.info("Parsing condition: "+e);
 		ParseTree ev = parse(e);
 		if (ev.isBoolean()) {
 			ret = ev;
@@ -232,6 +233,10 @@ public class Parser {
 		ArrayList<Node> ret = new ArrayList<Node>();
 		
 		String ewk = disambiguate(e);
+
+		if (verbose) {
+			E.info("disambiguated " + ewk);
+		}
 		for (String op : opHM.keySet()) {
 			ewk = replaceAll(ewk, op, " " + op + " ");
 		}
@@ -349,7 +354,7 @@ public class Parser {
 		while (newmatch >= 0) {
 			ret += str.substring(lastmatch, newmatch);
 
-			if (newmatch + 3 < strlen && numberHS.contains(str.substring(newmatch + 2, newmatch + 3))) {
+			if (newmatch + 3 <= strlen && numberHS.contains(str.substring(newmatch + 2, newmatch + 3))) {
 				ret += to;
 			} else {
 				ret += frm;
