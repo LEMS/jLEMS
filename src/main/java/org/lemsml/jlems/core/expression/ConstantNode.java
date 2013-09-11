@@ -25,8 +25,10 @@ public class ConstantNode extends Node implements DoubleParseTreeNode {
 	}
 	
        
+    @Override
 	public String toExpression() {
-		return sval;
+        
+		return dval+"";
 	}
 
 
