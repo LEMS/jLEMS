@@ -22,3 +22,5 @@ Run an example:
 
     ./lems src/test/resources/example1.xml        (Linux/Mac)
     lems.bat src\test\resources\example1.xml      (Windows)
+
+[![Build Status](https://travis-ci.org/LEMS/jLEMS.png?branch=master)](https://travis-ci.org/LEMS/jLEMS)
