@@ -53,11 +53,14 @@ public final class JUtil {
       String sret = null;
 
       try {
-         InputStream fis = cls.getResourceAsStream(path);
-         sret = readInputStream(fis);
+        if (path.contains("..")) {
+            path = (new File(path)).getCanonicalPath();
+        }
+        InputStream fis = cls.getResourceAsStream(path);
+        sret = readInputStream(fis);
 
       } catch (Exception ex) {
-         throw new ContentError("ResourceAccess - cant get resource " + path + " relative to " + cls + ": " + ex);
+         throw new ContentError("ResourceAccess - can't get resource " + path + " relative to " + cls + ": " + ex);
       }
       return sret;
    }

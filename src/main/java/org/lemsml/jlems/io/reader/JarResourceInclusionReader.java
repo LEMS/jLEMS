@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.AbstractInclusionReader;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.io.util.FileUtil;
@@ -70,6 +69,7 @@ public class JarResourceInclusionReader extends AbstractInclusionReader {
 	}
 
     
+    @Override
     public String getRelativeContent(String s) throws ContentError {
     	String ret = "";
     	
@@ -125,7 +125,7 @@ public class JarResourceInclusionReader extends AbstractInclusionReader {
          	throw new ContentError(sb.toString());
         }
         
-        boolean readOK = false;
+        boolean readOK;
         try {
            // E.info("Reading " + f.getCanonicalPath());
             ret = FileUtil.readStringFromFile(f);
@@ -143,6 +143,7 @@ public class JarResourceInclusionReader extends AbstractInclusionReader {
     }
 
     
+    @Override
     public String getRootContent() throws ContentError {
         try {
         	if (content!=null) {
