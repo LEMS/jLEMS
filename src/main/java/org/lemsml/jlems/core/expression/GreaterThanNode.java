@@ -8,10 +8,10 @@ import org.lemsml.jlems.core.sim.ContentError;
 
 public class GreaterThanNode extends AbstractComparisonNode {
 
-
+    public static final String SYMBOL = ".gt.";
 	
 	public GreaterThanNode() {
-		super("greater_than");
+		super(SYMBOL);
 	}
 
 

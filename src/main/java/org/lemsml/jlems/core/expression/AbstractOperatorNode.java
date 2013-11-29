@@ -18,15 +18,12 @@ public abstract class AbstractOperatorNode extends AbstractUnaryNode implements 
         return symbol;
     }
 
+    @Override
     public String toString() {
     	String ret = "{Operator " + symbol + ": left=" + left + "; right=" + right + "}";
     	return ret;
     }
     
-    
-   
-  
-   
  
     public abstract int getPrecedence();
 

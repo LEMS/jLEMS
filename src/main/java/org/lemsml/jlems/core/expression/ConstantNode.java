@@ -20,6 +20,7 @@ public class ConstantNode extends Node implements DoubleParseTreeNode {
 		dval = Double.parseDouble(s);
 	}
 	
+    @Override
 	public String toString() {
 		return "{Constant: " + sval + "}";
 	}
@@ -40,6 +41,7 @@ public class ConstantNode extends Node implements DoubleParseTreeNode {
  
   
 
+    @Override
 	public AbstractDVal makeEvaluable(HashMap<String, Double> fixedHM) {
 		return new DCon(dval);
 	}
@@ -49,6 +51,7 @@ public class ConstantNode extends Node implements DoubleParseTreeNode {
 	}
 
 	 
+    @Override
 	public Dimensional getDimensionality(HashMap<String, Dimensional> dimHM) throws ContentError {
 		ExprDimensional ed = new ExprDimensional();
 		if (dval == 0) {
@@ -59,6 +62,7 @@ public class ConstantNode extends Node implements DoubleParseTreeNode {
 	}
 	
 
+    @Override
 	public Dimensional evaluateDimensional(HashMap<String, Dimensional> dhm) throws ContentError {
 		throw new ContentError("Can't use constants with  dimensions");
 	}

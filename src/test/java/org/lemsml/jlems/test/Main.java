@@ -1,5 +1,6 @@
 package org.lemsml.jlems.test;
 
+import org.lemsml.jlems.core.expression.ExpressionTest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -24,7 +25,7 @@ public final class Main {
 		Result r = null;
 
 		r = org.junit.runner.JUnitCore.runClasses(
-				ParserTest.class,
+				ExpressionTest.class,
 				DimensionTest.class,
 				XMLReaderTest.class,
 				XMLExamplesReaderTest.class,

@@ -35,6 +35,7 @@ public abstract class AbstractFloatOperatorNode extends AbstractOperatorNode {
 	
 	
 
+    @Override
 	public Dimensional getDimensionality(HashMap<String, Dimensional> dimHM) throws ContentError {
 		checkLeftRight();
 		
@@ -50,6 +51,7 @@ public abstract class AbstractFloatOperatorNode extends AbstractOperatorNode {
 	}
 	
 	
+    @Override
 	public Dimensional evaluateDimensional(HashMap<String, Dimensional> dimHM) throws ContentError {
 		return getDimensionality(dimHM);
 	}
@@ -57,6 +59,7 @@ public abstract class AbstractFloatOperatorNode extends AbstractOperatorNode {
 	public abstract Dimensional dimop(Dimensional dl, Dimensional dr) throws ContentError;
 	
 	
+    @Override
 	public void substituteVariables(HashMap<String, String> varHM) throws ContentError {
 		checkLeftRight();
 		leftEvaluable.substituteVariables(varHM);
@@ -64,6 +67,7 @@ public abstract class AbstractFloatOperatorNode extends AbstractOperatorNode {
 	}
 	
 	
+    @Override
 	public String toExpression() throws ContentError {
 		checkLeftRight();
 		return "(" + leftEvaluable.toExpression() + " " + symbol + " " + rightEvaluable.toExpression() + ")";

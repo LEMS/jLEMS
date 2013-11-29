@@ -43,6 +43,7 @@ public class ExprDimensional implements Dimensional {
     }
      
 	
+    @Override
 	public Dimensional getDivideBy(Dimensional d) {
 		ExprDimensional ret = new ExprDimensional();
 		ret.m = m - d.getM();

@@ -65,6 +65,7 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
         return ret;
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -74,14 +75,15 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
         return "Dimension[" + summary() + "]";
     }
 
+    @Override
     public String summary() {
      	String ret = (name != null ? name : " (unnamed) ");
     	int[] vals = {m, l, t, i, k, n};
     	String[] names= {"m", "l", "t", "i", "k", "n"};
     	int nnz = 0;
-    	for (int i = 0; i < vals.length; i++) {
-    		if (vals[i] != 0) {
-    			ret += " " + names[i] + "=" + vals[i];
+    	for (int ii = 0; ii < vals.length; ii++) {
+    		if (vals[ii] != 0) {
+    			ret += " " + names[ii] + "=" + vals[ii];
     			nnz += 1;
     		}
     	}
@@ -95,7 +97,7 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
 
     public boolean matches(Dimension d) {
      	
-        boolean ret = false;
+        boolean ret;
         if (this.equals(d)) {
             ret = true;
 
@@ -107,6 +109,7 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
         return ret;
     }
 
+    @Override
     public Dimension getTimes(Dimensional d) {
       	
     	Dimension ret = new Dimension("");
@@ -119,6 +122,7 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
         return ret;
     }
 
+    @Override
     public Dimensional getDivideBy(Dimensional d) {
       	
     	Dimension ret = new Dimension("");
@@ -131,6 +135,7 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
         return ret;
     }
 
+    @Override
     public boolean isDimensionless() {
     	
         boolean ret = false;
@@ -140,26 +145,32 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
         return ret;
     }
 
+    @Override
     public int getI() {
         return i;
     }
 
+    @Override
     public int getL() {
         return l;
     }
 
+    @Override
     public int getM() {
         return m;
     }
 
+    @Override
     public int getT() {
         return t;
     }
 
+    @Override
     public int getK() {
         return k;
     }
 
+    @Override
     public int getN() {
          return n;
     }
@@ -194,6 +205,7 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
 
     
 
+    @Override
     public boolean matches(Dimensional d) {
          boolean ret = false;
         if (m == d.getM() && l == d.getL() && t == d.getT() && i == d.getI() && k == d.getK() && n == d.getN()) {
@@ -202,6 +214,7 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
         return ret;
     }
 
+    @Override
     public Dimensional power(double dbl) {
        Dimensional ret = null;
         if (dbl - Math.round(dbl) < 1.e-6) {
@@ -220,6 +233,7 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
         return ret;
     }
 
+    @Override
     public boolean isAny() {
         return false;
     }
@@ -228,6 +242,7 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
         dval = d;
     }
 
+    @Override
     public double getDoubleValue() {
         return dval;
     }

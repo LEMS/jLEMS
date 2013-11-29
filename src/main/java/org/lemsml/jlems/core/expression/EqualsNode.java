@@ -9,10 +9,10 @@ import org.lemsml.jlems.core.sim.ContentError;
 
 public class EqualsNode extends AbstractComparisonNode {
 
-
+   public static final String SYMBOL = ".eq.";
 	
 	public EqualsNode() {
-		super("equal_to");
+		super(SYMBOL);
 	}
 
    

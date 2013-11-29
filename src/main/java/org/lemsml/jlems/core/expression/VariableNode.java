@@ -18,15 +18,18 @@ public class VariableNode extends Node implements DoubleParseTreeNode {
 	}
 	
      
+    @Override
 	public String toString() {
 		return "{Variable: " + svar + "}";
 	}
 	
+    @Override
 	public String toExpression() {
 		return svar;
 	}
 
 	
+    @Override
 	public void substituteVariables(HashMap<String, String> varHM) {
 		if (varHM.containsKey(svar)) {
 			svar = varHM.get(svar);
@@ -47,22 +50,21 @@ public class VariableNode extends Node implements DoubleParseTreeNode {
 
  
    
-	
-	
-	public AbstractDVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
-		AbstractDVal ret = null;
-	 
- 			if (fixedHM != null && fixedHM.containsKey(svar)) {
-				ret = new DCon(fixedHM.get(svar));
-	 			} else {
-	 				ret = new DVar(svar);
- 			}
-			
-		 
-		return ret;
-	}
+	@Override
+    public AbstractDVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
+        AbstractDVal ret = null;
+
+        if (fixedHM != null && fixedHM.containsKey(svar)) {
+            ret = new DCon(fixedHM.get(svar));
+        } else {
+            ret = new DVar(svar);
+        }
+
+        return ret;
+    }
 
 	 
+    @Override
 	public Dimensional getDimensionality(HashMap<String, Dimensional> dimHM) throws ContentError {
 		Dimensional ret = null;
 		if (dimHM.containsKey(svar)) {
@@ -74,6 +76,7 @@ public class VariableNode extends Node implements DoubleParseTreeNode {
 	}
 	
 
+    @Override
 	public Dimensional evaluateDimensional(HashMap<String, Dimensional> dimHM) throws ContentError {
 		Dimensional ret = null;
 		if (dimHM.containsKey(svar)) {

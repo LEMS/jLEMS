@@ -9,8 +9,10 @@ import org.lemsml.jlems.core.sim.ContentError;
 
 public class NotEqualsNode extends AbstractComparisonNode {
 
+    public static final String SYMBOL = ".neq.";
+    
 	public NotEqualsNode() {
-		super("!=");
+		super(SYMBOL);
 	}
 
   

@@ -71,10 +71,13 @@ public class DimensionTest {
  		assertEquals(100 * 100 * a, area.getValueInUnit(cm2), a / 100000.0);
 
 		double temps[] = new double[] { -40, 0, 37, 100, 232.7777777 };
+        
 		for (double t : temps) {
 			dq = QuantityReader.parseValue(t + " degC", units);
 			assertEquals(t, dq.getValueInUnit(celc), t * 1e-6);
 		}
+        
+        
 	}
 
 	public static void main(String[] args) {

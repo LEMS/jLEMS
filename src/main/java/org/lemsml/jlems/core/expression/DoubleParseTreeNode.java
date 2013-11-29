@@ -9,6 +9,7 @@ public interface DoubleParseTreeNode extends ParseTreeNode {
  
 	AbstractDVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError;
 
+    @Override
 	String toExpression() throws ContentError;
 	
 }

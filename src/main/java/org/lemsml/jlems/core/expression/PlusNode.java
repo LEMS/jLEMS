@@ -14,28 +14,30 @@ public class PlusNode extends AbstractFloatResultNode {
 	}
 
 	
+    @Override
 	public PlusNode copy() {
 		return new PlusNode();
 	}
 	
+    @Override
 	public int getPrecedence() {
 		return 5;
 	}
 	 
+    @Override
 	public double op(double x, double y) {
 		return (Double.isNaN(x) ? 0 : x) + y;
 	}
 
 	
+    @Override
 	public AbstractDVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
 		checkLeftRight();
 		
 		return new Plus(leftEvaluable.makeEvaluable(fixedHM), rightEvaluable.makeEvaluable(fixedHM));
 	}
 
-	
-	
-	 
+    @Override
 	public Dimensional dimop(Dimensional dl, Dimensional dr) throws ContentError {
 		Dimensional ret = null;
 		if (dl.matches(dr)) {
@@ -47,6 +49,7 @@ public class PlusNode extends AbstractFloatResultNode {
 	}
 	
 
+    @Override
 	public Dimensional evaluateDimensional(HashMap<String, Dimensional> dhm) throws ContentError {
 		throw new ContentError("Can't apply addition operations to dimensions");
 	}
