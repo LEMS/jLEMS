@@ -7,13 +7,9 @@
 <link rel="icon" href="favico.png" type="image/png">
 </head>
 <body>
+<div class="pagemain">
+<div class="leftbg">
 <div id="left">
-<div>
-<a href="https://github.com/robertcannon/jLEMS">Github Repository</a>
-</div>
-<div>
-<span>&nbsp;</span>
-</div>
 <div>
 <a href="index.html">About</a>
 </div>
@@ -22,9 +18,6 @@
 </div>
 <div>
 <a href="elements.html">Elements</a>
-</div>
-<div>
-<a href="interpreter.html">Download</a>
 </div>
 <div>
 <a href="example1.html">Example 1</a>
@@ -62,6 +55,7 @@
 <div class="footer">
                                 Code and content GPL
                             </div>
+</div>
 </div>
 <div id="content">
     
@@ -113,7 +107,7 @@
 
 
 <p>
-The harder part is to provide elements in the <span class="xelt">Behavior</span> blocks to express what should be done with components
+The harder part is to provide elements in the <span class="xelt">Dynamics</span> blocks to express what should be done with components
  based on these types. The Network element doesn't pose any problems because the default behavior on instantiation will
  do the right thing: it will instantiate each of the child populations and EventConnectivity elements.
 </p>
@@ -121,7 +115,7 @@ The harder part is to provide elements in the <span class="xelt">Behavior</span>
 <p>
 But the population element needs to say that its instantiation involves making 'size' instances of the component referred
 to by the 'component' reference, where 'size' is the value supplied for the size parameter in a component specification.
-This can be done by including a <span class="xelt">Build</span> element inside the <span class="xelt">Behavior</span> block:
+This can be done by including a <span class="xelt">Build</span> element inside the <span class="xelt">Dynamics</span> block:
 </p>
 
 
@@ -133,7 +127,7 @@ This can be done by including a <span class="xelt">Build</span> element inside t
 &nbsp;&nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Parameter</span> <span class="xmlverb-attr-name">name</span>="<span class="xmlverb-attr-content">size</span>" <span class="xmlverb-attr-name">dimension</span>="<span class="xmlverb-attr-content">none</span>" /&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;</span>
-<br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Behavior</span>&gt;<span class="xmlverb-text">
+<br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Dynamics</span>&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Build</span>&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -141,7 +135,7 @@ This can be done by including a <span class="xelt">Build</span> element inside t
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span class="xmlverb-element-name">Build</span>&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;</span>
-<br>&nbsp;&nbsp;&nbsp;&lt;/<span class="xmlverb-element-name">Behavior</span>&gt;<span class="xmlverb-text">
+<br>&nbsp;&nbsp;&nbsp;&lt;/<span class="xmlverb-element-name">Dynamics</span>&gt;<span class="xmlverb-text">
 </span>
 <br>&lt;/<span class="xmlverb-element-name">ComponentType</span>&gt;</div>
 
@@ -188,7 +182,7 @@ a specific instance for All-All connectivity.
 
 <div class="xcodeelement">&lt;<span class="xmlverb-element-name">ComponentType</span> <span class="xmlverb-attr-name">name</span>="<span class="xmlverb-attr-content">AllAll</span>" <span class="xmlverb-attr-name">extends</span>="<span class="xmlverb-attr-content">ConnectionPattern</span>"&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;</span>
-<br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Behavior</span>&gt;<span class="xmlverb-text">
+<br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Dynamics</span>&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Build</span>&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -204,7 +198,7 @@ a specific instance for All-All connectivity.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span class="xmlverb-element-name">Build</span>&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;</span>
-<br>&nbsp;&nbsp;&nbsp;&lt;/<span class="xmlverb-element-name">Behavior</span>&gt;<span class="xmlverb-text">
+<br>&nbsp;&nbsp;&nbsp;&lt;/<span class="xmlverb-element-name">Dynamics</span>&gt;<span class="xmlverb-text">
 </span>
 <br>&lt;/<span class="xmlverb-element-name">ComponentType</span>&gt;</div>
 
@@ -422,6 +416,7 @@ With these definitions in place, a network simulation can be defined with the fo
 </div>
 
 
+</div>
 </div>
 </body>
 </html>

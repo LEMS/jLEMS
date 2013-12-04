@@ -7,13 +7,9 @@
 <link rel="icon" href="favico.png" type="image/png">
 </head>
 <body>
+<div class="pagemain">
+<div class="leftbg">
 <div id="left">
-<div>
-<a href="https://github.com/robertcannon/jLEMS">Github Repository</a>
-</div>
-<div>
-<span>&nbsp;</span>
-</div>
 <div>
 <a href="index.html">About</a>
 </div>
@@ -22,9 +18,6 @@
 </div>
 <div>
 <a href="elements.html">Elements</a>
-</div>
-<div>
-<a href="interpreter.html">Download</a>
 </div>
 <div>
 <a href="example1.html">Example 1</a>
@@ -63,6 +56,7 @@
                                 Code and content GPL
                             </div>
 </div>
+</div>
 <div id="content">
 
 <h1>Kinetic schemes</h1>
@@ -71,7 +65,7 @@
 <p>
     The existing components provide everything necessary to define types that allow 
     a model to specify a kinetic scheme (Markov model).  The 
-    missing ingredient is the Behavior element to actually expresses how instances of the components develop through time.
+    missing ingredient is the Dynamics element to actually expresses how instances of the components develop through time.
 </p>
 
 <p>
@@ -102,13 +96,13 @@ an occupancy vector among a number of distinct states with rates for the transit
 <br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Parameter</span> <span class="xmlverb-attr-name">name</span>="<span class="xmlverb-attr-content">relativeConductance</span>" <span class="xmlverb-attr-name">dimension</span>="<span class="xmlverb-attr-content">none</span>" /&gt;<span class="xmlverb-text">
 
 &nbsp;&nbsp;&nbsp;&nbsp;</span>
-<br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Behavior</span>&gt;<span class="xmlverb-text">
+<br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Dynamics</span>&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">StateVariable</span> <span class="xmlverb-attr-name">name</span>="<span class="xmlverb-attr-content">occupancy</span>" <span class="xmlverb-attr-name">dimension</span>="<span class="xmlverb-attr-content">none</span>" /&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">DerivedVariable</span> <span class="xmlverb-attr-name">name</span>="<span class="xmlverb-attr-content">q</span>" <span class="xmlverb-attr-name">value</span>="<span class="xmlverb-attr-content">relativeConductance * occupancy</span>" /&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;</span>
-<br>&nbsp;&nbsp;&nbsp;&lt;/<span class="xmlverb-element-name">Behavior</span>&gt;<span class="xmlverb-text">
+<br>&nbsp;&nbsp;&nbsp;&lt;/<span class="xmlverb-element-name">Dynamics</span>&gt;<span class="xmlverb-text">
 </span>
 <br>&lt;/<span class="xmlverb-element-name">ComponentType</span>&gt;</div>
 
@@ -154,14 +148,14 @@ an occupancy vector among a number of distinct states with rates for the transit
 &nbsp;&nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Exposure</span> <span class="xmlverb-attr-name">name</span>="<span class="xmlverb-attr-content">g</span>" <span class="xmlverb-attr-name">dimension</span>="<span class="xmlverb-attr-content">conductance</span>" /&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;</span>
-<br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Behavior</span>&gt;<span class="xmlverb-text">
+<br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Dynamics</span>&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">DerivedVariable</span> <span class="xmlverb-attr-name">name</span>="<span class="xmlverb-attr-content">fopen</span>" <span class="xmlverb-attr-name">dimension</span>="<span class="xmlverb-attr-content">none</span>" <span class="xmlverb-attr-name">select</span>="<span class="xmlverb-attr-content">gates[*]/fopen</span>" <span class="xmlverb-attr-name">reduce</span>="<span class="xmlverb-attr-content">multiply</span>" /&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">DerivedVariable</span> <span class="xmlverb-attr-name">name</span>="<span class="xmlverb-attr-content">g</span>" <span class="xmlverb-attr-name">exposure</span>="<span class="xmlverb-attr-content">g</span>" <span class="xmlverb-attr-name">dimension</span>="<span class="xmlverb-attr-content">conductance</span>" <span class="xmlverb-attr-name">value</span>="<span class="xmlverb-attr-content">fopen * conductance</span>" /&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;</span>
-<br>&nbsp;&nbsp;&nbsp;&lt;/<span class="xmlverb-element-name">Behavior</span>&gt;<span class="xmlverb-text">
+<br>&nbsp;&nbsp;&nbsp;&lt;/<span class="xmlverb-element-name">Dynamics</span>&gt;<span class="xmlverb-text">
 </span>
 <br>&lt;/<span class="xmlverb-element-name">ComponentType</span>&gt;</div>
 
@@ -176,7 +170,7 @@ transition has links to two states giving the source and target states for the t
    
 
 <p>
-The transition element here is an abstract element because it doesn't provide a Behavior block but just specifies
+The transition element here is an abstract element because it doesn't provide a Dynamics block but just specifies
 what quantities transitions should privide via the two exposures. 
 One of the most useful forms of transition is a damped Boltzman equation which can be parameterizd as 
 follows:
@@ -203,7 +197,7 @@ follows:
 <br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Requirement</span> <span class="xmlverb-attr-name">name</span>="<span class="xmlverb-attr-content">v</span>" <span class="xmlverb-attr-name">dimension</span>="<span class="xmlverb-attr-content">voltage</span>" /&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;</span>
-<br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Behavior</span>&gt;<span class="xmlverb-text">
+<br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Dynamics</span>&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">DerivedVariable</span> <span class="xmlverb-attr-name">name</span>="<span class="xmlverb-attr-content">rf0</span>" <span class="xmlverb-attr-name">dimension</span>="<span class="xmlverb-attr-content">per_time</span>" <span class="xmlverb-attr-name">value</span>="<span class="xmlverb-attr-content">exp(z * gamma * (v - vHalf) / kte) / tau</span>" /&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -213,7 +207,7 @@ follows:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">DerivedVariable</span> <span class="xmlverb-attr-name">name</span>="<span class="xmlverb-attr-content">rr</span>" <span class="xmlverb-attr-name">exposure</span>="<span class="xmlverb-attr-content">rr</span>" <span class="xmlverb-attr-name">dimension</span>="<span class="xmlverb-attr-content">per_time</span>" <span class="xmlverb-attr-name">value</span>="<span class="xmlverb-attr-content">1 / (1/rr0 + tauMin)</span>" /&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;</span>
-<br>&nbsp;&nbsp;&nbsp;&lt;/<span class="xmlverb-element-name">Behavior</span>&gt;<span class="xmlverb-text">
+<br>&nbsp;&nbsp;&nbsp;&lt;/<span class="xmlverb-element-name">Dynamics</span>&gt;<span class="xmlverb-text">
 </span>
 <br>&lt;/<span class="xmlverb-element-name">ComponentType</span>&gt;</div>
 
@@ -281,8 +275,8 @@ generate "rf" and "rr" quantities that are not unused anywhere.
 </p>
 
 <p>
-What is needed is a new element in the <span class="xelt">Behavior</span> block to link these together and say that the rates apply to the
-changes of occupancy among the state elements. This is done by adding a <span class="xelt">KineticScheme</span> element to the Behavior block
+What is needed is a new element in the <span class="xelt">Dynamics</span> block to link these together and say that the rates apply to the
+changes of occupancy among the state elements. This is done by adding a <span class="xelt">KineticScheme</span> element to the Dynamics block
 for a gate as follows (this now shows the full definition of the KSGate element):
 </p>
 
@@ -300,7 +294,7 @@ for a gate as follows (this now shows the full definition of the KSGate element)
 <br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Children</span> <span class="xmlverb-attr-name">name</span>="<span class="xmlverb-attr-content">transitions</span>" <span class="xmlverb-attr-name">type</span>="<span class="xmlverb-attr-content">KSTransition</span>" /&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;</span>
-<br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Behavior</span>&gt;<span class="xmlverb-text">
+<br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Dynamics</span>&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">KineticScheme</span> <span class="xmlverb-attr-name">name</span>="<span class="xmlverb-attr-content">ks</span>"&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -317,7 +311,7 @@ for a gate as follows (this now shows the full definition of the KSGate element)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">DerivedVariable</span> <span class="xmlverb-attr-name">name</span>="<span class="xmlverb-attr-content">fopen</span>" <span class="xmlverb-attr-name">exposure</span>="<span class="xmlverb-attr-content">fopen</span>" <span class="xmlverb-attr-name">dimension</span>="<span class="xmlverb-attr-content">none</span>" <span class="xmlverb-attr-name">value</span>="<span class="xmlverb-attr-content">q^power</span>" /&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;</span>
-<br>&nbsp;&nbsp;&nbsp;&lt;/<span class="xmlverb-element-name">Behavior</span>&gt;<span class="xmlverb-text">
+<br>&nbsp;&nbsp;&nbsp;&lt;/<span class="xmlverb-element-name">Dynamics</span>&gt;<span class="xmlverb-text">
 </span>
 <br>&lt;/<span class="xmlverb-element-name">ComponentType</span>&gt;</div>
 
@@ -370,7 +364,7 @@ the two <span class="xelt">DerivedVaraible</span> declarations. No special eleme
 &nbsp;&nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Requirement</span> <span class="xmlverb-attr-name">name</span>="<span class="xmlverb-attr-content">v</span>" <span class="xmlverb-attr-name">dimension</span>="<span class="xmlverb-attr-content">voltage</span>" /&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;</span>
-<br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Behavior</span>&gt;<span class="xmlverb-text">
+<br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Dynamics</span>&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">DerivedVariable</span> <span class="xmlverb-attr-name">name</span>="<span class="xmlverb-attr-content">channelg</span>" <span class="xmlverb-attr-name">dimension</span>="<span class="xmlverb-attr-content">conductance</span>" <span class="xmlverb-attr-name">select</span>="<span class="xmlverb-attr-content">channel/g</span>" /&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -378,7 +372,7 @@ the two <span class="xelt">DerivedVaraible</span> declarations. No special eleme
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">DerivedVariable</span> <span class="xmlverb-attr-name">name</span>="<span class="xmlverb-attr-content">current</span>" <span class="xmlverb-attr-name">value</span>="<span class="xmlverb-attr-content">geff * (erev - v)</span>" /&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;</span>
-<br>&nbsp;&nbsp;&nbsp;&lt;/<span class="xmlverb-element-name">Behavior</span>&gt;<span class="xmlverb-text">
+<br>&nbsp;&nbsp;&nbsp;&lt;/<span class="xmlverb-element-name">Dynamics</span>&gt;<span class="xmlverb-text">
 </span>
 <br>&lt;/<span class="xmlverb-element-name">ComponentType</span>&gt;</div>
 
@@ -396,7 +390,7 @@ the two <span class="xelt">DerivedVaraible</span> declarations. No special eleme
 &nbsp;&nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Parameter</span> <span class="xmlverb-attr-name">name</span>="<span class="xmlverb-attr-content">v0</span>" <span class="xmlverb-attr-name">dimension</span>="<span class="xmlverb-attr-content">voltage</span>" /&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;</span>
-<br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Behavior</span>&gt;<span class="xmlverb-text">
+<br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Dynamics</span>&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">OnStart</span>&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -411,7 +405,7 @@ the two <span class="xelt">DerivedVaraible</span> declarations. No special eleme
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">TimeDerivative</span> <span class="xmlverb-attr-name">variable</span>="<span class="xmlverb-attr-content">v</span>" <span class="xmlverb-attr-name">value</span>="<span class="xmlverb-attr-content">(totcurrent + injection) / capacitance</span>" /&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;</span>
-<br>&nbsp;&nbsp;&nbsp;&lt;/<span class="xmlverb-element-name">Behavior</span>&gt;<span class="xmlverb-text">
+<br>&nbsp;&nbsp;&nbsp;&lt;/<span class="xmlverb-element-name">Dynamics</span>&gt;<span class="xmlverb-text">
 </span>
 <br>&lt;/<span class="xmlverb-element-name">ComponentType</span>&gt;</div>
 
@@ -458,10 +452,11 @@ When run, this produces:
 <img src="ex1ss.png">
 
 <p>
-There are clearly some initialization issues but the basic Behavior is the same as the PSICS version of this model.
+There are clearly some initialization issues but the basic Dynamics is the same as the PSICS version of this model.
 </p>
 
 
+</div>
 </div>
 </body>
 </html>

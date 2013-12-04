@@ -7,13 +7,9 @@
 <link rel="icon" href="favico.png" type="image/png">
 </head>
 <body>
+<div class="pagemain">
+<div class="leftbg">
 <div id="left">
-<div>
-<a href="https://github.com/robertcannon/jLEMS">Github Repository</a>
-</div>
-<div>
-<span>&nbsp;</span>
-</div>
 <div>
 <a href="index.html">About</a>
 </div>
@@ -22,9 +18,6 @@
 </div>
 <div>
 <a href="elements.html">Elements</a>
-</div>
-<div>
-<a href="interpreter.html">Download</a>
 </div>
 <div>
 <a href="example1.html">Example 1</a>
@@ -62,6 +55,7 @@
 <div class="footer">
                                 Code and content GPL
                             </div>
+</div>
 </div>
 <div id="content">
  
@@ -107,6 +101,16 @@ Models can be spread over multiple files. The root element in each file is <span
 </div>
 Reference to the entry point component        &nbsp;
         </div>
+<div class="attdef">
+<div class="attdefname">reportFile<span class="attmeta">  (String)</span>
+</div>
+Optional attribute specifying file in which to save short report of simulation        &nbsp;
+        </div>
+<div class="attdef">
+<div class="attdefname">timesFile<span class="attmeta">  (String)</span>
+</div>
+Optional attribute specifying file in which to save the times used in simulation        &nbsp;
+        </div>
 </div>
     
 <div class="eltdef">
@@ -132,6 +136,36 @@ The value of a constant must be a plain number (no units) giving the SI magnitud
 </div>&nbsp;
         </div>
 </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -302,6 +336,61 @@ An expression involving dimensions. The dimensionality of the expression should 
         </div>
 </div>
     
+<div class="eltdef">
+<h3>Component</h3>
+<div class="attdef">
+<div class="attdefname">id<span class="attmeta">  (String)</span>
+</div>&nbsp;
+        </div>
+<div class="attdef">
+<div class="attdefname">name<span class="attmeta">  (String)</span>
+</div>
+Name by which the component was declared - this shouldn't be accessible.        &nbsp;
+        </div>
+<div class="attdef">
+<div class="attdefname">type<span class="attmeta">  (String)</span>
+</div>&nbsp;
+        </div>
+<div class="attdef">
+<div class="attdefname">eXtends<span class="attmeta">  (String)</span>
+</div>&nbsp;
+        </div>
+<div class="attdef childof">
+<div class="childofname">
+<span class="attmeta">Can contain:</span>
+</div>Attribute<br>ParamValue<br>Insertion<br>Component<br>About<br>Meta<br>
+</div>
+</div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -360,6 +449,7 @@ An expression involving dimensions. The dimensionality of the expression should 
     
     
     
+    
 <div class="eltdef">
 <h3>ComponentType</h3>
 <div class="info">Root element for defining component types.</div>
@@ -376,7 +466,7 @@ The component type that this type inherits field definitions for, if any        
 <div class="attdef childof">
 <div class="childofname">
 <span class="attmeta">Can contain:</span>
-</div>Parameter<br>DerivedParameter<br>PathParameter<br>Requirement<br>Exposure<br>Child<br>Children<br>Link<br>ComponentReference<br>ComponentTypeReference<br>Property<br>Dynamics<br>Structure<br>Simulation<br>Equilibrium<br>Procedure<br>Fixed<br>Constant<br>Attachments<br>EventPort<br>Path<br>Text<br>Collection<br>PairCollection<br>AnalogPort<br>About<br>Meta<br>
+</div>Parameter<br>DerivedParameter<br>PathParameter<br>Requirement<br>Exposure<br>Child<br>Children<br>Link<br>ComponentReference<br>ComponentTypeReference<br>Location<br>Property<br>Dynamics<br>Structure<br>Simulation<br>Equilibrium<br>Procedure<br>Geometry<br>Fixed<br>Constant<br>Attachments<br>EventPort<br>Path<br>Text<br>Collection<br>PairCollection<br>About<br>Meta<br>
 </div>
 </div>
     
@@ -392,6 +482,29 @@ The name of the parameter. This isthe attibute name when the parameter is suppli
 <div class="attdefname">dimension<span class="attmeta">  (String)</span>
 </div>
 The dimension, or 'none'. This should be the ID of a deminsion element defined elsewhere        &nbsp;
+        </div>
+</div>
+    
+<div class="eltdef">
+<h3>PathParameter</h3>
+<div class="info">A parameter of which the value is a path expression. When a ComponentType declares a PathParameter, a corresponding Component definition should have an attibute with that name whose value is a path expression that evaluates within the instance tree of the built model. This is used, for example, in the definition of a group component class, where the coresponding component specifies a path over the instance tree which selectesthe items that should go in the group.</div>
+<div class="attdef">
+<div class="attdefname">name<span class="attmeta">  (String)</span>
+</div>
+Name of the parameter        &nbsp;
+        </div>
+</div>
+    
+<div class="eltdef">
+<h3>Property</h3>
+<div class="info">An property on an instance of a component. Unlike a Parameter, a Property can very from instance to instance. It should be set with an Assign element within the build specification.</div>
+<div class="attdef">
+<div class="attdefname">name<span class="attmeta">  (String)</span>
+</div>&nbsp;
+        </div>
+<div class="attdef">
+<div class="attdefname">dimension<span class="attmeta">  (String)</span>
+</div>&nbsp;
         </div>
 </div>
     
@@ -510,6 +623,33 @@ Target type        &nbsp;
 </div>
     
 <div class="eltdef">
+<h3>ComponentTypeReference</h3>
+<div class="info">This is used in conjunction with PathParameter elements to specify the target class of selections defined within components operating over the instance tree.</div>
+<div class="attdef">
+<div class="attdefname">name<span class="attmeta">  (String)</span>
+</div>&nbsp;
+        </div>
+</div>
+    
+<div class="eltdef">
+<h3>Collection</h3>
+<div class="info">Specifies that instances of components based on this class can containe a named collection of other instances. This provides for containers for oprating on groups of instances with path and filter expressions defined in components to operate over the instance tree.</div>
+<div class="attdef">
+<div class="attdefname">name<span class="attmeta">  (String)</span>
+</div>&nbsp;
+        </div>
+</div>
+    
+<div class="eltdef">
+<h3>PairCollection</h3>
+<div class="info">Defines a named collection of paris of instances, similar to the Collection element.</div>
+<div class="attdef">
+<div class="attdefname">name<span class="attmeta">  (String)</span>
+</div>&nbsp;
+        </div>
+</div>
+    
+<div class="eltdef">
 <h3>EventPort</h3>
 <div class="info">A port on a component that can send or receive events, depending on the direction speicfied.</div>
 <div class="attdef">
@@ -572,6 +712,36 @@ The dimension, or 'none'. This should be the ID of a deminsion element defined e
         </div>
 </div>
     
+<div class="eltdef">
+<h3>About</h3>
+</div>
+    
+<div class="eltdef">
+<h3>Meta</h3>
+</div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -630,13 +800,21 @@ The dimension, or 'none'. This should be the ID of a deminsion element defined e
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
 <div class="eltdef">
 <h3>Dynamics</h3>
 <div class="info">Specifies the dynamical behavior of components build from this ComponentType. </div>
 <div class="attdef childof">
 <div class="childofname">
 <span class="attmeta">Can contain:</span>
-</div>DerivedVariable<br>StateVariable<br>TimeDerivative<br>KineticScheme<br>OnStart<br>OnEvent<br>OnCondition<br>Regime<br>
+</div>Super<br>DerivedVariable<br>ConditionalDerivedVariable<br>StateVariable<br>TimeDerivative<br>KineticScheme<br>OnStart<br>OnEvent<br>OnCondition<br>StateScalarField<br>DerivedScalarField<br>DerivedPunctateField<br>Regime<br>
 </div>
 </div>
     
@@ -801,6 +979,71 @@ Name of reverse rate exposure        &nbsp;
 <h3>Transition</h3>
 </div>
     
+<div class="eltdef">
+<h3>Super</h3>
+</div>
+    
+<div class="eltdef">
+<h3>ConditionalDerivedVariable</h3>
+<div class="attdef">
+<div class="attdefname">name<span class="attmeta">  (String)</span>
+</div>&nbsp;
+        </div>
+<div class="attdef">
+<div class="attdefname">dimension<span class="attmeta">  (String)</span>
+</div>&nbsp;
+        </div>
+<div class="attdef">
+<div class="attdefname">exposure<span class="attmeta">  (String)</span>
+</div>&nbsp;
+        </div>
+<div class="attdef childof">
+<div class="childofname">
+<span class="attmeta">Can contain:</span>
+</div>Case<br>
+</div>
+</div>
+    
+<div class="eltdef">
+<h3>Case</h3>
+</div>
+    
+<div class="eltdef">
+<h3>Equilibrium</h3>
+<div class="attdef childof">
+<div class="childofname">
+<span class="attmeta">Can contain:</span>
+</div>DerivedVariable<br>
+</div>
+</div>
+    
+<div class="eltdef">
+<h3>StateScalarField</h3>
+</div>
+    
+<div class="eltdef">
+<h3>DerivedScalarField</h3>
+</div>
+    
+<div class="eltdef">
+<h3>DerivedPunctateField</h3>
+</div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -823,6 +1066,21 @@ Name of reverse rate exposure        &nbsp;
 <h2>Structure</h2>
 
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -887,6 +1145,10 @@ Name of reverse rate exposure        &nbsp;
 </div>
     
 <div class="eltdef">
+<h3>Assign</h3>
+</div>
+    
+<div class="eltdef">
 <h3>Choose</h3>
 <div class="attdef childof">
 <div class="childofname">
@@ -923,6 +1185,33 @@ Name of reverse rate exposure        &nbsp;
 </div>
     
 <div class="eltdef">
+<h3>PairsEventConnection</h3>
+<div class="attdef childof">
+<div class="childofname">
+<span class="attmeta">Can contain:</span>
+</div>BuildElement<br>
+</div>
+</div>
+    
+<div class="eltdef">
+<h3>PairFilter</h3>
+<div class="attdef childof">
+<div class="childofname">
+<span class="attmeta">Can contain:</span>
+</div>BuildElement<br>
+</div>
+</div>
+    
+<div class="eltdef">
+<h3>IncludePair</h3>
+<div class="attdef childof">
+<div class="childofname">
+<span class="attmeta">Can contain:</span>
+</div>BuildElement<br>
+</div>
+</div>
+    
+<div class="eltdef">
 <h3>With</h3>
 <div class="attdef childof">
 <div class="childofname">
@@ -930,6 +1219,49 @@ Name of reverse rate exposure        &nbsp;
 </div>BuildElement<br>
 </div>
 </div>
+    
+<div class="eltdef">
+<h3>If</h3>
+<div class="attdef childof">
+<div class="childofname">
+<span class="attmeta">Can contain:</span>
+</div>BuildElement<br>
+</div>
+</div>
+    
+<div class="eltdef">
+<h3>Apply</h3>
+<div class="attdef childof">
+<div class="childofname">
+<span class="attmeta">Can contain:</span>
+</div>BuildElement<br>
+</div>
+</div>
+    
+<div class="eltdef">
+<h3>Gather</h3>
+<div class="attdef childof">
+<div class="childofname">
+<span class="attmeta">Can contain:</span>
+</div>BuildElement<br>
+</div>
+</div>
+    
+<div class="eltdef">
+<h3>GatherPairs</h3>
+<div class="attdef childof">
+<div class="childofname">
+<span class="attmeta">Can contain:</span>
+</div>BuildElement<br>
+</div>
+</div>
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -989,12 +1321,35 @@ Name of reverse rate exposure        &nbsp;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 <div class="eltdef">
 <h3>Simulation</h3>
 <div class="attdef childof">
 <div class="childofname">
 <span class="attmeta">Can contain:</span>
-</div>Record<br>Run<br>DataDisplay<br>
+</div>Record<br>Run<br>DataDisplay<br>DataWriter<br>
 </div>
 </div>
     
@@ -1019,6 +1374,10 @@ hex format color suggestion for how the data should be displayed        &nbsp;
     
 <div class="eltdef">
 <h3>DataDisplay</h3>
+</div>
+    
+<div class="eltdef">
+<h3>DataWriter</h3>
 </div>
     
 <div class="eltdef">
@@ -1049,12 +1408,42 @@ path to the parameter that sets the total span of the independent variable to be
     
     
     
+    
+    
+    
+    
+    
+    
 
 
 
 <h2>Procedure</h2>
 
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -1129,6 +1518,12 @@ path to the parameter that sets the total span of the independent variable to be
 <h3>Print</h3>
 </div>
     
+    
+    
+    
+    
+    
+    
 
 
 
@@ -1136,6 +1531,36 @@ path to the parameter that sets the total span of the independent variable to be
 <h2>Defining Components</h2>
 
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -1217,6 +1642,7 @@ Name by which the component was declared - this shouldn't be accessible.        
   
 
 
+</div>
 </div>
 </body>
 </html>

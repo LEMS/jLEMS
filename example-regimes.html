@@ -7,13 +7,9 @@
 <link rel="icon" href="favico.png" type="image/png">
 </head>
 <body>
+<div class="pagemain">
+<div class="leftbg">
 <div id="left">
-<div>
-<a href="https://github.com/robertcannon/jLEMS">Github Repository</a>
-</div>
-<div>
-<span>&nbsp;</span>
-</div>
 <div>
 <a href="index.html">About</a>
 </div>
@@ -22,9 +18,6 @@
 </div>
 <div>
 <a href="elements.html">Elements</a>
-</div>
-<div>
-<a href="interpreter.html">Download</a>
 </div>
 <div>
 <a href="example1.html">Example 1</a>
@@ -63,16 +56,17 @@
                                 Code and content GPL
                             </div>
 </div>
+</div>
 <div id="content">
     
-<h1>Regimes in Behavior definitions</h1>
+<h1>Regimes in Dynamics definitions</h1>
     
     
     
 <p>
        This example introduces the <span class="xelt">Regime</span>, <span class="xelt">Transition</span> 
        and <span class="xelt">OnEntry</span> elements within
-       a Behavior block. Rather than having a single state instance, the entity can
+       a Dynamics block. Rather than having a single state instance, the entity can
        be on one of the defined regimes at any given time. The <span class="xelt">Transition</span> element
        occurring inside a condition block serves to move it from one regime to another.
        The <span class="xelt">OnEntry</span> block inside a regime can contain initialization directives 
@@ -110,7 +104,7 @@
 <br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">EventPort</span> <span class="xmlverb-attr-name">name</span>="<span class="xmlverb-attr-content">in</span>" <span class="xmlverb-attr-name">direction</span>="<span class="xmlverb-attr-content">in</span>" /&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;
 </span>
-<br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Behavior</span>&gt;<span class="xmlverb-text">
+<br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Dynamics</span>&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">StateVariable</span> <span class="xmlverb-attr-name">name</span>="<span class="xmlverb-attr-content">v</span>" <span class="xmlverb-attr-name">dimension</span>="<span class="xmlverb-attr-content">voltage</span>" /&gt;<span class="xmlverb-text">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;</span>
@@ -163,7 +157,7 @@
 &nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span class="xmlverb-element-name">Regime</span>&gt;<span class="xmlverb-text">
 </span>
-<br>&nbsp;&nbsp;&nbsp;&lt;/<span class="xmlverb-element-name">Behavior</span>&gt;<span class="xmlverb-text">
+<br>&nbsp;&nbsp;&nbsp;&lt;/<span class="xmlverb-element-name">Dynamics</span>&gt;<span class="xmlverb-text">
 
 </span>
 <br>&lt;/<span class="xmlverb-element-name">ComponentType</span>&gt;</div>
@@ -425,6 +419,7 @@ Full listing:
 
 
 
+</div>
 </div>
 </body>
 </html>

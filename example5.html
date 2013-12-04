@@ -7,13 +7,9 @@
 <link rel="icon" href="favico.png" type="image/png">
 </head>
 <body>
+<div class="pagemain">
+<div class="leftbg">
 <div id="left">
-<div>
-<a href="https://github.com/robertcannon/jLEMS">Github Repository</a>
-</div>
-<div>
-<span>&nbsp;</span>
-</div>
 <div>
 <a href="index.html">About</a>
 </div>
@@ -22,9 +18,6 @@
 </div>
 <div>
 <a href="elements.html">Elements</a>
-</div>
-<div>
-<a href="interpreter.html">Download</a>
 </div>
 <div>
 <a href="example1.html">Example 1</a>
@@ -63,6 +56,7 @@
                                 Code and content GPL
                             </div>
 </div>
+</div>
 <div id="content">
     
 <h1>References and paths</h1>
@@ -91,7 +85,7 @@
 
 <p>
 In fact, of course, the reversal potential is not a property of a channel population, or of a channel. It depends on the 
-environment the channel is put in and the ions it is permeable to. But, it is needed in the Behavior specification for
+environment the channel is put in and the ions it is permeable to. But, it is needed in the Dynamics specification for
  the population so just putting it in as a parameter solves the immediate problem. In the process, however, it introduces 
  the potential for easily creating contradictory models, by, for example setting different reversals for populations of the 
  same type of channel.
@@ -182,14 +176,14 @@ are permeant to.
 &nbsp;&nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Children</span> <span class="xmlverb-attr-name">name</span>="<span class="xmlverb-attr-content">gates</span>" <span class="xmlverb-attr-name">type</span>="<span class="xmlverb-attr-content">KSGate</span>" /&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;</span>
-<br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Behavior</span>&gt;<span class="xmlverb-text">
+<br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Dynamics</span>&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">DerivedVariable</span> <span class="xmlverb-attr-name">name</span>="<span class="xmlverb-attr-content">fopen</span>" <span class="xmlverb-attr-name">dimension</span>="<span class="xmlverb-attr-content">none</span>" <span class="xmlverb-attr-name">select</span>="<span class="xmlverb-attr-content">gates[*]/fopen</span>" <span class="xmlverb-attr-name">reduce</span>="<span class="xmlverb-attr-content">multiply</span>" /&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">DerivedVariable</span> <span class="xmlverb-attr-name">name</span>="<span class="xmlverb-attr-content">g</span>" <span class="xmlverb-attr-name">dimension</span>="<span class="xmlverb-attr-content">conductance</span>" <span class="xmlverb-attr-name">value</span>="<span class="xmlverb-attr-content">fopen * conductance</span>" /&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;</span>
-<br>&nbsp;&nbsp;&nbsp;&lt;/<span class="xmlverb-element-name">Behavior</span>&gt;<span class="xmlverb-text">
+<br>&nbsp;&nbsp;&nbsp;&lt;/<span class="xmlverb-element-name">Dynamics</span>&gt;<span class="xmlverb-text">
 </span>
 <br>&lt;/<span class="xmlverb-element-name">ComponentType</span>&gt;</div>
 
@@ -214,7 +208,7 @@ membrane properties:
 &nbsp;&nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">DerivedParameter</span> <span class="xmlverb-attr-name">name</span>="<span class="xmlverb-attr-content">erev</span>" <span class="xmlverb-attr-name">dimension</span>="<span class="xmlverb-attr-content">voltage</span>" <span class="xmlverb-attr-name">select</span>="<span class="xmlverb-attr-content">//MenbranePotential[species = channel/species]/reversal</span>" /&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;</span>
-<br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Behavior</span>&gt;<span class="xmlverb-text">
+<br>&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">Dynamics</span>&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">DerivedVariable</span> <span class="xmlverb-attr-name">name</span>="<span class="xmlverb-attr-content">channelg</span>" <span class="xmlverb-attr-name">dimension</span>="<span class="xmlverb-attr-content">conductance</span>" <span class="xmlverb-attr-name">select</span>="<span class="xmlverb-attr-content">channel/g</span>" /&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -222,7 +216,7 @@ membrane properties:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="xmlverb-element-name">DerivedVariable</span> <span class="xmlverb-attr-name">name</span>="<span class="xmlverb-attr-content">current</span>" <span class="xmlverb-attr-name">value</span>="<span class="xmlverb-attr-content">geff * (erev - v)</span>" /&gt;<span class="xmlverb-text">
 &nbsp;&nbsp;&nbsp;&nbsp;</span>
-<br>&nbsp;&nbsp;&nbsp;&lt;/<span class="xmlverb-element-name">Behavior</span>&gt;<span class="xmlverb-text">
+<br>&nbsp;&nbsp;&nbsp;&lt;/<span class="xmlverb-element-name">Dynamics</span>&gt;<span class="xmlverb-text">
 </span>
 <br>&lt;/<span class="xmlverb-element-name">ComponentType</span>&gt;</div>
 
@@ -252,7 +246,7 @@ the quantity from the specified path:
 
 
 <p>
-The Behavior of this model is exactly the same as example 4. The full model including both the type definitions and the
+The Dynamics of this model is exactly the same as example 4. The full model including both the type definitions and the
 components is included below.
 </p>
 
@@ -617,6 +611,7 @@ components is included below.
 
 
 
+</div>
 </div>
 </body>
 </html>

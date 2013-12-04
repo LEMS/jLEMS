@@ -7,13 +7,9 @@
 <link rel="icon" href="favico.png" type="image/png">
 </head>
 <body>
+<div class="pagemain">
+<div class="leftbg">
 <div id="left">
-<div>
-<a href="https://github.com/robertcannon/jLEMS">Github Repository</a>
-</div>
-<div>
-<span>&nbsp;</span>
-</div>
 <div>
 <a href="index.html">About</a>
 </div>
@@ -22,9 +18,6 @@
 </div>
 <div>
 <a href="elements.html">Elements</a>
-</div>
-<div>
-<a href="interpreter.html">Download</a>
 </div>
 <div>
 <a href="example1.html">Example 1</a>
@@ -62,6 +55,7 @@
 <div class="footer">
                                 Code and content GPL
                             </div>
+</div>
 </div>
 <div id="content">
 
@@ -141,7 +135,7 @@
 <li>You can't define and use functions yet</li>
     
 <li>The numerics are trivial: it could do with smarter numerics and code generation. Janino would be a good 
-    choice (as used with Catacomb) to dynamically compile component Behaviores.</li>
+    choice (as used with Catacomb) to dynamically compile component behavior.</li>
     
 <li>Error reporting is somewhat cryptic and full of stack traces.</li>
 
@@ -277,11 +271,11 @@ it can be handled by straightforward XSLT.
     
 <p>
         Everything here is to do with point models without any spatial extent. While it would be easy to define types
-         to represent, say, a cell morphology, I have no clue how to attach a Behavior to them in a meaningful way.
+         to represent, say, a cell morphology, I have no clue how to attach a Dynamics to them in a meaningful way.
          For a morphology, one could imagine associating a membrane potential state variable with each section, and 
          computing resistances to the neighboring sections, but that would be some kind of crime against numerical analysis
          since it would actually be representing a different model (one where all the capacitance was at the midpoints 
-         of the segments). A correct approach would involve introducing Behavior elements for scalar fields and geometrical
+         of the segments). A correct approach would involve introducing Dynamics elements for scalar fields and geometrical
          volumes but this could well increase the complexity to the point where it becomes useless to try writing an 
          interpreter. Perhaps an intermediate route via magic tags to say for example "this structure can be approximated 
          by a 1D scalar field satisfying equation ... etc" might work.  
@@ -586,6 +580,7 @@ it can be handled by straightforward XSLT.
 
 
 
+</div>
 </div>
 </body>
 </html>
