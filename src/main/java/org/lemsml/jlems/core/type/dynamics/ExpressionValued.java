@@ -1,13 +1,13 @@
 package org.lemsml.jlems.core.type.dynamics;
 
+import org.lemsml.jlems.core.expression.ParseTree;
 import org.lemsml.jlems.core.sim.ContentError;
 
-public class ExpressionValued {
+public class ExpressionValued implements IVisitable {
 	
 	public String value = null;
-	
-	
 	public MathInline mathInline;
+	public ParseTree parseTree;
 	
 	
 	public void setValue(String s) {
@@ -32,6 +32,12 @@ public class ExpressionValued {
 	public void copyInto(ExpressionValued ret) {
 		ret.value = value;
 	}
+
+	@Override
+	public ParseTree getParseTree() {
+		return parseTree;
+	}
+
 	
 	
 }
