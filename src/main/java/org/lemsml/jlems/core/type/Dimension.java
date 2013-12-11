@@ -52,6 +52,18 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
         name = sn;
     }
 
+    public Dimension(String name, int m, int l, int t, int i, int k, int n, int j) {
+        this.name = name;
+        this.m = m;
+        this.l = l;
+        this.t = t;
+        this.i = i;
+        this.k = k;
+        this.n = n;
+        this.j = j;
+    }
+    
+
   
    
     public boolean dataMatches(Object obj) {
