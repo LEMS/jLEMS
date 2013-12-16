@@ -30,7 +30,7 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
     @ModelProperty(info="Temperature")
     public int k;   
 
-    @ModelProperty(info="Amunt of substance")
+    @ModelProperty(info="Amount of substance")
     public int n;   
     
     @ModelProperty(info="Luminous intensity")
@@ -70,7 +70,7 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
         boolean ret = false;
         if (obj instanceof Dimension) {
             Dimension d = (Dimension) obj;
-            if (m == d.m && l == d.l && t == d.t && i == d.i && k == d.k && n == d.n) {
+            if (m == d.m && l == d.l && t == d.t && i == d.i && k == d.k && n == d.n && j == d.j) {
                 ret = true;
             }
         }
@@ -90,8 +90,8 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
     @Override
     public String summary() {
      	String ret = (name != null ? name : " (unnamed) ");
-    	int[] vals = {m, l, t, i, k, n};
-    	String[] names= {"m", "l", "t", "i", "k", "n"};
+    	int[] vals = {m, l, t, i, k, n, j};
+    	String[] names= {"m", "l", "t", "i", "k", "n", "j"};
     	int nnz = 0;
     	for (int ii = 0; ii < vals.length; ii++) {
     		if (vals[ii] != 0) {
@@ -113,7 +113,7 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
         if (this.equals(d)) {
             ret = true;
 
-        } else if (m == d.m && l == d.l && t == d.t && i == d.i && k == d.k && n == d.n) {
+        } else if (m == d.m && l == d.l && t == d.t && i == d.i && k == d.k && n == d.n && j == d.j) {
             ret = true;
         } else {
             ret = false;
@@ -131,6 +131,7 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
         ret.i = i + d.getI();
         ret.k = k + d.getK();
         ret.n = n + d.getN();
+        ret.j = j + d.getJ();
         return ret;
     }
 
@@ -144,6 +145,7 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
         ret.i = i - d.getI();
         ret.k = k - d.getK();
         ret.n = n - d.getN();
+        ret.j = j - d.getJ();
         return ret;
     }
 
@@ -151,7 +153,7 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
     public boolean isDimensionless() {
     	
         boolean ret = false;
-        if (m == 0 && l == 0 && t == 0 && i == 0 && k == 0 && n == 0) {
+        if (m == 0 && l == 0 && t == 0 && i == 0 && k == 0 && n == 0 && j == 0) {
             ret = true;
         }
         return ret;
@@ -187,6 +189,11 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
          return n;
     }
 
+    @Override
+    public int getJ() {
+         return j;
+    }
+
     public void setN(int n) {
         this.n = n;
     }
@@ -220,7 +227,7 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
     @Override
     public boolean matches(Dimensional d) {
          boolean ret = false;
-        if (m == d.getM() && l == d.getL() && t == d.getT() && i == d.getI() && k == d.getK() && n == d.getN()) {
+        if (m == d.getM() && l == d.getL() && t == d.getT() && i == d.getI() && k == d.getK() && n == d.getN() && j == d.getJ()) {
             ret = true;
         }
         return ret;
@@ -238,6 +245,7 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
             d.i = ifac * i;
             d.k = ifac * k;
             d.n = ifac * n;
+            d.j = ifac * j;
             ret = d;
         } else {
             E.missing("Can't work with fractional dimensions yet");
@@ -275,16 +283,17 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
 	        int n = d.getN();
 	        int k = d.getK();
 	        int i = d.getI();
+	        int j = d.getJ();
 	        
 	       
-	        String[] symbols = {"kg", "m", "s", "A", "K", "mol"};
-	        int[] powers = {m, l, t, i, k, n};
+	        String[] symbols = {"kg", "m", "s", "A", "K", "mol", "cd"};
+	        int[] powers = {m, l, t, i, k, n, j};
 	        
 	        String ret = "";
-	        for (int j = 0; j < powers.length; j++) {
-	        	int p = powers[j];
+	        for (int jj = 0; jj < powers.length; jj++) {
+	        	int p = powers[jj];
 	        	if (p != 0) {
-	        		ret += symbols[j];
+	        		ret += symbols[jj];
 	        		if (p != 1) {
 	        			ret += "^" + p;
 	        		}

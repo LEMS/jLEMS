@@ -24,13 +24,13 @@ public final class ComponentWriter {
 		if (paramValues != null && !paramValues.isEmpty()) {
 			sb.append(": ");
 			for (ParamValue pv : paramValues) {
-				String si = "SI ";
-				if (pv.getDimensionName() == null) {
-					si = "???";
-				} else if (pv.getDimensionName().equals(Dimension.NO_DIMENSION)) {
-					si = "";
+				String info = "SI ";
+				if (!pv.getFinalParam().getDimension().isDimensionless() && pv.getDimensionName() == null) {
+					info = "Unknown dimension";
+				} else if (pv.getFinalParam().getDimension().isDimensionless() || pv.getDimensionName().equals(Dimension.NO_DIMENSION)) {
+					info = "dimensionless";
 				}
-				sb.append(" " + pv.getName() + "=" + pv.stringValue() + " (" + si + pv.getDimensionName() + ")");
+				sb.append(" " + pv.getName() + "=" + pv.stringValue() + " (" + info + ")");
 			}
 		}
 		sb.append(")");
