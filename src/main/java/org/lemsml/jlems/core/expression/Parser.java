@@ -12,6 +12,9 @@ public class Parser {
 	public static final String SIN = "sin";
 	public static final String COS = "cos";
 	public static final String TAN = "tan";
+	public static final String SINH = "sinh";
+	public static final String COSH = "cosh";
+	public static final String TANH = "tanh";
 	public static final String EXP = "exp";
 	public static final String SQRT = "sqrt";
 	public static final String CEIL = "ceil";
@@ -23,7 +26,7 @@ public class Parser {
 	public static final String FACTORIAL = "factorial";
 	public static final String ABS = "abs";
 	
-    static String[] sf = {SIN, COS, TAN, EXP, SQRT, CEIL, SUM, PRODUCT, LN, LOG, RANDOM, FACTORIAL, ABS};
+    static String[] sf = {SIN, COS, TAN, SINH, COSH, TANH, EXP, SQRT, CEIL, SUM, PRODUCT, LN, LOG, RANDOM, FACTORIAL, ABS};
 	static HashSet<String> stdFuncs = new HashSet<String>();
 	
 	static HashMap<String, AbstractOperatorNode> opHM = new HashMap<String, AbstractOperatorNode>();	

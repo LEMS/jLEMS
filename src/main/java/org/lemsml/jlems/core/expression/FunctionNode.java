@@ -69,6 +69,15 @@ public class FunctionNode extends AbstractUnaryNode implements DoubleParseTreeNo
 		
 		} else if (fname.equals(Parser.TAN)) {
 			ret = Math.tan(arg);
+
+		} else if (fname.equals(Parser.SINH)) {
+			ret = Math.sinh(arg);
+
+		} else if (fname.equals(Parser.COSH)) {
+			ret = Math.cosh(arg);
+
+		} else if (fname.equals(Parser.TANH)) {
+			ret = Math.tanh(arg);
 		
 		} else if (fname.equals(Parser.LN) || fname.equals(Parser.LOG)) {
 			if (arg<=0)
