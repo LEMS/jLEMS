@@ -1,0 +1,33 @@
+<Lems>
+
+    <Target component="sim1" />
+
+    <Include file="example1.xml" />
+    
+    <Include file="SimpleNetwork.xml" />
+
+
+    <Network id="net0">
+
+        <Population id="hhpop" component="hhcell_1" size="1" />
+
+    </Network>
+
+
+    <Include file="SingleSimulation.xml" />
+    
+    <Simulation id="sim1" length="80ms" step="0.05ms"
+        target="net0">
+
+        <Display id="d0" title="Example 1: Dimensions, Units, ComponentTypes and Components" 
+            timeScale="1ms" xmin="-10" xmax="90" ymin="-90" ymax="60">
+
+            <Line id="p0v" quantity="hhpop[0]/v" scale="1mV" timeScale="1ms" color="#ff4040" />
+        </Display>
+
+
+    </Simulation>
+
+
+
+</Lems>
