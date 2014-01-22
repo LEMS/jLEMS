@@ -4,13 +4,68 @@
 
     <Include file="example1.xml" />
     
+    <ComponentType name="HHChannelScale">
+        <Parameter name="conductance" dimension="conductance" />
+        
+        <Parameter name="scale" dimension="none" />
+        
+        <Children name="gates" type="HHGate" />
+        <Exposure name="g" dimension="conductance" />
+        <Dynamics>
+            <DerivedVariable name="gatefeff" dimension="none"
+                select="gates[*]/fcond" reduce="multiply" />
+            <DerivedVariable name="g" exposure="g"
+                dimension="conductance" value="scale * conductance * gatefeff" />
+        </Dynamics>
+    </ComponentType>
+    
+    
+    
+    <HHChannelScale id="kscale" conductance="20pS" scale="1">
+        <HHGate id="n" power="4">
+            <Forward type="HHExpLinearRate" rate="0.1per_ms"
+                midpoint="-55mV" scale="10mV" />
+            <Reverse type="HHExpRate" rate="0.125per_ms"
+                midpoint="-65mV" scale="-80mV" />
+        </HHGate>
+    </HHChannelScale>
+    <HHChannelScale id="kscale2" conductance="20pS" scale="0.5">
+        <HHGate id="n" power="4">
+            <Forward type="HHExpLinearRate" rate="0.1per_ms"
+                midpoint="-55mV" scale="10mV" />
+            <Reverse type="HHExpRate" rate="0.125per_ms"
+                midpoint="-65mV" scale="-80mV" />
+        </HHGate>
+    </HHChannelScale>
+    
+    
+    <HHCell id="hhcellScale1" capacitance="1pF" injection="4pA" v0="-60mV">
+        <ChannelPopulation channel="na" number="6000"  erev="50mV" />
+        <ChannelPopulation channel="kscale" number="1800" erev="-77mV" />
+    </HHCell>
+    
+    <!-- Don't want to do this!!-->
+    <HHCell id="hhcellScale2" capacitance="1pF" injection="4pA" v0="-60mV">
+        <ChannelPopulation channel="na" number="6000"  erev="50mV" />
+        <ChannelPopulation channel="kscale2" number="1800" erev="-77mV" />
+    </HHCell>
+    <!-- Want to do this
+    <HHCell id="hhcellScale2" capacitance="1pF" injection="4pA" v0="-60mV">
+        <ChannelPopulation channel="na" number="6000"  erev="50mV" />
+        <ChannelPopulation channel="kscale" number="1800" erev="-77mV" >
+            <set component="kscale" scale="0.5"/>
+        </ChannelPopulation>
+    </HHCell>
+    
+    -->
+    
+    
     <Include file="SimpleNetwork.xml" />
 
 
     <Network id="net0">
-
-        <Population id="hhpop" component="hhcell_1" size="1" />
-
+        <Population id="hhpop1" component="hhcellScale1" size="1" />
+        <Population id="hhpop2" component="hhcellScale2" size="1" />
     </Network>
 
 
@@ -22,7 +77,8 @@
         <Display id="d0" title="Example 1: Dimensions, Units, ComponentTypes and Components" 
             timeScale="1ms" xmin="-10" xmax="90" ymin="-90" ymax="60">
 
-            <Line id="p0v" quantity="hhpop[0]/v" scale="1mV" timeScale="1ms" color="#ff4040" />
+            <Line id="p0v" quantity="hhpop1[0]/v" scale="1mV" timeScale="1ms" color="#ff4040" />
+            <Line id="p1v" quantity="hhpop2[0]/v" scale="1mV" timeScale="1ms" color="#ffffff" />
         </Display>
 
 
