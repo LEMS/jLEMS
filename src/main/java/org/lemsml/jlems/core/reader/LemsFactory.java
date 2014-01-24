@@ -961,6 +961,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.dimension = parseString(xv);
             } else if (xn.equals("exposure")) {
                 ret.exposure = parseString(xv);
+            } else if (xn.equals("description")) {
+                ret.description = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
             }
@@ -1034,6 +1036,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.required = parseBoolean(xv);
             } else if (xn.equals("value")) {
                 ret.value = parseString(xv);
+            } else if (xn.equals("description")) {
+                ret.description = parseString(xv);
             } else {
                 E.warning("unrecognized attribute " + xa);
             }

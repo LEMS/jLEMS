@@ -187,7 +187,7 @@ public class Sim extends LemsProcess {
   	    		rw.addedRecorder();
   	    		rr.connectRunnable(ra, rw);
   	    		
-  	    		E.info("Connected runnable to " + disp + " " + rwHM.get(disp));
+  	    		//E.info("Connected runnable to " + disp + " " + rwHM.get(disp));
   	    		
   	    	} else {
   	    		throw new ConnectionError("No such data viewer " + disp + " needed for " + rr);

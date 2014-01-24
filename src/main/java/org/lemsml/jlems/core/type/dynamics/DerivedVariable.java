@@ -32,6 +32,8 @@ public class DerivedVariable extends ExpressionValued implements Valued {
 	public String dimension;
 	public Dimension r_dimension;
 
+    public String description;
+
 	@ModelProperty(info="Either 'add' or 'multiply'. This applies if ther are multiple " +
 			"matches to the path or if 'required' is false. In the latter case, for multiply mode, " +
 	"multiplicative expressions in this variable behave as if the term was absent. " +

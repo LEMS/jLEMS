@@ -3,8 +3,7 @@ package org.lemsml.jlems.core.eval;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import org.lemsml.jlems.core.logging.E;
-import org.lemsml.jlems.core.type.Lems;
+import org.lemsml.jlems.core.expression.FunctionNode;
 
 
 public class DFunc extends AbstractDVal {
@@ -28,44 +27,61 @@ public class DFunc extends AbstractDVal {
 		return new DFunc(fname, arg.makePrefixedCopy(pfx, stetHS));
 	}
 	
-	
-        @Override
-        public String toExpression() {
-                return fname + "(" + arg.toExpression() + ")";
-        }
 
-     
+    @Override
+    public String toExpression() {
+            return fname + "(" + arg.toExpression() + ")";
+    }
 
-	 
+
+	public double eval() {
+		return FunctionNode.evaluate(arg.eval(), fname);
+	}
+		
+	 /*
 	public double eval() {
 		double ret = 0;
         Double aval = arg.eval();
 
-		if (fname.equals("sin")) {
+		if (fname.equals(Parser.SIN)) {
 			ret = Math.sin(aval);
 		
-		} else if (fname.equals("cos")) {
+		} else if (fname.equals(Parser.COS)) {
 			ret = Math.cos(aval);
 		
-		} else if (fname.equals("tan")) {
+		} else if (fname.equals(Parser.TAN)) {
 			ret = Math.tan(aval);
 		
-		} else if (fname.equals("ln") || fname.equals("log")) {
+		} else if (fname.equals(Parser.LN) || fname.equals(Parser.LOG)) {
 			ret = Math.log(aval);
 		
-		} else if (fname.equals("exp")) {
+		} else if (fname.equals(Parser.EXP)) {
 			ret = Math.exp(aval);
-		
-		} else if (fname.equals("sqrt")) {
+
+		} else if (fname.equals(Parser.SQRT)) {
 			ret = Math.sqrt(aval);
+
+		} else if (fname.equals(Parser.CEIL)) {
+			ret = Math.ceil(aval);
+			
+		} else if (fname.equals(Parser.ABS)) {
+			ret = Math.abs(aval);
+
+		} else if (fname.equals(Parser.FACTORIAL)) {
+			int intVal = aval.intValue();
+			int fact = 1; 
+	        for (int i = 1; i <= intVal; i++) {
+	            fact *= i;
+	        }
+			ret = fact;
 		
-		} else if (fname.equals("random")) {
+		} else if (fname.equals(Parser.RANDOM)) {
 			ret = aval * Lems.getRandomGenerator().nextDouble();
 		} else {
 			E.missing();
 		}
 		return ret;
-	}
+	}*/
 
 
 	 
