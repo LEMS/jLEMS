@@ -29,6 +29,8 @@
                 midpoint="-65mV" scale="-80mV" />
         </HHGate>
     </HHChannelScale>
+    
+    
     <HHChannelScale id="kscale2" conductance="20pS" scale="0.5">
         <HHGate id="n" power="4">
             <Forward type="HHExpLinearRate" rate="0.1per_ms"
@@ -44,20 +46,20 @@
         <ChannelPopulation channel="kscale" number="1800" erev="-77mV" />
     </HHCell>
     
-    <!-- Don't want to do this!!-->
+    <!-- Don't want to do this!!
     <HHCell id="hhcellScale2" capacitance="1pF" injection="4pA" v0="-60mV">
         <ChannelPopulation channel="na" number="6000"  erev="50mV" />
         <ChannelPopulation channel="kscale2" number="1800" erev="-77mV" />
-    </HHCell>
-    <!-- Want to do this
+    </HHCell>-->
+    <!-- Want to do this-->
     <HHCell id="hhcellScale2" capacitance="1pF" injection="4pA" v0="-60mV">
         <ChannelPopulation channel="na" number="6000"  erev="50mV" />
         <ChannelPopulation channel="kscale" number="1800" erev="-77mV" >
-            <set component="kscale" scale="0.5"/>
+            <set component="./kscale" scale="0.5"/>
         </ChannelPopulation>
     </HHCell>
     
-    -->
+    
     
     
     <Include file="SimpleNetwork.xml" />
