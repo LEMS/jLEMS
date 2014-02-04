@@ -46,18 +46,18 @@
         <ChannelPopulation channel="kscale" number="1800" erev="-77mV" />
     </HHCell>
     
-    <!-- Don't want to do this!!
+    <!-- Don't want to do this!!-->
     <HHCell id="hhcellScale2" capacitance="1pF" injection="4pA" v0="-60mV">
         <ChannelPopulation channel="na" number="6000"  erev="50mV" />
         <ChannelPopulation channel="kscale2" number="1800" erev="-77mV" />
-    </HHCell>-->
-    <!-- Want to do this-->
+    </HHCell>
+    <!-- Want to do this
     <HHCell id="hhcellScale2" capacitance="1pF" injection="4pA" v0="-60mV">
         <ChannelPopulation channel="na" number="6000"  erev="50mV" />
         <ChannelPopulation channel="kscale" number="1800" erev="-77mV" >
             <set component="./kscale" scale="0.5"/>
         </ChannelPopulation>
-    </HHCell>
+    </HHCell>-->
     
     
     
