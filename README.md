@@ -3,7 +3,7 @@ jLEMS
 
 Java Interpreter for the Low Entropy Model Specification language.
 
-See http://lems.github.com/jLEMS/
+See http://lems.github.com/LEMS
 
 
 Quick installation
