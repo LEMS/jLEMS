@@ -4,7 +4,11 @@ import org.lemsml.jlems.core.run.RuntimeOutput;
 
 public class DummyResultWriter implements ResultWriter {
 
- 
+
+	public String getID()
+	{
+		return "";
+	}
 	
 	public DummyResultWriter(RuntimeOutput ro) {
 		 

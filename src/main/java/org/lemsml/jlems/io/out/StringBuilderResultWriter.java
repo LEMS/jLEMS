@@ -10,16 +10,14 @@ import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.RuntimeOutput;
 import org.lemsml.jlems.io.util.FileUtil;
 
-public class FileResultWriter implements ResultWriter {
+public class StringBuilderResultWriter implements ResultWriter {
 
 	String id;
-	
-	String path;
 	
 	String fileName;
 	
 	int colCount;
-	
+	StringBuilder sb = new StringBuilder();
 	ArrayList<double[]> dat;
 	
 	int wkCount;
@@ -29,19 +27,18 @@ public class FileResultWriter implements ResultWriter {
 	boolean verbose = false;
 	
 	
-	public FileResultWriter(RuntimeOutput ro) {
+	public StringBuilderResultWriter(RuntimeOutput ro) {
 		 id = ro.getID();
-		 path = ro.getPath();
 		 fileName = ro.getFileName();
 		 colCount = 1;
 		 dat = new ArrayList<double[]>();
 	}
-
-
+	
 	public String getID()
 	{
 		return id;
 	}
+	   
 	
 	@Override
 	public void addPoint(String id, double x, double y) {
@@ -83,7 +80,6 @@ public class FileResultWriter implements ResultWriter {
 	public void flush() throws RuntimeError {
 
 		if (verbose) System.out.println("--------------\nf Last dat ("+(float)dat.get(dat.size()-1)[0]+", "+(float)dat.get(dat.size()-1)[1]+", ...)");
-		StringBuilder sb = new StringBuilder();
 		for (double[] d : dat) {
 			for (int i = 0; i < d.length; i++) {
 				sb.append((float)d[i]);
@@ -101,45 +97,19 @@ public class FileResultWriter implements ResultWriter {
 		
 		dat = new ArrayList<double[]>();
 		
-		File fdest = getFile();
-	 
-		try {
-			if (newFile) {
-				FileUtil.writeStringToFile(sb.toString(), fdest);
-			} else {
-				FileUtil.appendStringToFile(sb.toString(), fdest);
-			}
-		} catch (IOException ex) {
-			throw new RuntimeError("Can't write to file: " + fileName, ex);
-		}
-		
-		newFile = false;
 	}
 
 	
-	
-	private File getFile() {
-		File fdir = null;
-		if (path != null) {
-			fdir = new File(path);
-		} else if (fileName.startsWith("/")) {
-			fdir = null;
-		} else {
-			fdir = new File(".");
-		}
-
-		File fdest = new File(fdir, fileName);
-		return fdest;
-	}
-
-
 	@Override
 	public void close() throws RuntimeError {
 		if (verbose) System.out.println("close()...");
 		flush();
 	
-		File f = getFile();
-		E.info("Written the file " + f.getAbsolutePath() + " " + f.length());
+	}
+	
+	public StringBuilder getSBOutput()
+	{
+		return sb;
 	}
 
 	
