@@ -44,6 +44,7 @@ public class Constant implements Named, Valued  {
     }
     
 
+    @Override
     public String toString() {
     	String ret = "Constant: " + name + " dimension=" + dimension + " value=" + value + " resolvedto=" + r_dimension;
     	return ret;
@@ -57,7 +58,7 @@ public class Constant implements Named, Valued  {
 		} else {
 			throw new ContentError("no such dimension: " + dimension);
 		}		
-		
+        
 		if (value.indexOf("*") > 0 || value.indexOf("/") > 0) {
 			ParseTree pt = parser.parseExpression(value);
 			p_value = pt.makeFloatEvaluator().evalD(valHM);
@@ -76,10 +77,12 @@ public class Constant implements Named, Valued  {
 		return value;
 	}
 	
+    @Override
 	public double getValue() {
 		return p_value;
 	}
 	
+    @Override
 	public String getName() {
 		return name;
 	}

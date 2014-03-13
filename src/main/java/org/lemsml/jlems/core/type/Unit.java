@@ -41,11 +41,23 @@ public class Unit implements PseudoNamed, Summaried, DataMatchable {
     }
 
     public Unit(String nm, String sb, Dimension dim) {
-    	name = nm;
-        symbol = sb;
-        r_dimension = dim;
-        dimension = dim.getName();
+    	this.name = nm;
+        this.symbol = sb;
+        this.r_dimension = dim;
+        this.dimension = dim.getName();
     }
+
+    public Unit(String nm, String sb, Dimension dim, int power, double scale, double offset) {
+    	this.name = nm;
+        this.symbol = sb;
+        this.r_dimension = dim;
+        this.dimension = dim.getName();
+        this.power = power;
+        this.scale = scale;
+        this.offset = offset;
+    }
+    
+    
 
    
     public void setOffset(double d) {
@@ -150,6 +162,17 @@ public class Unit implements PseudoNamed, Summaried, DataMatchable {
 
     public String getSymbol() {
         return symbol;
+    }
+    
+    public boolean isDimensionless() {
+        return name.equals(NO_UNIT);
+    }
+    
+    public String getSymbolString() {
+        if (isDimensionless())
+            return "";
+        else
+            return " "+getSymbol();
     }
 
 

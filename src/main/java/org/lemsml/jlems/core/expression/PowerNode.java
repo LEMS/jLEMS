@@ -9,31 +9,36 @@ import org.lemsml.jlems.core.sim.ContentError;
 
 public class PowerNode extends AbstractFloatResultNode {
 
+    public static final String SYMBOL = "^";
+    
 	public PowerNode() {
-		super("^");
+		super(SYMBOL);
 	}
 	
+    @Override
 	public PowerNode copy() {
 		return new PowerNode();
 	}
 	
+    @Override
 	public int getPrecedence() {
 		return 1;
 	}
 
-    
 	
-	
+    @Override
 	public double op(double x, double y) {
 		return Math.pow(x, y);
 	}
 	
+    @Override
 	public AbstractDVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
 		checkLeftRight();
 		return new Power(leftEvaluable.makeEvaluable(fixedHM), rightEvaluable.makeEvaluable(fixedHM));
 	}
 
 	 
+    @Override
 	public Dimensional dimop(Dimensional dl, Dimensional dr) throws ContentError {
 		Dimensional ret = null;
 		if (dl.isDimensionless()) {
@@ -56,6 +61,7 @@ public class PowerNode extends AbstractFloatResultNode {
 	
 	
 
+    @Override
 	public Dimensional evaluateDimensional(HashMap<String, Dimensional> dhm) throws ContentError {
 		throw new ContentError("Can't (yet) apply power operations to dimensions");
 	}
@@ -68,5 +74,4 @@ public class PowerNode extends AbstractFloatResultNode {
 		}
 		
  
-	
 }

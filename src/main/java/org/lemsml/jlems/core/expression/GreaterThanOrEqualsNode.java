@@ -8,25 +8,29 @@ import org.lemsml.jlems.core.sim.ContentError;
 
 public class GreaterThanOrEqualsNode extends AbstractComparisonNode {
 
-
+   public static final String SYMBOL = ".geq.";
 	
 	public GreaterThanOrEqualsNode() {
-		super("greater_than_or_equal_to");
+		super(SYMBOL);
 	}
 
  
+   @Override
 	public GreaterThanOrEqualsNode copy() {
 		return new GreaterThanOrEqualsNode();
 	}
 	
+   @Override
 	public int getPrecedence() {
 		return 10;
 	}
 	 
+   @Override
 	public boolean compare(double x, double y) {
 		return (x >= y);
 	}
 
+   @Override
 	public AbstractBComp makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
 		checkLeftRight();
 		return new GEQComp(leftEvaluable.makeEvaluable(fixedHM), rightEvaluable.makeEvaluable(fixedHM));

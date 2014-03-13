@@ -40,6 +40,10 @@ public final class JUtil {
    }
    
 
+   public static void setResourceRoot(Class<?> cls)
+   {
+	   rootClass=cls;
+   }
    public static String getRelativeResource(Object obj, String path) throws ContentError {
       return getRelativeResource(obj.getClass(), path);
    }

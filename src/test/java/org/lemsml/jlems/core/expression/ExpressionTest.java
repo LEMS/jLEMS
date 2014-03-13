@@ -1,4 +1,4 @@
-package org.lemsml.jlems.test;
+package org.lemsml.jlems.core.expression;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -9,21 +9,18 @@ import java.util.HashMap;
 
 import org.junit.Test;
 import org.junit.runner.Result;
-import org.lemsml.jlems.core.expression.AndNode;
-import org.lemsml.jlems.core.expression.OrNode;
-import org.lemsml.jlems.core.expression.ParseError;
-import org.lemsml.jlems.core.expression.ParseTree;
-import org.lemsml.jlems.core.expression.Parser;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.io.logging.DefaultLogger;
+import org.lemsml.jlems.test.Main;
 
 /**
  * 
  * @author Padraig
  */
-public class ParserTest {
-
+public class ExpressionTest {
+    
+    
 	@Test
 	public void testEvaluatingDouble() throws ParseError, ContentError {
  		Parser p = new Parser();
@@ -90,9 +87,7 @@ public class ParserTest {
 		testEval("sqrt(9)", 3, valHM);
 
 		checkFailure("sqrt(-10)", 0, null);
-		
-		
-
+	
 
 		String[] tests = new String[] { "(v/VOLT)", "rate * exp((v - midpoint)/scale)", "(exp(73 * X))",
 				"( 0.76 ) / TIME_SCALE", "sqrt(4)", "exp (x * (-0.059))", "1.2 * 5 * 5.0e-3 * 6e34", "ceil(2.4)" };
@@ -118,6 +113,12 @@ public class ParserTest {
 		E.info("2 evaluates to " + eval2);
 
 		assertEquals(eval1, eval2, 0);
+        
+        
+        testEval("2^3", 8, null);
+        testEval("2.5^2.5", Math.pow(2.5, 2.5), null);
+        checkFailure("(-2.5)^2.5", Math.pow(-2.5, 2.5), null);
+        testEval("2.5^-2.5", Math.pow(2.5, -2.5), null);
 		
 	}
 
@@ -203,10 +204,52 @@ public class ParserTest {
 		res = pt.makeBooleanEvaluator().evalB(valHM);
 		assertFalse(src, res);
 	}
+    
+	@Test
+	public void testEvaluatingDimensional() throws ParseError, ContentError {
+        
+        HashMap<String, Dimensional> adml = new HashMap<String, Dimensional>();
+        
+        
+        
+        ExprDimensional a = new ExprDimensional();
+        a.setDoubleValue(1);
+        a.setT(1);
+        adml.put("a", a);
+        
+        ExprDimensional b = new ExprDimensional();
+        b.setDoubleValue(2);
+        b.setT(1); 
+        adml.put("b", b);
+        
+        ExprDimensional b2 = new ExprDimensional();
+        b2.setDoubleValue(2);
+        //b2.setT(2); 
+        adml.put("b2", b2);
+        
+        
+        Parser p = new Parser();
+ 		String src1 = "a .lt. b";
+ 		ParseTree pt1 = p.parseCondition(src1); 
+        System.out.println("pt1: "+pt1);
+        AbstractComparisonNode node = (AbstractComparisonNode)pt1.root;
+        Dimensional d = node.dimop(a, b);
+        System.out.println("d: "+d);
+        try {
+            d = node.dimop(a, b2);
+            fail("Should be incompatible: "+a+" and "+b2);
+        } catch (ContentError e) {
+            System.out.println("Correctly incompatible: "+a+" and "+b2);
+        }
+        
+        
+        
+    }
+    
 
 	public static void main(String[] args) {
 		DefaultLogger.initialize();
-		ParserTest ct = new ParserTest();
+		ExpressionTest ct = new ExpressionTest();
 		Result r = org.junit.runner.JUnitCore.runClasses(ct.getClass());
 		Main.checkResults(r);
 

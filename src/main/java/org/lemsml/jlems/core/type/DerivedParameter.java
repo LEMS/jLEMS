@@ -23,6 +23,15 @@ public class DerivedParameter implements Named {
 	
 	@ModelProperty(info="Expression that supplies the value. Exactly one of 'select' and 'value' is required.")
 	public String value;
+    
+    public DerivedParameter() {
+    }
+
+    public DerivedParameter(String name, Dimension dimension) {
+        this.name = name;
+        this.dimension = dimension.getName();
+        this.r_dimension = dimension;
+    }
 	
 	public void resolve(LemsCollection<Dimension> dimensions) throws ContentError {
 		if (dimension == null) {
@@ -41,6 +50,7 @@ public class DerivedParameter implements Named {
 	}
 
 
+    @Override
 	public String getName() {
 		return name;
 	}
@@ -59,4 +69,18 @@ public class DerivedParameter implements Named {
 	public String getValue() {
 		return value;
 	}
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSelect(String select) {
+        this.select = select;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+    
+    
 }

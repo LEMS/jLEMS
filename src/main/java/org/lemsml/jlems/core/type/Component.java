@@ -131,6 +131,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		return "Component(id=" + id + " type=" + type + ")";
 	}
 
+    @Override
 	public String summary() {
 		return ComponentWriter.summarize(this);
 	}

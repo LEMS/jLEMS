@@ -8,13 +8,11 @@ import org.lemsml.jlems.core.sim.ContentError;
 
 public class OrNode extends AbstractBooleanOperatorNode {
 
-        public static final String SYMBOL = ".or.";
+    public static final String SYMBOL = ".or.";
 
 	public OrNode() {
 		super(SYMBOL);
 	}
-
-    
 
 	
 	public OrNode copy() {
