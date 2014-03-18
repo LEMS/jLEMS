@@ -78,7 +78,7 @@ public class LEMSDocumentReaderTest
 			assertNotNull(model);
 			assertNotNull(runConfig);
 			Assert.assertEquals(0.08, runConfig.getRuntime(), 0);
-			Assert.assertEquals(0.00005, runConfig.getTimestep(), 0);
+			Assert.assertEquals(0.00001, runConfig.getTimestep(), 0);
 			Assert.assertTrue(runConfig.getRecordedStates().size() == 3);
 			Assert.assertEquals("p1[0]/tsince", runConfig.getRecordedStates().get(0).getState().getStatePath());
 			Assert.assertEquals("p3[0]/v", runConfig.getRecordedStates().get(1).getState().getStatePath());
