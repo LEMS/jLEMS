@@ -230,7 +230,7 @@ public class StateInstance implements StateRunnable {
 		}
 		
 		if (uclass.trackTime) {
-			uclass.startClock();
+	//		uclass.startClock();
 		}
 
 		if (hasChildren) {
