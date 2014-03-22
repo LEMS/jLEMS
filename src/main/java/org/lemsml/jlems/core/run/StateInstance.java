@@ -474,26 +474,54 @@ public class StateInstance implements StateRunnable {
 
 		if (Double.isNaN(ret)) {
 			StringBuilder err = new StringBuilder("Problem getting exposed var " + varname + " in: " + this + "\n" + 
-					"Exposed: " + expHM + "\n" + "Vars: " + varHM + "\n");
-			if (childA != null) {
-				for (StateRunnable si : childA) {
-					err.append("Child: " + si + ", vars: " + si.getVariables() + "\n");
-				}
-			} else {
-				err.append("childA is null\n");
-			}
-			if (childHM != null) {
-				for (String k : childHM.keySet()) {
-					StateRunnable si = childHM.get(k);
-					err.append("Child " + k + ": " + si + ", vars: " + si.getVariables() + "\n");
-				}
-			} else {
-				err.append("childHM is null\n");
-			}
+					dumpInfo("-"));
 			throw new RuntimeError(err.toString());
 		}
 		return ret;
 	}
+    
+    public String dumpInfo(String indent) throws RuntimeError {
+        
+        StringBuilder sb = new StringBuilder(indent+"StateInstance: " + this + "\n"
+                + indent+"  Exposed: " + expHM + "\n" + indent+"  Vars: " + varHM + "\n");
+        if (childA != null) {
+            for (StateRunnable si : childA) {
+                sb.append(indent+"  - Child: " );
+                if (si.toString().indexOf("rdf")<0) 
+                    sb.append(((StateInstance)si).dumpInfo(indent+"  "));
+                
+            }
+        } else {
+            //sb.append(indent+"  Child array is null\n");
+        }
+        if (childHM != null) {
+            for (String k : childHM.keySet()) {
+                StateRunnable si = childHM.get(k);
+                sb.append(indent+"  Child " + k + ":");
+                if (si.toString().indexOf("rdf")<0) 
+                    sb.append(((StateInstance)si).dumpInfo(indent+"  "));
+            }
+        } else {
+            //sb.append(indent+"  Child HashMap is null\n");
+        }
+        try
+        {
+            for (StateRunnable si : getStateInstances()) {
+                sb.append(indent+"  - StateInstance: " );
+                if (si.toString().indexOf("rdf")<0) 
+                    sb.append(((StateInstance)si).dumpInfo(indent+"  "));
+                
+            }
+        }
+        catch (ConnectionError ce){
+            //sb.append(indent+"  Problem getting StateInstances...");
+        }
+        catch (ContentError ce){
+            //sb.append(indent+"  Problem getting StateInstances...");
+        }
+        
+        return sb.toString();
+    }
 
 	
 	public void addChild(String s, StateRunnable newInstance) {
