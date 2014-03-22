@@ -12,6 +12,7 @@ import org.lemsml.jlems.core.run.StateWrapper;
 public class RunnableAccessor {
 
 	StateRunnable root;
+
 	
 	
 	public RunnableAccessor(StateRunnable sr) {
@@ -19,7 +20,7 @@ public class RunnableAccessor {
 	}
 
 
-	public StateWrapper getStateWrapper(String path) throws ConnectionError {
+	public StateWrapper getStateWrapper(String path) throws ConnectionError, ContentError {
 		StateWrapper ret = null;
 		
 		// E.info("seeking sw for " + path);
@@ -44,7 +45,11 @@ public class RunnableAccessor {
 		}
 		
 		if (wk != null) {
+			String lastbit = bits[bits.length - 1];
 			ret = wk.getWrapper(bits[bits.length-1]);
+		 
+			
+			
 		}
 		if (ret == null) {
 			E.info("starting from " + root);

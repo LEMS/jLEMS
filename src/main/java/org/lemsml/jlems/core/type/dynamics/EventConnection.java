@@ -67,7 +67,8 @@ public class EventConnection extends BuildElement {
                 if (ea != null) {
                     E.warning("Expose as in EventConnection is not used");
                  }
-                ret.addAssignment(ass.getProperty(), ass.getDoubleEvaluator());
+                String dim = "unknown";
+                ret.addAssignment(ass.getProperty(), ass.getDoubleEvaluator(), dim);
             }
 		}
 

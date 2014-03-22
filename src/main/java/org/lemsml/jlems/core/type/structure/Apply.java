@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.run.ApplyBuilder;
 import org.lemsml.jlems.core.run.BuilderElement;
+import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.Children;

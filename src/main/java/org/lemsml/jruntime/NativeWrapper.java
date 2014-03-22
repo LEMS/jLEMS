@@ -298,4 +298,13 @@ public class NativeWrapper implements StateRunnable {
 		return null;
 	}
 
+
+
+
+	@Override
+	public String getDimensionString(String lastbit) throws ContentError {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

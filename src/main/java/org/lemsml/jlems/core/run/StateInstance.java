@@ -1110,4 +1110,11 @@ public class StateInstance implements StateRunnable {
 	public Object getComponentID() {
 		return uclass.getComponentID();
 	}
+	
+
+	public String getDimensionString(String fld) throws ContentError {
+		return uclass.getDimensionString(fld);
+	}
+	
+	
 }

@@ -236,10 +236,10 @@ public class Regime implements Named {
 			 if (dv.hasExpression()) {
 				 ParseTree pt = dv.getParseTree();
 				 DoubleEvaluator db = pt.makeFloatFixedEvaluator(fixedHM);
-				 ret.addExpressionDerived(dv.getName(), db);
+				 ret.addExpressionDerived(dv.getName(), db, dv.getDimensionString());
 			 } else if (dv.hasSelection()) {
 				 
-				 ret.addPathDerived(dv.getName(), dv.getPath(), dv.getFunc(), dv.isRequired(), dv.getReduce());
+				 ret.addPathDerived(dv.getName(), dv.getPath(), dv.getFunc(), dv.isRequired(), dv.getReduce(), dv.getDimensionString());
 			 }
 		 }
 		 
@@ -249,7 +249,7 @@ public class Regime implements Named {
 			 ParseTree pt = sd.getParseTree();
 			 DoubleEvaluator db = pt.makeFloatFixedEvaluator(fixedHM);
 			 
-			 ret.addRate(sv.getName(), db);
+			 ret.addRate(sv.getName(), db, sd.getDimensionString());
 		 }
 		 
 		 for (OnStart os : onStarts) {

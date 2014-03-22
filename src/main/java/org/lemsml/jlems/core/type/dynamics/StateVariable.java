@@ -62,6 +62,10 @@ public class StateVariable implements Valued  {
 		return name + "(" + dimension + ")"; //  + hashCode();
 	}
 
+    public String getDimensionString() {
+    	String ret = r_dimension.getDimensionString();
+    	return ret;
+    }
 	
 	public void resolve(ComponentType typ, LemsCollection<Dimension> dimensions) throws ContentError {
 		Dimension d = dimensions.getByName(dimension);
