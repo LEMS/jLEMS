@@ -9,18 +9,29 @@ public class VariableROC {
 
 	String varname;
 	DoubleEvaluator rateexp;
+	String dimension;
 	
 	protected double work;
 	
-	public VariableROC(String name, DoubleEvaluator das) {
+	
+	
+	public VariableROC(String name, DoubleEvaluator das, String dim) {
 		varname = name;
 		rateexp = das;
+		dimension = dim;
 	}
 
+	
+	
 	public String getVariableName() {
 		return varname;
 	}
 
+	
+	public String getDimensionString() {
+		return dimension;
+	}
+	
         public DoubleEvaluator getRateexp() {
             return rateexp;
         }
@@ -44,11 +55,11 @@ public class VariableROC {
 	}
 
 	public VariableROC makeFlat(String pfx, HashSet<String> stetHS) {
-		return new VariableROC(pfx + varname, rateexp.makePrefixedCopy(pfx, stetHS));
+		return new VariableROC(pfx + varname, rateexp.makePrefixedCopy(pfx, stetHS), dimension);
 	}
 
 	public VariableROC makeCopy() {
-		 VariableROC ret = new VariableROC(varname, rateexp);
+		 VariableROC ret = new VariableROC(varname, rateexp, dimension);
 		 return ret;
 	}
 

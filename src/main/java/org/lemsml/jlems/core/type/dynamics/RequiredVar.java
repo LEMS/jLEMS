@@ -42,4 +42,10 @@ public class RequiredVar implements Valued {
 		return r_dimension;
 	}
 
+
+
+	public String getDimensionString() {
+		return r_dimension.getDimensionString();
+	}
+
 }

@@ -9,6 +9,7 @@ import org.lemsml.jlems.core.eval.DoubleEvaluator;
 public class ExpressionDerivedVariable {
 	String varname;
 	DoubleEvaluator rateexp;
+	String dimension;
 	
 	String exposeAs;
 
@@ -23,21 +24,27 @@ public class ExpressionDerivedVariable {
 
 
 
-	public ExpressionDerivedVariable(String snm, DoubleEvaluator de) {
+	public ExpressionDerivedVariable(String snm, DoubleEvaluator de, String dim) {
 		varname = snm;
 		rateexp = de;
+		dimension = dim;
 	}
 
-	public ExpressionDerivedVariable makeFlat(String pfx, HashSet<String> indHS) {
+	public ExpressionDerivedVariable makeFlat(String pfx, HashSet<String> indHS, String dim) {
 		ExpressionDerivedVariable edv = new ExpressionDerivedVariable();
 		edv.varname = pfx + varname;
 		edv.exposeAs = pfx + exposeAs;
+		edv.dimension = dim;
 		edv.rateexp = rateexp.makePrefixedCopy(pfx, indHS);
 		return edv;
 	}
 	
 	public void setInstanceExposeAs(String s) {
 		exposeAs = s;
+	}
+	
+	public String getDimensionString() {
+		return dimension;
 	}
 	
 	public String getExposeAs() {

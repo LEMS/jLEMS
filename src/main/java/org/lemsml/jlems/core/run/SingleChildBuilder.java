@@ -42,7 +42,7 @@ public class SingleChildBuilder extends BuilderElement implements ChildInstantia
 	}
 
 	@Override
-	public void consolidateStateTypes() {
+	public void consolidateStateTypes() throws ContentError {
 		 if (runtimeType instanceof StateType) {
 			 runtimeType = ((StateType)runtimeType).getConsolidatedStateType("(child)");
 		 }	

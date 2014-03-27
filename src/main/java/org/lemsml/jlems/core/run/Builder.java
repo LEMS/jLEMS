@@ -66,7 +66,7 @@ public class Builder {
 
 
 
-	public void consolidateStateTypes() {
+	public void consolidateStateTypes() throws ContentError {
 		for (BuilderElement be : builderElements) {
 			be.consolidateStateTypes();
 		}

@@ -87,7 +87,7 @@ public class PairsEventConnectionBuilder extends AbstractPostBuilder {
  
 
 	@Override
-	public void consolidateStateTypes() {
+	public void consolidateStateTypes() throws ContentError {
 		 if (receiverCB != null) {
 			 receiverCB = receiverCB.getConsolidatedStateType("(evtcon)");
 		 }	

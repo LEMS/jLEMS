@@ -33,7 +33,7 @@
                 <StateAssignment variable="v" value="reset"/>
             </OnStart>
 
-            <Regime name="refractory">
+            <Regime name="refractory" initial="false">
                 <OnEntry>
                     <StateAssignment variable="lastSpikeTime" value="t" />
                     <StateAssignment variable="v" value="reset" />
