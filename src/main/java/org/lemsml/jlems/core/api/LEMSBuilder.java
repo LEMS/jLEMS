@@ -177,7 +177,14 @@ public class LEMSBuilder implements ILEMSBuilder
 			StateType targetBehavior = ((StateType) stateTypeDoc);
 			if (mflat)
 			{
-				targetBehavior = ((StateType) stateTypeDoc).getConsolidatedStateType("root");
+                try
+                {
+                    targetBehavior = ((StateType) stateTypeDoc).getConsolidatedStateType("root");
+                }
+                catch (ContentError e)
+                {
+                    throw new LEMSBuildException(e);
+                }
 			}
 
 			Lems lems = (Lems) stateMap.get(stateTypeDoc); // FIXME Castings like this show there is something wrong...

@@ -47,7 +47,7 @@ public class RuntimeRecorder
 		return display;
 	}
 
-	public void connectRunnable(RunnableAccessor ra, DataViewer dv) throws ConnectionError
+	public void connectRunnable(RunnableAccessor ra, DataViewer dv) throws ConnectionError, ContentError
 	{
 		if(quantity == null)
 		{
@@ -61,7 +61,7 @@ public class RuntimeRecorder
 		dataViewer = dv;
 	}
 
-	public void connectRunnable(RunnableAccessor ra, ResultWriter rw) throws ConnectionError
+	public void connectRunnable(RunnableAccessor ra, ResultWriter rw) throws ConnectionError, ContentError
 	{
 		if(quantity == null)
 		{
