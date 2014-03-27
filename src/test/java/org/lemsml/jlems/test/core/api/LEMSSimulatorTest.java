@@ -594,6 +594,7 @@ public class LEMSSimulatorTest
 		}
 	}
 
+    /*
 	@Test
 	public void testRunExampleNeuroML() throws ParseError
 	{
@@ -659,5 +660,5 @@ public class LEMSSimulatorTest
 		{
 			fail(e.getMessage());
 		}
-	}
+	}*/
 }

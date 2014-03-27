@@ -125,7 +125,7 @@ public class LEMSDocumentReaderTest
 		}
 	}
 
-	
+	/*
 	@Test
 	public void testGetLEMSRunConfiguration2()
 	{
@@ -163,7 +163,7 @@ public class LEMSDocumentReaderTest
 		{
 			fail(e.getMessage());
 		}
-	}
+	}*/
 
 	
 	@Test
