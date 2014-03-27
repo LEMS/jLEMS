@@ -36,8 +36,10 @@ public class TimeDerivative extends AbstractStateChange {
 		return ret;
 	}
 
-
-
+	public String getDimensionString() {
+		 Dimension ret = new Dimension("per_time");
+		 return ret.getDimensionString();
+	}
 
  
 

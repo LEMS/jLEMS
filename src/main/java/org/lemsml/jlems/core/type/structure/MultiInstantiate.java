@@ -2,6 +2,7 @@ package org.lemsml.jlems.core.type.structure;
 
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
+import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.BuilderElement;
 import org.lemsml.jlems.core.run.MultiBuilder;
 import org.lemsml.jlems.core.run.StateType;
@@ -67,8 +68,11 @@ public class MultiInstantiate extends BuildElement {
 			if (ea != null) {
 				cea = cpt.getTextParam(ea);
 			}
+			// TODO - assigns don't know thier dimenison?
+			E.missing("Dont' know dimension in assigns");
+			String dim = "unknown";
 			
-			mb.addAssignment(ass.getProperty(), ass.getDoubleEvaluator(), cea);
+			mb.addAssignment(ass.getProperty(), ass.getDoubleEvaluator(), cea, dim);
 		}
 		
 		return mb;

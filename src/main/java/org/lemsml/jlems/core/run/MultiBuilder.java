@@ -58,14 +58,14 @@ public class MultiBuilder extends AbstractChildBuilder {
 
  
 
-	public void addAssignment(String property, DoubleParseTreeNode de) throws ContentError {
-		ExpressionDerivedVariable edv = new ExpressionDerivedVariable(property, new DBase(de.makeEvaluable(null)));
+	public void addAssignment(String property, DoubleParseTreeNode de, String dim) throws ContentError {
+		ExpressionDerivedVariable edv = new ExpressionDerivedVariable(property, new DBase(de.makeEvaluable(null)), dim);
 		edvAL.add(edv);
 	}
 
-	public void addAssignment(String property, DoubleEvaluator de, String exposeAs) throws ContentError {
+	public void addAssignment(String property, DoubleEvaluator de, String exposeAs, String dim) throws ContentError {
 		// TODO copy de?
-		ExpressionDerivedVariable edv = new ExpressionDerivedVariable(property, de);
+		ExpressionDerivedVariable edv = new ExpressionDerivedVariable(property, de, dim);
 		edv.setInstanceExposeAs(exposeAs);
 		edvAL.add(edv);
 	}
@@ -76,7 +76,7 @@ public class MultiBuilder extends AbstractChildBuilder {
 
 
 	@Override
-	public void consolidateStateTypes() {
+	public void consolidateStateTypes() throws ContentError {
 		stateType = stateType.getConsolidatedStateType("(multi)");
 	}
 	

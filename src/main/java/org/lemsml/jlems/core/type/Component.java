@@ -755,7 +755,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	}
 	
 
-	public StateType getStateType() throws ContentError, ParseError {
+	public StateType getStateType() throws ContentError, ParseError  {
 		StateType ret = null;
 	
 		if (r_replacement != null) {

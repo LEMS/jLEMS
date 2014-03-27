@@ -40,6 +40,12 @@ public abstract class AbstractStateChange extends ExpressionValued {
    }
    
 	
+   public String getDimensionString() {
+	   String ret = r_variable.getDimensionString();
+	   return ret;
+   }
+
+
 	public void resolve(LemsCollection<StateVariable> stateVariables, HashMap<String, Valued> valHM, Parser parser) throws ContentError, ParseError {
 		super.extract();
 		

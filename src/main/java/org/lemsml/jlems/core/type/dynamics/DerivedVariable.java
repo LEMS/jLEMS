@@ -9,6 +9,7 @@ import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
 import org.lemsml.jlems.core.expression.Parser;
 import org.lemsml.jlems.core.expression.Valued;
+import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.ComponentType;
 import org.lemsml.jlems.core.type.Dimension;
@@ -52,6 +53,9 @@ public class DerivedVariable extends ExpressionValued implements Valued {
 	@ModelProperty(info="Set to true if it OK for this variable to be absent. " +
 			"See 'reduce' for what happens in this case")
 	public boolean required = true;
+	
+	
+	private boolean resolved = false;
 	
    public DerivedVariable() {
     }
@@ -109,7 +113,7 @@ public class DerivedVariable extends ExpressionValued implements Valued {
                 r_dimension = d;
                 //	E.info("resolved param " + name);
             } else {
-                throw new ContentError("no such dimension: " + dimension);
+                throw new ContentError("No such dimension: " + dimension+" in "+ name+" = "+value);
             }
         }
 
@@ -128,7 +132,7 @@ public class DerivedVariable extends ExpressionValued implements Valued {
         if (exposure != null) {
         	r_exposure = type.getExposure(exposure);
         }
-     
+        resolved = true;
 	}
 
  
@@ -145,7 +149,16 @@ public class DerivedVariable extends ExpressionValued implements Valued {
         return r_dimension;
     }
 
-    
+    public String getDimensionString() {
+    	if (!resolved) {
+    		E.warning("Accessing dimension beforeresolving " + this);
+    	}
+    	if (r_dimension == null) {
+    		E.warning("Null dimension in " + this);
+    	}
+     	String ret = r_dimension.getDimensionString();
+    	return ret;
+    }
 	
 	public boolean hasSelection() {
 		boolean ret = false;
@@ -171,10 +184,29 @@ public class DerivedVariable extends ExpressionValued implements Valued {
 		
 		if (parseTree != null) {
 			ret = parseTree.getDimensionality(dimHM);
-
-		} else if (r_dimension != null) {
-			ret = r_dimension;
+		}
+		
+		
+		if (r_dimension != null) {
+			if (ret != null) {
+				if (r_dimension.matches(ret)) {
+					// Ok
+				} else {
+					throw new ContentError("Expression dimension does not match delcared dimension\n" +
+							"expression gives " + ret + " but delcared is " + r_dimension);
+				}
+			} else {
+				ret = r_dimension;
+			}
 		} else {
+			if (ret != null) {
+				r_dimension = new Dimension("", ret.getM(), ret.getL(), ret.getT(), ret.getI(), 
+						ret.getK(), ret.getN(), 0);
+			}
+		}
+		
+		
+		if (ret == null) {
 			throw new ContentError("derived variable has no dimension: " + name + " " + value);
 		}
 		return ret;

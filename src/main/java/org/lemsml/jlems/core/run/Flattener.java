@@ -1,6 +1,7 @@
 package org.lemsml.jlems.core.run;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import org.lemsml.jlems.core.eval.AbstractDVal;
@@ -10,6 +11,7 @@ import org.lemsml.jlems.core.eval.DVar;
 import org.lemsml.jlems.core.eval.Plus;
 import org.lemsml.jlems.core.eval.Times;
 import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jlems.core.sim.ContentError;
 
 public class Flattener {
 
@@ -19,35 +21,61 @@ public class Flattener {
 	ArrayList<VariableROC> rocA = new ArrayList<VariableROC>();
 	ArrayList<String> svA = new ArrayList<String>();
 
+    HashMap<String, String> dimensions = new HashMap<String, String>();
+	
 	ArrayList<VariableAssignment> initializationAssignments = new ArrayList<VariableAssignment>();
 
 	
-	public void addIndependentVariable(String s) {
+	public void addIndependentVariable(String s, String d) throws ContentError {
 		if (indepsA.contains(s)) {
 			// fine - lots of children could 
 		} else {
 			indepsA.add(s);
+			dimensions.put(s, d);
+			if (d == null) {
+				throw new ContentError("Null dimension for independent variable " + s);
+			}
+			
 		}
 	}
 	
 	
-	public void add(PathDerivedVariable pdv) {
+	public void add(PathDerivedVariable pdv) throws ContentError {
  		pdvA.add(pdv);
  //		E.info("added pdv " + pdv);
+ 		String d = pdv.getDimensionString();
+ 		dimensions.put(pdv.getVariableName(), d);
+ 		if (d == null) {
+			throw new ContentError("Null dimension for path derived variable " + pdv);
+		}
 	}
 
-	public void add(ExpressionDerivedVariable edv) {
+	public void add(ExpressionDerivedVariable edv) throws ContentError {
 		edvA.add(edv);
 //		E.info("added edv " + edv);
+		String d = edv.getDimensionString();
+		dimensions.put(edv.getVariableName(), d);
+		if (d == null) {
+			throw new ContentError("Null dimension for expression derived variable " + edv);
+		}
 	}
 
-	public void add(VariableROC vroc) {
+	public void add(VariableROC vroc) throws ContentError {
 		rocA.add(vroc);	
+		String d = vroc.getDimensionString();
+		dimensions.put(vroc.getVariableName(), d);
+		if (d == null) {
+			throw new ContentError("Null dimension for rate variable " + vroc);
+		}
 	}
 
-	public void addStateVariable(String sv) {
+	public void addStateVariable(String sv, String dim) throws ContentError {
 		svA.add(sv);
 //		E.info("Added sv " + sv);
+		if (dim == null) {
+			throw new ContentError("Null dimension for stae variable " + sv);
+		}
+		dimensions.put(sv, dim);
 	}
 
 	public void resolvePaths() {
@@ -133,7 +161,7 @@ public class Flattener {
 				if (elts.length == 0) {
 					DCon dcon = new DCon(0.);
 					DBase db = new DBase(dcon);
-					edvA.add(new ExpressionDerivedVariable(pdv.getVariableName(), db));
+					edvA.add(new ExpressionDerivedVariable(pdv.getVariableName(), db, pdv.getDimensionString()));
 					
 				} else {
 					AbstractDVal wk = new DVar(elts[0]);
@@ -151,7 +179,7 @@ public class Flattener {
 						 }
 					}
 					DBase db = new DBase(wk);
-					edvA.add(new ExpressionDerivedVariable(pdv.getVariableName(), db));
+					edvA.add(new ExpressionDerivedVariable(pdv.getVariableName(), db, pdv.getDimensionString()));
 				}
 				
 			 
@@ -258,14 +286,14 @@ public class Flattener {
 	
 	
 
-	public void exportTo(StateType ret) {
+	public void exportTo(StateType ret) throws ContentError {
 
 		for (String s : indepsA) {
-			ret.addIndependentVariable(s);
+			ret.addIndependentVariable(s, dimensions.get(s));
 		}
 		
 		for (String sv : svA) {
- 			ret.addStateVariable(sv);
+ 			ret.addStateVariable(sv, dimensions.get(sv));
  		}
  		
 		for (PathDerivedVariable pdv : pdvA) {
