@@ -113,7 +113,7 @@ public class DerivedVariable extends ExpressionValued implements Valued {
                 r_dimension = d;
                 //	E.info("resolved param " + name);
             } else {
-                throw new ContentError("no such dimension: " + dimension);
+                throw new ContentError("No such dimension: " + dimension+" in "+ name+" = "+value);
             }
         }
 
