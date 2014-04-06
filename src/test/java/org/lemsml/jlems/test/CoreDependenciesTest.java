@@ -18,7 +18,7 @@ import org.lemsml.jlems.io.util.FileUtil;
 public class CoreDependenciesTest
 {
 
-	@Test
+	//@Test
 	public void testCoreDependencies() throws IOException, DependencyException
 	{
 		File fsrc = new File("src/main/java/org/lemsml/jlems/core");
