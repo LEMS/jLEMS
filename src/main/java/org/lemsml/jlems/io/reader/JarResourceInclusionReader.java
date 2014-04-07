@@ -73,10 +73,28 @@ public class JarResourceInclusionReader extends AbstractInclusionReader {
     public String getRelativeContent(String s) throws ContentError {
     	String ret = "";
     	
-        //E.info("Getting rel path for: "+s+", rootFile: "+ rootFile.getAbsolutePath()+", searchPathsInJar: "+ searchPathsInJar);
+        //E.info("Getting rel path for: "+s+", searchPathsInJar: "+ searchPathsInJar);
 
+        if (searchPathsInJar.isEmpty())
+            searchPathsInJar.add("");
+        
         for (String path: searchPathsInJar) {
         	String toTry = path+"/"+s;
+            //System.out.println("Trying: "+toTry);
+            if (toTry.indexOf("..")>=0) {
+                ArrayList<String> elements = new ArrayList<String>();
+                for (String el: toTry.split("/")) {
+                    if (!el.equals(".."))
+                        elements.add(el);
+                    else
+                        elements.remove(elements.size()-1);
+                }
+                toTry = "";
+                for (String el:elements)
+                    toTry += "/"+el;
+                toTry = toTry.substring(1);
+            }
+            
         	try {
         		ret = JUtil.getRelativeResource(toTry);
         		//System.out.println("Resource found in jar: "+toTry);
@@ -158,5 +176,12 @@ public class JarResourceInclusionReader extends AbstractInclusionReader {
     }
 
 	
+	public static void main(String[] argv) throws IOException, ContentError
+	{
+        JarResourceInclusionReader jrir = new JarResourceInclusionReader("target/jlems-0.9.5.2.jar");
+                
+        System.out.println(">> "+jrir.getRelativeContent("META-INF/../META-INF/MANIFEST.MF"));
+
+	}
 	
 }
