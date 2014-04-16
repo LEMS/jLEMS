@@ -98,9 +98,9 @@ public class LEMSDocumentReaderTest
 				IStateIdentifier tsince=new StateIdentifier("p1[0]/tsince");
 				IStateIdentifier p3v=new StateIdentifier("p3[0]/v");
 				IStateIdentifier hhpopv=new StateIdentifier("hhpop[0]/v");
-				assertNotNull(results.getStateValues(tsince));
-				assertNotNull(results.getStateValues(p3v));
-				assertNotNull(results.getStateValues(hhpopv));
+				assertNotNull(results.getState(tsince));
+				assertNotNull(results.getState(p3v));
+				assertNotNull(results.getState(hhpopv));
 			}
 		}
 		catch(IOException e)

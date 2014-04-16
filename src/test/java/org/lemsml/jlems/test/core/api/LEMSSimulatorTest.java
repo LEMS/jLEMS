@@ -33,7 +33,6 @@ import org.lemsml.jlems.core.api.interfaces.ILEMSRunConfiguration;
 import org.lemsml.jlems.core.api.interfaces.ILEMSSimulator;
 import org.lemsml.jlems.core.api.interfaces.ILEMSStateInstance;
 import org.lemsml.jlems.core.api.interfaces.IStateIdentifier;
-import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.sim.ContentError;
 
 /**
@@ -81,9 +80,9 @@ public class LEMSSimulatorTest
 				simulator.initialize(instance, runConfig);
 				simulator.run(results);
 
-				assertNotNull(results.getStateValues(tsince));
-				assertNotNull(results.getStateValues(p3v));
-				assertNotNull(results.getStateValues(hhpopv));
+				assertNotNull(results.getState(tsince));
+				assertNotNull(results.getState(p3v));
+				assertNotNull(results.getState(hhpopv));
 
 			}
 		}
@@ -145,9 +144,9 @@ public class LEMSSimulatorTest
 				simulator.initialize(instance, runConfig);
 				simulator.run(results);
 
-				assertNotNull(results.getStateValues(tsince));
-				assertNotNull(results.getStateValues(p3v));
-				assertNotNull(results.getStateValues(hhpopv));
+				assertNotNull(results.getState(tsince));
+				assertNotNull(results.getState(p3v));
+				assertNotNull(results.getState(hhpopv));
 			}
 		}
 		catch(IOException e)
@@ -210,10 +209,10 @@ public class LEMSSimulatorTest
 				simulator.initialize(instance, runConfig);
 				simulator.run(results);
 
-				assertNotNull(results.getStateValues(p1tsince));
-				assertNotNull(results.getStateValues(p2tsince));
-				assertNotNull(results.getStateValues(p30v));
-				assertNotNull(results.getStateValues(p31v));
+				assertNotNull(results.getState(p1tsince));
+				assertNotNull(results.getState(p2tsince));
+				assertNotNull(results.getState(p30v));
+				assertNotNull(results.getState(p31v));
 			}
 		}
 		catch(IOException e)
@@ -270,7 +269,7 @@ public class LEMSSimulatorTest
 				simulator.initialize(instance, runConfig);
 				simulator.run(results);
 
-				assertNotNull(results.getStateValues(v));
+				assertNotNull(results.getState(v));
 
 			}
 		}
@@ -328,7 +327,7 @@ public class LEMSSimulatorTest
 				simulator.initialize(instance, runConfig);
 				simulator.run(results);
 
-				assertNotNull(results.getStateValues(v));
+				assertNotNull(results.getState(v));
 
 			}
 		}
@@ -389,9 +388,9 @@ public class LEMSSimulatorTest
 				simulator.initialize(instance, runConfig);
 				simulator.run(results);
 
-				assertNotNull(results.getStateValues(v));
-				assertNotNull(results.getStateValues(nageff));
-				assertNotNull(results.getStateValues(kgeff));
+				assertNotNull(results.getState(v));
+				assertNotNull(results.getState(nageff));
+				assertNotNull(results.getState(kgeff));
 			}
 		}
 		catch(IOException e)
@@ -450,8 +449,8 @@ public class LEMSSimulatorTest
 				simulator.initialize(instance, runConfig);
 				simulator.run(results);
 
-				assertNotNull(results.getStateValues(tsince));
-				assertNotNull(results.getStateValues(p3v));
+				assertNotNull(results.getState(tsince));
+				assertNotNull(results.getState(p3v));
 			}
 		}
 		catch(IOException e)
@@ -510,8 +509,8 @@ public class LEMSSimulatorTest
 				simulator.initialize(instance, runConfig);
 				simulator.run(results);
 
-				assertNotNull(results.getStateValues(tsince));
-				assertNotNull(results.getStateValues(p3v));
+				assertNotNull(results.getState(tsince));
+				assertNotNull(results.getState(p3v));
 			}
 		}
 		catch(IOException e)
@@ -571,9 +570,9 @@ public class LEMSSimulatorTest
 				simulator.initialize(instance, runConfig);
 				simulator.run(results);
 
-				assertNotNull(results.getStateValues(v));
-				assertNotNull(results.getStateValues(nageff));
-				assertNotNull(results.getStateValues(kgeff));
+				assertNotNull(results.getState(v));
+				assertNotNull(results.getState(nageff));
+				assertNotNull(results.getState(kgeff));
 			}
 		}
 		catch(IOException e)
@@ -630,7 +629,7 @@ public class LEMSSimulatorTest
 				// double[] d={0.0, 80.0, -80.0, 50.0};
 				// viewer.setRegion(d);
 				// double x=0;
-				// for(ALEMSValue value:results.getStateValues(new StateIdentifier("hhpop[0]/v")))
+				// for(ALEMSValue value:results.getState(new StateIdentifier("hhpop[0]/v")))
 				// {
 				// LEMSDoubleValue dv=(LEMSDoubleValue) value;
 				// viewer.addPoint("hhpop[0]/v", x*0.01, dv.getAsDouble()/0.001);

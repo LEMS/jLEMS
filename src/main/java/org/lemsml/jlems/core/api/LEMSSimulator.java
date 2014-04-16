@@ -63,7 +63,11 @@ public class LEMSSimulator implements ILEMSSimulator
 					if(stateToRecord.record(_step))
 					{
 						StateWrapper sw = _runnableAccessor.getStateWrapper(stateToRecord.getState().getStatePath());
-						double value = sw.getValue();
+ 						double value = sw.getValue();
+ 						if(!results.hasState(stateToRecord.getState()))
+ 						{
+ 							results.addState(stateToRecord.getState(), sw.getDimensionString());
+ 						}
 						results.addStateValue(stateToRecord.getState(), new LEMSDoubleValue(value));
 					}
 				}
