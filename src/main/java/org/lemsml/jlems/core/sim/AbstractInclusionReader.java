@@ -10,6 +10,7 @@ public abstract class AbstractInclusionReader {
 
 	protected static final String FILE="file";
 	protected static final String URL="url";
+	public static final String JAR ="jar";
  	
 	public abstract String getRootContent() throws ContentError;
 	

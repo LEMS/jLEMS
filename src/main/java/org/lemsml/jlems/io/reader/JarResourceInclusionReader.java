@@ -184,7 +184,7 @@ public class JarResourceInclusionReader extends AbstractInclusionReader {
 	{
         JarResourceInclusionReader jrir = new JarResourceInclusionReader("target/jlems-0.9.5.2.jar");
                 
-        System.out.println(">> "+jrir.getRelativeContent("META-INF/../META-INF/MANIFEST.MF"));
+        System.out.println(">> "+jrir.getRelativeContent(JAR.toString(),"META-INF/../META-INF/MANIFEST.MF"));
 
 	}
 	
