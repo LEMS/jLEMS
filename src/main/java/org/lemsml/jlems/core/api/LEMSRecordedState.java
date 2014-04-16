@@ -51,6 +51,14 @@ public class LEMSRecordedState
 	/**
 	 * @return
 	 */
+	public String getDimension()
+	{
+		return _dimension;
+	}
+
+	/**
+	 * @return
+	 */
 	public ALEMSValue getLastValue()
 	{
 		return _values.get(_values.size() - 1);
