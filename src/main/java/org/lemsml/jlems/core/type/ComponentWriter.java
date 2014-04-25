@@ -24,12 +24,15 @@ public final class ComponentWriter {
 		if (paramValues != null && !paramValues.isEmpty()) {
 			sb.append(": ");
 			for (ParamValue pv : paramValues) {
-				String info = "SI ";
+				String info = "SI";
 				if (!pv.getFinalParam().getDimension().isDimensionless() && pv.getDimensionName() == null) {
-					info = "Unknown dimension";
+					info = " Unknown dimension";
 				} else if (pv.getFinalParam().getDimension().isDimensionless() || pv.getDimensionName().equals(Dimension.NO_DIMENSION)) {
 					info = "dimensionless";
-				}
+				} else {
+                    info = "SI "+pv.getDimensionName();
+                }
+                
 				sb.append(" " + pv.getName() + "=" + pv.stringValue() + " (" + info + ")");
 			}
 		}

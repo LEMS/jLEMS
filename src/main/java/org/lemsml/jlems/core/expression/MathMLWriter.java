@@ -10,7 +10,7 @@ public class MathMLWriter implements ExpressionVisitor {
 	int depth = 0;
 	 
 	private String indent = "    ";
-	private String offset = "                    ";
+	private String offset = "                ";
     
     public MathMLWriter() {
     }
