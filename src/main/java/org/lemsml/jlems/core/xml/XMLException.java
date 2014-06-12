@@ -1,6 +1,8 @@
 package org.lemsml.jlems.core.xml;
 
-public class XMLException extends Exception {
+import org.lemsml.jlems.core.sim.LEMSException;
+
+public class XMLException extends LEMSException {
  
 	private static final long serialVersionUID = 1L;
 

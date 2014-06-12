@@ -1,6 +1,6 @@
 package org.lemsml.jlems.core.sim;
 
-public class ContentError extends Exception {
+public class ContentError extends LEMSException {
 	private static final long serialVersionUID = 1L;
 
 
