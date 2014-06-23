@@ -62,9 +62,13 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
         this.j = j;
     }
     
+    public static Dimension getNoDimension() {
+        return new Dimension(NO_DIMENSION);
+    }
 
   
    
+    @Override
     public boolean dataMatches(Object obj) {
         boolean ret = false;
         if (obj instanceof Dimension) {

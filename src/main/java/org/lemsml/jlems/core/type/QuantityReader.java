@@ -40,8 +40,20 @@ public final class QuantityReader {
 
     public DimensionalQuantity parseVal(String aarg, LemsCollection<Unit> units) throws ParseError, ContentError {
         String arg = aarg.trim();
-
+        
         DimensionalQuantity ret = new DimensionalQuantity();
+        try {
+            double d = Double.parseDouble(aarg);
+            ret.setOriginalText(aarg);
+            Unit noUnit = units.getByPseudoName(Unit.NO_UNIT_SYMBOL);
+            if (noUnit==null)
+                noUnit = Unit.getNoUnit();
+            ret.setValue(d, noUnit);
+            return ret;
+        } catch (NumberFormatException nfe) {
+            // continue...
+        }
+
         if (arg.trim().length() == 0) {
             ret.setNoValue();
 
@@ -77,6 +89,18 @@ public final class QuantityReader {
     }
 
     public static String[] splitToMagnitudeAndUnit(String arg) {
+        
+        String[] ret = new String[2];
+        
+        try {
+            double d = Double.parseDouble(arg);
+            ret[0] = d+"";
+            ret[1] = "";
+            return ret;
+        } catch (NumberFormatException nfe) {
+            // continue...
+        }
+        
         int ild = 0;
         if (arg.indexOf(" ") > 0) {
             ild = arg.indexOf(" ");
@@ -90,9 +114,8 @@ public final class QuantityReader {
             snum = arg.substring(0, ild);
             su = arg.substring(ild, arg.length());
         }
-        String[] ret = new String[2];
         ret[0] = snum;
-        ret[1] = su;
+        ret[1] = su.trim();
         return ret;
     }
 
@@ -128,15 +151,16 @@ public final class QuantityReader {
 
     public void runChecks() {
         E.info("numhs is " + numHS);
-        String[] qs = {"1 mV", "1.234mV", "1.2e-4 mV", "1.23e-5A", "1.23e4A", "1.45E-8 m", "1.23E-8m2", "60", "6000", "123000"};
+        String[] qs = {"1 mV", "1.234mV", "1.2e-4 mV", "1.23e-5A", "1.23e4A", "1.45E-8 m", "1.23E-8m2", "60", "6000", "123000", "-1.00000008E8"};
         for (String s : qs) {
             splitOne(s);
+            
         }
     }
 
     private void splitOne(String s) {
         String[] snv = splitToMagnitudeAndUnit(s);
-        E.info("Split " + s + " into: " + snv[0] + " | " + snv[1]);
+        E.info("Split " + s + " into: [" + snv[0] + "] and [" + snv[1]+"]");
     }
 
 }

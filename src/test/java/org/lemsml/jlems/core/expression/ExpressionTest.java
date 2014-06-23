@@ -119,6 +119,8 @@ public class ExpressionTest {
         testEval("2.5^2.5", Math.pow(2.5, 2.5), null);
         checkFailure("(-2.5)^2.5", Math.pow(-2.5, 2.5), null);
         testEval("2.5^-2.5", Math.pow(2.5, -2.5), null);
+        
+        testEval("-1.00000008E8", -1.00000008E8, null);
 		
 	}
 
