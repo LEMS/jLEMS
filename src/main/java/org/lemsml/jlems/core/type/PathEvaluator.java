@@ -53,7 +53,7 @@ public class PathEvaluator {
 	
 	public String getStringValue() throws ContentError {
 
-        //E.info("Evaluating path " + path + " relative to " + root);
+        //E.info("Evaluating path [" + path + "] relative to: " + root);
  		int ils = path.lastIndexOf("/");
  		String ret = null;
  		if (ils < 0) {
@@ -67,11 +67,14 @@ public class PathEvaluator {
                 throw new ContentError("Problem evaluating path " + path + " relative to " + root);
             }
  			ret = c.getStringValue(pname); 
+            if (cpath.endsWith("this"))
+                ret = "this/"+ret;
 	
  		}
  		if (ret == null) {
 			throw new ContentError("No such String parameter " + path + " relative to " + root);
 		}
+        //E.info("Evaluated path [" + path + "] to: " + ret);
 		return ret;
 	}
 	
@@ -129,7 +132,10 @@ public class PathEvaluator {
 
 	private Component getRelativeComponent(Component wk, String rp) throws ContentError {
 		Component ret = null; 
+        //E.info("getRelativeComponent for ["+rp+"] on "+wk);
 		if (rp.equals(".")) {
+			ret = wk;
+		} else if (rp.equals("this")) {
 			ret = wk;
 		} else if (rp.equals("..")) {
 			ret = wk.getParent();

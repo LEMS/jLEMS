@@ -847,6 +847,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		String ret = null;
 
         //E.info("--- Get string value ("+sn+") on component ref "+this);
+        //E.info("=="+childHM.toString());
 
         if (sn.equals(THIS_COMPONENT)) {
             return THIS_COMPONENT;
@@ -861,6 +862,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 
 		} else if (childHM.containsKey(sn)) {
 			ret = childHM.get(sn).getID();
+            return ret;
 
 		} else if (attributes.getByName(sn) != null) {
 			ret = attributes.getByName(sn).getValue();
@@ -870,6 +872,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 			throw new ContentError("No such field '"
                     + sn + "' in " + this + "\n" + details(""));
 		}
+        //E.info("ret: "+ret);
 
 		// which should be the same as attval(sn);
 		Attribute att = attributes.getByName(sn);
