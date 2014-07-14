@@ -11,6 +11,7 @@ import org.lemsml.jlems.core.sim.ContentError;
 public class Unit implements PseudoNamed, Summaried, DataMatchable {
 
     public static final String NO_UNIT = "none";
+    public static final String NO_UNIT_SYMBOL = "";
     
     @ModelProperty(info="As with constants, units are only referred to within expressions using their symbols, " +
     		"so the name is just for readability.")
@@ -34,8 +35,6 @@ public class Unit implements PseudoNamed, Summaried, DataMatchable {
     public double offset = 0;
 
     
-    
-    
     public Unit() {
     	// TODO - only one
     }
@@ -57,8 +56,10 @@ public class Unit implements PseudoNamed, Summaried, DataMatchable {
         this.offset = offset;
     }
     
+    public static Unit getNoUnit() {
+        return new Unit(Unit.NO_UNIT, Unit.NO_UNIT_SYMBOL, Dimension.getNoDimension());
+    }
     
-
    
     public void setOffset(double d) {
     	offset = d;
@@ -73,6 +74,7 @@ public class Unit implements PseudoNamed, Summaried, DataMatchable {
     }
     
     
+    @Override
     public boolean dataMatches(Object obj) {
         boolean ret = false;
         if (obj instanceof Unit) {
@@ -96,6 +98,7 @@ public class Unit implements PseudoNamed, Summaried, DataMatchable {
         return "Unit name=" + summary();
     }
 
+    @Override
     public String summary() {
         return name + ": " + symbol + ", dimension=" + dimension + ", scale=" + scale + ", power=" + power+", offset="+offset;
     }
@@ -144,6 +147,7 @@ public class Unit implements PseudoNamed, Summaried, DataMatchable {
     }
     
 
+    @Override
     public String getPseudoName() {
         return symbol;
     }

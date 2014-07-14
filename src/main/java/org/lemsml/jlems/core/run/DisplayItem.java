@@ -53,7 +53,7 @@ public class DisplayItem {
         return "<b>" + getId() + ": " + path + "</b>, x scale: " + tscale + ", y scale: " + yscale;
     }
 
-    public void connectRunnable(RunnableAccessor ra) throws ConnectionError {
+    public void connectRunnable(RunnableAccessor ra) throws ConnectionError, ContentError {
         stateWrapper = ra.getStateWrapper(path);
         if (stateWrapper == null) {
             throw new ConnectionError("unable to access state variable: " + path);

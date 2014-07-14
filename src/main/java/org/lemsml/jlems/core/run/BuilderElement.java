@@ -2,6 +2,8 @@ package org.lemsml.jlems.core.run;
 
 import java.util.ArrayList;
 
+import org.lemsml.jlems.core.sim.ContentError;
+
 public abstract class BuilderElement {
 
 	
@@ -12,6 +14,6 @@ public abstract class BuilderElement {
 		elts.add(be);
 	}
 
-	public abstract void consolidateStateTypes();
+	public abstract void consolidateStateTypes() throws ContentError;
   
 }

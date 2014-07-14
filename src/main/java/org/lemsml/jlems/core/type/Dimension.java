@@ -38,9 +38,8 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
     
     
     private double dval = Double.NaN; // bit messy, just for constant powers
-
-    
-    static Dimension timeDimension;
+     
+    public static Dimension timeDimension;
     
 
     public Dimension() {
@@ -63,9 +62,13 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
         this.j = j;
     }
     
+    public static Dimension getNoDimension() {
+        return new Dimension(NO_DIMENSION);
+    }
 
   
    
+    @Override
     public boolean dataMatches(Object obj) {
         boolean ret = false;
         if (obj instanceof Dimension) {
@@ -159,10 +162,7 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
         return ret;
     }
 
-    @Override
-    public int getI() {
-        return i;
-    }
+  
 
     @Override
     public int getL() {
@@ -178,7 +178,12 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
     public int getT() {
         return t;
     }
-
+    
+    @Override
+    public int getI() {
+        return i;
+    }
+   
     @Override
     public int getK() {
         return k;
@@ -303,5 +308,18 @@ public class Dimension implements Named, Summaried, DataMatchable, Dimensional {
 	        ret = ret.trim();
 	        return ret;
 	    }
+
+
+	 
+	 // the dimension string is a comma-separated list of dimension powers in the order
+	 // mass, length, time, current, temperature, amount, brightness
+	public String getDimensionString() {
+		int[] vals = {m, l, t, i, k, n, j};
+		String ret = "" + vals[0];
+		for (int i = 1; i < vals.length; i++) {
+			ret += "," + vals[i];
+		}
+		return ret;
+	}
    
 }

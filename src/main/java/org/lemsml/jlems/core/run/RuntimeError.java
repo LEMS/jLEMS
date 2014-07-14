@@ -1,6 +1,8 @@
 package org.lemsml.jlems.core.run;
 
-public class RuntimeError extends Exception {
+import org.lemsml.jlems.core.sim.LEMSException;
+
+public class RuntimeError extends LEMSException {
 	private static final long serialVersionUID = 1L;
 
 

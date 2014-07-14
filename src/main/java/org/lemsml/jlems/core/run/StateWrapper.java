@@ -26,6 +26,10 @@ public class StateWrapper {
 		varname = snm;
 	}
 
+	public String getDimensionString() throws ContentError {
+		String ret = unitInstance.getDimensionString(varname);
+		return ret;
+	}
 	
 	
 	public StateRunnable getChild(String snm) {

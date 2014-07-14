@@ -13,7 +13,6 @@ import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.Constants;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
-import org.lemsml.jlems.core.type.dynamics.DerivedVariable;
 import org.lemsml.jlems.core.type.dynamics.Dynamics;
 import org.lemsml.jlems.core.type.dynamics.Equilibrium;
 import org.lemsml.jlems.core.type.geometry.Geometry;
@@ -24,6 +23,7 @@ import org.lemsml.jlems.core.xml.XMLElement;
 
 @ModelElement(info="Root element for defining component types.")
 	 
+@SuppressWarnings("StringConcatenationInsideStringBufferAppend")
 public class ComponentType extends Base implements Named, Summaried, Inheritor {
 
 	@ModelProperty(info="The name of the component type. This can be uses as an XML element name in the shorthand form when" +
@@ -128,6 +128,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		name = s;
 	}
 
+    @Override
 	public String getName() {
 		return name;
 	}
@@ -137,6 +138,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		return "ComponentType, name=" + summary();
 	}
 
+    @Override
 	public String summary() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(name);
@@ -327,6 +329,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		// happens with rereading lems models where the resolved type gets written out
 		if (r_extends != null) {
 			for (FinalParam fp : r_extends.getFinalParams()) {
+                //System.out.println("FinalParam: "+fp);
 				finalParams.addIfNew(fp.makeCopy());
 			}
 			for (EventPort ep : r_extends.getEventPorts()) {
@@ -510,7 +513,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		Dynamics ret = null;
 		
 		if (ret == null) {
-			if (dynamicses.size() == 0 && r_extends != null) {
+			if (dynamicses.isEmpty() && r_extends != null) {
 				ret = r_extends.getDynamics();
 			} else {
 				if (dynamicses.size() == 1) {
@@ -534,7 +537,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		
 
 		if (ret == null) {
-			if (simulations.size() == 0 && r_extends != null) {
+			if (simulations.isEmpty() && r_extends != null) {
 				ret = r_extends.getSimulation();
 			} else {
 				if (simulations.size() == 1) {
@@ -771,6 +774,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	}
 	
 	
+    @Override
 	public boolean inherited(Object obj) throws ContentError {
 		boolean ret = false;
 		if (r_extends != null && r_extends.hasInheritable(obj)) {

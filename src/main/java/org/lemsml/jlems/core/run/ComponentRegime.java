@@ -148,13 +148,13 @@ public class ComponentRegime {
 	}
 	
 
-	public void addExpressionDerived(String snm, DoubleEvaluator db) {
-		ExpressionDerivedVariable edv = new ExpressionDerivedVariable(snm, db);
+	public void addExpressionDerived(String snm, DoubleEvaluator db, String dim) {
+		ExpressionDerivedVariable edv = new ExpressionDerivedVariable(snm, db, dim);
 		exderiveds.add(edv);
 	}
 	
-	public void addPathDerived(String snm, String path, String rf, boolean reqd, String red) {
-		PathDerivedVariable pdv = new PathDerivedVariable(snm, path, rf, reqd, red);
+	public void addPathDerived(String snm, String path, String rf, boolean reqd, String red, String dim) {
+		PathDerivedVariable pdv = new PathDerivedVariable(snm, path, rf, reqd, red, dim);
 		pathderiveds.add(pdv);
 	}
 	
@@ -167,8 +167,8 @@ public class ComponentRegime {
 		indeps.add(vnm);
 	}
 
-	public void addRate(String name, DoubleEvaluator db) {
-		rates.add(new VariableROC(name, db));
+	public void addRate(String name, DoubleEvaluator db, String dim) {
+		rates.add(new VariableROC(name, db, dim));
 	}
 
 	public void addEventResponse(EventAction er) {

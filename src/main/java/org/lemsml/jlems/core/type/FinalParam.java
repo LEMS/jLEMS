@@ -38,9 +38,10 @@ public class FinalParam implements Valued {
 		if (r_dimension == null) {
 			E.error("no dimension for final param: " + name + " " + svalue);
 		}
-		return name + "(" + r_dimension.getName() + ")";
+		return name + "(" + r_dimension.getName() + ", svalue = "+svalue+", dvalue = "+dvalue+")";
 	}
 	
+    @Override
 	public String getName() {
 		return name;
 	}
@@ -67,6 +68,7 @@ public class FinalParam implements Valued {
 	}
 
  
+    @Override
 	public double getValue() {
 		if (Double.isNaN(dvalue)) {
 			E.error("Accessed a value before it has been set? " + name + "(" + r_dimension + ")");
@@ -84,7 +86,10 @@ public class FinalParam implements Valued {
 	}
 
 	public FinalParam makeCopy() throws ContentError {
-		FinalParam ret = new FinalParam(getName(), getDimension(), getSValue());
+        //System.out.println("Copying: "+this+" = "+getSValue());
+		FinalParam ret = new FinalParam(getName(), getDimension());
+        ret.svalue = getSValue();
+        ret.dvalue = dvalue;
 		return ret;
 	}
 	

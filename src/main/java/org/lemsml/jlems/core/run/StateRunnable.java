@@ -81,5 +81,7 @@ public interface StateRunnable {
 
 	MultiInstance getSingleMI();
 
+	String getDimensionString(String lastbit) throws ContentError;
+
  
 }

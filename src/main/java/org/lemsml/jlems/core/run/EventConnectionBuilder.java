@@ -167,15 +167,15 @@ public class EventConnectionBuilder extends AbstractPostBuilder {
         this.delay = delay;
     }
 
-	public void addAssignment(String property, DoubleEvaluator de) throws ContentError {
+	public void addAssignment(String property, DoubleEvaluator de, String dim) throws ContentError {
 		// TOOD - de, or de.makeCopy() ?
-		ExpressionDerivedVariable edv = new ExpressionDerivedVariable(property, de);
+		ExpressionDerivedVariable edv = new ExpressionDerivedVariable(property, de, dim);
 		edvAL.add(edv);
 	}
 
  
 	@Override
-	public void consolidateStateTypes() {
+	public void consolidateStateTypes() throws ContentError {
 		 if (receiverCB != null) {
 			 receiverCB = receiverCB.getConsolidatedStateType("(receiver)");
 		 }	

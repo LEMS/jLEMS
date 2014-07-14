@@ -160,6 +160,11 @@ public class ConditionalDerivedVariable implements Valued {
 	public void setExposure(String s) {
 		exposure = s;
 	}
+
+	public String getDimensionString() {
+		String ret = r_dimension.getDimensionString();
+		return ret;
+	}
  
 
 	public ConditionalDerivedVariable makeCopy() {

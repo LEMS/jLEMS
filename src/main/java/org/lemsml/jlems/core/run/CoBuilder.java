@@ -47,7 +47,7 @@ public class CoBuilder extends AbstractChildBuilder {
 
 
 	@Override
-	public void consolidateStateTypes() {
+	public void consolidateStateTypes() throws ContentError {
 		 if (stateType != null) {
 			 stateType = stateType.getConsolidatedStateType("(cobuilder)");
 		 }	

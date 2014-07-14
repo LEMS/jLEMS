@@ -50,7 +50,7 @@ public class RuntimeRecorder {
 
  
 
-	public void connectRunnable(RunnableAccessor ra, DataViewer dv) throws ConnectionError {
+	public void connectRunnable(RunnableAccessor ra, DataViewer dv) throws ConnectionError, ContentError {
 		if (quantity == null) {
 			throw new ConnectionError("Recorder has null quantity " + toString());
 		}
@@ -62,7 +62,7 @@ public class RuntimeRecorder {
     }
 	
 	
-	public void connectRunnable(RunnableAccessor ra, ResultWriter rw) throws ConnectionError {
+	public void connectRunnable(RunnableAccessor ra, ResultWriter rw) throws ConnectionError, ContentError {
 		if (quantity == null) {
 			throw new ConnectionError("Recorder has null quantity " + toString());
 		}

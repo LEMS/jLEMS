@@ -9,12 +9,25 @@ public class MathMLWriter implements ExpressionVisitor {
 	 
 	int depth = 0;
 	 
-	
+	private String indent = "    ";
+	private String offset = "                ";
+    
+    public MathMLWriter() {
+    }
+    
+    public MathMLWriter(String indent, String offset) {
+        this.indent = indent;
+        this.offset = offset;
+    }
 	
 	public String serialize(ParseTree pt) throws ContentError {
 		MathMLWriter mw = new MathMLWriter();
 		return mw.generateMathML(pt);
 	}
+
+    public void setOffset(String offset) {
+        this.offset = offset;
+    }
 	
 	
 	private String generateMathML(ParseTree pt) throws ContentError {
@@ -25,9 +38,9 @@ public class MathMLWriter implements ExpressionVisitor {
 	}
 	
 	private String indent() {
-		String ret = "";
-		for (int i = 0; i < depth; i++) {
-			ret += " ";
+		String ret = this.offset;
+		for (int i = 0; i < this.depth; i++) {
+			ret += this.indent;
 		}
 		return ret;
 	}

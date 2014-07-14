@@ -12,6 +12,11 @@ public class Assign {
 	DoubleEvaluator doubleEvaluator;
 	
 	
+	public Assign() {
+		
+	}
+	
+	
 	public String getProperty() {
 		return property;
 	}
