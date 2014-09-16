@@ -29,3 +29,5 @@ Run an example:
     lems.bat src\test\resources\example1.xml      (Windows)
 
 [![Build Status](https://travis-ci.org/LEMS/jLEMS.png?branch=master)](https://travis-ci.org/LEMS/jLEMS)
+
+This software is distributed under the terms of the MIT License.
