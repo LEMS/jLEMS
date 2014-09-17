@@ -40,7 +40,7 @@ public class StateType implements RuntimeType {
 	
 	ArrayList<ActionBlock> initBlocks = new ArrayList<ActionBlock>();
 	
-	ArrayList<ConditionAction> conditionResponses = new ArrayList<ConditionAction>();
+	ArrayList<ConditionAction> conditionActions = new ArrayList<ConditionAction>();
 	
 	ArrayList<String> outPorts = new ArrayList<String>();
 
@@ -78,8 +78,10 @@ public class StateType implements RuntimeType {
 	RunConfig runConfig = null;
 	
 	ArrayList<Builder> builders;
-	
 	boolean hasBuilds = false;
+	
+	SubstitutionBuilder substitutionBuilder = null;
+	
 	
 	ArrayList<String> isets;
 	
@@ -131,20 +133,24 @@ public class StateType implements RuntimeType {
 		trackTime = true;
 	}
 	
-	
 	public void startClock() {
-		// not GWT compatible. Should go outside core
-		//	wkTime = System.nanoTime();
+		// not GWT compatible
+		// wkTime = System.nanoTime();
 	}
 	
 	public void stopClock() {
-		// as above
-		//	timeCounter += (System.nanoTime() - wkTime);
+		// timeCounter += (System.nanoTime() - wkTime);
 	}
 	
 	public long getTotalTime() {
 		return timeCounter;
 	}
+	
+	public void setSubstitutionBuilder(SubstitutionBuilder sb) {
+		substitutionBuilder = sb;
+	}
+	
+	
 	
     public ArrayList<VariableROC> getRates() {
         return rates;
@@ -202,7 +208,24 @@ public class StateType implements RuntimeType {
     
     
 	public StateInstance newInstance() throws ContentError, ConnectionError, RuntimeError {
+		StateInstance ret = null;
+		//
+		if (substitutionBuilder != null) {
+			ret = substitutionBuilder.buildSubstitute(this);
 	 
+		} else {
+			ret = ownNewInstance();
+		}
+		return ret;
+	}
+		
+    private StateInstance ownNewInstance() throws ContentError, ConnectionError, RuntimeError {
+					
+    	
+    	E.info("Making new instance " + dimensions);
+    	
+    	
+    	
 		StateInstance uin = new StateInstance(this);
 		// E.info("Creating new state instance of " + cptid + " " + typeName);
 		
@@ -316,12 +339,17 @@ public class StateType implements RuntimeType {
 	public void initialize(StateInstance uin, StateRunnable parent, boolean includeDerivedVariables) throws RuntimeError, ContentError {
  		HashMap<String, DoublePointer> varHM = uin.getVarHM();
 
-        try {
+      
 		if (indeps != null) {
 			for (String s : indeps) {
-                //E.info("-- Got val of "+parent.getVariable(s)+" for "+s+" in parent "+parent.getID()+" of "+getComponentID());
-				varHM.get(s).set(parent.getVariable(s));
+				double val = parent.getVariable(s);
+				if (Double.isNaN(val) || Double.isInfinite(val)) {
+					throw new RuntimeError("NaN returned for parent.getVarialble() on " + s + " in " + uin);
+					
+				} else {
+					varHM.get(s).set(val);
 			}
+		}
 		}
 
         if (includeDerivedVariables) {
@@ -330,7 +358,9 @@ public class StateType implements RuntimeType {
             	if (!varHM.containsKey(pdv.varname)) {
             		throw new ContentError("No such pd variable " + pdv.varname + " in variables map: " + varHM);
             	}
-                varHM.get(pdv.varname).set(pdv.eval(uin));
+            	double val = pdv.eval(uin);
+            	checkNaN(val, pdv.toString(), null);
+            	varHM.get(pdv.varname).set(val);
             }
 
             for (ExpressionDerivedVariable edv : exderiveds) {
@@ -338,7 +368,9 @@ public class StateType implements RuntimeType {
             		throw new ContentError("No such ed variable " + edv.varname + " in variables map: " + varHM);
             	}
             	
-                varHM.get(edv.varname).set(edv.evalptr(varHM));
+            	double val = edv.evalptr(varHM);
+            	checkNaN(val, edv.toString(), varHM);
+                varHM.get(edv.varname).set(val);
             }
         }
 
@@ -352,6 +384,7 @@ public class StateType implements RuntimeType {
         synchronizeExposures(uin);
 		uin.doneInit();
 
+		/*
         } catch (Exception e) {
             String err = "Error when initialising " + this + " " + e;
             E.report(err, e);
@@ -364,26 +397,38 @@ public class StateType implements RuntimeType {
            
             throw new RuntimeError(err, e);
         }
+        */
 
 	}
 	
 	
+	private void checkNaN(double x, String src, HashMap<String, DoublePointer> vhm) throws RuntimeError {
+		if (Double.isNaN(x) || Double.isInfinite(x)) {
+			String err = "NaN during StateInstance initialization for " + src;
+			if (vhm != null) {
+					err += "\n";
+				for (String s : vhm.keySet()) {
+					err += "variable " + s + "=" + vhm.get(s).get() + "\n";
+				}
+			}
+			throw new RuntimeError(err);
+		}
+	}
 	
 	
 	public void applyPathDerived(StateInstance uin) throws ContentError {
 		for (PathDerivedVariable pdv : pathderiveds) {
 			if (pdv.isSimple()) {
-				try {
+				 
 					StateRunnable si = pdv.getTargetState(uin);
+					if (si != null) {
 					uin.addPathStateInstance(pdv.getPath(), si);
-				} catch (ContentError ce) {
-					if (pdv.isRequired()) {
-						E.info("Rethrowing ce...");
-						throw ce;
 					} else {
-						E.info("Optional path variable is absent " + pdv);
+					if (pdv.isRequired()) {
+							throw new ContentError("Required path variable is missing: " + pdv);
 					}
 				}
+				
 				
 			} else {
 				uin.addPathStateArray(pdv.getPath(), pdv.getTargetArray(uin));
@@ -424,7 +469,6 @@ public class StateType implements RuntimeType {
 			
 		evalDerived(uin, varHM, parent);
 		
-		
 		for (VariableROC vroc : rates) {
 			vroc.work = vroc.evalptr(varHM);
 		}
@@ -433,7 +477,7 @@ public class StateType implements RuntimeType {
 			varHM.get(vroc.varname).set(varHM.get(vroc.varname).get() + dt * vroc.work);
 		}
 	 
-		for (ConditionAction ca : conditionResponses) {
+		for (ConditionAction ca : conditionActions) {
 			Boolean b = ca.evalptr(varHM);
 			if (b) {
 				ca.getAction().run(uin);
@@ -458,6 +502,7 @@ public class StateType implements RuntimeType {
 	public void rk4Advance(StateInstance uin, StateRunnable parent, double t, double dt) throws RuntimeError, ContentError {
 			
 		HashMap<String, DoublePointer> varHM = uin.getVarHM();
+		
 		varHM.get("t").set(t);
 		
 		if (der1 == null) {
@@ -519,7 +564,7 @@ public class StateType implements RuntimeType {
 	    }
 	    
 		
-		for (ConditionAction ca : conditionResponses) {
+		for (ConditionAction ca : conditionActions) {
 			Boolean b = ca.evalptr(varHM);
 			if (b) {
 				ca.getAction().run(uin);
@@ -586,6 +631,7 @@ public class StateType implements RuntimeType {
 	}
 
 
+
 	public void addExpressionDerived(String snm, DoubleEvaluator db, String dim) {
 		ExpressionDerivedVariable edv = new ExpressionDerivedVariable(snm, db, dim);
         //E.info("Adding: "+edv);
@@ -605,10 +651,14 @@ public class StateType implements RuntimeType {
 		fixeds.add(new FixedQuantity(snm, d));
 	}
 	
+	public void addFixed(FixedQuantity fq) {
+		fixeds.add(fq);
+	}
+	
 	
 	public void addIndependentVariable(String vnm, String dim) {
 		if (indeps.contains(vnm)) {
-			E.warning("Added the an independent variable again? " + vnm + " " + this);
+			E.warning("Added an independent variable again? " + vnm + " " + this);
 		} else {
 			indeps.add(vnm);
 			dimensions.put(vnm, dim);
@@ -629,7 +679,7 @@ public class StateType implements RuntimeType {
 	 
 	
 	public void addConditionResponse(ConditionAction cr) {
-		conditionResponses.add(cr);
+		conditionActions.add(cr);
 	 	
 	}
 
@@ -682,7 +732,7 @@ public class StateType implements RuntimeType {
 				ea.addPortsTo(outPorts);
 			}  
 		}
-		for (ConditionAction cr : conditionResponses) {
+		for (ConditionAction cr : conditionActions) {
 			ActionBlock ea = cr.getAction();
 			ea.addVarsTo(vars);
 			ea.addPortsTo(outPorts);
@@ -755,11 +805,17 @@ public class StateType implements RuntimeType {
 	}
 
 	public void addBuilder(Builder b) {
+		
+		if (b.isSubstitutionBuilder()) {
+			substitutionBuilder = b.getSubstitutionBuilder();
+ 			
+		} else {
 		if (builders == null) {
 			builders = new ArrayList<Builder>();
 		}
 		builders.add(b);
 		hasBuilds = true;
+	}
 	}
 
  
@@ -979,6 +1035,13 @@ public class StateType implements RuntimeType {
 		HashSet<String> indHS = new HashSet<String>();
 		indHS.addAll(indeps);
 		
+		for (FixedQuantity fq : fixeds) {
+			FixedQuantity fqf = 
+			 new FixedQuantity(fullpfx + fq.getName(), fq.getValue());
+			fl.addFixed(fqf);
+		}
+		
+		
 		for (String s : indeps) {
 			fl.addIndependentVariable(s, dimensions.get(s));
 		}
@@ -996,13 +1059,11 @@ public class StateType implements RuntimeType {
 			fl.add(vroc.makeFlat(fullpfx, indHS));
 		}
 		
-		
 		for (ActionBlock ab : initBlocks) {
 			for (VariableAssignment va : ab.getAssignments()) {
 				fl.addInitializationAssignment(va.makeFlat(fullpfx));
 			}
 		}
-		
 	}
 	
 	
@@ -1149,7 +1210,7 @@ public class StateType implements RuntimeType {
 		
 		ret.addInPorts(inPorts);
 		
-		for (ConditionAction ca : conditionResponses) {
+		for (ConditionAction ca : conditionActions) {
 			ret.addConditionResponse(ca.makeCopy());
 		}
 		

@@ -12,7 +12,6 @@ import org.lemsml.jlems.core.run.StateWrapper;
 public class RunnableAccessor {
 
 	StateRunnable root;
-
 	
 	
 	public RunnableAccessor(StateRunnable sr) {
@@ -46,9 +45,10 @@ public class RunnableAccessor {
 		
 		if (wk != null) {
 			String lastbit = bits[bits.length - 1];
-			ret = wk.getWrapper(bits[bits.length-1]);
-		 
 			
+			ret = wk.getWrapper(lastbit);
+		
+			E.info("Seeking " + lastbit + " in " + wk + ", got " + ret + " " + wk.getDimensionString(lastbit));
 			
 		}
 		if (ret == null) {
@@ -134,33 +134,73 @@ public class RunnableAccessor {
 		return ret;
 	}
 	
-	
-	
-	public ArrayList<StateRunnable> getStateInstances(String path) throws ConnectionError {
+	public ArrayList<StateRunnable> getRelativeStateInstances(StateRunnable base, String path) throws ConnectionError, ContentError {
 		ArrayList<StateRunnable> ret = null;
+		
+		
+		//E.info("Seeking path " + path + " rel to " + base);
 		
 		String[] bits = path.split("/");
 		
-		StateRunnable wk = root;
-		for (int i = 0; i < bits.length-1; i++) {
+		String b0 = bits[0];
+		StateRunnable wk = base;		
+		if (!wk.hasChildInstance(b0)) {
+		
+			int nup = 0;
+			while (true && nup < 10) {
+				wk = wk.getParent();
+				//E.info("Seeking child " + b0 + " in " + wk + " built=" + wk.isBuilt());
+				nup += 1;
+				if (wk == null) {
+					break;
+				} else if (wk.hasChildInstance(b0)) {
+					break;
+				} else {
+					E.info("Children: " + wk.getChildSummary());
+				}
+			}
+		}
+		if (wk == null) {
+			throw new  ConnectionError("Can't locate " + b0 + " relative to " + base);
+		}
+		
+		
+		for (int i = 0; i < bits.length; i++) {
 			wk = wk.getChild(bits[i]);
 			if (wk == null) {
 				break;
 			}
 		}
+		
 		if (wk == null) {
 			throw new ConnectionError("cant find instances at " + path);
 		}  
 		if (wk instanceof StateInstance) {
-			ret = new ArrayList<StateRunnable>();
-			ret.add((StateInstance)wk);
+			
+			StateInstance si = (StateInstance)wk;
+			if (si.isList()) {
+				//E.info("IS a LIST " + si);
+				ret = si.getListItems();
+			} else {
+				//E.info("NOT a list "  + si);
+				ret = new ArrayList<StateRunnable>();
+				ret.add((StateInstance)wk);
+			}
 		} else if (wk instanceof MultiInstance) {
 			ret = ((MultiInstance)wk).getStateInstances();
+		
 		} else {
 			throw new ConnectionError("need instances, but resolved path to " + wk);
 		}
 			
 		return ret;
 	}
+
+	
+	public ArrayList<StateRunnable> getStateInstances(String path) throws ConnectionError, ContentError {
+		return getRelativeStateInstances(root, path);
+	}
+		
+	 
 
 }

@@ -2,6 +2,7 @@ package org.lemsml.jlems.core.type;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.lemsml.jlems.core.annotation.ModelElement;
 import org.lemsml.jlems.core.annotation.ModelProperty;
@@ -37,12 +38,19 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 
 	public LemsCollection<Parameter> parameters = new LemsCollection<Parameter>();
 
+	public LemsCollection<IndexParameter> indexParameters = new LemsCollection<IndexParameter>();
+
 	public LemsCollection<DerivedParameter> derivedParameters = new LemsCollection<DerivedParameter>();
 
 	public LemsCollection<PathParameter> pathParameters = new LemsCollection<PathParameter>();
 
 	public LemsCollection<Requirement> requirements = new LemsCollection<Requirement>();
 
+	public LemsCollection<ComponentRequirement> componentRequirements = new LemsCollection<ComponentRequirement>();
+
+	public LemsCollection<InstanceRequirement> instanceRequirements = new LemsCollection<InstanceRequirement>();
+
+	
 	public LemsCollection<Exposure> exposures = new LemsCollection<Exposure>();
 
 	public LemsCollection<Child> childs = new LemsCollection<Child>();
@@ -55,7 +63,9 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 
 	public LemsCollection<ComponentTypeReference> componentTypeReferences = new LemsCollection<ComponentTypeReference>();
 
+	
 	public LemsCollection<Location> locations = new LemsCollection<Location>();
+	
 	
 	public LemsCollection<Property> propertys = new LemsCollection<Property>();
  	
@@ -89,6 +99,9 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	public LemsCollection<PairCollection> pairCollections = new LemsCollection<PairCollection>();
 
 	 	
+	
+	
+	 	
 	private final LemsCollection<Component> cpts = new LemsCollection<Component>();
 
 	private final LemsCollection<FinalParam> finalParams = new LemsCollection<FinalParam>();
@@ -96,6 +109,9 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	private final LemsCollection<InstanceProperty> instancePropertys = new LemsCollection<InstanceProperty>();
 
 	private final LemsCollection<FinalExposed> finalExposeds = new LemsCollection<FinalExposed>();
+	
+	
+	
 	
 	
 	@ModelProperty(info="Metadata about a component type can be included anywhere by wrapping it in an About element, though this " +
@@ -143,15 +159,15 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		StringBuilder sb = new StringBuilder();
 		sb.append(name);
 		if (description != null) {
-			sb.append(" (" + description + ")");
+			sb.append(" (" + description + ")\n");
 		}
 		if (r_extends != null) {
-			sb.append(" extends " + r_extends.getName() + " ");
+			sb.append(" extends " + r_extends.getName() + "\n");
 		}
 		for (FinalParam fp : finalParams) {
 			String sv = fp.getSValue();
-			sb.append("\n         " + fp.getName() + " (" + fp.getDimension().getName() + ") "
-					+ (sv != null ? " = " + sv : ""));
+			sb.append(fp.getName() + " (" + fp.getDimension().getName() + ") "
+					+ (sv != null ? " = " + sv : "") + "\n");
 		}
 
 		return sb.toString();
@@ -243,9 +259,6 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 
 	public void resolve(Lems lems, Parser p) throws ContentError, ParseError {
 
-		 
-		
-		
 		for (Parameter dp : parameters) {
 			dp.resolve(lems.getDimensions());
 		}
@@ -577,6 +590,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		return childs.hasName(scb);
 	}
 
+
 	public Children getChildren(ComponentType ftype) throws ContentError {
 		Children ret = null;
 		
@@ -866,7 +880,8 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		return procedures;
 	}
 
-	public StateType makeStateType(Component cpt) throws ContentError, ParseError {
+
+	public StateType makeStateType(Component cpt, boolean fixParams) throws ContentError, ParseError {
 
 		HashMap<String, Double> fixedHM = new HashMap<String, Double>();
 
@@ -876,8 +891,18 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 			fixedHM.putAll(chm);
 		}
 		
+		
+		// TODO this can contain the parm values that aren't changed by instances,
+		// but not those that are.
+		// for now, only use fixParams=true when generating LemsLite
+		if (fixParams) {
+			E.info("AM fixing params in " + this);
 		for (ParamValue pv : cpt.getParamValues()) {
 			fixedHM.put(pv.getName(), pv.getDoubleValue());
+				E.info("Fixed param " + pv.getName());
+		}
+		} else {
+			//E.info("NOT fixing params in " + this);
 		}
 
 		StateType ret = null;
@@ -910,8 +935,8 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 
 		for (Text text : getTexts()) {
 			String tnm = text.getName();
-			if (cpt.attributes.hasName(tnm)) {
-				ret.addTextParam(tnm, cpt.attributes.getByName(tnm).getValue());
+			if (cpt.hasAttribute(tnm)) {
+				ret.addTextParam(tnm, cpt.getAttributeValue(tnm));
 			}
 		}
 
@@ -969,13 +994,47 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 	protected void addRequirement(Requirement req) {
 		requirements.add(req);
 	}
-
+	
 	protected void setDynamics(Dynamics td) {
 		dynamicses.add(td);
 		
 	}
- 
+    
+	public Map<String, Dimensional> getExposedDimensions() {
+		HashMap<String, Dimensional> ret = new HashMap<String, Dimensional>();
+		for (Exposure e : exposures) {
+			ret.put(e.getName(), e.getDimension());
+		}
+		for (Requirement r : getRequirements()) {
+			ret.put(r.getName(),  r.getDimension());
+		}
+		return ret;
+	}
 
+	
+	public ComponentType getScopeType(String over) throws ContentError {
+		ComponentType ret = null;
+		if (childrens.hasName(over)) {
+			ret = childrens.getByName(over).getComponentType();
+			
+		} else if (childs.hasName(over)) {
+			ret = childs.getByName(over).getComponentType();
+
+		} else if (attachmentses.hasName(over)) {
+			ret = attachmentses.getByName(over).getComponentType();
+			
+		} else {
+			throw new ContentError("Not such element '" + over + "' in " + this);
+		}
+		return ret;
+	}
+ 
+	public IndexParameter getIndexParameter(String nm) throws ContentError {
+		return indexParameters.getByName(nm);
+	}
+
+ 
+	
  
 	
 }

@@ -30,7 +30,10 @@ public class Builder {
 	
  
 
-	public void add(BuilderElement be) {
+	public void add(BuilderElement be) throws ContentError {
+		if (be == null) {
+			throw new ContentError("Adding a null builder");
+		}
 		builderElements.add(be);
 	}
  
@@ -71,4 +74,28 @@ public class Builder {
 			be.consolidateStateTypes();
 		}
 	}
+
+
+
+	public boolean isSubstitutionBuilder() {
+		boolean ret = false;
+		for (BuilderElement be : builderElements) {
+			if (be instanceof SubstitutionBuilder) {
+				ret = true;
+}
+		}
+		return ret;
+	}
+	
+	
+	public SubstitutionBuilder getSubstitutionBuilder() {
+		SubstitutionBuilder ret = null;
+		for (BuilderElement be : builderElements) {
+			if (be instanceof SubstitutionBuilder) {
+				ret = (SubstitutionBuilder)be;
+			}
+		}
+		return ret;
+	}
+	
 }
