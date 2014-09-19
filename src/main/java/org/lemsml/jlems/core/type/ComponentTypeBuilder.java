@@ -2,9 +2,11 @@ package org.lemsml.jlems.core.type;
 
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
+import org.lemsml.jlems.core.type.dynamics.Dynamics;
 import org.lemsml.jlems.core.type.dynamics.DynamicsBuilder;
 import org.lemsml.jlems.core.type.dynamics.OnCondition;
 import org.lemsml.jlems.core.type.dynamics.OnEvent;
+import org.lemsml.jlems.core.type.dynamics.StateVariable;
 
 
 public class ComponentTypeBuilder {
@@ -70,6 +72,22 @@ public class ComponentTypeBuilder {
 	}
 
 
+	public void removeStateRequirements() throws ContentError {
+		// during flattening, a requirement may be present (from a subcomponent)
+		// that is a state variable in the same component itself. These need
+		// removing
+		Dynamics d = target.getDynamics();
+		if (d != null) {
+			for (StateVariable sv : d.getStateVariables()) {
+				if (target.getRequirements().containsName(sv.getName())) {
+					target.removeRequirement(sv.getName());
+				}
+			}
+		}
+	}
+	
+	
+
 	private void checkDynamics() {
 		if (dynB == null) {
 			dynB = new DynamicsBuilder();
@@ -123,7 +141,6 @@ public class ComponentTypeBuilder {
 
 
 	public void addOnStart(String vnm, String val) {
-		E.info("-------------    addOnStart: "+vnm+", "+val);
 		checkDynamics();
 		dynB.addOnStart(vnm, val);	
 	}

@@ -995,6 +995,11 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		requirements.add(req);
 	}
 	
+	public void removeRequirement(String rnm) throws ContentError {
+		requirements.remove(rnm);
+	}
+
+	
 	protected void setDynamics(Dynamics td) {
 		dynamicses.add(td);
 		

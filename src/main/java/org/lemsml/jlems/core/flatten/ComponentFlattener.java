@@ -9,6 +9,7 @@ import org.lemsml.jlems.core.expression.Parser;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.sim.ContentError;
+import org.lemsml.jlems.core.type.Attribute;
 import org.lemsml.jlems.core.type.Child;
 import org.lemsml.jlems.core.type.Component;
 import org.lemsml.jlems.core.type.ComponentBuilder;
@@ -81,7 +82,7 @@ public class ComponentFlattener {
 		cbuilder.setID(srcComponent.getID() + "_flat");
 		cbuilder.setType(typeName);
 		
-		importFlattened(srcComponent, "");
+		importFlattened(srcComponent, "", true);
 	}
 	
  
@@ -89,7 +90,7 @@ public class ComponentFlattener {
 	
 	
 	
-	private void importFlattened(Component cpt, String prefix) throws ContentError, ParseError, ConnectionError {
+	private void importFlattened(Component cpt, String prefix, boolean withExposures) throws ContentError, ParseError, ConnectionError {
 
 		HashMap<String, String> varHM = new HashMap<String, String>();
 
@@ -116,9 +117,14 @@ public class ComponentFlattener {
 	 		}
 		}
 
+	
 		for (Exposure ex : typ.getExposures()) {
 			String fname = flatName(ex.getName(), prefix);
+			if (withExposures) {
 			typeB.addExposure(fname, ex.getDimension());
+			} else {
+				E.info("Leaving out exposure " + fname + " from flattened version of " + srcComponent.getID());
+		}
 		}
 
 
@@ -153,25 +159,33 @@ public class ComponentFlattener {
 		for (ParamValue pv : cpt.getParamValues()) {
 	 		String fname = flatName(pv.getName(), prefix);
 			// TODO
-	 		if (cpt.getAttributes().getByName(pv.getName())!=null)
-	 		{
-		 		E.info("--- fname: "+fname+", pv.getName: "+pv.getName()+", attrs: "+cpt.getAttributes());
-				String val = cpt.getAttributes().getByName(pv.getName()).getValue();
+	 		String pvn = pv.getName();
+	 		if (cpt.hasAttribute(pvn)) {
+	 			Attribute att = cpt.getAttributes().getByName(pvn);
+	 			String val = att.getValue();
 				cbuilder.addParameter(fname, val);
+	 		} else {
+	 			E.warning("No attribute '" + pvn + "' set in component: " + cpt);
 	 		}
 		}
 
 		
 		for (Component child : cpt.getAllChildren()) {
-			String cid = "";
-			if (child.getID() != null) {
-				cid = child.getID();
-			} else {
+			String cid = child.getID();
+			if (cid == null) {
+				cid = child.getDeclaredType();
+			}
+			if (cid == null) {
 				cid = child.getName();
 			}
 			
+			if (cid == null) {
+				throw new ContentError("No identifier for child: " + child);
+			}
+		
 			String childPrefix = flatName(cid, prefix);
-			importFlattened(child, childPrefix);
+			// false here as we don't want the exposures from the children
+			importFlattened(child, childPrefix, false);
 		}
 
 		
@@ -216,7 +230,6 @@ public class ComponentFlattener {
 						var = sel.substring(iwc + 2, sel.length());
 					} 
 						
-					
 					ArrayList<String> items = new ArrayList<String>();
 					items.add(dflt);
 					for (Component c : cpt.getChildrenAL(rt)) {
@@ -243,7 +256,7 @@ public class ComponentFlattener {
 			}
 			 
 
-			if (dv.exposure != null) {
+			if (withExposures && dv.exposure != null) {
 				String enm = flatName(dv.exposure, prefix);
 				typeB.setDerivedVariableExposure(fname, enm);
 			}
@@ -267,6 +280,8 @@ public class ComponentFlattener {
 			}
 		}
 
+		typeB.removeStateRequirements();
+		
 	}
 	
 	

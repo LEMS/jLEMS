@@ -12,6 +12,7 @@ public interface BooleanParseTreeNode extends ParseTreeNode {
 
 	void checkDimensions(HashMap<String, Dimensional> dimHM) throws ContentError;
 
+    @Override
 	String toExpression() throws ContentError;
 	     
 }
