@@ -1,7 +1,7 @@
 package org.lemsml.jlems.core.eval;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -15,10 +15,7 @@ public class ConditionalDBase implements DoubleEvaluator {
 	ArrayList<BooleanEvaluator> conditions = new ArrayList<BooleanEvaluator>();
 	ArrayList<DoubleEvaluator> values = new ArrayList<DoubleEvaluator>();
 	
-	
-	public ConditionalDBase() {
 	 
-	}
 
    
 	public void addCondition(BooleanEvaluator be, DoubleEvaluator de) {
@@ -103,6 +100,20 @@ public class ConditionalDBase implements DoubleEvaluator {
 		return null;
 	}
 
+	@Override
+	public String getReversePolishExpressionString() {
+		E.missing();
+		return null;
+	}
 	
-	
+	public boolean isTrivial() {
+		return false;
+	}
+
+
+	@Override
+	public String getSimpleValueName() {
+		E.error("Shouldnt look for simple value on a condition");
+		return null;
+	}
 }

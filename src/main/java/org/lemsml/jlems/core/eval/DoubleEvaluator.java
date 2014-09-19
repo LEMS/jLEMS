@@ -22,6 +22,12 @@ public interface DoubleEvaluator {
 	boolean variablesIn(HashSet<String> known);
 
 	String getExpressionString();
+
+	String getReversePolishExpressionString();
+
+	boolean isTrivial();
+
+	String getSimpleValueName();
 	
 	
 }

@@ -35,7 +35,7 @@ public class LemsExamplesReaderTest {
 		URL url = this.getClass().getResource("/");
 		File fdir = new File(url.getFile());
         
-        List<String> ignores = Arrays.asList("exampleNML_GJ.xml");
+        List<String> ignores = Arrays.asList("exampleNML_GJ.xml", "exampleTunnelling.xml");
 		
 		for (File fx : fdir.listFiles()) {
 			
@@ -59,7 +59,7 @@ public class LemsExamplesReaderTest {
 				try {
 					lp2.readModel();
 				} catch (ContentError ex) {
-					E.info("-------------------------------Reread failed for:\n" + sout);
+					E.info("---- Reread failed for:\n" + sout);
 					throw ex;
 				}
 				
@@ -70,7 +70,7 @@ public class LemsExamplesReaderTest {
 				if (sout.equals(sout2)) {
 					E.info("--- Lems Read/write OK for " + fx);
 				} else {
-					E.info("=================================Read/write failure for " + fx.getName());
+					E.info("==== Read/write failure for " + fx.getName());
 					E.info("Exported:  " + XMLElementReader.deSpace(sout));
 					E.info("Reloaded:  " + XMLElementReader.deSpace(sout2));
 					E.info("Reread failed on " + sout);

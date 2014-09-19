@@ -29,11 +29,17 @@ public class DCon extends AbstractDVal {
 	@Override
 	public String toExpression() {
 		return "" + val;
+	}	
+	
+	@Override
+	public String toReversePolishExpression() {
+		return "" + val;
 	}
         
-        public String coditionalPrefixedToString(String prefix, ArrayList<String> ignore) {
-                return toString();
-        }
+        
+	public String coditionalPrefixedToString(String prefix, ArrayList<String> ignore) {
+		return toString();
+	}
 
 
 
@@ -54,6 +60,13 @@ public class DCon extends AbstractDVal {
 		return true;
 	}
 
+	public boolean isTrivial() {
+		return true;
+	}
 
-	
+
+	public String getSimpleValueName() {
+		return toExpression();
+	}
+	 
 }

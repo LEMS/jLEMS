@@ -17,21 +17,21 @@ public class Flattener {
 
 	ArrayList<FixedQuantity> fixedA = new ArrayList<FixedQuantity>();
 
-	ArrayList<String> indepsA = new ArrayList<String>();
+    ArrayList<String> indepsA = new ArrayList<String>();
 	
-	ArrayList<PathDerivedVariable> pdvA = new ArrayList<PathDerivedVariable>();
+    ArrayList<PathDerivedVariable> pdvA = new ArrayList<PathDerivedVariable>();
 	
-	ArrayList<ExpressionDerivedVariable> edvA = new ArrayList<ExpressionDerivedVariable>();
+    ArrayList<ExpressionDerivedVariable> edvA = new ArrayList<ExpressionDerivedVariable>();
 	
-	ArrayList<VariableROC> rocA = new ArrayList<VariableROC>();
+    ArrayList<VariableROC> rocA = new ArrayList<VariableROC>();
 	
-	ArrayList<String> svA = new ArrayList<String>();
-
+    ArrayList<String> svA = new ArrayList<String>();
+	
 	
     HashMap<String, String> dimensions = new HashMap<String, String>();
 	
 	ArrayList<VariableAssignment> initializationAssignments = new ArrayList<VariableAssignment>();
-
+	
 	
 	public void addIndependentVariable(String s, String d) throws ContentError {
 		if (indepsA.contains(s)) {
@@ -285,7 +285,7 @@ public class Flattener {
 		return ret;
 	}
 	
-	
+
 	public void addInitializationAssignment(VariableAssignment va) {
 		initializationAssignments.add(va);
 	}
@@ -293,7 +293,7 @@ public class Flattener {
 	
 	
 	
-
+	
 
 	public void exportTo(StateType ret) throws ContentError {
 
@@ -331,12 +331,12 @@ public class Flattener {
 		
 	}
 
-	
+
 	public void addFixed(FixedQuantity fqf) {
 		 fixedA.add(fqf);
 	}
-	
-	
+
+
 	
 	
 	

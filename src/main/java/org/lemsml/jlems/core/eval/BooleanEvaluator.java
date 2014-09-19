@@ -13,6 +13,8 @@ public interface BooleanEvaluator {
 
 	Boolean evalptr(HashMap<String, DoublePointer> varHM) throws RuntimeError;
 	
-	
+	String getExpressionString();
+
+	String getLemsExpressionString();
 	
 }

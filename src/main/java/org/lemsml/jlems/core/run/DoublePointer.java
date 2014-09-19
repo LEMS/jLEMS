@@ -4,13 +4,15 @@ public class DoublePointer {
 
 	double value;
 	
+	boolean unassigned = false;
+	
 	public DoublePointer(double d) {
 		value = d;
 	}
 
         @Override
         public String toString() {
-            return "DP(" + value+")";
+            return "DP(" + value + ")";
         }
         
 	
@@ -25,5 +27,9 @@ public class DoublePointer {
 	
 	public void set(double d) {
 		value = d;
+	}
+
+	public void setUnassigned() {
+		unassigned = true;
 	}
 }

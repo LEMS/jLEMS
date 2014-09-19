@@ -82,7 +82,7 @@ public class Builder {
 		for (BuilderElement be : builderElements) {
 			if (be instanceof SubstitutionBuilder) {
 				ret = true;
-}
+			}
 		}
 		return ret;
 	}

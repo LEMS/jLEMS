@@ -19,6 +19,17 @@ public class Or extends AbstractBOp {
 		return left.eval() || right.eval();
 	}
 
+	
+	@Override
+	public String toExpression() {
+		return "("+left.toExpression() +" || "+ right.toExpression() +")";
+    }
+	
+	@Override
+	public String toLemsExpression() {
+		return "("+left.toExpression() +" .or. "+ right.toExpression() +")";
+    }
+	
         @Override
         public String toString() {
                 return "("+left +" OR "+ right +")";
