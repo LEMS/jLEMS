@@ -9,6 +9,7 @@ import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 
 
+@SuppressWarnings("StringConcatenationInsideStringBufferAppend")
 public class StateInstance implements StateRunnable {
 
 	StateType stateType;
@@ -102,13 +103,14 @@ public class StateInstance implements StateRunnable {
 		return parent;
 	}
 
+    @Override
 	public boolean isBuilt() {
 		return built;
 	}
 
 	@Override
 	public String toString() {
-		String ret = "";
+		String ret;
 		if (stateType == null) {
 			ret = "Dumy state instance " + getID();
 		} else {
@@ -117,6 +119,7 @@ public class StateInstance implements StateRunnable {
 		return ret;
 	}
 
+    @Override
 	public void setList(String s) {
 		bList = true;
 		listName = s;
@@ -133,6 +136,7 @@ public class StateInstance implements StateRunnable {
 
 	
 
+    @Override
 	public void initialize(StateRunnable parent) throws RuntimeError, ContentError {
 	 
 		
@@ -190,6 +194,7 @@ public class StateInstance implements StateRunnable {
 
 	
 	
+    @Override
 	public void evaluate(StateRunnable parent) throws RuntimeError, ContentError {
 		if (!built) {
 			throw new RuntimeError("advance() called before build on " + this);
@@ -230,6 +235,7 @@ public class StateInstance implements StateRunnable {
 	
 	
 	
+    @Override
 	public void advance(StateRunnable parent, double t, double dt) throws RuntimeError, ContentError {
 		if (!built) {
 			throw new RuntimeError("advance() called before build on " + this);
@@ -500,6 +506,7 @@ public class StateInstance implements StateRunnable {
 		return ret;
 	}
 
+    @Override
 	public double getVariable(String varname) throws RuntimeError {
 		// System.out.println("varHM ("+varHM+"), expHM ("+expHM+") for state: "+this.toString()+", varname: "+varname);
 		double ret = Double.NaN;
@@ -541,6 +548,7 @@ public class StateInstance implements StateRunnable {
     
         
 	
+    @Override
 	public String getChildSummary() {
 		StringBuilder err = new StringBuilder();
         if (childA != null) {
@@ -662,32 +670,26 @@ public class StateInstance implements StateRunnable {
 		countMIs();
 		}
 
-	public StateRunnable getChildInstance(String snm) throws ContentError {
-		// errors because we used to turn ComponentRefs into children, but we
-		// don't always need that
-		// now they go in refHM and don't automaticlly get instances added as
-		// children
+    @Override
+
+    public StateRunnable getChildInstance(String snm) throws ContentError {
+// errors because we used to turn ComponentRefs into children, but we
+// don't always need that
+// now they go in refHM and don't automaticlly get instances added as
+// children
 		 
-		StateRunnable ret = null;
-		try {
-			checkBuilt();
-		} catch (RuntimeError er) {
-			throw new ContentError("Can't build " + this, er);
-		} catch (ConnectionError er) {
-			throw new ContentError("Can't build " + this, er);
-		}
-			
-		 
-		if (hasChildInstance(snm)) {
-			ret = childHM.get(snm);
+        StateRunnable ret = null;
+        if (hasChildInstance(snm)) {
+            ret = childHM.get(snm);
 		
-		} else {
-			throw new ContentError("seeking child instance " + snm + " in " + this + " but there are no children");
-		}
-		return ret;
-	}
+        } else {
+            throw new ContentError("seeking child instance " + snm + " in " + this + " but there are no children");
+        }
+        return ret;
+    }
 
 	
+    @Override
 	public boolean hasChildInstance(String snm) throws ContentError {
 		boolean ret = false;
 		
@@ -757,6 +759,7 @@ public class StateInstance implements StateRunnable {
 	}
 	
 	
+    @Override
 	public StateRunnable getScopeInstance(String id) {
 		StateRunnable ret = null;
 
@@ -797,8 +800,9 @@ public class StateInstance implements StateRunnable {
 	}
 		
 		
+    @Override
 		public String getPathStringValue(String path, double fac, double off) throws ContentError, RuntimeError {
-			String ret = "";
+			String ret;
 
 	        StateRunnable wkinst = this;
 	        String[] bits = path.split("/");
@@ -866,6 +870,7 @@ public class StateInstance implements StateRunnable {
 		addAttachment(null, inst);
 	}
 		
+    @Override
 	public void addAttachment(String s, StateInstance inst) throws ConnectionError, ContentError, RuntimeError {
 		String snm = s;
 		MultiInstance mi = null;
@@ -938,6 +943,7 @@ public class StateInstance implements StateRunnable {
 		return stateType;
 	}
     
+    @Override
 	public OutPort getFirstOutPort() throws ConnectionError {
 		if (firstOut == null) {
 			throw new ConnectionError("No output port on " + this);
