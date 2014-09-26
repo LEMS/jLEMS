@@ -23,12 +23,13 @@ public class StateInstance implements StateRunnable {
 	// TODO only use these if there is more than one;
 	HashMap<String, InPort> inPortHM = null; 
 	HashMap<String, OutPort> outPortHM = null;
-	InPort firstIn;
 	OutPort firstOut;
+	InPort firstIn;
 	boolean hasChildren = false;
 
 	ArrayList<StateRunnable> childA;
 	HashMap<String, StateRunnable> childHM;
+	
 	
 	ArrayList<StateListChild> stateListChildren;
 	
@@ -86,14 +87,17 @@ public class StateInstance implements StateRunnable {
 	}
 	}
 
+    @Override
 	public String getID() {
 		return id;
 	}
 
+    @Override
 	public void setParent(StateRunnable p) {
 		parent = p;
 	}
 
+    @Override
 	public StateRunnable getParent() {
 		return parent;
 	}
@@ -126,9 +130,12 @@ public class StateInstance implements StateRunnable {
 	public double getCurrentTime() {
 		return currentTime;
 		}
+
 	
 
 	public void initialize(StateRunnable parent) throws RuntimeError, ContentError {
+	 
+		
 		currentTime = 0;
 		stateType.initialize(this, parent, false);
 		if (debug) {
@@ -397,6 +404,7 @@ public class StateInstance implements StateRunnable {
 		return outPortHM.get(s);
 	}
 
+    @Override
 	public InPort getFirstInPort() throws ConnectionError {
 		if (firstIn == null) {
 			throw new ConnectionError("No input ports on " + this);
@@ -404,6 +412,7 @@ public class StateInstance implements StateRunnable {
 		return firstIn;
 	}
 
+    @Override
 	public InPort getInPort(String portId) throws ConnectionError {
 		InPort ret = null;
 		if (inPortHM != null && inPortHM.containsKey(portId)) {
@@ -414,20 +423,24 @@ public class StateInstance implements StateRunnable {
 		return ret;
 	}
 
+    @Override
 	public String stateString() {
 		return varHM.toString();
 	}
 
+    @Override
 	public void exportState(String pfx, double t, LineDisplay ld) {
 		for (String s : varHM.keySet()) {
 			ld.addPoint(pfx + s, t, varHM.get(s).get());
 		}
 	}
 
+    @Override
 	public HashMap<String, DoublePointer> getVariables() {
 		return varHM;
 	}
 
+    @Override
 	public StateWrapper getWrapper(String snm) {
 		StateWrapper ret = null;
 		if (varHM.containsKey(snm)) {
@@ -436,6 +449,7 @@ public class StateInstance implements StateRunnable {
 		return ret;
 	}
 
+    @Override
 	public StateRunnable getChild(String snm) throws ConnectionError {
 		StateRunnable ret = null;
 
@@ -523,9 +537,9 @@ public class StateInstance implements StateRunnable {
 			throw new RuntimeError(err.toString());
 		}
 	}
+   
     
         
-	
 	
 	public String getChildSummary() {
 		StringBuilder err = new StringBuilder();
@@ -557,6 +571,7 @@ public class StateInstance implements StateRunnable {
         }
         
 
+	
 	public void addChild(String s, StateRunnable newInstance) {
 		if (newInstance == null) {
 			E.warning("adding a null child instance to " + this);
@@ -654,6 +669,13 @@ public class StateInstance implements StateRunnable {
 		// children
 		 
 		StateRunnable ret = null;
+		try {
+			checkBuilt();
+		} catch (RuntimeError er) {
+			throw new ContentError("Can't build " + this, er);
+		} catch (ConnectionError er) {
+			throw new ContentError("Can't build " + this, er);
+		}
 			
 		 
 		if (hasChildInstance(snm)) {
@@ -717,6 +739,7 @@ public class StateInstance implements StateRunnable {
 		pathSIHM.put(pth, pl);
 	}
 
+    @Override
 	public StateRunnable getPathStateInstance(String pth) throws ContentError {
 		if (!resolvedPaths) {
 			stateType.applyPathDerived(this);
@@ -838,6 +861,7 @@ public class StateInstance implements StateRunnable {
 
 	}
 
+    @Override
 	public void addAttachment(StateInstance inst) throws ConnectionError, ContentError, RuntimeError {
 		addAttachment(null, inst);
 	}
@@ -895,12 +919,14 @@ public class StateInstance implements StateRunnable {
 
 	}
 
+    @Override
 	public void setVariable(String vnm, double pval) {
 		varHM.get(vnm).set(pval);
 	}
 
 	// TODO this sets component level variables - should probably keep them
 	// separate
+    @Override
 	public void setNewVariable(String vnm, double pval) {
 		if (Double.isNaN(pval) || Double.isInfinite(pval)) {
 			E.error("Nan for " + vnm);
@@ -919,6 +945,7 @@ public class StateInstance implements StateRunnable {
 		return firstOut;
 	}
 
+    @Override
 	public OutPort getOutPort(String sop) {
 		return outPortHM.get(sop);
 	}
@@ -948,6 +975,7 @@ public class StateInstance implements StateRunnable {
 		return varHM.get(s);
 	}
 
+    @Override
 	public ArrayList<StateRunnable> getStateInstances(String path) throws ConnectionError, ContentError, RuntimeError {
 		//E.info("Getting instances: " + path + " relative to " + this);
 		ArrayList<StateRunnable> ret = quietGetStateInstances(path);
@@ -957,6 +985,7 @@ public class StateInstance implements StateRunnable {
 		return ret;
 	}
 
+    @Override
 	public ArrayList<StateRunnable> quietGetStateInstances(String path) throws ConnectionError, ContentError, RuntimeError {
  		
 		ArrayList<StateRunnable> ret = null;
@@ -986,6 +1015,7 @@ public class StateInstance implements StateRunnable {
 		return ret;
 	}
 
+    @Override
 	public ArrayList<StateRunnable> getStateInstances() throws ConnectionError, ContentError, RuntimeError {
 		checkBuilt();
 		ArrayList<StateRunnable> ret = null;
@@ -996,11 +1026,12 @@ public class StateInstance implements StateRunnable {
 			ret = onlyIS.getItems();
 
 		} else {
-			throw new ConnectionError("cant get anon instances on " + this);
+			throw new ConnectionError("Can't get anon instances on " + this);
 		}
 		return ret;
 	}
 
+    @Override
 	public void checkBuilt() throws ConnectionError, ContentError, RuntimeError {
 		// E.info("building " + this);
  		if (!built) {
@@ -1040,10 +1071,12 @@ public class StateInstance implements StateRunnable {
 		return ret;
 	}
 	
+    @Override
 	public boolean hasSingleMI() {
 		return singleAMI;
 	}
 
+    @Override
 	public MultiInstance getSingleMI() {
 		return onlyAMI;
 	}
@@ -1066,6 +1099,7 @@ public class StateInstance implements StateRunnable {
 		}
 	}
 
+    @Override
 	public InstanceSet<StateRunnable> getInstanceSet(String col) {
 		return instanceSetHM.get(col);
 	}
@@ -1093,6 +1127,7 @@ public class StateInstance implements StateRunnable {
 
 	}
 
+    @Override
 	public InstanceSet<StateRunnable> getUniqueInstanceSet() throws ContentError {
 		InstanceSet<StateRunnable> ret = null;
 		if (singleIS) {
@@ -1112,6 +1147,7 @@ public class StateInstance implements StateRunnable {
 	// used by path expressions to match a single section of the path.
 	// Expressions and this method should supplant
 	// all the other matching methods here
+    @Override
 	public ArrayList<StateRunnable> getPathInstances(String sel) throws ContentError, ConnectionError, RuntimeError {
 		ArrayList<StateRunnable> ret = null;
 		if (instanceSetHM != null && instanceSetHM.containsKey(sel)) {
@@ -1144,6 +1180,7 @@ public class StateInstance implements StateRunnable {
 		return ret;
 	}
 
+    @Override
 	public double getFloatProperty(String sel) throws ContentError {
 
 		// TODO this isn't quite right: varHM contains the fixed params (from
@@ -1162,6 +1199,7 @@ public class StateInstance implements StateRunnable {
 		return ret;
 	}
 
+    @Override
 	public double quietGetFloatProperty(String sel) throws ContentError {
 		double ret = Double.NaN;
 		if (varHM != null && varHM.containsKey(sel)) {
@@ -1184,6 +1222,7 @@ public class StateInstance implements StateRunnable {
 		work = wk;
 	}
 
+    @Override
 	public Object getWork() {
 		return work;
 	}
@@ -1205,7 +1244,11 @@ public class StateInstance implements StateRunnable {
 		return stateType.getComponentID();
 	}
 	
+
+    @Override
 	public String getDimensionString(String fld) throws ContentError {
 		return stateType.getDimensionString(fld);
 	}
+	
+	
 }
