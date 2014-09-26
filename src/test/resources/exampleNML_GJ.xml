@@ -30,7 +30,7 @@
     </ComponentType>
     
     
-    <gapJunction id="gj1" g="20pS"/>
+    <gapJunction id="gj1" g="10pS"/>
     
 
     <ComponentType name="Network">
@@ -77,14 +77,14 @@
     
     
     <Network id="net1">
-        <Population id="iafPop1" component="iafSpont" size="4" />
+        <Population id="iafPop1" component="iafSpont" size="2" />
         <Population id="iafPop2" component="iaf" size="2" />
 
-        <!--<ElectricalConnections sourceList="iafPop1" targetList="iafPop1">
+        <ElectricalConnections sourceList="iafPop1" targetList="iafPop2">
             <GapJunctionConnection sourceIndex="0" targetIndex="1" connector="gj1"/>
         </ElectricalConnections>
         
-        <explicitInput target="iafPop1[0]" input="pulseGen1" destination="synapses"/>-->
+        <!--<explicitInput target="iafPop1[0]" input="pulseGen1" destination="synapses"/>-->
     </Network>
     
     

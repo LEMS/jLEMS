@@ -48,7 +48,7 @@ public class RunnableAccessor {
 			
 			ret = wk.getWrapper(lastbit);
 		
-			E.info("Seeking " + lastbit + " in " + wk + ", got " + ret + " " + wk.getDimensionString(lastbit));
+			//E.info("Seeking " + lastbit + " in " + wk + ", got " + ret + " " + wk.getDimensionString(lastbit));
 			
 		}
 		if (ret == null) {
