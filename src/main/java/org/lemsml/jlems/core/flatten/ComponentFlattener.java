@@ -36,286 +36,275 @@ import org.lemsml.jlems.core.util.StringUtil;
 
 public class ComponentFlattener {
 
-	Lems lems;
-	Parser parser;
-	
-	Component srcComponent;
-	
-	ComponentBuilder cbuilder;
-	ComponentTypeBuilder typeB;
+    Lems lems;
+    Parser parser;
 
-	public ComponentFlattener(Lems l, Component c) {
-		lems = l;
-		srcComponent = c;
-	
-	}
-	
-	
-	public void checkBuilt() throws ContentError, ParseError, ConnectionError {
-		parser = lems.getParser();
-		if (cbuilder == null) {
-			buildFlat();
-		}
-	}
-	
-	
-	public Component getFlatComponent() throws ContentError, ParseError, ConnectionError {
-		checkBuilt();
-		return cbuilder.getTarget();
-	}
-	
-	public ComponentType getFlatType() throws ContentError, ParseError, ConnectionError {
-		checkBuilt();
-		return typeB.getTarget();
-	}
-	
-	
+    Component srcComponent;
 
-	public void buildFlat() throws ContentError, ParseError, ConnectionError {
-		ComponentType srcCt = srcComponent.getComponentType();
-	 
-		typeB = new ComponentTypeBuilder();
-		String typeName = srcCt.getName() + "_flat";
-		typeB.setName(typeName);
+    ComponentBuilder cbuilder;
+    ComponentTypeBuilder typeB;
+    boolean withExposures;
+    boolean withChildExposures;
 
-		cbuilder = new ComponentBuilder();
-		cbuilder.setID(srcComponent.getID() + "_flat");
-		cbuilder.setType(typeName);
-		
-		importFlattened(srcComponent, "", true);
-	}
-	
- 
-	
-	
-	
-	
-	private void importFlattened(Component cpt, String prefix, boolean withExposures) throws ContentError, ParseError, ConnectionError {
+    public ComponentFlattener(Lems l, Component c, boolean withExposures, boolean withChildExposures) {
+        lems = l;
+        srcComponent = c;
+        this.withExposures = withExposures;
+        this.withChildExposures = withChildExposures;
 
-		HashMap<String, String> varHM = new HashMap<String, String>();
+    }
+    public ComponentFlattener(Lems l, Component c) {
+        lems = l;
+        srcComponent = c;
+        // Robert's defaults..
+        this.withExposures = true;
+        this.withChildExposures = false;
 
-		ComponentType typ = cpt.getComponentType();
+    }
 
-	 	
-		for (Text t : typ.getTexts()) {
-			String newText = flatName(t.getName(), prefix);
-			typeB.addText(newText);
-		}
-		
-		ArrayList<String> constantsAdded = new ArrayList<String>();
-		for (Constant ct : typ.getConstants()) {
-			String fname = flatName(ct.getName(), prefix);
-			constantsAdded.add(fname);
-			typeB.addConstant(fname, ct.getDimension(), ct.getStringValue());
-		}
+    public void checkBuilt() throws ContentError, ParseError, ConnectionError {
+        parser = lems.getParser();
+        if (cbuilder == null) {
+            buildFlat();
+        }
+    }
 
-		for (FinalParam p : typ.getFinalParams()) {
-	 		String fname = flatName(p.getName(), prefix, varHM);
-	 		if (!constantsAdded.contains(fname)) {
-		 		E.info("+++ fname: "+fname+", p.getName: "+p.getName());
-				typeB.addParameter(fname, p.getDimension());
-	 		}
-		}
+    public Component getFlatComponent() throws ContentError, ParseError, ConnectionError {
+        checkBuilt();
+        return cbuilder.getTarget();
+    }
 
-	
-		for (Exposure ex : typ.getExposures()) {
-			String fname = flatName(ex.getName(), prefix);
-			if (withExposures) {
-			typeB.addExposure(fname, ex.getDimension());
-			} else {
-				E.info("Leaving out exposure " + fname + " from flattened version of " + srcComponent.getID());
-		}
-		}
+    public ComponentType getFlatType() throws ContentError, ParseError, ConnectionError {
+        checkBuilt();
+        return typeB.getTarget();
+    }
 
+    public void buildFlat() throws ContentError, ParseError, ConnectionError {
+        ComponentType srcCt = srcComponent.getComponentType();
 
-		for (Requirement req : typ.getRequirements()) {
-			typeB.ensureHasRequirement(req.getName(), req.getDimension());
-		}
+        typeB = new ComponentTypeBuilder();
+        String typeName = srcCt.getName() + "_flat";
+        typeB.setName(typeName);
 
-		
-		Dynamics dyn = typ.getDynamics();
-		for (StateVariable sv : dyn.getStateVariables()) {
-			String fname = flatName(sv.getName(), prefix, varHM);
-			typeB.addStateVariable(fname, sv.getDimension());
+        cbuilder = new ComponentBuilder();
+        cbuilder.setID(srcComponent.getID() + "_flat");
+        cbuilder.setType(typeName);
 
-			if (sv.getExposure() != null) {
-				String enm = flatName(sv.getExposureName(), prefix);
-				typeB.setStateExposure(fname, enm);
-			}
-		}
+        importFlattened(srcComponent, "", withExposures);
+    }
+    
 
-		for (OnEvent oe : dyn.getOnEvents()) {
-			typeB.addOnEvent(oe.makeCopy());
-		}
+    private void importFlattened(Component cpt, String prefix, boolean withExposures) throws ContentError, ParseError, ConnectionError {
 
-		for (EventPort ep : typ.getEventPorts()) {
-			typeB.addEventPort(ep.makeCopy());
-		}
+        System.out.println(">>>  Doing: "+prefix+": "+cpt+", ");
+        HashMap<String, String> varHM = new HashMap<String, String>();
 
-		for (OnCondition oc : dyn.getOnConditions()) {
-			typeB.addOnCondition(oc.makeCopy());
-		}
+        ComponentType typ = cpt.getComponentType();
 
-		for (ParamValue pv : cpt.getParamValues()) {
-	 		String fname = flatName(pv.getName(), prefix);
-			// TODO
-	 		String pvn = pv.getName();
-	 		if (cpt.hasAttribute(pvn)) {
-	 			Attribute att = cpt.getAttributes().getByName(pvn);
-	 			String val = att.getValue();
-				cbuilder.addParameter(fname, val);
-	 		} else {
-	 			E.warning("No attribute '" + pvn + "' set in component: " + cpt);
-	 		}
-		}
+        for (Text t : typ.getTexts()) {
+            String newText = flatName(t.getName(), prefix);
+            typeB.addText(newText);
+        }
 
-		
-		for (Component child : cpt.getAllChildren()) {
-			String cid = child.getID();
-			if (cid == null) {
-				cid = child.getDeclaredType();
-			}
-			if (cid == null) {
-				cid = child.getName();
-			}
-			
-			if (cid == null) {
-				throw new ContentError("No identifier for child: " + child);
-			}
-		
-			String childPrefix = flatName(cid, prefix);
-			// false here as we don't want the exposures from the children
-			importFlattened(child, childPrefix, false);
-		}
+        ArrayList<String> constantsAdded = new ArrayList<String>();
+        for (Constant ct : typ.getConstants()) {
+            String fname = flatName(ct.getName(), prefix);
+            constantsAdded.add(fname);
+            typeB.addConstant(fname, ct.getDimension(), ct.getStringValue());
+        }
 
-		
-		for (DerivedVariable dv : dyn.getDerivedVariables()) {
+        for (FinalParam p : typ.getFinalParams()) {
+            String fname = flatName(p.getName(), prefix, varHM);
+            if (!constantsAdded.contains(fname)) {
+                E.info("+++ fname: " + fname + ", p.getName: " + p.getName());
+                typeB.addParameter(fname, p.getDimension());
+            }
+        }
 
-			String fname = flatName(dv.getName(), prefix, varHM);
-		 
-			String val = dv.getValueExpression();
-			String sel = dv.getSelect();
-			E.info("--------DerivedVariable, fname: " + fname+", val: "+val+", sel: "+sel);
+        for (Exposure ex : typ.getExposures()) {
+            String fname = flatName(ex.getName(), prefix);
+            if (withExposures) {
+                System.out.println("Adding : "+fname);
+                typeB.addExposure(fname, ex.getDimension());
+            } else {
+                E.info("Leaving out exposure " + fname + " from flattened version of " + srcComponent.getID());
+            }
+        }
 
-			
-			if (val != null) {
-				val = substituteVariables(val, varHM);
-				typeB.addDerivedVariable(fname, dv.getDimension(), val);
-				
-			} else if (sel != null) {
-				String red = dv.getReduce();
-				String selval = sel;
-				if (red != null) {
-					String op = " ? ";
-					String dflt = "";
-					if (red.equals("add")) {
-						op = " + ";
-						dflt = "0";
-					} else if (red.equals("multiply")) {
-						op = " * ";
-						dflt = "1";
-					} else {
-						throw new ContentError("Unrecognized reduce: " + red);
-					}
-				
-					String rt;
-					String var;
-					if (sel.indexOf("[*]")>0) {
-						int iwc = sel.indexOf("[*]");
-						rt = sel.substring(0, iwc);
-						var = sel.substring(iwc + 4, sel.length());
-					} else {
-						int iwc = sel.lastIndexOf("/");
-						rt = sel.substring(0, iwc);
-						var = sel.substring(iwc + 2, sel.length());
-					} 
-						
-					ArrayList<String> items = new ArrayList<String>();
-					items.add(dflt);
-					for (Component c : cpt.getChildrenAL(rt)) {
-						items.add(flatName(c.getID() + "_" + var, prefix));
-					}
-					selval = StringUtil.join(items, op);
-				}
-				
-				for (Child child : typ.getChilds()) {
-					String sp = child.getName();
-					String fp = flatName(sp, prefix);
-					selval = selval.replace(sp + "/", fp + "_");
-				}
+        for (Requirement req : typ.getRequirements()) {
+            typeB.ensureHasRequirement(req.getName(), req.getDimension());
+        }
 
-				for (ComponentReference compRef : typ.getComponentReferences()) {
-					String sp = compRef.getName();
-					String refid = cpt.getRefComponents().get(compRef.getName()).getID();
-					String fp = flatName(refid, prefix);
-					selval = selval.replace(sp + "/", fp + "_");
-				}
-			 
-				
-				typeB.addDerivedVariable(fname, dv.getDimension(), selval);
-			}
-			 
+        Dynamics dyn = typ.getDynamics();
+        for (StateVariable sv : dyn.getStateVariables()) {
+            String fname = flatName(sv.getName(), prefix, varHM);
+            typeB.addStateVariable(fname, sv.getDimension());
 
-			if (withExposures && dv.exposure != null) {
-				String enm = flatName(dv.exposure, prefix);
-				typeB.setDerivedVariableExposure(fname, enm);
-			}
-		}
+            if (sv.getExposure() != null) {
+                String enm = flatName(sv.getExposureName(), prefix);
+                typeB.setStateExposure(fname, enm);
+            }
+        }
 
-		for (TimeDerivative td : dyn.getTimeDerivatives()) {
+        for (OnEvent oe : dyn.getOnEvents()) {
+            typeB.addOnEvent(oe.makeCopy());
+        }
 
-			String val = substituteVariables(td.getValueExpression(), varHM);
-			
-			String varnm = flatName(td.getVariable(), prefix);
-			typeB.addTimeDerivative(varnm, val);
-		}
-		
+        for (EventPort ep : typ.getEventPorts()) {
+            typeB.addEventPort(ep.makeCopy());
+        }
 
-		for (OnStart os : dyn.getOnStarts()) {
-			for (StateAssignment sa : os.stateAssignments) {
+        for (OnCondition oc : dyn.getOnConditions()) {
+            typeB.addOnCondition(oc.makeCopy());
+        }
 
-				String vnm = flatName(sa.getVariable(), prefix);
-				String val = substituteVariables(sa.getValueExpression(), varHM);
-				typeB.addOnStart(vnm, val);
-			}
-		}
+        for (ParamValue pv : cpt.getParamValues()) {
+            String fname = flatName(pv.getName(), prefix);
+            // TODO
+            String pvn = pv.getName();
+            if (cpt.hasAttribute(pvn)) {
+                Attribute att = cpt.getAttributes().getByName(pvn);
+                String val = att.getValue();
+                cbuilder.addParameter(fname, val);
+            } else {
+                E.warning("No attribute '" + pvn + "' set in component: " + cpt);
+            }
+        }
 
-		typeB.removeStateRequirements();
-		
-	}
-	
-	
+        for (Component child : cpt.getAllChildren()) {
+            String cid = child.getID();
+            if (cid == null) {
+                cid = child.getDeclaredType();
+            }
+            if (cid == null) {
+                cid = child.getName();
+            }
 
-	private String flatName(String nm, String pfx, HashMap<String, String> varmap) {
-		String ret = flatName(nm, pfx);
-		if (nm.equals(ret)) {
-			// no need to add it
-		} else {
-			varmap.put(nm, ret);
-		}
-		return ret;
-	}
+            if (cid == null) {
+                throw new ContentError("No identifier for child: " + child);
+            }
 
-	private String flatName(String nm, String pfx) {
-		String ret = nm;
-		if (pfx.length() > 0) {
-			ret = pfx + "_" + nm;
-		}
- 		return ret;
-	}
-	
-	
-	private String substituteVariables(String expr, HashMap<String, String> varHM) throws ParseError, ContentError {
-		
-		ParseTree ptree = parser.parse(expr);
-		
-		ptree.substituteVariables(varHM);
-		
-		String ret = ptree.toExpression();
-		return ret;
-	}
+            String childPrefix = flatName(cid, prefix);
+            importFlattened(child, childPrefix, withChildExposures);
+        }
 
-		 
-	  
+        for (DerivedVariable dv : dyn.getDerivedVariables()) {
+
+            String fname = flatName(dv.getName(), prefix, varHM);
+
+            String val = dv.getValueExpression();
+            String sel = dv.getSelect();
+            E.info("--------DerivedVariable, fname: " + fname + ", val: " + val + ", sel: " + sel);
+
+            if (val != null) {
+                val = substituteVariables(val, varHM);
+                typeB.addDerivedVariable(fname, dv.getDimension(), val);
+
+            } else if (sel != null) {
+                String red = dv.getReduce();
+                String selval = sel;
+                if (red != null) {
+                    String op = " ? ";
+                    String dflt = "";
+                    if (red.equals("add")) {
+                        op = " + ";
+                        dflt = "0";
+                    } else if (red.equals("multiply")) {
+                        op = " * ";
+                        dflt = "1";
+                    } else {
+                        throw new ContentError("Unrecognized reduce: " + red);
+                    }
+
+                    String rt;
+                    String var;
+                    if (sel.indexOf("[*]") > 0) {
+                        int iwc = sel.indexOf("[*]");
+                        rt = sel.substring(0, iwc);
+                        var = sel.substring(iwc + 4, sel.length());
+                    } else {
+                        int iwc = sel.lastIndexOf("/");
+                        rt = sel.substring(0, iwc);
+                        var = sel.substring(iwc + 2, sel.length());
+                    }
+
+                    ArrayList<String> items = new ArrayList<String>();
+                    items.add(dflt);
+                    for (Component c : cpt.getChildrenAL(rt)) {
+                        items.add(flatName(c.getID() + "_" + var, prefix));
+                    }
+                    selval = StringUtil.join(items, op);
+                }
+
+                for (Child child : typ.getChilds()) {
+                    String sp = child.getName();
+                    String fp = flatName(sp, prefix);
+                    selval = selval.replace(sp + "/", fp + "_");
+                }
+
+                for (ComponentReference compRef : typ.getComponentReferences()) {
+                    String sp = compRef.getName();
+                    String refid = cpt.getRefComponents().get(compRef.getName()).getID();
+                    String fp = flatName(refid, prefix);
+                    selval = selval.replace(sp + "/", fp + "_");
+                }
+
+                typeB.addDerivedVariable(fname, dv.getDimension(), selval);
+            }
+
+            if (withExposures && dv.exposure != null) {
+                String enm = flatName(dv.exposure, prefix);
+                typeB.setDerivedVariableExposure(fname, enm);
+            }
+        }
+
+        for (TimeDerivative td : dyn.getTimeDerivatives()) {
+
+            String val = substituteVariables(td.getValueExpression(), varHM);
+
+            String varnm = flatName(td.getVariable(), prefix);
+            typeB.addTimeDerivative(varnm, val);
+        }
+
+        for (OnStart os : dyn.getOnStarts()) {
+            for (StateAssignment sa : os.stateAssignments) {
+
+                String vnm = flatName(sa.getVariable(), prefix);
+                String val = substituteVariables(sa.getValueExpression(), varHM);
+                typeB.addOnStart(vnm, val);
+            }
+        }
+
+        typeB.removeStateRequirements();
+
+    }
+
+    private String flatName(String nm, String pfx, HashMap<String, String> varmap) {
+        String ret = flatName(nm, pfx);
+        if (nm.equals(ret)) {
+            // no need to add it
+        } else {
+            varmap.put(nm, ret);
+        }
+        return ret;
+    }
+
+    private String flatName(String nm, String pfx) {
+        String ret = nm;
+        if (pfx.length() > 0) {
+            ret = pfx + "_" + nm;
+        }
+        return ret;
+    }
+
+    private String substituteVariables(String expr, HashMap<String, String> varHM) throws ParseError, ContentError {
+
+        ParseTree ptree = parser.parse(expr);
+
+        ptree.substituteVariables(varHM);
+
+        String ret = ptree.toExpression();
+        return ret;
+    }
 
 }
