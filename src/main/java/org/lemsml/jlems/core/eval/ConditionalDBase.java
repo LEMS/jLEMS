@@ -97,7 +97,7 @@ public class ConditionalDBase implements DoubleEvaluator {
 	@Override
 	public String getExpressionString() {
         // is this needed??
-		E.missing();
+		//E.missing();
 		return null;
 	}
 
