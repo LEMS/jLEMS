@@ -186,15 +186,19 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		return id;
 	}
 
-	public String getUniqueID() {
-		String ret = "";
-		if (id == null) { 
-			ret = getParent().getUniqueID() + "_" + getName();
-		} else {
-			ret = id;
-		}
-		return ret;
-	}
+    public String getUniqueID() {
+        String ret = "";
+        if (id == null) {
+            if (getName() == null) {
+                ret = getParent().getUniqueID() + "_" + getDeclaredType();
+            } else {
+                ret = getParent().getUniqueID() + "_" + getName();
+            }
+        } else {
+            ret = id;
+        }
+        return ret;
+    }
 
 	public void setType(ComponentType ct) {
 		r_type = ct;

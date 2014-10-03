@@ -338,7 +338,7 @@ public class StateType implements RuntimeType {
 	
 	
 	
-	public void initialize(StateInstance uin, StateRunnable parent, boolean includeDerivedVariables) throws RuntimeError, ContentError {
+	public void initialize(StateInstance uin, StateRunnable parent, boolean includeDerivedVariables, boolean checkNaN) throws RuntimeError, ContentError {
  		HashMap<String, DoublePointer> varHM = uin.getVarHM();
 
       
@@ -362,7 +362,9 @@ public class StateType implements RuntimeType {
             	}
             	double val = pdv.eval(uin);
                 //System.out.println("Checking "+val+" from: "+pdv+", "+uin);
-            	checkNaN(val, pdv.toString(), null);
+            	if (checkNaN) {
+                    checkNaN(val, pdv.toString(), null);
+                }
             	varHM.get(pdv.varname).set(val);
             }
 
@@ -373,7 +375,9 @@ public class StateType implements RuntimeType {
            
             	double val = edv.evalptr(varHM);
                 //System.out.println("+Checking "+val+" from: ("+edv.getExpressionString()+"), "+varHM);
-            	checkNaN(val, edv.toString(), varHM);
+                if (checkNaN) {
+                    checkNaN(val, edv.toString(), varHM);
+                }
                 varHM.get(edv.varname).set(val);
             }
         }

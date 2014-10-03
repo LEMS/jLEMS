@@ -141,7 +141,7 @@ public class StateInstance implements StateRunnable {
 	 
 		
 		currentTime = 0;
-		stateType.initialize(this, parent, false);
+		stateType.initialize(this, parent, false, false);
 		if (debug) {
 			E.info("Post init " + this + " has vars: " + this.varHM + " and exps " + this.expHM);
 		}
@@ -163,7 +163,7 @@ public class StateInstance implements StateRunnable {
 			}
 		}
 
-		stateType.initialize(this, parent, true);
+		stateType.initialize(this, parent, true, false);
 		if (debug) {
 			E.info("Post CHILDREN init " + this + " has vars: " + this.varHM + " and exps " + this.expHM + "\n");
 		}
@@ -186,7 +186,7 @@ public class StateInstance implements StateRunnable {
 			}
 		}
 
-		stateType.initialize(this, parent, true);
+		stateType.initialize(this, parent, true, false);
 		if (debug) {
 			E.info("Post CHILDREN init " + this + " has vars: " + this.varHM + " and exps " + this.expHM + "\n");
 		}
