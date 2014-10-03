@@ -361,6 +361,7 @@ public class StateType implements RuntimeType {
             		throw new ContentError("No such pd variable " + pdv.varname + " in variables map: " + varHM);
             	}
             	double val = pdv.eval(uin);
+                //System.out.println("Checking "+val+" from: "+pdv+", "+uin);
             	checkNaN(val, pdv.toString(), null);
             	varHM.get(pdv.varname).set(val);
             }
@@ -371,6 +372,7 @@ public class StateType implements RuntimeType {
             	}
            
             	double val = edv.evalptr(varHM);
+                //System.out.println("+Checking "+val+" from: ("+edv.getExpressionString()+"), "+varHM);
             	checkNaN(val, edv.toString(), varHM);
                 varHM.get(edv.varname).set(val);
             }
@@ -406,11 +408,11 @@ public class StateType implements RuntimeType {
  
 	private void checkNaN(double x, String src, HashMap<String, DoublePointer> vhm) throws RuntimeError {
 		if (Double.isNaN(x) || Double.isInfinite(x)) {
-			String err = "NaN during StateInstance initialization for " + src;
+			String err = "NaN during StateInstance initialization for: " + src;
 			if (vhm != null) {
 					err += "\n";
 				for (String s : vhm.keySet()) {
-					err += "variable " + s + "=" + vhm.get(s).get() + "\n";
+					err += "; variable " + s + "=" + vhm.get(s).get() + "\n";
 				}
 			}
 			throw new RuntimeError(err);

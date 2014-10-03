@@ -98,7 +98,7 @@ public class ConditionalDBase implements DoubleEvaluator {
 	public String getExpressionString() {
         // is this needed??
 		//E.missing();
-		return null;
+		return "ConditionalDBase with conditions: "+conditions+" and corresponding values: "+values;
 	}
 
 	@Override

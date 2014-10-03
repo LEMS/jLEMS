@@ -72,11 +72,7 @@ public class ExamplesTest {
            boolean ok = executeExample("example8.xml");
            assertTrue("Example 8", ok);
     }
-    @Test
-    public void testExample9() throws ContentError, ConnectionError, RuntimeError, ParseError, ParseException, BuildException, XMLException   {
-           boolean ok = executeProcessExample("example9.xml");
-         assertTrue("Example 9", ok); 
-    }
+    
     
     /*
     @Test

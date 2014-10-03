@@ -14,13 +14,13 @@ public class WithBuilder extends AbstractPostBuilder {
         super();
     	path = instance;
         var = as;
-        E.info("made with builder " + instance + " " + as);
+        //E.info("made with builder " + instance + " " + as);
     }
 
     public void postBuild(StateRunnable base, HashMap<String, StateRunnable> siHM, BuildContext bc) throws ConnectionError {
         RunnableAccessor ra = new RunnableAccessor(base);
 
-        E.info("with builder building...");
+        //E.info("with builder building...");
         
         StateRunnable sr = null;
         //E.info("WithBuilder needs "+path+" relative to: "+base);
@@ -34,7 +34,7 @@ public class WithBuilder extends AbstractPostBuilder {
         } else {
             sr = ra.getRelativeStateInstance(base.getParent(), path);
             
-            E.info("got rel state instance for path " + path + ": " + sr);
+            //E.info("got rel state instance for path " + path + ": " + sr);
             
         }
         
