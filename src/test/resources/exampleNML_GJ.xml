@@ -37,7 +37,7 @@
         <Children name="populations" type="Population"/>
         <!--<Children name="connectivities" type="EventConnectivity"/>
         <Children name="excon" type="ExplicitConnectivity"/>-->
-        <Children name="eleccon" type="ElectricalConnections"/>
+        <Children name="eleccon" type="electricalConnections"/>
     </ComponentType>
 
 
@@ -50,7 +50,7 @@
     </ComponentType>
     
 
-    <ComponentType name="GapJunctionConnection">
+    <ComponentType name="gapJunctionConnection">
         <IndexParameter name="sourceIndex"/>
         <IndexParameter name="targetIndex"/>
 
@@ -69,10 +69,10 @@
 
 
 
-    <ComponentType name="ElectricalConnections">
+    <ComponentType name="electricalConnections">
         <ComponentReference name="sourceList" type="Population" local="true"/>
         <ComponentReference name="targetList" type="Population" local="true"/>
-        <Children name="connections" type="GapJunctionConnection"/>
+        <Children name="connections" type="gapJunctionConnection"/>
     </ComponentType>
     
     
@@ -80,9 +80,9 @@
         <Population id="iafPop1" component="iafSpont" size="2" />
         <Population id="iafPop2" component="iaf" size="2" />
 
-        <ElectricalConnections sourceList="iafPop1" targetList="iafPop2">
-            <GapJunctionConnection sourceIndex="0" targetIndex="1" connector="gj1"/>
-        </ElectricalConnections>
+        <electricalConnections sourceList="iafPop1" targetList="iafPop2">
+            <gapJunctionConnection sourceIndex="0" targetIndex="1" connector="gj1"/>
+        </electricalConnections>
         
         <!--<explicitInput target="iafPop1[0]" input="pulseGen1" destination="synapses"/>-->
     </Network>
