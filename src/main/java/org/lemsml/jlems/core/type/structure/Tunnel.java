@@ -1,7 +1,6 @@
 package org.lemsml.jlems.core.type.structure;
 
 import org.lemsml.jlems.core.expression.ParseError;
-import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.BuilderElement;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.run.TunnelBuilder;
@@ -40,7 +39,7 @@ public class Tunnel extends BuildElement {
 		
 		if (component != null) {
 			Component tcpt = cpt.getRelativeComponent(component);
-            E.info("Tunneld builder: [" + component + "] resolved to: [" + tcpt + "]");
+            //E.info("Tunnel builder: [" + component + "] resolved to: [" + tcpt + "]");
 			est = tcpt.getStateType();
 
 			/*
