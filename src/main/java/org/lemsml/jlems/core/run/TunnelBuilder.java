@@ -61,8 +61,8 @@ public class TunnelBuilder extends AbstractPostBuilder {
 		sat.addRefChild(tunnelName, saf);
 		saf.addRefChild(tunnelName, sat);
 
-		E.info(" Built a tunnel  " + tunnelName + " " + sf + ", " + st + ", " + base +
-					" " + sf.hashCode() + " " +st.hashCode());
+		//E.info(" Built a tunnel  " + tunnelName + " " + sf + ", " + st + ", " + base +
+		//			" " + sf.hashCode() + " " +st.hashCode());
 		
 	}
 
