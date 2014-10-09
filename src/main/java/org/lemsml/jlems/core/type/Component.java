@@ -940,7 +940,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		if (att != null && att.getValue().equals(ret)) {
 			// all well
 		} else {
-			throw new ContentError("Mismatched attribute '" + sn + "' got '" + ret
+			throw new ContentError("Mismatched attribute '" + sn + "' on "+this.id+", got '" + ret
 					+ "' but value is '" + att.getValue() + "'"); 
 		}
 		return ret;
