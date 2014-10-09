@@ -12,21 +12,25 @@ import org.lemsml.jlems.core.type.Lems;
 public class Tunnel extends BuildElement {
 
 	public String name;
-	public String from;
-	public String to;
+	public String endA;
+	public String endB;
 	
 	public String expose;
 	public String as;
 	
-	public String component;
+	public String componentA;
+	public String componentB;
 	
 	
 	@Override
 	public void resolveLocal(Lems lems, ComponentType ct) throws ContentError,
 			ParseError {
 		// TODO Auto-generated method stub
-		if (component == null) {
-			throw new ContentError("Component must be specified in " + this);
+		if (componentA == null) {
+			throw new ContentError("ComponentA must be specified in " + this);
+		}
+		if (componentB == null) {
+			throw new ContentError("ComponentB must be specified in " + this);
 		}
 		
 	}
@@ -35,29 +39,25 @@ public class Tunnel extends BuildElement {
 	public BuilderElement makeBuilder(Component cpt) throws ContentError,
 			ParseError {
 		
-		StateType est = null;
+		StateType stA = null;
+		StateType stB = null;
 		
-		if (component != null) {
-			Component tcpt = cpt.getRelativeComponent(component);
+		if (componentA != null) {
+			Component tcpt = cpt.getRelativeComponent(componentA);
             //E.info("Tunnel builder: [" + component + "] resolved to: [" + tcpt + "]");
-			est = tcpt.getStateType();
-
-			/*
-            for (Assign ass : assigns) {
-                String ea = ass.getExposeAs();
-                if (ea != null) {
-                    E.warning("Expose as in EventConnection is not used");
-                 }
-                ret.addAssignment(ass.getProperty(), ass.getDoubleEvaluator());
-            }
-            */
+			stA = tcpt.getStateType();
+		}
+		if (componentB != null) {
+			Component tcpt = cpt.getRelativeComponent(componentB);
+            //E.info("Tunnel builder: [" + component + "] resolved to: [" + tcpt + "]");
+			stB = tcpt.getStateType();
 		}
 
 		TunnelBuilder tb = null;
-		if (est != null) {
-			tb = new TunnelBuilder(name, from, to, est);
+		if (stA != null && stB!=null) {
+			tb = new TunnelBuilder(name, endA, endB, stA, stB);
 		} else {
-			throw new ContentError("Cant locate tunnel component " + component);
+			throw new ContentError("Can't locate tunnel component " + componentA +" and/or "+componentB);
 		}
 		
 		return tb;

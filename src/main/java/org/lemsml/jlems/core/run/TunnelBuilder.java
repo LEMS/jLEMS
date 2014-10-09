@@ -7,59 +7,62 @@ import org.lemsml.jlems.core.sim.ContentError;
 
 public class TunnelBuilder extends AbstractPostBuilder {
 
-	String from;
-	String to;
+    
+	String endA;
+	String endB;
 	 
 	String tunnelName;
 	
-	StateType endStateType;
+	StateType endStateTypeA;
+	StateType endStateTypeB;
 	
-	public TunnelBuilder(String tnm, String sf, String st, StateType est) {
+	public TunnelBuilder(String tnm, String endA, String endB, StateType stA, StateType stB) {
 		super();
 		tunnelName = tnm;
-		from = sf;
-		to = st;
-		endStateType = est;
+		this.endA = endA;
+		this.endB = endB;
+		endStateTypeA = stA;
+		endStateTypeB = stB;
 	}
 
 	 
 	public void postBuild(StateRunnable base, HashMap<String, StateRunnable> sihm, BuildContext bc) throws ConnectionError, ContentError, RuntimeError {
-  		StateRunnable sf = sihm.get(from);
-		StateRunnable st = sihm.get(to);
+  		StateRunnable srA = sihm.get(endA);
+		StateRunnable srB = sihm.get(endB);
 		
 	
-		if (sf == null) {
-			sf = base.getChild(from);
+		if (srA == null) {
+			srA = base.getChild(endA);
 		}
-		if (st == null) {
-			st = base.getChild(to);
-		}
-		
-		
-		if (sf == null) {
-			throw new ConnectionError("The source state instance is null when getting " + from + " on " + base);
-		}
-		if (st == null) {
-			throw new ConnectionError("The target state instance is null when getting " + to + " on " + base);
+		if (srB == null) {
+			srB = base.getChild(endB);
 		}
 		
 		
-		StateInstance saf = endStateType.newInstance();
-		StateInstance sat = endStateType.newInstance();
+		if (srA == null) {
+			throw new ConnectionError("The source state instance is null when getting " + endA + " on " + base);
+		}
+		if (srB == null) {
+			throw new ConnectionError("The target state instance is null when getting " + endB + " on " + base);
+		}
+		
+		
+		StateInstance siA = endStateTypeA.newInstance();
+		StateInstance siB = endStateTypeB.newInstance();
 		
 		 
 		// TODO - method in StateRunnable?
 		//((StateInstance)sf).addListChild(tunnelName, "", saf);
 		//((StateInstance)st).addListChild(tunnelName, "", sat);
 		
-		sf.addAttachment(saf);
-		st.addAttachment(sat);
+		srA.addAttachment(siA);
+		srB.addAttachment(siB);
 		
-		saf.checkBuilt();
-		sat.checkBuilt();
+		siA.checkBuilt();
+		siB.checkBuilt();
 		
-		sat.addRefChild(tunnelName, saf);
-		saf.addRefChild(tunnelName, sat);
+		siB.addRefChild(tunnelName, siA);
+		siA.addRefChild(tunnelName, siB);
 
 		//E.info(" Built a tunnel  " + tunnelName + " " + sf + ", " + st + ", " + base +
 		//			" " + sf.hashCode() + " " +st.hashCode());
