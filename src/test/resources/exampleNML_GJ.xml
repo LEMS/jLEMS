@@ -48,7 +48,7 @@
             <MultiInstantiate number="size" component="component"/>
         </Structure>
     </ComponentType>
-    
+
 
     <ComponentType name="gapJunctionConnection">
         <IndexParameter name="sourceIndex"/>
@@ -62,7 +62,7 @@
         <Structure>
             <With list="sourceList" index="sourceIndex" as="a"/>
             <With list="targetList" index="targetIndex" as="b"/>
-            <Tunnel name="peer" from="a" to="b" component="connector"/>
+            <Tunnel name="peer" endA="a" endB="b" componentA="connector" componentB="connector"/>
         </Structure>
 
     </ComponentType>
