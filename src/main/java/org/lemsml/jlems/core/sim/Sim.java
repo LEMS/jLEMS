@@ -129,7 +129,26 @@ public class Sim extends LemsProcess {
     		run(rc, false);
     	}
     }
+    
+    public StateType getRootBehavior() {
+        return rootBehavior;
+    }
   
+    /*
+    Temporary method for testing 
+    */
+    public StateInstance getRootState(boolean flatten) throws ContentError, ParseError, ConnectionError, RuntimeError {
+        
+  		StateType raw = runConfigs.get(0).getTarget();
+  		if (flatten) {
+  			targetBehavior = raw.getConsolidatedStateType("root");
+  		} else {
+  			targetBehavior = raw;
+  		}
+  	    StateInstance rootState = lems.build(targetBehavior, eventManager);
+        
+        return rootState;
+    }
 
     
     public void run(RunConfig rc, boolean flatten) throws ConnectionError, ContentError, RuntimeError, ParseError {

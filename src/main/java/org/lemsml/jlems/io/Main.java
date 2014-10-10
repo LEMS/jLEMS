@@ -7,6 +7,8 @@ import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.RuntimeError;
+import org.lemsml.jlems.core.run.StateInstance;
+import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.sim.ParseException;
 import org.lemsml.jlems.core.sim.Sim;
@@ -49,6 +51,7 @@ public final class Main {
         
         String typePath = null;
         String modelName = null;
+        boolean verbose = false;
         
         if (argMap.containsKey("-cp")) {
         	typePath = argMap.get("-cp");
@@ -80,6 +83,18 @@ public final class Main {
         sim.readModel();
         sim.build();
         
+        if (verbose) {
+            StateInstance si = sim.getRootState(false);
+
+            System.out.println("Pre run StateInstance: "+si);
+            System.out.println(si.getSummary("  ", ""));
+
+            StateType st = sim.getRootBehavior();
+
+            System.out.println("Pre run StateType: "+st);
+            System.out.println(st.getSummary());
+        }
+        
             
         boolean doRun = true;
             
@@ -87,7 +102,7 @@ public final class Main {
         	sim.run();
         	E.info("Finished reading, building, running and displaying the LEMS model");
         }    
-        	
+        
         IOUtil.saveReportAndTimesFile(sim);
         
     }

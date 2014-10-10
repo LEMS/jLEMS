@@ -1461,31 +1461,52 @@ public class StateType implements RuntimeType {
 	}
 
 	public String getSummary() {
+        return getSummary("");
+    }
+	public String getSummary(String indent) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("State type " + getID() + "\n");
-		sb.append("variables: " + vars.size() + " (");
+		sb.append(indent+"State type " + getID() + "\n");
+		sb.append(indent+"  Variables:    " + vars.size() + " (");
 		for (String s : vars) {
-			sb.append(s + ", ");
+            if (!s.equals(vars.get(0)))
+                sb.append(", ");
+			sb.append(s);
 		}
 		sb.append(")\n");
 		
-		sb.append("indeps: " + indeps.size() + " (");
+		sb.append(indent+"  Indeps:       " + indeps.size() + " (");
 		for (String s : indeps) {
-			sb.append(s + ", ");
+            if (!s.equals(indeps.get(0)))
+                sb.append(", ");
+			sb.append(s);
 		}
 		sb.append(")\n");
 		
-		sb.append("Path derived: " + pathderiveds.size() + " (");
+		sb.append(indent+"  Path derived: " + pathderiveds.size() + " (");
 		for (PathDerivedVariable pd : pathderiveds) {
-			sb.append(pd.getVariableName() + ", ");
+            if (!pd.equals(pathderiveds.get(0)))
+                sb.append(", ");
+			sb.append(pd.getVariableName());
 		}
 		sb.append(")\n");
 		
-		sb.append("Expression derived: " + exderiveds.size() + " (");
+		sb.append(indent+"  Expr derived: " + exderiveds.size() + " (");
 		for (ExpressionDerivedVariable pd : exderiveds) {
-			sb.append(pd.getVariableName() + ", ");
+            if (!pd.equals(exderiveds.get(0)))
+                sb.append(", ");
+			sb.append(pd.getVariableName());
 		}
 		sb.append(")\n");
+        for (String s: childHM.keySet()) {
+            StateType st = childHM.get(s);
+            sb.append(indent+"  C: "+s+": "+st.getSummary(indent+"  "));
+        }
+        for (String s: multiHM.keySet()) {
+            MultiStateType mst = multiHM.get(s);
+            for(StateType st: mst.getCBs()) {
+                sb.append(indent+"  M: "+s+": "+st.getSummary(indent+"  "));
+            }
+        }
 		return sb.toString();
 	}
 

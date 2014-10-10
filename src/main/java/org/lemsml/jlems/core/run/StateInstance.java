@@ -112,7 +112,7 @@ public class StateInstance implements StateRunnable {
 	public String toString() {
 		String ret;
 		if (stateType == null) {
-			ret = "Dumy state instance " + getID();
+			ret = "Dummy state instance " + getID();
 		} else {
 			ret = stateType.getID() + "[" + stateType.getTypeName() + "]";
 		}
@@ -568,7 +568,44 @@ public class StateInstance implements StateRunnable {
         }
 		return err.toString();
 	}
-                
+    
+    public String getSummary(String indent, String prefix) {
+        StringBuilder info = new StringBuilder();
+        String pre = indent + prefix + " ";
+        info.append(pre + "StateInstance: " + stateType.getID() + " [type: " + stateType.getTypeName() + "] \n");
+        info.append(pre + " Vars: " + getVariables() + "\n");
+        if (!getExpHM().isEmpty()) 
+            info.append(pre + " Exp:  " + getExpHM() + "\n");
+
+        if (childA != null) {
+            for (StateRunnable sr : childA) {
+                StateInstance si = (StateInstance) sr;
+                info.append(si.getSummary(indent + "  ", "c"));
+            }
+        }
+
+        if (childHM != null) {
+            for (String k : childHM.keySet()) {
+                StateRunnable sr = childHM.get(k);
+                StateInstance si = (StateInstance) sr;
+                info.append(si.getSummary(indent + "  ", "(" + k + ")") + "\n");
+            }
+        }
+        /*
+        if (multiA != null) {
+            for (MultiInstance mi : multiA) {
+                info.append(pre + mi + "\n");
+            }
+        }
+
+        if (multiHM != null) {
+            for (String mi : multiHM.keySet()) {
+                info.append(pre + "(" + mi + ")" + multiHM.get(mi) + "\n");
+            }
+        }*/
+        return info.toString();
+    }
+ 
 	
 	public int getChildCount() {
 		int ret= 0;
