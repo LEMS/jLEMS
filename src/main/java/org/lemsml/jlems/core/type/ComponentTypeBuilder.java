@@ -2,6 +2,7 @@ package org.lemsml.jlems.core.type;
 
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
+import org.lemsml.jlems.core.type.dynamics.Case;
 import org.lemsml.jlems.core.type.dynamics.DynamicsBuilder;
 import org.lemsml.jlems.core.type.dynamics.OnCondition;
 import org.lemsml.jlems.core.type.dynamics.OnEvent;
@@ -108,11 +109,22 @@ public class ComponentTypeBuilder {
 		checkDynamics();
 		dynB.addDerivedVariable(newDvName, dimension, val);
 	}
+	
+	public void addConditionalDerivedVariable(String newDvName, Dimension dimension, LemsCollection<Case> val)
+	{
+		checkDynamics();
+		dynB.addConditionalDerivedVariable(newDvName, dimension, val);
+	}
 
 
 	public void setDerivedVariableExposure(String newDvName, String s) {
 		checkDynamics();
 		dynB.setDerivedVariableExposure(newDvName, s);
+	}
+
+	public void setConditionalDerivedVariableExposure(String newDvName, String s) {
+		checkDynamics();
+		dynB.setConditionalDerivedVariableExposure(newDvName, s);
 	}
 
 

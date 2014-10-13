@@ -20,9 +20,12 @@ import org.lemsml.jlems.core.type.EventPort;
 import org.lemsml.jlems.core.type.Exposure;
 import org.lemsml.jlems.core.type.FinalParam;
 import org.lemsml.jlems.core.type.Lems;
+import org.lemsml.jlems.core.type.LemsCollection;
 import org.lemsml.jlems.core.type.ParamValue;
 import org.lemsml.jlems.core.type.Requirement;
 import org.lemsml.jlems.core.type.Text;
+import org.lemsml.jlems.core.type.dynamics.Case;
+import org.lemsml.jlems.core.type.dynamics.ConditionalDerivedVariable;
 import org.lemsml.jlems.core.type.dynamics.DerivedVariable;
 import org.lemsml.jlems.core.type.dynamics.Dynamics;
 import org.lemsml.jlems.core.type.dynamics.OnCondition;
@@ -174,7 +177,7 @@ public class ComponentFlattener {
 			importFlattened(child, childPrefix);
 		}
 
-		
+
 		for (DerivedVariable dv : dyn.getDerivedVariables()) {
 
 			String fname = flatName(dv.getName(), prefix, varHM);
@@ -224,6 +227,17 @@ public class ComponentFlattener {
 					}
 					selval = StringUtil.join(items, op);
 				}
+				else
+				{
+					String rt;
+					String var;
+					int iwc = sel.lastIndexOf("/");
+					rt = sel.substring(0, iwc);
+					var = sel.substring(iwc + 1, sel.length());
+
+					Component c  =  cpt.getChild(rt);
+					selval = flatName(c.getName() + "_" + var, prefix);
+				}
 				
 				for (Child child : typ.getChilds()) {
 					String sp = child.getName();
@@ -246,6 +260,33 @@ public class ComponentFlattener {
 			if (dv.exposure != null) {
 				String enm = flatName(dv.exposure, prefix);
 				typeB.setDerivedVariableExposure(fname, enm);
+			}
+		}
+		
+		
+		
+
+		for (ConditionalDerivedVariable cdv : dyn.getConditionalDerivedVariables()) {
+
+			String fname = flatName(cdv.getName(), prefix, varHM);
+
+			LemsCollection<Case> val = cdv.cases;
+			LemsCollection<Case> valNew = new LemsCollection<Case>();
+
+			for (int i = 0; i < val.size();i++)
+			{
+				Case c = val.get(i);
+				c.condition = substituteVariables(c.condition, varHM);
+				c.value = substituteVariables(c.value, varHM);
+				valNew.add(c);
+			}
+				
+			typeB.addConditionalDerivedVariable(fname, cdv.getDimension(), valNew);
+			
+
+			if (cdv.exposure != null) {
+				String enm = flatName(cdv.exposure, prefix);
+				typeB.setConditionalDerivedVariableExposure(fname, enm);
 			}
 		}
 
