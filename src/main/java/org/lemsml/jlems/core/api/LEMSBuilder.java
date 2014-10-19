@@ -95,7 +95,7 @@ public class LEMSBuilder implements ILEMSBuilder
 			for (Component cpt : lems.getComponents())
 			{
 
-				if (cpt.getID().equals(config.getSpecifiedTarget()))
+				if (cpt.getID() != null && cpt.getID().equals(config.getSpecifiedTarget()))
 				{
 					ComponentType ct = cpt.getComponentType();
 					try
