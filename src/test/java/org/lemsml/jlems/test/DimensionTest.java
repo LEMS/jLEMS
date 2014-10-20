@@ -23,6 +23,9 @@ public class DimensionTest {
 
     @Test
     public void testDimensions() throws ParseError, ContentError {
+        Dimension noDim = Dimension.getNoDimension();
+        Unit noUnit = Unit.getNoUnit();
+        
         Dimension current = new Dimension("current");
         current.setI(1);
         Dimension current2 = new Dimension("current2");
@@ -54,12 +57,19 @@ public class DimensionTest {
         cm2.setPower(-4);
 
         LemsCollection<Unit> units = new LemsCollection<Unit>();
+        units.add(noUnit);
         units.add(kelv);
         units.add(celc);
         units.add(m);
         units.add(f);
         units.add(m2);
         units.add(cm2);
+        for (Unit u: units) {
+            System.out.println(u);
+        }
+        System.out.println("-- "+units.getByPseudoName("m2"));
+        System.out.println("-- "+units.getByPseudoName(Unit.NO_UNIT_SYMBOL));
+        
 
         double len = 123.456;
         DimensionalQuantity dq = QuantityReader.parseValue(len + " f", units);
@@ -81,6 +91,9 @@ public class DimensionTest {
 
         assertTrue(test1.getDivideBy(test2).isDimensionless());
         assertTrue(test1.dataMatches(test2));
+        
+        
+        DimensionalQuantity dimless = QuantityReader.parseValue("10", units);
 
     }
 

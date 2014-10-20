@@ -182,7 +182,7 @@ public class JarResourceInclusionReader extends AbstractInclusionReader {
 	
 	public static void main(String[] argv) throws IOException, ContentError
 	{
-        JarResourceInclusionReader jrir = new JarResourceInclusionReader("target/jlems-0.9.5.2.jar");
+        JarResourceInclusionReader jrir = new JarResourceInclusionReader("target/jlems-0.9.5.3.jar");
                 
         System.out.println(">> "+jrir.getRelativeContent(JAR.toString(),"META-INF/../META-INF/MANIFEST.MF"));
 

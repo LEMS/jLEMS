@@ -1,7 +1,7 @@
 package org.lemsml.jlems.core.sim;
 
 
-public class ParseException extends Exception {
+public class ParseException extends LEMSException {
 	private static final long serialVersionUID = 1L;
 
 	String message;
