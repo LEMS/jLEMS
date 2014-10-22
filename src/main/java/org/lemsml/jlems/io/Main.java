@@ -17,9 +17,10 @@ import org.lemsml.jlems.io.reader.FileInclusionReader;
 
 public final class Main {
 
-	 public static final String VERSION = "0.9.7.0";
+	 public static final String VERSION = "0.9.7.1";
 	 
 	 static String usage = "USAGE: java -jar target/jlems-"+VERSION+".jar [-cp folderpaths] model-file [-nogui]\n";
+     
 	 
 	 private Main() {
 		 
@@ -34,8 +35,14 @@ public final class Main {
 	
     public static void main(String[] argv) throws ConnectionError, ContentError, RuntimeError, ParseError, ParseException, BuildException, XMLException {        
         if (argv.length == 0) {
+            System.err.println("No model file specified!");
             showUsage();
             System.exit(1);
+        }        
+        
+        if (argv.length == 1 && (argv[0].equals("-h") || argv[0].equals("-help") || argv[0].equals("-?"))) {
+            showUsage();
+            System.exit(0);
         }
         
         HashMap<String, String> argMap = parseArguments(argv);

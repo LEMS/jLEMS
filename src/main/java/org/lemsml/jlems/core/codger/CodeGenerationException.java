@@ -1,6 +1,8 @@
 package org.lemsml.jlems.core.codger;
 
-public class CodeGenerationException extends Exception {
+import org.lemsml.jlems.core.sim.LEMSException;
+
+public class CodeGenerationException extends LEMSException {
 	private static final long serialVersionUID = 1L;
 
 

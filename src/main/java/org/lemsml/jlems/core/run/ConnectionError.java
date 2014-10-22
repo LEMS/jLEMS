@@ -1,6 +1,8 @@
 package org.lemsml.jlems.core.run;
 
-public class ConnectionError extends Exception {
+import org.lemsml.jlems.core.sim.LEMSException;
+
+public class ConnectionError extends LEMSException {
 	private static final long serialVersionUID = 1L;
 
 	
