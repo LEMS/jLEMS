@@ -10,5 +10,9 @@ public class ContentError extends LEMSException {
 	public ContentError(String msg, Throwable t) {
 		super(msg, t);
 	}
+	public ContentError(Throwable e)
+	{
+		super(e);
+	}
 	
 }
