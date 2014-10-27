@@ -11,7 +11,14 @@ import org.lemsml.jlems.core.sim.LEMSException;
  */
 public class LEMSBuildException extends LEMSException
 {
+	private static final long serialVersionUID = 7270740174243762381L;
     
+	public LEMSBuildException() {
+		super();
+	}
+	public LEMSBuildException(Throwable arg0) {
+		super(arg0);
+	}
 	public LEMSBuildException(String msg) {
 		super(msg);
 	}

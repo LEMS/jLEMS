@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import org.lemsml.jlems.core.annotation.ModelElement;
+import org.lemsml.jlems.core.api.interfaces.ILEMSDocument;
 import org.lemsml.jlems.core.expression.Dimensional;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.Parser;
@@ -19,7 +20,7 @@ import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
 
 @ModelElement(info="Root element for any lems content")
-public class Lems {
+public class Lems implements ILEMSDocument{
 	
 		
 	final static int STRICT = 0;
