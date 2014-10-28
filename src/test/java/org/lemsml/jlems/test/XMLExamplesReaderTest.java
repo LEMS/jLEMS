@@ -21,7 +21,7 @@ import org.lemsml.jlems.io.util.FileUtil;
 public class XMLExamplesReaderTest {
 
     //Assuming all examples have to respect an arbitrary convention as to how childless elements have to be written
-	//@Test         
+	@Test         
 	public void testReadFromString() throws ParseException, BuildException,
 			ContentError, XMLException, IOException {
 
