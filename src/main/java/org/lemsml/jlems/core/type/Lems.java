@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import org.lemsml.jlems.core.annotation.ModelElement;
-import org.lemsml.jlems.core.api.interfaces.ILEMSDocument;
+import org.lemsml.jlems.api.interfaces.ILEMSDocument;
 import org.lemsml.jlems.core.expression.Dimensional;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.Parser;

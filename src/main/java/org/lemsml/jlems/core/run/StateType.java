@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
 
-import org.lemsml.jlems.core.api.interfaces.ILEMSStateType;
+import org.lemsml.jlems.api.interfaces.ILEMSStateType;
 import org.lemsml.jlems.core.eval.DoubleEvaluator;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.out.ResultWriter;
