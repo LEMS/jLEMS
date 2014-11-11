@@ -14,4 +14,9 @@ public class ContentError extends LEMSException implements Serializable {
         super(msg, t);
     }
 
+	public ContentError(Throwable e)
+	{
+		super(e);
+	}
+	
 }

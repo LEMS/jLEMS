@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
 
+import org.lemsml.jlems.api.interfaces.ILEMSStateType;
 import org.lemsml.jlems.core.eval.DoubleEvaluator;
 import org.lemsml.jlems.core.logging.E;
  
@@ -13,7 +14,7 @@ import org.lemsml.jlems.core.sim.StateTypeVisitor;
 import org.lemsml.jlems.core.type.Component;
 
 @SuppressWarnings("StringConcatenationInsideStringBufferAppend")
-public class StateType implements RuntimeType {
+public class StateType implements RuntimeType, ILEMSStateType {
 
 	String cptid;
 	String typeName;

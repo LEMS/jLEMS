@@ -70,7 +70,11 @@ public class JarResourceInclusionReader extends AbstractInclusionReader {
 
     
     @Override
-    public String getRelativeContent(String s) throws ContentError {
+    public String getRelativeContent(String attribute, String s) throws ContentError {
+    	if(attribute.equals(URL))
+    	{
+    		throw new IllegalArgumentException("URL is not supported when using the FileInclusionReader!");
+    	}
     	String ret = "";
     	
         //E.info("Getting rel path for: "+s+", searchPathsInJar: "+ searchPathsInJar);
@@ -180,7 +184,7 @@ public class JarResourceInclusionReader extends AbstractInclusionReader {
 	{
         JarResourceInclusionReader jrir = new JarResourceInclusionReader("target/jlems-0.9.6.0.jar");
                 
-        System.out.println(">> "+jrir.getRelativeContent("META-INF/../META-INF/MANIFEST.MF"));
+        System.out.println(">> "+jrir.getRelativeContent(JAR.toString(),"META-INF/../META-INF/MANIFEST.MF"));
 
 	}
 	
