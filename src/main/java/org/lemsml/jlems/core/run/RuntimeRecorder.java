@@ -34,8 +34,7 @@ public class RuntimeRecorder
 
     public String toString()
     {
-        return "Recorder, " + id + " of " + quantity + " tscale=" + tscale + " yscale=" + yscale
-            + " display=" + display + " color=" + color;
+        return "Recorder, " + id + " of " + quantity + " tscale=" + tscale + " yscale=" + yscale + " display=" + display + " color=" + color;
     }
 
     public String getID()
@@ -81,7 +80,7 @@ public class RuntimeRecorder
 
         double x = ft / tscale;
         double y = stateWrapper.getValue() / yscale;
-        //E.info("Adding point: ("+x+", "+y+")");
+        // E.info("Adding point: ("+x+", "+y+")");
 
         if (dataViewer != null)
         {
@@ -91,5 +90,10 @@ public class RuntimeRecorder
         {
             resultWriter.addPoint(id, x, y);
         }
+    }
+
+    public String getQuantity()
+    {
+        return quantity;
     }
 }
