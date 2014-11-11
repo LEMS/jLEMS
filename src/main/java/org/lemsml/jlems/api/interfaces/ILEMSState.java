@@ -1,4 +1,4 @@
-package org.lemsml.jlems.core.api.interfaces;
+package org.lemsml.jlems.api.interfaces;
 
 public interface ILEMSState
 {

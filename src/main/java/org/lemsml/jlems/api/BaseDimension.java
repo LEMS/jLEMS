@@ -1,4 +1,4 @@
-package org.lemsml.jlems.core.api;
+package org.lemsml.jlems.api;
 
 import org.lemsml.jlems.core.type.Dimension;
 
