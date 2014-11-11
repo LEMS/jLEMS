@@ -7,10 +7,14 @@ import org.lemsml.jlems.core.logging.E;
 public abstract class AbstractInclusionReader {
 
 	HashSet<String> included = new HashSet<String>();
+
+	protected static final String FILE="file";
+	protected static final String URL="url";
+	public static final String JAR ="jar";
  	
 	public abstract String getRootContent() throws ContentError;
 	
-	public abstract String getRelativeContent(String s) throws ContentError;
+	public abstract String getRelativeContent(String attribute,String s) throws ContentError;
 	
 	
 	
@@ -20,38 +24,16 @@ public abstract class AbstractInclusionReader {
 		return ret;
 	}
 	
-	public String cleanAttributeString(String sattsa) throws ContentError {
-		String ret = "";
-		String satts = sattsa;
-		
-		String sxmlns = "xmlns=\"";
-        if (satts.startsWith(sxmlns)){
-            satts = satts.substring(satts.indexOf(" ")+1);
-        }
-
-
-		String scomp = satts.replace(" ", "");
-		String sfind = "file=\"";
-		if (scomp.startsWith(sfind)) {
-			ret = scomp.substring(sfind.length(), scomp.length()-1);
-		
-		} else {
-			throw new ContentError("can't parse include directive: " + satts);
-		}
-		return ret;
-	}
-	
-	
-	protected String getIncludeContent(String srel) throws ContentError {
+	protected String getIncludeContent(String attribute,String srel) throws ContentError {
 			String ret = "";
-			if (included.contains(srel)) {
+			if (included.contains(srel) && !attribute.equals(URL)) {
 				// already included - nothing to do;
                 //E.info(srel+ " IS already included: "+included);
 			
 			} else {
                 //E.info(srel+ " NOT already included: "+included);
 				included.add(srel);
-				String sr = getRelativeContent(srel);
+				String sr = getRelativeContent(attribute,srel);
 				ret = insertIncludes(sr);
 				ret = trimOuterElement(ret);
  			}
@@ -70,9 +52,18 @@ public abstract class AbstractInclusionReader {
 			} else {
 				sfullSB.append(stxt.substring(0, iinc));
 				int icb = stxt.indexOf("/>", iinc);
-				String srel = cleanAttributeString(stxt.substring(iinc + sinc.length(), icb));
-                                //E.info("Including: "+srel);
-				sfullSB.append(getIncludeContent(srel));
+				String fullInclusion=stxt.substring(iinc + sinc.length(), icb);
+				
+		        if (fullInclusion.startsWith("xmlns=\"")){
+		        	fullInclusion = fullInclusion.substring(fullInclusion.indexOf(" ")+1);
+		        }
+
+		        fullInclusion = fullInclusion.replace(" ", "");
+				
+				String attribute=fullInclusion.substring(0,fullInclusion.indexOf("="));
+				String value = fullInclusion.substring(fullInclusion.indexOf("=")+1).replace("\"", "");
+
+				sfullSB.append(getIncludeContent(attribute,value));
 				stxt = stxt.substring(icb + 2, stxt.length());
 			}
 		

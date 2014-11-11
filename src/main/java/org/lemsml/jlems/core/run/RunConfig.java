@@ -7,8 +7,8 @@ import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.Component;
 
-public class RunConfig {
-
+public class RunConfig
+{
 	Component targetComponent;
 	double step;
 	double total;
@@ -65,5 +65,7 @@ public class RunConfig {
 		//E.missing();
 		return null;
 	}
+
+
 	
 }
