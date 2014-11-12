@@ -573,23 +573,31 @@ public class StateInstance implements StateRunnable, ILEMSStateInstance {
     public String getSummary(String indent, String prefix) {
         StringBuilder info = new StringBuilder();
         String pre = indent + prefix + " ";
-        info.append(pre + "StateInstance: " + stateType.getID() + " [type: " + stateType.getTypeName() + "] \n");
-        info.append(pre + " Vars: " + getVariables() + "\n");
+        String line = "+-------------------------------------------------";
+        for (int i=0; i + indent.length()<40; i++)
+            line = line +'-';
+        info.append(indent + line);
+        //info.append("    >>> i: ["+indent+"]  pref: ["+prefix+"]  p: ["+pre+"]");
+        info.append("\n");
+        String parentInfo = getParent()!=null ? ", parent: "+ getParent().getID() : "";
+        info.append(pre + "StateInstance: " + getID() + " [StateType: " + stateType.getID() + parentInfo +"] \n");
+        info.append(pre + "  Vars: " + getVariables() + "\n");
         if (!getExpHM().isEmpty()) 
-            info.append(pre + " Exp:  " + getExpHM() + "\n");
+            info.append(pre + "  Exp:  " + getExpHM() + "\n");
 
+        /*
         if (childA != null) {
             for (StateRunnable sr : childA) {
                 StateInstance si = (StateInstance) sr;
-                info.append(si.getSummary(indent + "  ", "c"));
+                info.append(si.getSummary(indent+prefix+" c ", prefix)+"\n");
             }
-        }
+        }*/
 
         if (childHM != null) {
             for (String k : childHM.keySet()) {
                 StateRunnable sr = childHM.get(k);
                 StateInstance si = (StateInstance) sr;
-                info.append(si.getSummary(indent + "  ", "(" + k + ")") + "\n");
+                info.append(si.getSummary(indent+prefix+"   ", prefix)+"\n");
             }
         }
         /*
@@ -604,6 +612,8 @@ public class StateInstance implements StateRunnable, ILEMSStateInstance {
                 info.append(pre + "(" + mi + ")" + multiHM.get(mi) + "\n");
             }
         }*/
+        
+        info.append(""+indent + line);
         return info.toString();
     }
  

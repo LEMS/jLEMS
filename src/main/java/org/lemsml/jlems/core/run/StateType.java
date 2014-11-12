@@ -342,7 +342,7 @@ public class StateType implements RuntimeType, ILEMSStateType {
 	public void initialize(StateInstance uin, StateRunnable parent, boolean includeDerivedVariables, boolean checkNaN) throws RuntimeError, ContentError {
  		HashMap<String, DoublePointer> varHM = uin.getVarHM();
 
-      
+        
 		if (indeps != null) {
 			for (String s : indeps) {
 				double val = parent.getVariable(s);
@@ -1462,53 +1462,69 @@ public class StateType implements RuntimeType, ILEMSStateType {
 	}
 
 	public String getSummary() {
-        return getSummary("");
+        return getSummary("", "");
     }
-	public String getSummary(String indent) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(indent+"State type " + getID() + "\n");
-		sb.append(indent+"  Variables:    " + vars.size() + " (");
-		for (String s : vars) {
-            if (!s.equals(vars.get(0)))
-                sb.append(", ");
-			sb.append(s);
-		}
-		sb.append(")\n");
+    
+	public String getSummary(String indent, String prefix) {
+		StringBuilder info = new StringBuilder();
+        String pre = indent + prefix + " ";
+        String line = "+-------------------------------------------------";
+        for (int i=0; i + indent.length()<40; i++)
+            line = line +'-';
+        info.append(indent + line);
+        //info.append("    >>> i: ["+indent+"]  pref: ["+prefix+"]  p: ["+pre+"]");
+        info.append("\n");
+        
+		info.append(pre+"StateType: " + getID() +" (" + getTypeName()+ ")\n");
+		info.append(pre+"  Variables:    " + vars+"\n");
 		
-		sb.append(indent+"  Indeps:       " + indeps.size() + " (");
-		for (String s : indeps) {
-            if (!s.equals(indeps.get(0)))
-                sb.append(", ");
-			sb.append(s);
-		}
-		sb.append(")\n");
+        if (indeps.size()>0) {
+            info.append(pre+"  Indeps:       " + indeps + "\n");
+        }
 		
-		sb.append(indent+"  Path derived: " + pathderiveds.size() + " (");
-		for (PathDerivedVariable pd : pathderiveds) {
-            if (!pd.equals(pathderiveds.get(0)))
-                sb.append(", ");
-			sb.append(pd.getVariableName());
-		}
-		sb.append(")\n");
+        
+        if (pathderiveds.size()>0) {
+            info.append(pre+"  Path derived: {");
+            for (PathDerivedVariable pd : pathderiveds) {
+                if (!pd.equals(pathderiveds.get(0)))
+                    info.append(", ");
+                info.append(""+pd.getVariableName() + " = "+ pd.getPath()+"");
+            }
+            info.append("}\n");
+        }
 		
-		sb.append(indent+"  Expr derived: " + exderiveds.size() + " (");
-		for (ExpressionDerivedVariable pd : exderiveds) {
-            if (!pd.equals(exderiveds.get(0)))
-                sb.append(", ");
-			sb.append(pd.getVariableName());
-		}
-		sb.append(")\n");
+        if (exderiveds.size()>0) {
+            info.append(pre+"  Expr derived: {");
+            for (ExpressionDerivedVariable edv : exderiveds) {
+                if (!edv.equals(exderiveds.get(0)))
+                    info.append(", ");
+                info.append(""+edv.getVariableName() + " = "+ edv.getExpressionString()+"");
+            }
+            info.append("}\n");
+        }
+        
         for (String s: childHM.keySet()) {
             StateType st = childHM.get(s);
-            sb.append(indent+"  C: "+s+": "+st.getSummary(indent+"  "));
+            info.append(pre+"  (Child): "+s+":\n");
+            info.append(st.getSummary(indent+prefix+"   ", prefix)+"\n");
         }
+        
         for (String s: multiHM.keySet()) {
             MultiStateType mst = multiHM.get(s);
+            info.append(pre+"  (Multi) "+s+":\n");
             for(StateType st: mst.getCBs()) {
-                sb.append(indent+"  M: "+s+": "+st.getSummary(indent+"  "));
+                info.append(st.getSummary(indent+prefix+"   ", prefix)+"\n");
             }
         }
-		return sb.toString();
+        
+        for (String s: refHM.keySet()) {
+            StateType st = refHM.get(s);
+            info.append(pre+"  (Reference) "+s+":\n");
+            info.append(st.getSummary(indent+prefix+"   ", prefix)+"\n");
+        }
+        
+        info.append(""+indent + line);
+		return info.toString();
 	}
 
 	public String getDimensionString(String fld) throws ContentError {

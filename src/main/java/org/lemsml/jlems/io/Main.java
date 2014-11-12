@@ -51,12 +51,14 @@ public final class Main {
         
         String typePath = null;
         String modelName = null;
+        //boolean verbose = true;
         boolean verbose = false;
         
         if (argMap.containsKey("-cp")) {
         	typePath = argMap.get("-cp");
         	argMap.remove("-cp");
         }
+        
         if (argMap.containsKey("0")) {
         	modelName = argMap.get("0");
         	argMap.remove("0");
@@ -83,16 +85,16 @@ public final class Main {
         sim.readModel();
         sim.build();
         
+        StateInstance si = sim.getRootState(false);
+        StateType st = sim.getTargetBehavior();
+        
         if (verbose) {
-            StateInstance si = sim.getRootState(false);
 
-            System.out.println("Pre run StateInstance: "+si);
-            System.out.println(si.getSummary("  ", ""));
+            System.out.println("Pre run StateType: \n");
+            System.out.println(st.getSummary("  ", "| ")+"\n");
 
-            StateType st = sim.getRootBehavior();
-
-            System.out.println("Pre run StateType: "+st);
-            System.out.println(st.getSummary());
+            System.out.println("Pre run: \n");
+            System.out.println(si.getSummary("  ", "| ")+"\n");
         }
         
             

@@ -133,6 +133,10 @@ public class Sim extends LemsProcess {
     public StateType getRootBehavior() {
         return rootBehavior;
     }
+    
+    public StateType getTargetBehavior() {
+        return targetBehavior;
+    }
   
     /*
     Temporary method for testing 
