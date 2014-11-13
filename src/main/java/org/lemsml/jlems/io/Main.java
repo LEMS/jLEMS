@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jlems.core.logging.MinimalMessageHandler;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.StateInstance;
@@ -35,7 +36,11 @@ public final class Main {
 	 
 	 
 	
-    public static void main(String[] argv) throws ConnectionError, ContentError, RuntimeError, ParseError, ParseException, BuildException, XMLException {        
+    public static void main(String[] argv) throws ConnectionError, ContentError, RuntimeError, ParseError, ParseException, BuildException, XMLException {    
+        
+        //MinimalMessageHandler.setVeryMinimal(true);
+        //E.setDebug(false);
+        
         if (argv.length == 0) {
             System.err.println("No model file specified!");
             showUsage();

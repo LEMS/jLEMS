@@ -68,6 +68,7 @@ public class StateInstance implements StateRunnable, ILEMSStateInstance {
 	double currentTime = Double.NaN;
 
 	boolean debug = false;
+	//boolean debug = true;
 
 	boolean bList;
 	String listName;
@@ -144,7 +145,7 @@ public class StateInstance implements StateRunnable, ILEMSStateInstance {
 		currentTime = 0;
 		stateType.initialize(this, parent, false, false);
 		if (debug) {
-			E.info("Post init " + this + " has vars: " + this.varHM + " and exps " + this.expHM);
+			E.info("\n\n   1 Post init " + this + " has vars: " + this.varHM + " and exps " + this.expHM);
 		}
 
 		if (hasChildren) {
@@ -163,10 +164,12 @@ public class StateInstance implements StateRunnable, ILEMSStateInstance {
 				ksi.initialize(this);
 			}
 		}
-
+        if (debug) {
+			E.info("   1.5 Post CHILDREN init " + this + " has vars: " + this.varHM + " and exps " + this.expHM + "\n");
+		}
 		stateType.initialize(this, parent, true, false);
 		if (debug) {
-			E.info("Post CHILDREN init " + this + " has vars: " + this.varHM + " and exps " + this.expHM + "\n");
+			E.info("   2 Post CHILDREN init " + this + " has vars: " + this.varHM + " and exps " + this.expHM + "\n");
 		}
 
 		// Once more
@@ -189,7 +192,7 @@ public class StateInstance implements StateRunnable, ILEMSStateInstance {
 
 		stateType.initialize(this, parent, true, false);
 		if (debug) {
-			E.info("Post CHILDREN init " + this + " has vars: " + this.varHM + " and exps " + this.expHM + "\n");
+			E.info("    3 Post CHILDREN init " + this + " has vars: " + this.varHM + " and exps " + this.expHM + "\n");
 		}
 	}
 
@@ -536,11 +539,10 @@ public class StateInstance implements StateRunnable, ILEMSStateInstance {
 	private void checkReturn(double ret, String varname)  throws RuntimeError {
 		if (Double.isNaN(ret) || Double.isInfinite(ret)) {
 			StringBuilder err = new StringBuilder();
-			err.append("" + varname + " is NaN in: " + this + "\n"); 
-			err.append("Exposed: " + expHM + "\n");
-			err.append("Variables: " + varHM + "\n");
 			
-			err.append(getChildSummary());
+			err.append("This StateInstance:\n"+getSummary("  ", "| "));
+			
+			err.append("This StateInstance's parent:\n"+((StateInstance)this.getParent()).getSummary("  ", "| "));
 			
 			throw new RuntimeError(err.toString());
 		}
@@ -581,9 +583,39 @@ public class StateInstance implements StateRunnable, ILEMSStateInstance {
         info.append("\n");
         String parentInfo = getParent()!=null ? ", parent: "+ getParent().getID() : "";
         info.append(pre + "StateInstance: " + getID() + " [StateType: " + stateType.getID() + parentInfo +"] \n");
-        info.append(pre + "  Vars: " + getVariables() + "\n");
-        if (!getExpHM().isEmpty()) 
-            info.append(pre + "  Exp:  " + getExpHM() + "\n");
+        
+        info.append(pre +     "  Variables: {");
+        int count = 0;
+        for(String key: getVariables().keySet()) {
+            if (count==5) {
+                info.append(",\n"+pre+"              ");
+                count=0;
+            }
+            else if (count>0) {
+                info.append(", ");
+            }
+            info.append(key+" = "+getVariables().get(key).getValue());
+            
+            count++;
+        }
+        info.append("}\n");
+        
+        info.append(pre +     "  Exposures: {");
+        count = 0;
+        for(String key: getExpHM().keySet()) {
+            if (count==5) {
+                info.append(",\n"+pre+"              ");
+                count=0;
+            }
+            else if (count>0) {
+                info.append(", ");
+            }
+            info.append(key+" = "+getExpHM().get(key).getValue());
+            
+            count++;
+        }
+        info.append("}\n");
+        
 
         /*
         if (childA != null) {

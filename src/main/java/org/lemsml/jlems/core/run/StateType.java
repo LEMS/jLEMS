@@ -1476,31 +1476,28 @@ public class StateType implements RuntimeType, ILEMSStateType {
         info.append("\n");
         
 		info.append(pre+"StateType: " + getID() +" (" + getTypeName()+ ")\n");
-		info.append(pre+"  Variables:    " + vars+"\n");
+		info.append(pre+"  Variables:      " + vars+"\n");
 		
         if (indeps.size()>0) {
-            info.append(pre+"  Indeps:       " + indeps + "\n");
+            info.append(pre+"  Indeps:         " + indeps + "\n");
         }
 		
         
         if (pathderiveds.size()>0) {
-            info.append(pre+"  Path derived: {");
             for (PathDerivedVariable pd : pathderiveds) {
-                if (!pd.equals(pathderiveds.get(0)))
-                    info.append(", ");
-                info.append(""+pd.getVariableName() + " = "+ pd.getPath()+"");
+                info.append(pre+"  Path derived:   "+pd.getVariableName() + " = "+ pd.getPath()+""+ "\n");
             }
-            info.append("}\n");
         }
 		
         if (exderiveds.size()>0) {
-            info.append(pre+"  Expr derived: {");
             for (ExpressionDerivedVariable edv : exderiveds) {
-                if (!edv.equals(exderiveds.get(0)))
-                    info.append(", ");
-                info.append(""+edv.getVariableName() + " = "+ edv.getExpressionString()+"");
+                info.append(pre+"  Expr derived:   "+edv.getVariableName() + " = "+ edv.getExpressionString()+""+ "\n");
             }
-            info.append("}\n");
+        }
+        if (rates.size()>0) {
+            for (VariableROC vroc: rates) {
+                info.append(pre+"  Rate of change: "+vroc.getVariableName() + "' = "+ vroc.getTextExpression()+""+ "\n");
+            }
         }
         
         for (String s: childHM.keySet()) {
