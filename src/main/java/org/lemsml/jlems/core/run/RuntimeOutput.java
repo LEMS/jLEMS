@@ -8,11 +8,7 @@ public class RuntimeOutput {
 	
 	String fileName;
 	
-
-	public RuntimeOutput() {
-		
-	}
-	
+ 
 	
 	public String toString() {
 		return "RuntimeOutput, id=" + id + " file=" + fileName;

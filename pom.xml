@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.lemsml</groupId>
 	<artifactId>jlems</artifactId>
-	<version>0.9.7.2</version>
+	<version>0.9.7.3</version>
 	<packaging>bundle</packaging>
 	<dependencies>
 		<dependency>

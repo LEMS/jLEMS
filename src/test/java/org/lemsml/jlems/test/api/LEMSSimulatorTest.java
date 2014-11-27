@@ -531,67 +531,6 @@ public class LEMSSimulatorTest
 		}
 	}
 
-	@Test
-	public void testRunExample10()
-	{
-		ILEMSDocumentReader reader = new LEMSDocumentReader();
-		ILEMSBuilder builder = new LEMSBuilder();
-		try
-		{
-
-			ILEMSDocument model = reader.readModel(this.getClass().getResource("/example10_Q10.xml"));
-			assertNotNull(model);
-
-			builder.addDocument(model);
-			ILEMSBuildOptions options = new LEMSBuildOptions();
-
-			ILEMSBuildConfiguration config = new LEMSBuildConfiguration("hhcell_1");
-
-			Collection<ILEMSStateInstance> stateInstances = builder.build(config, options);
-
-			assertNotNull(stateInstances);
-			assertFalse(stateInstances.isEmpty());
-
-			ILEMSSimulator simulator = new LEMSSimulator();
-			for(ILEMSStateInstance instance : stateInstances)
-			{
-				ILEMSRunConfiguration runConfig = new LEMSRunConfiguration(0.00005d, 0.08d);
-
-				IStateIdentifier v = new StateIdentifier("v");
-				IStateIdentifier nageff = new StateIdentifier("NaPop/geff");
-				IStateIdentifier kgeff = new StateIdentifier("KPop/geff");
-
-				runConfig.addStateRecord(new StateRecord(v));
-				runConfig.addStateRecord(new StateRecord(nageff));
-				runConfig.addStateRecord(new StateRecord(kgeff));
-
-				ILEMSResultsContainer results = new LEMSResultsContainer();
-
-				simulator.initialize(instance, runConfig);
-				simulator.run(results);
-
-				assertNotNull(results.getState(v));
-				assertNotNull(results.getState(nageff));
-				assertNotNull(results.getState(kgeff));
-			}
-		}
-		catch(IOException e)
-		{
-			fail(e.getMessage());
-		}
-		catch(ContentError e)
-		{
-			fail(e.getMessage());
-		}
-		catch(LEMSBuildException e)
-		{
-			fail(e.getMessage());
-		}
-		catch(LEMSExecutionException e)
-		{
-			fail(e.getMessage());
-		}
-	}
 
     /*
 	@Test

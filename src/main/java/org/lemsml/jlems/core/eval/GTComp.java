@@ -15,6 +15,13 @@ public class GTComp extends AbstractBComp {
 		return (left.eval() > right.eval());
 	}
 	
+	@Override
+	public String toExpression() {
+		return "("+left.toExpression() + " > " + right.toExpression() +")";
+    }
 	
-	
+	@Override
+	public String toLemsExpression() {
+		return "(" + left.toExpression() + " .gt. " + right.toExpression() + ")";
+    }
 }

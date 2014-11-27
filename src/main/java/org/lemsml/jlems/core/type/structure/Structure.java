@@ -1,7 +1,9 @@
 package org.lemsml.jlems.core.type.structure;
 
 import org.lemsml.jlems.core.expression.ParseError;
+ 
 import org.lemsml.jlems.core.run.Builder;
+import org.lemsml.jlems.core.run.BuilderElement;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.Component;
 import org.lemsml.jlems.core.type.ComponentType;
@@ -26,7 +28,12 @@ public class Structure {
 		Builder b = new Builder();
 		
 		for (BuildElement be : buildElements) {
-			b.add(be.makeBuilder(cpt));
+			BuilderElement bde = be.makeBuilder(cpt);
+			if (bde != null) {
+				b.add(bde);
+			} else {
+				throw new ContentError("null builder element from " + be);
+		    }
 		}
 	
 		return b;

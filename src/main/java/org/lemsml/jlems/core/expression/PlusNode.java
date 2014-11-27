@@ -8,9 +8,10 @@ import org.lemsml.jlems.core.sim.ContentError;
 
 public class PlusNode extends AbstractFloatResultNode {
 
+    public static final String SYMBOL = "+";
 
 	public PlusNode() {
-		super("+");
+		super(SYMBOL);
 	}
 
 	

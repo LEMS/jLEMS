@@ -2,11 +2,11 @@ package org.lemsml.jlems.core.type;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.lemsml.jlems.core.annotation.ModelProperty;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
 import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.RuntimeType;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
@@ -31,6 +31,10 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	public String name;
  
 	
+	@ModelProperty(info="Name by which the component was declared - this shouldn't be accessible.")
+	public String declaredType;
+ 
+	
 	@ModelProperty(info="")
 	public String type;
 	public ComponentType r_type;
@@ -38,9 +42,9 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	@ModelProperty(info="")
 	public String eXtends;
 
-	public LemsCollection<Attribute> attributes = new LemsCollection<Attribute>();
+	private LemsCollection<Attribute> attributes = new LemsCollection<Attribute>();
 
-	public LemsCollection<ParamValue> paramValues;
+	private LemsCollection<ParamValue> paramValues = new LemsCollection<ParamValue>();
 
 	public LemsCollection<Insertion> insertions = new LemsCollection<Insertion>();
 		
@@ -86,6 +90,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	
 	private	 Component r_replacement;
 	
+	private boolean hasInst = false;
 	 
 	// RuntimeType can be a NativeType for code generated components
 	private RuntimeType runtimeType;
@@ -99,6 +104,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
         this.type = r_type.getName();
     }
 	
+	
 	public void setID(String s) {
 		id = s;
 	}
@@ -109,6 +115,15 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 
 	public String getName() {
 		return name;
+	}
+	
+
+	public void setDeclaredName(String s) {
+		declaredType = s;
+	}
+
+	public String getDeclaredType() {
+		return declaredType;
 	}
 	
 	
@@ -171,15 +186,19 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		return id;
 	}
 
-	public String getUniqueID() {
-		String ret = "";
-		if (id == null) { 
-			ret = getParent().getUniqueID() + "_" + getName();
-		} else {
-			ret = id;
-		}
-		return ret;
-	}
+    public String getUniqueID() {
+        String ret = "";
+        if (id == null) {
+            if (getName() == null) {
+                ret = getParent().getUniqueID() + "_" + getDeclaredType();
+            } else {
+                ret = getParent().getUniqueID() + "_" + getName();
+            }
+        } else {
+            ret = id;
+        }
+        return ret;
+    }
 
 	public void setType(ComponentType ct) {
 		r_type = ct;
@@ -226,9 +245,11 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		return ret;
 	}
 	
-	
-	
 	public void resolve(Lems lems, ComponentType parentType, boolean bwarn) throws ContentError, ParseError {
+		resolve(lems, parentType, bwarn, false);
+	}
+	
+	public void resolve(Lems lems, ComponentType parentType, boolean bwarn, boolean dfltZero) throws ContentError, ParseError {
 		if (eXtends != null) {
 			if (lems.hasComponent(eXtends)) {
 				Component cp = lems.getComponent(eXtends);
@@ -250,6 +271,14 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		for (Attribute att : attributes) {
 			att.clearFlag();
 		}
+
+		if (attributes.hasName("name")) {
+			Attribute att = attributes.getByName("name");
+			String attval = att.getValue();
+			name = attval;
+			att.setFlag();
+		}
+		
 
 		if (paramValues == null) {
 			paramValues = new LemsCollection<ParamValue>();
@@ -293,12 +322,12 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 				throw new ContentError("Component " + id + " must set 'type' or 'extends' attributes");
 			}
 		} else {
-			if (type == null && name != null) {
+			if (type == null && declaredType != null) {
 				if (parentType != null) {
-					type = parentType.getChildType(name);
+					type = parentType.getChildType(declaredType);
 				}
 				if (type == null) {
-					type = name;
+					type = declaredType;
 				}
 			}
 			if (type == null) {
@@ -365,6 +394,9 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 			} else if (dp instanceof DerivedFinalParam) {
 				// will populate it later
 
+			} else if (dfltZero) {
+				atval = "0";
+				
 			} else {
 				String msg = "no value supplied for parameter: " + pvn + " in " + this + "\n";
 				msg += "Defined attributes: " + makeAttributeText();
@@ -382,8 +414,14 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 				Attribute att = attributes.getByName(crn);
 				String attval = att.getValue();
 				att.setFlag();
-				Component cpt = lems.getComponent(attval);
 
+				Component cpt = null;
+				if (cr.isLocal()) {
+					cpt = r_parent.getLocalByID(attval);
+				} else {	
+					cpt = lems.getComponent(attval);
+				}
+				
 				if (cpt != null) {
 					refHM.put(crn, cpt);
 
@@ -394,47 +432,45 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 					}
 					E.error(err);
 				}
+				
+			} else if (cr.getDefaultComponent() != null) {
+				String path = cr.getDefaultComponent();	
+				if (path.startsWith("../")) {
+					String ppath = path.substring(3, path.length());
+					// TODO could call getInheritableLinkTarget (needs name change)
+					Component cpt =  r_parent.quietGetChild(ppath);
+					if (cpt != null) {
+						refHM.put(crn, cpt);
+
 			} else {
+						E.error("Can't locate target component in parent: " + path);
+				} 
+					
+					
+				} else {
+					throw new ContentError("Cant locate defaultComponent at " + path);
+			}
+
+
+			} else if (!cr.isRequired()) {
+				// OK to not have one
+
+				} else {
 				// can be OK to resolve with dangling refs as long as we will resolve them again
 				// before trying to run it
 				if (bwarn) {
-					E.warning("component reference " + crn + " missing in " + this + " type " + r_type);
-				} 
-			}
-		}
-
-		for (Link lin : r_type.getLinks()) {
-			String crn = lin.getName();
-			if (attributes.hasName(crn)) {
-				Attribute att = attributes.getByName(crn);
-				String attval = att.getValue();
-				att.setFlag();
-				Component cpt = null;
-
-				/*
-				 * PathEvaluator pe = new PathEvaluator(); cpt =
-				 * pe.getComponent(r_parent, attval);
-				 */
-
-				cpt = r_parent.getLocalByID(attval);
-
-				if (cpt != null) {
-					refHM.put(crn, cpt);
-				} else {
-					E.error("The path " + attval + " for attribute '" + crn + "'" +
-							"does not match any component relative to my (" + this + ") parent:\n" + 
-							this.getParent().details(""));
-				}
-			} else {
-				if (bwarn) {
-					throw new ContentError("Component " + this + " must supply a value for link '" + crn + "'");
+					E.warning("component reference '" + crn + "' missing in " + this + " type " + r_type + " required=" + cr.isRequired());
 				}
 			}
 		}
+
 
 		for (Component cpt : components) {		
 			cpt.checkResolve(lems, r_type);
-			String scb = cpt.getName();
+
+			// Called By
+			String scb = cpt.getDeclaredType();
+			
 			boolean done = false;
 			if (scb != null) {
  				if (r_type.hasChild(scb)) {
@@ -529,8 +565,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	
 	public void addToChildren(String childrenName, Component c) throws ContentError {
 
-		if (childrenHM == null)
-        {
+		if (childrenHM == null) {
 			childrenNames = new ArrayList<String>();
 			childrenHM = new HashMap<String, ArrayList<Component>>();
         }
@@ -662,11 +697,6 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	public ComponentType getComponentType() {
 		return r_type;
 	}
-
-	public void setDeclaredName(String snm) {
-		name = snm;
-	}
-	
 	
 	public void setTypeName(String scl) {
 		type = scl;
@@ -719,15 +749,13 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	
 	
 
-	public StateType makeStateType() throws ContentError, ParseError {
+	public StateType makeStateType(boolean fixParams) throws ContentError, ParseError {
 	
-	 
-		
 		if (madeCB) {
 			throw new ContentError("remaking a component behavior that is already made " + id + " " + r_type);
 		}
 
-		StateType ret = r_type.makeStateType(this);
+		StateType ret = r_type.makeStateType(this, fixParams);
 		stateType = ret;
 		madeCB = true;
 		return ret;
@@ -737,7 +765,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		
 	
 	
-	public StateType makeConsolidatedCoponentBehavior(String knownas) throws ContentError, ParseError {
+	public StateType makeConsolidatedCoponentBehavior(String knownas) throws ContentError, ParseError, RuntimeError {
 		StateType cb = getStateType();
 	    StateType ret = cb.makeConsolidatedStateType(knownas);
  	    return ret;
@@ -755,7 +783,18 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	}
 	
 
+	public StateType getFixedStateType() throws ContentError, ParseError {
+		StateType ret = getStateType(true);
+		return ret;
+	}
+	
 	public StateType getStateType() throws ContentError, ParseError  {
+		StateType ret = getStateType(false);
+		return ret;
+	}
+
+	
+	public StateType getStateType(boolean fixParams) throws ContentError, ParseError  {
 		StateType ret = null;
 	
 		if (r_replacement != null) {
@@ -771,7 +810,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		} else {
 			if (stateType == null) {
 				//	E.info("Building stae type for " + getID());
- 				makeStateType();
+ 				makeStateType(fixParams);
 			}
 			ret = stateType;
 		}
@@ -843,6 +882,31 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		return ret;
 	}
 
+	public String getAttributeValue(String s) throws ContentError {
+		String ret = attributes.getByName(s).getValue();
+		return ret;
+	}
+	
+	
+	public boolean hasStringValue(String sn) {
+		boolean ret = false;
+		if (refHM.containsKey(sn)) {
+			ret = true;
+		} else if (childHM.containsKey(sn)) {
+			ret = true;
+		} else {
+			try {
+				if(attributes.hasName(sn)) {
+					ret = true;
+				}
+			} catch (ContentError ce) {
+				// shouldn't throw error from hasName 
+			}
+		}
+		return ret;
+	}
+	
+	
 	public String getStringValue(String sn) throws ContentError {
 		String ret = null;
 
@@ -876,7 +940,8 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		if (att != null && att.getValue().equals(ret)) {
 			// all well
 		} else {
-			throw new ContentError("Get string value ("+sn+") mismatch on component ref "+this);
+			throw new ContentError("Mismatched attribute '" + sn + "' on "+this.id+", got '" + ret
+					+ "' but value is '" + att.getValue() + "'"); 
 		}
 		return ret;
 	}
@@ -1029,6 +1094,14 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	}
 
 
+
+	public void setHasInstances() {
+		hasInst = true;
+	}
+
+	public boolean hasInstances() {
+		return hasInst;
+	}
 
 
 

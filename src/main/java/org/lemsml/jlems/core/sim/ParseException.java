@@ -1,18 +1,20 @@
 package org.lemsml.jlems.core.sim;
 
+import java.io.Serializable;
 
-public class ParseException extends LEMSException {
-	private static final long serialVersionUID = 1L;
+public class ParseException extends LEMSException implements Serializable {
 
-	String message;
+    private static final long serialVersionUID = 1L;
 
-	public ParseException(String msg) {
-		super(msg);
-		message = msg;
-	}
+    String message;
 
-	public String toString() {
-		return "ParseException: " + message;
-	}
+    public ParseException(String msg) {
+        super(msg);
+        message = msg;
+    }
+
+    public String toString() {
+        return "ParseException: " + message;
+    }
 
 }

@@ -4,13 +4,18 @@ public class DoublePointer {
 
 	double value;
 	
+	boolean unassigned = false;
+	
 	public DoublePointer(double d) {
 		value = d;
 	}
 
         @Override
         public String toString() {
-            return "DP(" + value+")";
+            String val = value+"";
+            if (val.endsWith(".0"))
+                val = val.substring(0,val.length()-2);
+            return "DP(" + val + ")";
         }
         
 	
@@ -25,5 +30,9 @@ public class DoublePointer {
 	
 	public void set(double d) {
 		value = d;
+	}
+
+	public void setUnassigned() {
+		unassigned = true;
 	}
 }

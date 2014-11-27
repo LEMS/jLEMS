@@ -34,4 +34,8 @@ public abstract class AbstractDOp extends AbstractDVal {
 		}
 		return ret;
 	}
+	
+	public boolean isTrivial() {
+		return false;
+	}
 }

@@ -101,7 +101,7 @@ public class LEMSBuilder implements ILEMSBuilder
 					try
 					{
 						// all the knowledge of how to build a state type should be outside the document
-						StateType stateType = ct.makeStateType(cpt);
+						StateType stateType = ct.makeStateType(cpt, false);
 
 						boolean mflat = options.isOn(LEMSBuildOptionsEnum.FLATTEN);
 

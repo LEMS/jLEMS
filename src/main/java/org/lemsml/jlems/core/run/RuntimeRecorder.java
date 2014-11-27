@@ -34,7 +34,8 @@ public class RuntimeRecorder
 
     public String toString()
     {
-        return "Recorder, " + id + " of " + quantity + " tscale=" + tscale + " yscale=" + yscale + " display=" + display + " color=" + color;
+        return "Recorder, " + id + " of " + quantity + " tscale=" + tscale + " yscale=" + yscale
+            + " display=" + display + " color=" + color;
     }
 
     public String getID()

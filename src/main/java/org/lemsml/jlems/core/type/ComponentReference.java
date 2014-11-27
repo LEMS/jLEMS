@@ -23,8 +23,14 @@ public class ComponentReference implements Named  {
 	
 	public boolean isAny = false;
 
-	private boolean inResolve = false;
 	
+	public boolean local = false;
+	
+	public boolean required = true;
+	
+	public String defaultComponent;
+	
+	private boolean inResolve = false;
 	
 	public ComponentReference() {
 		// maybe only one constructor?
@@ -83,18 +89,42 @@ public class ComponentReference implements Named  {
 
 
 	public ComponentReference makeCopy() {
-		 return new ComponentReference(name, type, r_type);
+		ComponentReference ret = new ComponentReference();
+		ret.name = name;
+		ret.type = type;
+		ret.local = local;
+		ret.required = required;
+		ret.r_type = r_type;
+		if (defaultComponent != null) {
+			ret.defaultComponent= defaultComponent;
 	}
+		return ret; 
+ 	}
 
 
 	public boolean isLocal() {
-		return false;
+		return local;
 	}
 
+
+	public boolean isRequired() {
+		boolean ret = true;
+		if (!required) {
+			ret = false;
+		}
+		return ret;
+	}
 
 	public boolean resolving() {
 		return inResolve;
 	}
+
+
+ 
+
+	public String getDefaultComponent() {
+		return defaultComponent;
+    }
 
 
  

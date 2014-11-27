@@ -26,6 +26,10 @@ public class Times extends AbstractDOp {
 		return "("+ left.toExpression() + " * " + right.toExpression() +")";
 	}
 
-      
+	@Override
+	public String toReversePolishExpression() {
+		return left.toReversePolishExpression() + " " + right.toReversePolishExpression() +" *";
+	}
+
 	
 }
