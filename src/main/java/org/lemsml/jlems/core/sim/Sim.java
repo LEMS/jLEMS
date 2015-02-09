@@ -266,9 +266,11 @@ public class Sim extends LemsProcess {
             }
             nsDone = istep;
         }
-        E.info("Finished " + nsDone + " steps");
         
         simulationEndTime = System.currentTimeMillis();
+        
+        E.info("Finished " + nsDone + " steps "
+                + "in "+((simulationEndTime-simulationStartTime)/1000f)+" seconds (sim duration: "+rc.getRuntime()+"ms; dt: "+dt+"ms)");
     	        
         for (ResultWriter rw : resultWriters) {
     		rw.advance(t);
