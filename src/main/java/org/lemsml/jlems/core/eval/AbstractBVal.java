@@ -9,4 +9,9 @@ public abstract class AbstractBVal {
 	public abstract void recAdd(ArrayList<DVar> val);
 	
 	public abstract AbstractBVal makeCopy();
+	
+	public abstract String toExpression();
+
+	public abstract String toLemsExpression();
+	
 }

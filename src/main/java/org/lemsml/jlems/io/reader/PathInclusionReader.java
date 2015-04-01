@@ -19,7 +19,11 @@ public class PathInclusionReader extends AbstractInclusionReader {
 	}
 
 
-	public String getRelativeContent(String s) throws ContentError {
+	public String getRelativeContent(String attribute, String s) throws ContentError {
+    	if(attribute.equals(URL))
+    	{
+    		throw new IllegalArgumentException("URL is not supported when using the PathInclusionReader!");
+    	}
 		return JUtil.getRelativeResource(root, s);
 	}
 

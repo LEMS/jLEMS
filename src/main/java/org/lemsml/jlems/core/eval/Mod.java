@@ -22,10 +22,13 @@ public class Mod extends AbstractDOp {
 		return Math.round(left.eval()) % Math.round(right.eval());
 	}
 
-        @Override
-        public String toExpression() {
-                return "(" + left.toExpression() + " % " + right.toExpression() + ")";
-        }
+	@Override
+	public String toExpression() {
+		return "(" + left.toExpression() + " % " + right.toExpression() + ")";
+	}
  
-	
+	@Override
+	public String toReversePolishExpression() {
+		return left.toReversePolishExpression() + " " + right.toReversePolishExpression() +" %";
+	}
 }

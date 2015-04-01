@@ -18,5 +18,13 @@ public abstract class AbstractDVal {
 	public abstract boolean variablesIn(HashSet<String> known);
 
 	public abstract String toExpression();
+
+	public abstract String toReversePolishExpression();
+
+	public abstract boolean isTrivial();
+
+	public String getSimpleValueName() {
+		return null;
+	}
 	 
 }

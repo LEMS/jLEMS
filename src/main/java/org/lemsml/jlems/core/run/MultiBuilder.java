@@ -47,6 +47,8 @@ public class MultiBuilder extends AbstractChildBuilder {
 			}
 			par.addListChild(tnm, "", sr);
 			
+			par.setList(tnm);
+			
 //			mi.add(sr);
 		}
 		// par.addMultiInstance(mi);

@@ -1,6 +1,7 @@
 package org.lemsml.jlems.core.sim;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.lemsml.jlems.core.run.RunConfig;
 import org.lemsml.jlems.core.run.RuntimeRecorder;
@@ -8,10 +9,10 @@ import org.lemsml.jlems.core.run.StateType;
 
 public class RunConfigCollector implements StateTypeVisitor {
 
-	ArrayList<RunConfig> runConfigs;
+	List<RunConfig> runConfigs;
 	
-	public RunConfigCollector(ArrayList<RunConfig> al) {
-		runConfigs = al;
+	public RunConfigCollector(List<RunConfig> runConfigs2) {
+		runConfigs = runConfigs2;
 	}
 
 	@Override

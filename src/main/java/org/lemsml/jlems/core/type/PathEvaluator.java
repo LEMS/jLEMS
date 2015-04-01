@@ -76,7 +76,28 @@ public class PathEvaluator {
 	}
 	
 	
+	public String getRelativeStringValue() throws ContentError {
+		String ret = null;
 	
+		Component wk = root;
+		int nup = 0;
+		while (nup < 10) {
+			nup += 1;
+			if (wk.hasStringValue(path)) {
+				ret = wk.getStringValue(path);
+			} else {
+				wk = wk.getParent();
+				if (wk == null) {
+					break;
+				}
+			}
+		}
+	
+ 		if (ret == null) {
+			throw new ContentError("No such String parameter " + path + " relative to " + root);
+		}
+		return ret;
+	}
 	
 	private Component getComponent(String cpatha) throws ContentError {
 		String cpath = cpatha;

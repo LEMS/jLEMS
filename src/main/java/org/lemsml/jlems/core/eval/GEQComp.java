@@ -15,6 +15,15 @@ public class GEQComp extends AbstractBComp {
 		return (left.eval() >= right.eval());
 	}
 	
+	@Override
+	public String toExpression() {
+		return "("+left.toExpression() +" >= "+ right.toExpression() +")";
+    }
+	
+	@Override
+	public String toLemsExpression() {
+		return "(" + left.toExpression() +" .ge. " + right.toExpression() + ")";
+    }
 	
 	
 }

@@ -1,11 +1,11 @@
 package org.lemsml.jlems.test;
   
-import static org.junit.Assert.assertEquals;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-
+import java.util.Arrays;
+import java.util.List;
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.junit.runner.Result;
 import org.lemsml.jlems.core.expression.ParseError;
@@ -34,10 +34,16 @@ public class LemsExamplesReaderTest {
 		
 		URL url = this.getClass().getResource("/");
 		File fdir = new File(url.getFile());
+        
+        List<String> ignores = Arrays.asList("exampleNML_GJ.xml", "exampleTunnelling.xml");
 		
 		for (File fx : fdir.listFiles()) {
 			
-			if (fx.getName().startsWith("example") && fx.isFile()) {
+			if (fx.getName().startsWith("example") 
+                && fx.isFile()
+                && (!ignores.contains(fx.getName()))) {
+                
+				E.info("++++ Checking:" + fx.getName());
  				FileInclusionReader fir = new FileInclusionReader(fx);
 				String fullText = fir.read();
 				
@@ -53,7 +59,7 @@ public class LemsExamplesReaderTest {
 				try {
 					lp2.readModel();
 				} catch (ContentError ex) {
-					E.info("Reread failed for:\n" + sout);
+					E.info("---- Reread failed for:\n" + sout);
 					throw ex;
 				}
 				
@@ -64,7 +70,7 @@ public class LemsExamplesReaderTest {
 				if (sout.equals(sout2)) {
 					E.info("--- Lems Read/write OK for " + fx);
 				} else {
-					E.info("Read/write failure for " + fx.getName());
+					E.info("==== Read/write failure for " + fx.getName());
 					E.info("Exported:  " + XMLElementReader.deSpace(sout));
 					E.info("Reloaded:  " + XMLElementReader.deSpace(sout2));
 					E.info("Reread failed on " + sout);
@@ -75,7 +81,7 @@ public class LemsExamplesReaderTest {
 
                 sim.build();
 
-                E.info("Lems build OK for " + fx);
+                E.info("-- Lems build OK for " + fx);
 
 			}
 		}

@@ -15,16 +15,23 @@ import org.lemsml.jlems.core.sim.ContentError;
 
 public class Flattener {
 
-	ArrayList<String> indepsA = new ArrayList<String>();
-	ArrayList<PathDerivedVariable> pdvA = new ArrayList<PathDerivedVariable>();
-	ArrayList<ExpressionDerivedVariable> edvA = new ArrayList<ExpressionDerivedVariable>();
-	ArrayList<VariableROC> rocA = new ArrayList<VariableROC>();
-	ArrayList<String> svA = new ArrayList<String>();
+	ArrayList<FixedQuantity> fixedA = new ArrayList<FixedQuantity>();
 
+    ArrayList<String> indepsA = new ArrayList<String>();
+	
+    ArrayList<PathDerivedVariable> pdvA = new ArrayList<PathDerivedVariable>();
+	
+    ArrayList<ExpressionDerivedVariable> edvA = new ArrayList<ExpressionDerivedVariable>();
+	
+    ArrayList<VariableROC> rocA = new ArrayList<VariableROC>();
+	
+    ArrayList<String> svA = new ArrayList<String>();
+	
+	
     HashMap<String, String> dimensions = new HashMap<String, String>();
 	
 	ArrayList<VariableAssignment> initializationAssignments = new ArrayList<VariableAssignment>();
-
+	
 	
 	public void addIndependentVariable(String s, String d) throws ContentError {
 		if (indepsA.contains(s)) {
@@ -35,29 +42,28 @@ public class Flattener {
 			if (d == null) {
 				throw new ContentError("Null dimension for independent variable " + s);
 			}
-			
 		}
 	}
 	
 	
 	public void add(PathDerivedVariable pdv) throws ContentError {
  		pdvA.add(pdv);
- //		E.info("added pdv " + pdv);
  		String d = pdv.getDimensionString();
  		dimensions.put(pdv.getVariableName(), d);
  		if (d == null) {
 			throw new ContentError("Null dimension for path derived variable " + pdv);
 		}
+ //		E.info("added pdv " + pdv);
 	}
 
 	public void add(ExpressionDerivedVariable edv) throws ContentError {
 		edvA.add(edv);
-//		E.info("added edv " + edv);
 		String d = edv.getDimensionString();
 		dimensions.put(edv.getVariableName(), d);
 		if (d == null) {
 			throw new ContentError("Null dimension for expression derived variable " + edv);
 		}
+		//		E.info("added edv " + edv);
 	}
 
 	public void add(VariableROC vroc) throws ContentError {
@@ -71,11 +77,11 @@ public class Flattener {
 
 	public void addStateVariable(String sv, String dim) throws ContentError {
 		svA.add(sv);
-//		E.info("Added sv " + sv);
 		if (dim == null) {
 			throw new ContentError("Null dimension for stae variable " + sv);
 		}
 		dimensions.put(sv, dim);
+//		E.info("Added sv " + sv);
 	}
 
 	public void resolvePaths() {
@@ -96,6 +102,9 @@ public class Flattener {
 			known.add(vr.getVariableName());
 		}
 			
+		for (FixedQuantity fq : fixedA) {
+			known.add(fq.getName());
+		}
 		
 		ArrayList<ExpressionDerivedVariable> wksrc = new ArrayList<ExpressionDerivedVariable>();
 		wksrc.addAll(edvA);
@@ -276,7 +285,6 @@ public class Flattener {
 		return ret;
 	}
 	
-	
 
 	public void addInitializationAssignment(VariableAssignment va) {
 		initializationAssignments.add(va);
@@ -285,9 +293,14 @@ public class Flattener {
 	
 	
 	
+	
 
 	public void exportTo(StateType ret) throws ContentError {
 
+		for (FixedQuantity fq : fixedA) {
+			ret.addFixed(fq);
+		}
+		
 		for (String s : indepsA) {
 			ret.addIndependentVariable(s, dimensions.get(s));
 		}
@@ -308,7 +321,6 @@ public class Flattener {
  			ret.addVariableROC(vr);
  		}
 		
-		
 		if (initializationAssignments.size() > 0) {
 			ActionBlock ab = new ActionBlock();
 			for (VariableAssignment va : initializationAssignments) {
@@ -319,7 +331,12 @@ public class Flattener {
 		
 	}
 
-	
+
+	public void addFixed(FixedQuantity fqf) {
+		 fixedA.add(fqf);
+	}
+
+
 	
 	
 	

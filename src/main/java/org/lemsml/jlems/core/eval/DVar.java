@@ -30,7 +30,7 @@ public class DVar extends AbstractDVal {
 		String pnm = "";
 		
 		// E.info("XXX making prefixed copy " + pfx + " of " + varname + " " + stetHS.contains(varname));
-		if (stetHS.contains(varname)) {
+		if (stetHS != null && stetHS.contains(varname)) {
 			pnm = varname;
 		} else {
 			pnm = pfx + varname;
@@ -52,6 +52,11 @@ public class DVar extends AbstractDVal {
             return varname;
     }
  
+    @Override
+    public String toReversePolishExpression() {
+            return varname;
+    }
+    
 	 
 	public void recAdd(ArrayList<DVar> val) {
 		val.add(this);
@@ -59,12 +64,31 @@ public class DVar extends AbstractDVal {
 
 	public void setPtr(HashMap<String, DoublePointer> valptrHM) throws RuntimeError {
 		if (!valptrHM.containsKey(varname)) {
-			throw new RuntimeError("No such variable: " + varname + ".\n Existing variables: " + valptrHM);
+			throw new RuntimeError("No such variable: " + varname + ".\n Existing variables: " + 
+					splitString(valptrHM.toString()));
 		}
 		
 		varval = valptrHM.get(varname).get();
 	}
 
+	
+	private String splitString(String str) {
+		StringBuilder sb = new StringBuilder();
+		String[] bits = str.split(" ");
+		int l = 0;
+		for (String s : bits) {
+			sb.append(s);
+			sb.append(" ");
+			l += s.length();
+			if (l > 80) {
+				l = 0;
+				sb.append("\n");
+			}
+		}
+		return sb.toString();
+	}
+	
+	
 	public void setPtr(HashMap<String, DoublePointer> valptrHM, HashMap<String, DoublePointer> rvHM) {
 		if (valptrHM.containsKey(varname)) {
 			varval = valptrHM.get(varname).get();
@@ -101,6 +125,12 @@ public class DVar extends AbstractDVal {
           return ret;
 	 }
 		
-	 
-	
+	 public boolean isTrivial() {
+		 return true;
+	 }
+
+	 public String getSimpleValueName() {
+		 return varname;
+	 }
+		 
 }

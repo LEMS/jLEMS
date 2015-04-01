@@ -39,6 +39,8 @@ public interface StateRunnable {
 
 	Object getComponentID();
 
+	boolean hasChildInstance(String str) throws ContentError;
+	
 	StateRunnable getChildInstance(String string) throws ContentError;
 
 	ArrayList<StateRunnable> quietGetStateInstances(String path) throws ConnectionError, ContentError, RuntimeError;
@@ -61,7 +63,7 @@ public interface StateRunnable {
 
 	StateRunnable getPathStateInstance(String path) throws ContentError;
 
-	OutPort getFirstOutPort();
+	OutPort getFirstOutPort() throws ConnectionError;
 
 	StateRunnable getParent();
 
@@ -79,7 +81,15 @@ public interface StateRunnable {
 
 	void addAttachment(String destAttachments, StateInstance rsi) throws ConnectionError, ContentError, RuntimeError;
 
+	void addAttachment(StateInstance rsi) throws ConnectionError, ContentError, RuntimeError;
+
 	MultiInstance getSingleMI();
+
+	void setList(String childrenName);
+
+	String getChildSummary();
+
+	boolean isBuilt();
 
 	String getDimensionString(String lastbit) throws ContentError;
 

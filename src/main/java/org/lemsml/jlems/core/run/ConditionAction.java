@@ -46,5 +46,10 @@ public class ConditionAction {
 		return condition.evalptr(varHM);
 	}
 
+
+	public BooleanEvaluator getCondition() {
+		return condition;
+	}
+
 	
 }

@@ -5,14 +5,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
 
+import org.lemsml.jlems.api.interfaces.ILEMSStateType;
 import org.lemsml.jlems.core.eval.DoubleEvaluator;
 import org.lemsml.jlems.core.logging.E;
-import org.lemsml.jlems.core.out.ResultWriter;
+ 
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.sim.StateTypeVisitor;
 import org.lemsml.jlems.core.type.Component;
 
-public class StateType implements RuntimeType {
+@SuppressWarnings("StringConcatenationInsideStringBufferAppend")
+public class StateType implements RuntimeType, ILEMSStateType {
 
 	String cptid;
 	String typeName;
@@ -40,7 +42,7 @@ public class StateType implements RuntimeType {
 	
 	ArrayList<ActionBlock> initBlocks = new ArrayList<ActionBlock>();
 	
-	ArrayList<ConditionAction> conditionResponses = new ArrayList<ConditionAction>();
+	ArrayList<ConditionAction> conditionActions = new ArrayList<ConditionAction>();
 	
 	ArrayList<String> outPorts = new ArrayList<String>();
 
@@ -78,8 +80,10 @@ public class StateType implements RuntimeType {
 	RunConfig runConfig = null;
 	
 	ArrayList<Builder> builders;
-	
 	boolean hasBuilds = false;
+	
+	SubstitutionBuilder substitutionBuilder = null;
+	
 	
 	ArrayList<String> isets;
 	
@@ -131,20 +135,24 @@ public class StateType implements RuntimeType {
 		trackTime = true;
 	}
 	
-	
 	public void startClock() {
-		// not GWT compatible. Should go outside core
-		//	wkTime = System.nanoTime();
+		// not GWT compatible
+		// wkTime = System.nanoTime();
 	}
 	
 	public void stopClock() {
-		// as above
-		//	timeCounter += (System.nanoTime() - wkTime);
+		// timeCounter += (System.nanoTime() - wkTime);
 	}
 	
 	public long getTotalTime() {
 		return timeCounter;
 	}
+	
+	public void setSubstitutionBuilder(SubstitutionBuilder sb) {
+		substitutionBuilder = sb;
+	}
+	
+	
 	
     public ArrayList<VariableROC> getRates() {
         return rates;
@@ -195,6 +203,7 @@ public class StateType implements RuntimeType {
     
     
     
+    @Override
     public StateRunnable newStateRunnable() throws ContentError, ConnectionError, RuntimeError {
     	StateInstance si = newInstance();
     	return si;
@@ -202,7 +211,24 @@ public class StateType implements RuntimeType {
     
     
 	public StateInstance newInstance() throws ContentError, ConnectionError, RuntimeError {
-	 
+		StateInstance ret;
+		//
+		if (substitutionBuilder != null) {
+			ret = substitutionBuilder.buildSubstitute(this);
+			
+		} else {
+			ret = ownNewInstance();
+		}
+		return ret;
+	}
+		
+    private StateInstance ownNewInstance() throws ContentError, ConnectionError, RuntimeError {
+					
+    	
+    	//E.info("Making new instance " + dimensions);
+    	
+    	
+    	
 		StateInstance uin = new StateInstance(this);
 		// E.info("Creating new state instance of " + cptid + " " + typeName);
 		
@@ -313,14 +339,19 @@ public class StateType implements RuntimeType {
 	
 	
 	
-	public void initialize(StateInstance uin, StateRunnable parent, boolean includeDerivedVariables) throws RuntimeError, ContentError {
+	public void initialize(StateInstance uin, StateRunnable parent, boolean includeDerivedVariables, boolean checkNaN) throws RuntimeError, ContentError {
  		HashMap<String, DoublePointer> varHM = uin.getVarHM();
 
-        try {
+        
 		if (indeps != null) {
 			for (String s : indeps) {
-                //E.info("-- Got val of "+parent.getVariable(s)+" for "+s+" in parent "+parent.getID()+" of "+getComponentID());
-				varHM.get(s).set(parent.getVariable(s));
+				double val = parent.getVariable(s);
+				if (Double.isNaN(val) || Double.isInfinite(val)) {
+					throw new RuntimeError("NaN returned for parent.getVarialble() on " + s + " in " + uin);
+					
+				} else {
+					varHM.get(s).set(val);
+				}
 			}
 		}
 
@@ -330,15 +361,25 @@ public class StateType implements RuntimeType {
             	if (!varHM.containsKey(pdv.varname)) {
             		throw new ContentError("No such pd variable " + pdv.varname + " in variables map: " + varHM);
             	}
-                varHM.get(pdv.varname).set(pdv.eval(uin));
+            	double val = pdv.eval(uin);
+                //System.out.println("Checking "+val+" from: "+pdv+", "+uin);
+            	if (checkNaN) {
+                    checkNaN(val, pdv.toString(), null);
+                }
+            	varHM.get(pdv.varname).set(val);
             }
 
             for (ExpressionDerivedVariable edv : exderiveds) {
             	if (!varHM.containsKey(edv.varname)) {
             		throw new ContentError("No such ed variable " + edv.varname + " in variables map: " + varHM);
             	}
-            	
-                varHM.get(edv.varname).set(edv.evalptr(varHM));
+           
+            	double val = edv.evalptr(varHM);
+                //System.out.println("+Checking "+val+" from: ("+edv.getExpressionString()+"), "+varHM);
+                if (checkNaN) {
+                    checkNaN(val, edv.toString(), varHM);
+                }
+                varHM.get(edv.varname).set(val);
             }
         }
 
@@ -352,6 +393,7 @@ public class StateType implements RuntimeType {
         synchronizeExposures(uin);
 		uin.doneInit();
 
+		/*
         } catch (Exception e) {
             String err = "Error when initialising " + this + " " + e;
             E.report(err, e);
@@ -364,26 +406,38 @@ public class StateType implements RuntimeType {
            
             throw new RuntimeError(err, e);
         }
+        */
 
 	}
 	
-	
+ 
+	private void checkNaN(double x, String src, HashMap<String, DoublePointer> vhm) throws RuntimeError {
+		if (Double.isNaN(x) || Double.isInfinite(x)) {
+			String err = "NaN during StateInstance initialization for: " + src;
+			if (vhm != null) {
+					err += "\n";
+				for (String s : vhm.keySet()) {
+					err += "; variable " + s + "=" + vhm.get(s).get() + "\n";
+				}
+			}
+			throw new RuntimeError(err);
+		}
+	}
 	
 	
 	public void applyPathDerived(StateInstance uin) throws ContentError {
 		for (PathDerivedVariable pdv : pathderiveds) {
 			if (pdv.isSimple()) {
-				try {
+				 
 					StateRunnable si = pdv.getTargetState(uin);
-					uin.addPathStateInstance(pdv.getPath(), si);
-				} catch (ContentError ce) {
-					if (pdv.isRequired()) {
-						E.info("Rethrowing ce...");
-						throw ce;
+					if (si != null) {
+						uin.addPathStateInstance(pdv.getPath(), si);
 					} else {
-						E.info("Optional path variable is absent " + pdv);
+						if (pdv.isRequired()) {
+							throw new ContentError("Required path variable is missing: " + pdv);
+						}
 					}
-				}
+			 
 				
 			} else {
 				uin.addPathStateArray(pdv.getPath(), pdv.getTargetArray(uin));
@@ -421,9 +475,8 @@ public class StateType implements RuntimeType {
 	public void eulerAdvance(StateInstance uin, StateRunnable parent, double t, double dt) throws RuntimeError, ContentError {
  		HashMap<String, DoublePointer> varHM = uin.getVarHM();
 		varHM.get("t").set(t);
-			
-		evalDerived(uin, varHM, parent);
 		
+		evalDerived(uin, varHM, parent);
 		
 		for (VariableROC vroc : rates) {
 			vroc.work = vroc.evalptr(varHM);
@@ -433,7 +486,7 @@ public class StateType implements RuntimeType {
 			varHM.get(vroc.varname).set(varHM.get(vroc.varname).get() + dt * vroc.work);
 		}
 	 
-		for (ConditionAction ca : conditionResponses) {
+		for (ConditionAction ca : conditionActions) {
 			Boolean b = ca.evalptr(varHM);
 			if (b) {
 				ca.getAction().run(uin);
@@ -456,8 +509,9 @@ public class StateType implements RuntimeType {
 	// created by by getConsolidatedComponentDynamics, which generally 
 	// absorbs some or all of the child objects within a new dynamics definition.
 	public void rk4Advance(StateInstance uin, StateRunnable parent, double t, double dt) throws RuntimeError, ContentError {
-			
+		
 		HashMap<String, DoublePointer> varHM = uin.getVarHM();
+		
 		varHM.get("t").set(t);
 		
 		if (der1 == null) {
@@ -500,13 +554,15 @@ public class StateType implements RuntimeType {
 		
 	    evalDerivs(val1,  t,   der1);
 	    
-	    applyDerivs(val1, der1, t, 0.5 * dt, val2);
-	    evalDerivs(val2,  t + 0.5 * dt, der2);
+	    double hdt = 0.5 * dt;
 	    
-	    applyDerivs(val1, der2, t, 0.5 * dt, val3);
-	    evalDerivs(val3, t + 0.5 * dt,  der3);
+	    applyDerivs(val1, der1, hdt, val2);
+	    evalDerivs(val2,  t + hdt, der2);
 	    
-	    applyDerivs(val1, der3, t, dt, val4);
+	    applyDerivs(val1, der2, hdt, val3);
+	    evalDerivs(val3, t + hdt,  der3);
+	    
+	    applyDerivs(val1, der3, dt, val4);
 	    evalDerivs(val4,  t + dt, der4);
 		  
 	   
@@ -518,8 +574,30 @@ public class StateType implements RuntimeType {
 	    	varHM.get(sn).set(v0 + dt * d);
 	    }
 	    
+	   /* 
+	    StringBuilder sb = new StringBuilder();
+	    sb.append(" " + t + " ");
+	   
+	    sb.append(der1.get("S3") + ", " + der2.get("S3") + ", " + der3.get("S3") + ", " + der4.get("S3"));
+	    sb.append(val1.get("S3") + ", " + val2.get("S3") + ", " + val3.get("S3") + ", " + val4.get("S3"));
+	    
+	    
+	    for (VariableROC vroc : rates) {
+	    	String sn = vroc.varname;
+	    	// double d = (der1.get(sn) + 2 * der2.get(sn) + 2 * der3.get(sn) + der4.get(sn)) / 6.;
+	    	double d = der3.get(sn);
+	    //	sb.append(" " + sn + "=" + d + ", ");
+	    }
+	    for (String s : val1.keySet()) {
+	    	// sb.append(" " + s + "=" + val1.get(s));
+	    }
+	    
+	    System.out.println(sb.toString());
+	    */
+	    
+	    
 		
-		for (ConditionAction ca : conditionResponses) {
+		for (ConditionAction ca : conditionActions) {
 			Boolean b = ca.evalptr(varHM);
 			if (b) {
 				ca.getAction().run(uin);
@@ -551,7 +629,7 @@ public class StateType implements RuntimeType {
 	
 	
 	void applyDerivs(HashMap<String, Double> v0, HashMap<String, Double> der, 
-			double t, double delta, HashMap<String, Double> ret) {
+			 double delta, HashMap<String, Double> ret) {
 		
 		for (String sk : v0.keySet()) {
 			ret.put(sk, v0.get(sk));
@@ -566,6 +644,8 @@ public class StateType implements RuntimeType {
 	
 
 	
+	
+	// TODO move this to StateInstance and make exp and var private there
     private void synchronizeExposures(StateInstance uin) throws ContentError {
  		HashMap<String, DoublePointer> varHM = uin.getVarHM();
 		HashMap<String, DoublePointer> expHM = uin.getExpHM();
@@ -584,7 +664,8 @@ public class StateType implements RuntimeType {
 		}
 	
 	}
-
+ 
+    
 
 	public void addExpressionDerived(String snm, DoubleEvaluator db, String dim) {
 		ExpressionDerivedVariable edv = new ExpressionDerivedVariable(snm, db, dim);
@@ -605,10 +686,14 @@ public class StateType implements RuntimeType {
 		fixeds.add(new FixedQuantity(snm, d));
 	}
 	
+	public void addFixed(FixedQuantity fq) {
+		fixeds.add(fq);
+	}
+	
 	
 	public void addIndependentVariable(String vnm, String dim) {
 		if (indeps.contains(vnm)) {
-			E.warning("Added the an independent variable again? " + vnm + " " + this);
+			E.warning("Added an independent variable again? " + vnm + " " + this);
 		} else {
 			indeps.add(vnm);
 			dimensions.put(vnm, dim);
@@ -628,15 +713,35 @@ public class StateType implements RuntimeType {
 	}
 	 
 	
+	public ArrayList<EventAction> getEventActions() {
+		ArrayList<EventAction> ret = new ArrayList<EventAction>();
+		for (String s : eventHM.keySet()) {
+			ActionBlock ab = eventHM.get(s);
+			if (ab != null) {
+				EventAction ea = new EventAction(s, ab);
+				ret.add(ea);
+			}
+		}
+		return ret;
+	}
+	
+	
+	
 	public void addConditionResponse(ConditionAction cr) {
-		conditionResponses.add(cr);
-	 	
+		conditionActions.add(cr);	 	
 	}
 
+	
+	public ArrayList<ConditionAction> getConditionActions() {
+		return conditionActions;
+	}
+	
+	
 	public void addInitialization(ActionBlock ab) {
 		initBlocks.add(ab);
 	}
 
+	
 	public ArrayList<ActionBlock> getInitBlocks() {
 		return initBlocks;
      }
@@ -645,7 +750,7 @@ public class StateType implements RuntimeType {
 	
 	
 	
-	public void fix() {
+	public void fix() {		
 		HashSet<String> vHS = new HashSet<String>();
 		for (VariableROC vroc : rates) {
 			String vnm = vroc.getVariableName();
@@ -682,7 +787,7 @@ public class StateType implements RuntimeType {
 				ea.addPortsTo(outPorts);
 			}  
 		}
-		for (ConditionAction cr : conditionResponses) {
+		for (ConditionAction cr : conditionActions) {
 			ActionBlock ea = cr.getAction();
 			ea.addVarsTo(vars);
 			ea.addPortsTo(outPorts);
@@ -755,11 +860,17 @@ public class StateType implements RuntimeType {
 	}
 
 	public void addBuilder(Builder b) {
-		if (builders == null) {
-			builders = new ArrayList<Builder>();
+		
+		if (b.isSubstitutionBuilder()) {
+			substitutionBuilder = b.getSubstitutionBuilder();
+ 			
+		} else {
+			if (builders == null) {
+				builders = new ArrayList<Builder>();
+			}
+			builders.add(b);
+			hasBuilds = true;
 		}
-		builders.add(b);
-		hasBuilds = true;
 	}
 
  
@@ -979,6 +1090,13 @@ public class StateType implements RuntimeType {
 		HashSet<String> indHS = new HashSet<String>();
 		indHS.addAll(indeps);
 		
+		for (FixedQuantity fq : fixeds) {
+			FixedQuantity fqf = 
+			 new FixedQuantity(fullpfx + fq.getName(), fq.getValue());
+			fl.addFixed(fqf);
+		}
+		
+		
 		for (String s : indeps) {
 			fl.addIndependentVariable(s, dimensions.get(s));
 		}
@@ -996,13 +1114,11 @@ public class StateType implements RuntimeType {
 			fl.add(vroc.makeFlat(fullpfx, indHS));
 		}
 		
-		
 		for (ActionBlock ab : initBlocks) {
 			for (VariableAssignment va : ab.getAssignments()) {
 				fl.addInitializationAssignment(va.makeFlat(fullpfx));
 			}
 		}
-		
 	}
 	
 	
@@ -1149,7 +1265,7 @@ public class StateType implements RuntimeType {
 		
 		ret.addInPorts(inPorts);
 		
-		for (ConditionAction ca : conditionResponses) {
+		for (ConditionAction ca : conditionActions) {
 			ret.addConditionResponse(ca.makeCopy());
 		}
 		
@@ -1225,21 +1341,12 @@ public class StateType implements RuntimeType {
 	public ArrayList<RuntimeOutput> getRuntimeOutputs() {
 		return runtimeOutputs;
 	}
-
-	public String getDimensionString(String fld) throws ContentError {
-		String ret = null;
-		if (dimensions.containsKey(fld)) {
-			ret = dimensions.get(fld);
-		} else {
-			throw new ContentError("No dimension for " + fld + " in " + this);
-		}
-		return ret;
-	}
 	
 	public ArrayList<RuntimeRecorder> getRuntimeRecorders() {
 		return runtimeRecorders;
 	}
 
+    @Override
 	public String getID() {
 		return cptid;
 	}
@@ -1257,4 +1364,185 @@ public class StateType implements RuntimeType {
 		
 		 return allReq;
 	}
+	
+	
+	public void removeRedundantExpressions() {
+		// flattening can produce expressions of the form 
+		// a = (...)
+		// b = a
+		// c = (... b ...)
+		// here we identify expressions of the form b = a, remove them from the 
+		// list and substitute a for b in the rest
+		
+		int norig = exderiveds.size();
+		
+	 	HashMap<String, String> subs = new HashMap<String, String>();
+		ArrayList<ExpressionDerivedVariable> toKeep = new ArrayList<ExpressionDerivedVariable>();
+		for (ExpressionDerivedVariable edv : exderiveds) {
+			if (edv.isTrivial()) {
+				String sv = edv.getVariableName();
+				String ss = edv.getSimpleValueName();
+				subs.put(sv, ss);
+				E.info("Removing " + sv + " and just using " + ss);
+			} else {
+				toKeep.add(edv);
+			}
+		}
+		for (ExpressionDerivedVariable edv : toKeep) {
+			for (String s: subs.keySet()) {
+				edv.substituteVariableWith(s, subs.get(s));
+			}
+		}
+		
+		for (VariableROC vroc : rates) {
+			for (String s: subs.keySet()) {
+				vroc.substituteVariableWith(s, subs.get(s));
+			}
+		}
+		
+		int nkept = toKeep.size();
+		if (norig == nkept) {
+			E.info("No redundant expressions removed");
+		} else {
+			E.info("" + (norig - nkept) + " redundant expressions removed. " + nkept + " expressions remaining");
+		}
+		exderiveds = toKeep;
+		
+	}
+	
+	
+	
+	public void sortExpressions() {
+		ArrayList<ExpressionDerivedVariable> orderedEDVs= new ArrayList<ExpressionDerivedVariable>();
+		HashSet<String> known = new HashSet<String>();
+
+		known.addAll(indeps);
+		known.addAll(vars);
+		
+		
+		for (VariableROC vr : rates) {
+			known.add(vr.getVariableName());
+		}
+			
+		for (FixedQuantity fq : fixeds) {
+			known.add(fq.getName());
+		}
+		
+		ArrayList<ExpressionDerivedVariable> wksrc = new ArrayList<ExpressionDerivedVariable>();
+		wksrc.addAll(exderiveds);
+		
+		int nadded = 1;
+		while (nadded > 0) {
+			nadded = 0;
+			
+			ArrayList<ExpressionDerivedVariable> justAdded = new ArrayList<ExpressionDerivedVariable>();
+			for (ExpressionDerivedVariable edv : wksrc) {
+				if (edv.onlyDependsOn(known)) {
+					justAdded.add(edv);
+					orderedEDVs.add(edv);
+					known.add(edv.getVariableName());
+					nadded += 1;
+				}
+			}
+			// E.info("sort cycle nadded=" + nadded);
+			wksrc.removeAll(justAdded);
+		}
+		
+		if (orderedEDVs.size() == exderiveds.size()) {
+			// OK - added them all;
+		} else {
+			E.error("Not added all expressions while sorting? " +
+					"total=" + exderiveds.size() + " added=" + orderedEDVs.size());
+			E.info("Known are " + known);
+			for (ExpressionDerivedVariable edv : wksrc) {
+				E.info("   not added " + edv.getExpressionString());
+			}
+		}
+		exderiveds = orderedEDVs;	
+	}
+
+	public String getSummary() {
+        return getSummary("", "");
+    }
+    
+	public String getSummary(String indent, String prefix) {
+		StringBuilder info = new StringBuilder();
+        String pre = indent + prefix + " ";
+        String line = "+-------------------------------------------------";
+        for (int i=0; i + indent.length()<40; i++)
+            line = line +'-';
+        info.append(indent + line);
+        //info.append("    >>> i: ["+indent+"]  pref: ["+prefix+"]  p: ["+pre+"]");
+        info.append("\n");
+        
+		info.append(pre+"StateType: " + getID() +" (" + getTypeName()+ ")\n");
+		info.append(pre+"  Variables:      " + vars+"\n");
+		
+        if (indeps.size()>0) {
+            info.append(pre+"  Indeps:         " + indeps + "\n");
+        }
+		
+        
+        if (pathderiveds.size()>0) {
+            for (PathDerivedVariable pd : pathderiveds) {
+                info.append(pre+"  Path derived:   "+pd.getVariableName() + " = "+ pd.getPath()+""+ "\n");
+            }
+        }
+		
+        if (exderiveds.size()>0) {
+            for (ExpressionDerivedVariable edv : exderiveds) {
+                info.append(pre+"  Expr derived:   "+edv.getVariableName() + " = "+ edv.getExpressionString()+""+ "\n");
+            }
+        }
+        if (rates.size()>0) {
+            for (VariableROC vroc: rates) {
+                info.append(pre+"  Rate of change: "+vroc.getVariableName() + "' = "+ vroc.getTextExpression()+""+ "\n");
+            }
+        }
+        
+        for (String s: childHM.keySet()) {
+            StateType st = childHM.get(s);
+            info.append(pre+"  (Child): "+s+":\n");
+            info.append(st.getSummary(indent+prefix+"   ", prefix)+"\n");
+        }
+        
+        for (String s: multiHM.keySet()) {
+            MultiStateType mst = multiHM.get(s);
+            info.append(pre+"  (Multi) "+s+":\n");
+            for(StateType st: mst.getCBs()) {
+                info.append(st.getSummary(indent+prefix+"   ", prefix)+"\n");
+            }
+        }
+        
+        for (String s: refHM.keySet()) {
+            StateType st = refHM.get(s);
+            info.append(pre+"  (Reference) "+s+":\n");
+            info.append(st.getSummary(indent+prefix+"   ", prefix)+"\n");
+        }
+        
+        info.append(""+indent + line);
+		return info.toString();
+	}
+
+	public String getDimensionString(String fld) throws ContentError {
+		String ret = null;
+		if (dimensions.containsKey(fld)) {
+			ret = dimensions.get(fld);
+		} else {
+			throw new ContentError("No dimension for " + fld + " in " + this);
+		}
+		return ret;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
