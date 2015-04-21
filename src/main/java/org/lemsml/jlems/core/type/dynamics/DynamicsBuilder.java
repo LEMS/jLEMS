@@ -3,6 +3,7 @@ package org.lemsml.jlems.core.type.dynamics;
 import java.util.HashMap;
 
 import org.lemsml.jlems.core.type.Dimension;
+import org.lemsml.jlems.core.type.LemsCollection;
 
 public class DynamicsBuilder {
 	
@@ -12,6 +13,7 @@ public class DynamicsBuilder {
 	
 	HashMap<String, StateVariable> varHM = new HashMap<String, StateVariable>();
 	HashMap<String, DerivedVariable> dvHM = new HashMap<String, DerivedVariable>();
+	HashMap<String, ConditionalDerivedVariable> cdvHM = new HashMap<String, ConditionalDerivedVariable>();
 	
 	public DynamicsBuilder() {
 		target = new Dynamics();
@@ -57,9 +59,27 @@ public class DynamicsBuilder {
 		target.addDerivedVariable(dv);
 		
 	}
+	
+	public void addConditionalDerivedVariable(String newDvName, Dimension dimension, LemsCollection<Case> val)
+	{
+		ConditionalDerivedVariable cdv = new ConditionalDerivedVariable();
+		cdv.setName(newDvName);
+		if (dimension == null) {
+			cdv.setDimension("none");
+		} else {
+			cdv.setDimension(dimension.getName());
+		}
+		cdv.cases = val;
+		cdvHM.put(newDvName, cdv);
+		target.addConditionalDerivedVariable(cdv);
+	}
 
 	public void setDerivedVariableExposure(String newDvName, String s) {
 		dvHM.get(newDvName).setExposure(s);
+	}
+	
+	public void setConditionalDerivedVariableExposure(String newDvName, String s) {
+		cdvHM.get(newDvName).setExposure(s);
 	}
 
 	public void addTimeDerivative(String varnm, String val) {

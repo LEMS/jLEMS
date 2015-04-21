@@ -452,6 +452,10 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		return finalParams;
 	}
 
+	public LemsCollection<FinalExposed> getFinalExposures() {
+		return finalExposeds;
+	}
+
 	public LemsCollection<InstanceProperty> getInstancePropertys() {
 		return instancePropertys;
 	}
