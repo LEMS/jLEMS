@@ -2,12 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.lemsml.jlems.examples;
 
 import java.io.File;
 import java.io.IOException;
-
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.flatten.ComponentFlattener;
 import org.lemsml.jlems.core.logging.E;
@@ -23,89 +21,76 @@ import org.lemsml.jlems.core.type.Lems;
 import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.logging.DefaultLogger;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
+import org.lemsml.jlems.io.xmlio.XMLSerializer;
 import org.lemsml.jlems.viz.datadisplay.SwingDataViewerFactory;
 
- 
-public class Example1FlatComponent {
+public class Example1FlatComponent
+{
 
-   
-    
-	 
-    public static void main(String[] args) throws ContentError, ParseError, ConnectionError, RuntimeError, IOException, ParseException, BuildException, XMLException {
-    	DefaultLogger.initialize();
-    	SwingDataViewerFactory.initialize();
-    	
-     
-    		Example1FlatComponent cft = new Example1FlatComponent();
-    		cft.runExample1();
-    		
-     
+    public static void main(String[] args) throws ContentError, ParseError, ConnectionError, RuntimeError, IOException, ParseException, BuildException, XMLException
+    {
+        DefaultLogger.initialize();
+        SwingDataViewerFactory.initialize();
+
+        Example1FlatComponent cft = new Example1FlatComponent();
+        cft.runExample8();
+
+    }
+
+    public void runExample1() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException
+    {
+        File f1 = new File("src/test/resources/example1.xml");
+        flattenFromFile(f1, "na");
     }
     
-  
-    public void runExample1() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException {
-     
-    	File f1 = new File("examples/example1.xml");
- 		flattenFromFile(f1, "na");
+    public void runExample8() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException
+    {
+
+        File f1 = new File("src/test/resources/example8.xml");
+        flattenFromFile(f1, "multiregime");
     }
-    
-    
-    
+
     public void flattenFromFile(File f, String tgtid) throws ContentError,
-    		ConnectionError, ParseError, IOException, RuntimeError, ParseException, 
-    		BuildException, XMLException {
-    	E.info("Loading LEMS file from: " + f.getAbsolutePath());
+            ConnectionError, ParseError, IOException, RuntimeError, ParseException,
+            BuildException, XMLException
+    {
+        E.info("Loading LEMS file from: " + f.getAbsolutePath());
 
         FileInclusionReader fir = new FileInclusionReader(f);
         Sim sim = new Sim(fir.read());
 
         sim.readModel();
-     
+
         sim.build();
 
         //sim.run();
-
         Lems lems = sim.getLems();
         Component cpt = lems.getComponent(tgtid);
+        
+        String origOut = XMLSerializer.serialize(cpt.getComponentType());
+        E.info("Orig type: \n" + origOut);
 
         ComponentFlattener cf = new ComponentFlattener(lems, cpt);
 
         ComponentType ct = cf.getFlatType();
         Component cp = cf.getFlatComponent();
-        
-        // String typeOut = XMLSerializer.serialize(ct);
-        // String cptOut = XMLSerializer.serialize(cp);
-        
-     
-        // E.info("Flat type: \n" + typeOut);
-        // E.info("Flat cpt: \n" + cptOut);
-        
-		lems.addComponentType(ct);
-		lems.addComponent(cp);
-	
-		lems.resolve(ct);
-		lems.resolve(cp);
-	
-		
+
+        String typeOut = XMLSerializer.serialize(ct);
+        String cptOut = XMLSerializer.serialize(cp);
+        E.info("Flat type: \n" + typeOut);
+        E.info("Flat cpt: \n" + cptOut);
+        lems.addComponentType(ct);
+        lems.addComponent(cp);
+
+        lems.resolve(ct);
+        lems.resolve(cp);
+
 	//	lems.replaceComponent(cpt, cp);
-		
-		
-		sim.build();
-		
-		E.info("running simulation...");
-		sim.run();
-		E.info("Done");
+        sim.build();
+
+        E.info("running simulation...");
+        sim.run();
+        E.info("Done");
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
 }

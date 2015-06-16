@@ -82,5 +82,9 @@ public class DerivedParameter implements Named {
         this.value = value;
     }
     
+    public void setDimension(Dimension dim) {
+        this.r_dimension = dim;
+    }
+    
     
 }
