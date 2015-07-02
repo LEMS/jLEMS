@@ -26,6 +26,8 @@ public class StateType implements RuntimeType {
 	
 	ArrayList<FixedQuantity> fixeds = new ArrayList<FixedQuantity>();
 	
+	HashMap<String, BuildDistribution> distMap = new HashMap<String, BuildDistribution>();
+	
 	ArrayList<PathDerivedVariable> pathderiveds = new ArrayList<PathDerivedVariable>();
 	
 	ArrayList<ExpressionDerivedVariable> exderiveds = new ArrayList<ExpressionDerivedVariable>();
@@ -216,6 +218,13 @@ public class StateType implements RuntimeType {
 		
 		uin.setExpressionDerived(exderiveds);
 
+		
+		for (String s : distMap.keySet()) {
+			BuildDistribution bd = distMap.get(s);
+			uin.setFixed(s, bd.getSample());
+		}
+		
+		
 		for (String s : eventHM.keySet()) {
 			uin.addInputPort(s, eventHM.get(s));
 		}
@@ -603,6 +612,10 @@ public class StateType implements RuntimeType {
 	
 	public void addFixed(String snm, double d) {
 		fixeds.add(new FixedQuantity(snm, d));
+	}
+	
+	public void addSampled(String snm, BuildDistribution d) {
+		distMap.put(snm, d);
 	}
 	
 	

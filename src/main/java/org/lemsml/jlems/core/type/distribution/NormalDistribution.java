@@ -1,6 +1,8 @@
 package org.lemsml.jlems.core.type.distribution;
 
 import org.lemsml.jlems.core.expression.ParseError;
+import org.lemsml.jlems.core.run.BuildDistribution;
+import org.lemsml.jlems.core.run.BuildNormalDistribution;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.Dimension;
 import org.lemsml.jlems.core.type.DimensionalQuantity;
@@ -30,6 +32,12 @@ public class NormalDistribution extends Distribution {
 		} else {
 			throw new ContentError("Mismatched dimensions on normal distribution mean=" + mean + ", sd=" + sd);
 		}
+	}
+
+
+	@Override
+	public BuildDistribution makeBuildDistribution() {
+		 return new BuildNormalDistribution(p_mean, p_sd);
 	}
 
 

@@ -577,7 +577,11 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		HashMap<String, Double> valHM = new HashMap<String, Double>();
 
 		for (ParamValue pv : paramValues) {
-			valHM.put(pv.getName(), pv.getDoubleValue());
+			if (pv.fromDistribution) {
+				// not a static value - comes in later when we create instances
+			} else {
+				valHM.put(pv.getName(), pv.getDoubleValue());
+			}
 		}
 
 		for (FinalParam fp : r_type.getFinalParams()) {

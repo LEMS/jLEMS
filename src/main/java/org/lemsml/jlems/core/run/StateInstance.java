@@ -328,6 +328,10 @@ public class StateInstance implements StateRunnable {
 			varHM.put(fq.getName(), new DoublePointer(fq.getValue()));
 		}
 	}
+	
+	public void setFixed(String nm, double d) {
+		varHM.put(nm, new DoublePointer(d));
+	}
 
 	public HashMap<String, DoublePointer> getVarHM() {
 		return varHM;

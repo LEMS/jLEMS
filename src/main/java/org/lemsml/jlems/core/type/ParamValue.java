@@ -135,6 +135,10 @@ public class ParamValue implements Named {
 		value = v;
 	}
 
+	public Distribution getDistribution() {
+		return distribution;
+	}
+
 	
 	
 	

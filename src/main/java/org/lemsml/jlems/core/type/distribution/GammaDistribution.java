@@ -1,6 +1,8 @@
 package org.lemsml.jlems.core.type.distribution;
 
 import org.lemsml.jlems.core.expression.ParseError;
+import org.lemsml.jlems.core.run.BuildDistribution;
+import org.lemsml.jlems.core.run.BuildGammaDistribution;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.Dimension;
 import org.lemsml.jlems.core.type.DimensionalQuantity;
@@ -24,5 +26,11 @@ public class GammaDistribution extends Distribution {
 		r_dimension = dq.getDimension();
 		p_mean = dq.getDoubleValue();
 		p_shape = Double.parseDouble(shape);
+	}
+
+
+	@Override
+	public BuildDistribution makeBuildDistribution() {
+		return new BuildGammaDistribution(p_mean, p_shape);
 	}
 }

@@ -877,7 +877,12 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		}
 		
 		for (ParamValue pv : cpt.getParamValues()) {
-			fixedHM.put(pv.getName(), pv.getDoubleValue());
+			if (pv.fromDistribution) {
+				
+				
+			} else {
+				fixedHM.put(pv.getName(), pv.getDoubleValue());
+			}
 		}
 
 		StateType ret = null;
@@ -889,11 +894,20 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		} else {
  			ret = new StateType(cpt.getID(), getName());
 			for (ParamValue pv : cpt.getParamValues()) {
-				 String qn = pv.getName();
-				 double qv = pv.getDoubleValue();
-				 ret.addFixed(qn, qv);
+				if (pv.fromDistribution) {
+					String qn = pv.getName();
+					double qv = pv.getDoubleValue();
+					ret.addFixed(qn, qv);
+				}
 			}
 
+		}
+		
+		for (ParamValue pv : cpt.getParamValues()) {
+			if (pv.fromDistribution) {
+				String qn = pv.getName();
+				ret.addSampled(qn, pv.getDistribution().makeBuildDistribution());
+			}
 		}
 		
 		if (structures.size() > 0) {

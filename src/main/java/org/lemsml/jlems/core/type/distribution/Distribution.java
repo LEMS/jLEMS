@@ -1,6 +1,7 @@
 package org.lemsml.jlems.core.type.distribution;
 
 import org.lemsml.jlems.core.expression.ParseError;
+import org.lemsml.jlems.core.run.BuildDistribution;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.Dimension;
 import org.lemsml.jlems.core.type.LemsCollection;
@@ -20,6 +21,10 @@ public abstract class Distribution {
 		}
 		return ret;
 	}
+
+
+	public abstract BuildDistribution makeBuildDistribution();
+	 
 	 
 
 }
