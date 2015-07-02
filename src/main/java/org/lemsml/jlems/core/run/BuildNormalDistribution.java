@@ -14,9 +14,16 @@ public class BuildNormalDistribution extends BuildDistribution {
 
 	@Override
 	public double getSample() {
-		E.missing("Need to sample normal");
-		return mean;
+		
+		double ret = mean + sd * RunRandom.getInstance().nextGaussian();
+		
+		E.info("Sample from normal returning " + ret + " mean=" + mean + " sd=" + sd);
+		
+		return ret;
 	}
+	
+	
+	
 	
 	
 }
