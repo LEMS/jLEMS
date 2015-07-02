@@ -1,7 +1,7 @@
 package org.lemsml.jlems.io.reader;
  
 import java.util.ArrayList;
- 
+
 import org.lemsml.jlems.core.type.About;
 import org.lemsml.jlems.core.type.Assertion;
 import org.lemsml.jlems.core.type.Attachments;
@@ -33,6 +33,9 @@ import org.lemsml.jlems.core.type.Requirement;
 import org.lemsml.jlems.core.type.Target;
 import org.lemsml.jlems.core.type.Text;
 import org.lemsml.jlems.core.type.Unit;
+import org.lemsml.jlems.core.type.distribution.GammaDistribution;
+import org.lemsml.jlems.core.type.distribution.NormalDistribution;
+import org.lemsml.jlems.core.type.distribution.Sample;
 import org.lemsml.jlems.core.type.dynamics.Case;
 import org.lemsml.jlems.core.type.dynamics.ConditionalDerivedVariable;
 import org.lemsml.jlems.core.type.dynamics.DerivedPunctateField;
@@ -134,6 +137,10 @@ public final class LemsClasses {
 		ret.add(new LemsClass(Assertion.class, section));
 		ret.add(new LemsClass(Component.class, section));
 		
+		section = "distributions";
+		ret.add(new LemsClass(Sample.class, section));
+		ret.add(new LemsClass(NormalDistribution.class, section));
+		ret.add(new LemsClass(GammaDistribution.class, section));
 		return ret;
 	}
 	

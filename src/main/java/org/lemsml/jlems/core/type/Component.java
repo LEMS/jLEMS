@@ -10,6 +10,8 @@ import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.RuntimeType;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
+import org.lemsml.jlems.core.type.distribution.Distribution;
+import org.lemsml.jlems.core.type.distribution.Sample;
 import org.lemsml.jlems.core.xml.XMLAttribute;
 import org.lemsml.jlems.core.xml.XMLElement;
 
@@ -56,6 +58,12 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 			"tools can use the getMeta(context) method to retrieve elements that match a particular context.")
 	public LemsCollection<Meta> metas = new LemsCollection<Meta>();
 	 
+	
+	@ModelProperty(info="Samples can be used in place of parameters to speicfy that values for each component "
+			+ "should be taken from a random distribution")
+	public LemsCollection<Sample> samples = new LemsCollection<Sample>();
+	
+	
 	public double xPosition;
 	public double yPosition;
 	
@@ -247,6 +255,16 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		}
 		
 		
+		HashMap<String, Distribution> samplesMap = new HashMap<String, Distribution>();
+		for (Sample s : samples) {
+			if (s.getDistribution() == null) {
+				throw new ContentError("No distribution specified in sample for " + s.getParameterName() + " in " + this);
+			} else {
+				samplesMap.put(s.getParameterName(), s.getDistribution());
+			}
+		}
+		
+		
 		for (Attribute att : attributes) {
 			att.clearFlag();
 		}
@@ -351,7 +369,12 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 				}
 			}
 
-			if (attributes.hasName(pvn)) {
+			
+			if (samplesMap.containsKey(pvn)) {
+				pv.setDistribution(samplesMap.get(pvn), lems.getUnits());
+				
+				
+			} else if (attributes.hasName(pvn)) {
 				Attribute att = attributes.getByName(pvn);
 				atval = att.getValue();
 				att.setFlag();

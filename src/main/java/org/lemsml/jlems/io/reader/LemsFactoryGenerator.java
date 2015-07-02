@@ -21,17 +21,18 @@ public class LemsFactoryGenerator {
 		
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append("package org.lemsml.jlems.reader;\n\n");
-		sb.append("import org.lemsml.jlems.type.*;\n");
-		sb.append("import org.lemsml.jlems.type.dynamics.*;\n");
-		sb.append("import org.lemsml.jlems.type.structure.*;\n");
-		sb.append("import org.lemsml.jlems.type.simulation.*;\n\n");
-		sb.append("import org.lemsml.jlems.type.procedure.*;\n\n");
-		sb.append("import org.lemsml.jlems.type.geometry.*;\n\n");
+		sb.append("package org.lemsml.jlems.core.reader;\n\n");
+		sb.append("import org.lemsml.jlems.core.type.*;\n");
+		sb.append("import org.lemsml.jlems.core.type.dynamics.*;\n");
+		sb.append("import org.lemsml.jlems.core.type.structure.*;\n");
+		sb.append("import org.lemsml.jlems.core.type.simulation.*;\n\n");
+		sb.append("import org.lemsml.jlems.core.type.procedure.*;\n\n");
+		sb.append("import org.lemsml.jlems.core.type.geometry.*;\n\n");
+		sb.append("import org.lemsml.jlems.core.type.distribution.*;\n\n");
 		
-		sb.append("import org.lemsml.jlems.xml.XMLElement;\n");
-		sb.append("import org.lemsml.jlems.xml.XMLAttribute;\n");
-		sb.append("import org.lemsml.jlems.logging.E;\n");
+		sb.append("import org.lemsml.jlems.core.xml.XMLElement;\n");
+		sb.append("import org.lemsml.jlems.core.xml.XMLAttribute;\n");
+		sb.append("import org.lemsml.jlems.core.logging.E;\n");
 		
 		sb.append("// NB this is generated code. Don't edit it. If there is a problem, fix the superclass,\n");
 		sb.append("// the generator - org.jlems.jlemsio.LemsFactoryGenerator, or the class being instantiated.\n\n");
@@ -194,7 +195,7 @@ public class LemsFactoryGenerator {
 		
 		String txt = lfg.generateJava();
  		
-		File f = new File("src/org/lemsml/jlems/reader/LemsFactory.java");
+		File f = new File("src/main/java/org/lemsml/jlems/core/reader/LemsFactory.java");
 	 
 			FileUtil.writeStringToFile(txt, f);
 			E.info("Written " + f.getAbsolutePath());

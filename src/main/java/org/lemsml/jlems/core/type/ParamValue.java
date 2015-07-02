@@ -4,6 +4,7 @@ package org.lemsml.jlems.core.type;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
+import org.lemsml.jlems.core.type.distribution.Distribution;
 
 
 public class ParamValue implements Named {
@@ -12,6 +13,10 @@ public class ParamValue implements Named {
 
 	public double value;
 
+	public boolean fromDistribution = false;
+	
+	public Distribution distribution;
+	
 	
 	
 	public ParamValue(FinalParam dp) {
@@ -45,6 +50,7 @@ public class ParamValue implements Named {
 	}
 
 	public void setValue(String atval, LemsCollection<Unit> units) throws ContentError, ParseError {
+	 
 		
 		DimensionalQuantity dq = QuantityReader.parseValue(atval, units);
 		Dimension dtgt = r_finalParam.getDimension();
@@ -61,9 +67,33 @@ public class ParamValue implements Named {
 		} else {			
 			throw new ContentError("Can't set parameter: "+getName()+" with dimensions " + r_finalParam.getDimension() + " with string " + atval + ", " + dq);
 		}
-		
-		
 	}
+	
+	public void setDistribution(Distribution distrib, LemsCollection<Unit> units) throws ParseError, ContentError {
+		distrib.resolve(units);
+		Dimension dtgt = r_finalParam.getDimension();
+		
+		if (dtgt == null) {
+			throw new ContentError("No dimension for param " + r_finalParam);
+			
+		} else if (dtgt.isAny()) {
+			fromDistribution = true;
+			distribution = distrib;
+			
+		} else if (distrib.dimensionsMatch(dtgt)) {
+			fromDistribution = true;
+			distribution = distrib;
+			
+		} else {			
+			throw new ContentError("Can't set parameter: "+getName() + " from " + distrib);
+		}
+		if (fromDistribution) {
+			E.info("Parameter " + r_finalParam.getName() + " set to be drawn from: " + distribution);
+		}
+	}
+	
+	
+	
 
 	public void copyFrom(ParamValue pv) throws ContentError {
 		if (r_finalParam.equals(pv.r_finalParam)) {
@@ -82,7 +112,10 @@ public class ParamValue implements Named {
 		return r_finalParam.getDimension().getName();
 	}
 
-	public double getDoubleValue() {
+	public double getDoubleValue() throws ContentError {
+		if (fromDistribution) {
+			throw new ContentError("Distributed parameter should not call getDoubleValue");
+		}
 		return value;
 	}
 
@@ -101,6 +134,8 @@ public class ParamValue implements Named {
 	public void setDoubleValue(double v) {
 		value = v;
 	}
+
+	
 	
 	
 	

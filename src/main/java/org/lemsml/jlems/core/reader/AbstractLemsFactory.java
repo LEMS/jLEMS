@@ -15,6 +15,7 @@ import org.lemsml.jlems.core.type.Lems;
 import org.lemsml.jlems.core.type.Meta;
 import org.lemsml.jlems.core.type.Target;
 import org.lemsml.jlems.core.type.Unit;
+import org.lemsml.jlems.core.type.distribution.Sample;
 import org.lemsml.jlems.core.xml.XMLAttribute;
 import org.lemsml.jlems.core.xml.XMLElement;
 
@@ -96,6 +97,10 @@ public abstract class AbstractLemsFactory {
 				Insertion ins = (Insertion)instantiateFromXMLElement(cel);
 				ret.insertions.add(ins);
 			
+			} else if (ct.equals("Sample")) {
+				Sample sam = (Sample)instantiateFromXMLElement(cel);
+				ret.samples.add(sam);
+				
 			} else {
 				ret.addComponent(readComponentFromXMLElement(cel));
 			}
