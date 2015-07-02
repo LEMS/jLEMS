@@ -344,9 +344,14 @@ public class Dynamics  {
          
 		 for (ParamValue pv : cpt.getParamValues()) {
 			 String qn = pv.getName();
-			 double qv = pv.getDoubleValue();
-			 ret.addFixed(qn, qv);
-			 fixedHM.put(qn, qv);
+			 if (pv.fromDistribution) {
+				 ret.addSampled(qn, pv.getDistribution().makeBuildDistribution());
+				 
+			 } else {
+				 double qv = pv.getDoubleValue();
+				 ret.addFixed(qn, qv);
+				 fixedHM.put(qn, qv);
+			 }
 		 }
 		 
 		 for (RequiredVar rv : p_requiredVars) {

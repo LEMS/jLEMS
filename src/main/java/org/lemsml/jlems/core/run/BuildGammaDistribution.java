@@ -14,8 +14,7 @@ public class BuildGammaDistribution extends BuildDistribution {
 	}
 
 	public double getSample() {
-		E.missing("need to sample gamma");
-		return mean;
+		return RunRandom.getInstance().nextGamma(mean, shape);
 	}
 
 }

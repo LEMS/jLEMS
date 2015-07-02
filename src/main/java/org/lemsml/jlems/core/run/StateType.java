@@ -204,7 +204,8 @@ public class StateType implements RuntimeType {
     
     
 	public StateInstance newInstance() throws ContentError, ConnectionError, RuntimeError {
-	 
+ 		
+		
 		StateInstance uin = new StateInstance(this);
 		// E.info("Creating new state instance of " + cptid + " " + typeName);
 		
@@ -221,7 +222,9 @@ public class StateType implements RuntimeType {
 		
 		for (String s : distMap.keySet()) {
 			BuildDistribution bd = distMap.get(s);
-			uin.setFixed(s, bd.getSample());
+			double val = bd.getSample();
+			E.info("setting a value in stat instance for " + s + " " + val);
+			uin.setFixed(s, val);
 		}
 		
 		
@@ -615,7 +618,7 @@ public class StateType implements RuntimeType {
 	}
 	
 	public void addSampled(String snm, BuildDistribution d) {
-		distMap.put(snm, d);
+ 		distMap.put(snm, d);
 	}
 	
 	
@@ -942,7 +945,7 @@ public class StateType implements RuntimeType {
 	public StateType makeFlattened(String knownas) throws ContentError {	
 		Flattener flattener = new Flattener();
 
-		// E.info("FLAT making flattened of " + typeName + " " + cptid + " " + indeps);
+		E.info("FLAT making flattened of " + typeName + " " + cptid + " " + indeps);
 		
 		addToFlattener(null, flattener);
 		
@@ -1158,6 +1161,10 @@ public class StateType implements RuntimeType {
 		
 		for (FixedQuantity fq : fixeds) {
 			ret.addFixed(fq.name, fq.value);
+		}
+		
+		for (String s : distMap.keySet()) {
+			ret.addSampled(s, distMap.get(s));
 		}
 		
 		ret.addInPorts(inPorts);
