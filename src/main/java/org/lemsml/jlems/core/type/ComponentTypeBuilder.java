@@ -1,6 +1,7 @@
 package org.lemsml.jlems.core.type;
 
 import org.lemsml.jlems.core.sim.ContentError;
+import org.lemsml.jlems.core.type.dynamics.Case;
 import org.lemsml.jlems.core.type.dynamics.Dynamics;
 import org.lemsml.jlems.core.type.dynamics.DynamicsBuilder;
 import org.lemsml.jlems.core.type.dynamics.OnCondition;
