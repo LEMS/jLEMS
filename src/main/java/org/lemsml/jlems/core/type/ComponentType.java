@@ -830,6 +830,11 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		
 	}
 	
+	public void addDerivedParameter(DerivedParameter dp) {
+		 derivedParameters.add(dp);
+		
+	}
+	
 	public ArrayList<ComponentType> getChildCompTypes() throws ContentError {
 		ArrayList<ComponentType> childCTs = new ArrayList<ComponentType>();
 

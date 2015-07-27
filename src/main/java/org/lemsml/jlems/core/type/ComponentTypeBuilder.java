@@ -1,8 +1,6 @@
 package org.lemsml.jlems.core.type;
 
-import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
-import org.lemsml.jlems.core.type.dynamics.Case;
 import org.lemsml.jlems.core.type.dynamics.Dynamics;
 import org.lemsml.jlems.core.type.dynamics.DynamicsBuilder;
 import org.lemsml.jlems.core.type.dynamics.OnCondition;
@@ -33,6 +31,14 @@ public class ComponentTypeBuilder {
 	}
 	public void addConstant(String name, Dimension dim, String value) {
 		target.addConstant(name, dim, value);
+		
+	}
+    
+	public void addDerivedParameter(String newName, Dimension dim, String val) {
+		DerivedParameter dp = new DerivedParameter();
+		dp.setName(newName);
+		dp.setDimension(dim);
+		target.addDerivedParameter(dp);
 		
 	}
 
@@ -127,7 +133,7 @@ public class ComponentTypeBuilder {
 		checkDynamics();
 		dynB.addDerivedVariable(newDvName, dimension, val);
 	}
-	
+
 	public void addConditionalDerivedVariable(String newDvName, Dimension dimension, LemsCollection<Case> val)
 	{
 		checkDynamics();
