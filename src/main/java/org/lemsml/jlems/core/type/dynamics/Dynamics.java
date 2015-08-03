@@ -523,9 +523,9 @@ public class Dynamics  {
 
 
 	public void checkEquations(HashMap<String, Dimensional> cdimHM) throws ContentError {
+        
 		HashMap<String, Dimensional> dimHM = new HashMap<String, Dimensional>();
 
-	 
 		dimHM.putAll(cdimHM);
 		
 		for (RequiredVar rv : p_requiredVars) {
@@ -556,14 +556,15 @@ public class Dynamics  {
 			try {
 				dimHM.put(dv.getName(), dv.getDimensionality(dimHM));
 			} catch (ContentError ce) {
-				E.error("checking " + dv + " in " + r_type + " " + ce.getMessage());
+				E.error("Checking " + dv + " in " + r_type + " " + ce.getMessage());
 			}
 		}
-		for (ConditionalDerivedVariable dv : conditionalDerivedVariables) {
+
+		for (ConditionalDerivedVariable cdv : conditionalDerivedVariables) {
 			try {
-				dimHM.put(dv.getName(), dv.getDimensionality(dimHM));
+				dimHM.put(cdv.getName(), cdv.getDimensionality(dimHM));
 			} catch (ContentError ce) {
-				E.error("checking " + dv + " in " + r_type + " " + ce.getMessage());
+				E.error("Checking " + cdv + " in " + r_type + " " + ce.getMessage());
 			}
 		}
 		
