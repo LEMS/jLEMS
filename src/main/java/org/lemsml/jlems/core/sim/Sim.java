@@ -236,35 +236,50 @@ public class Sim extends LemsProcess {
           
         long realTimeStart = System.currentTimeMillis();
         int nsDone = 0;
+        
+        try{
      
-        for (int istep = 0; istep <= nstep; istep++) {
-        	if (istep > 0) {
-        		eventManager.advance(t);
-                rootState.advance(null, t, dt);
-        	}
-        	
-        	
-        	for (ResultWriter rw : resultWriters) {
-        		rw.advance(t);
-        	}
-        	
-        	for (RuntimeRecorder rr : recorders) {
-        		rr.appendState(t);
-        	}
-           
-        	times[istep] = t;
-  
-            t += dt;
-            
-            if (maxExecutionTime > 0 && istep % 100 == 0) {
-            	long realTimeNow = System.currentTimeMillis();
-            	long dtReal = realTimeNow - realTimeStart;
-            	if (dtReal > maxExecutionTime) {
-            		E.info("Stopped execution at t=" + t + " (exceeded maxExecutionTime) " + (dtReal));
-            		break;
-            	}
+            for (int istep = 0; istep <= nstep; istep++) {
+                if (istep > 0) {
+                    eventManager.advance(t);
+                    rootState.advance(null, t, dt);
+                }
+
+
+                for (ResultWriter rw : resultWriters) {
+                    rw.advance(t);
+                }
+
+                for (RuntimeRecorder rr : recorders) {
+                    rr.appendState(t);
+                }
+
+                times[istep] = t;
+
+                t += dt;
+
+                if (maxExecutionTime > 0 && istep % 100 == 0) {
+                    long realTimeNow = System.currentTimeMillis();
+                    long dtReal = realTimeNow - realTimeStart;
+                    if (dtReal > maxExecutionTime) {
+                        E.info("Stopped execution at t=" + t + " (exceeded maxExecutionTime) " + (dtReal));
+                        break;
+                    }
+                }
+                nsDone = istep;
             }
-            nsDone = istep;
+        } catch (RuntimeError rt) {
+            E.error(rt.toString());
+            rt.printStackTrace();
+            
+            String info = "Error occurred when running jLEMS!";
+            if (t>0) {
+                info+="\n\nNote: LEMS model description was successfully parsed, and simulation started (t = "+(float)t+" sec)\n"
+                        + "This error *MAY* be caused by too large a time step (dt = "+dt+" sec currently)\n"
+                        + "Try reducing the 'step' attribute in the <Simulation> element";
+            }
+            E.informativeError(info);
+            System.exit(0);
         }
         
         simulationEndTime = System.currentTimeMillis();
