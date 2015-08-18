@@ -528,7 +528,7 @@ public class StateInstance implements StateRunnable, ILEMSStateInstance {
 		} else {
 			if (parent != null) {
 				ret = parent.getVariable(varname);
- 					checkReturn(ret, varname);
+ 			    checkReturn(ret, varname);
 			}
 		}
 		}
@@ -538,11 +538,14 @@ public class StateInstance implements StateRunnable, ILEMSStateInstance {
 	
 	private void checkReturn(double ret, String varname)  throws RuntimeError {
 		if (Double.isNaN(ret) || Double.isInfinite(ret)) {
+            
 			StringBuilder err = new StringBuilder();
+            
+			err.append("\nProblem while trying to return a value for variable "+varname+": "+ret);
 			
-			err.append("This StateInstance:\n"+getSummary("  ", "| "));
+			err.append("\n\nCurrent StateInstance:\n"+getSummary("  ", "| "));
 			
-			err.append("This StateInstance's parent:\n"+((StateInstance)this.getParent()).getSummary("  ", "| "));
+			err.append("\n\nCurrent StateInstance's parent:\n"+((StateInstance)this.getParent()).getSummary("  ", "| "));
 			
 			throw new RuntimeError(err.toString());
 		}

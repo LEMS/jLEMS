@@ -159,9 +159,7 @@ public class Sim extends LemsProcess {
    	    	
   		StateType raw = rc.getTarget();
   	
-  	
   		Component cpt = rc.getControlComponent();
-  		
   		
   		boolean mflat = flatten;
 
@@ -189,7 +187,6 @@ public class Sim extends LemsProcess {
   		}
   		
   		
-  		
   		if (mflat) {
   			targetBehavior = raw.getConsolidatedStateType("root");
   		} else {
@@ -201,8 +198,6 @@ public class Sim extends LemsProcess {
   	    RunnableAccessor ra = new RunnableAccessor(rootState);
   	       
   	    ArrayList<RuntimeRecorder> recorders = rc.getRecorders();
-  	    
-  	    
   	    
   	    
   	    for (RuntimeRecorder rr : recorders) {
@@ -285,7 +280,7 @@ public class Sim extends LemsProcess {
         simulationEndTime = System.currentTimeMillis();
         
         E.info("Finished " + nsDone + " steps "
-                + "in "+((simulationEndTime-simulationStartTime)/1000f)+" seconds (sim duration: "+rc.getRuntime()+"ms; dt: "+dt+"ms)");
+                + "in "+((simulationEndTime-simulationStartTime)/1000f)+" seconds (sim duration: "+rc.getRuntime()*1000+"ms; dt: "+dt*1000+"ms)");
     	        
         for (ResultWriter rw : resultWriters) {
     		rw.advance(t);
