@@ -16,6 +16,7 @@ import org.lemsml.jlems.core.sim.Sim;
 import org.lemsml.jlems.core.type.BuildException;
 import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
+import org.lemsml.jlems.viz.datadisplay.ControlPanel;
  
 
 public final class Main {
@@ -89,6 +90,8 @@ public final class Main {
             
         sim.readModel();
         sim.build();
+        
+        ControlPanel.getInstance("jLEMS").registerSimulation(sim, simFile);
         
         StateInstance si = sim.getRootState(false);
         StateType st = sim.getTargetBehavior();
