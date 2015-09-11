@@ -3,6 +3,8 @@ package org.lemsml.jlems.viz.datadisplay;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -20,7 +22,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
-import org.lemsml.jlems.core.display.DataViewer;
 import org.lemsml.jlems.core.run.RunConfig;
 import org.lemsml.jlems.core.sim.Sim;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
@@ -32,8 +33,10 @@ public class ControlPanel implements ActionListener {
 	
 	Sim simulation;
 	Map<Integer, RunConfig> runConfigs = new HashMap<Integer, RunConfig>();
+	Map<String, Rectangle> viewerBounds = new HashMap<String, Rectangle>();
 	
 	JPanel pmain = new JPanel();
+	Dimension windowDimension = new Dimension(200, 100);
 
 	Color mainBackground = new Color(120, 120, 120);
 	// RCC displayList contains all the data that traceInfo was saving
@@ -44,16 +47,6 @@ public class ControlPanel implements ActionListener {
 	Long lastUpdate = 0l;
 	
 	private static ControlPanel instance;
-	private static int lastFramePosX = -20;
-	private static int lastFramePosY = -20;
-	
-	public static int getNextWindowPosX() {
-		return (lastFramePosX += 20) % 200;
-	}
-	
-	public static int getNextWindowPosY() {
-		return (lastFramePosY += 20) % 200;
-	}
 	
 	public static ControlPanel getInstance(String title) {
 		if(instance == null)
@@ -65,10 +58,14 @@ public class ControlPanel implements ActionListener {
 	public ControlPanel registerSimulation(Sim sim, File simFile) {
 		simulation = sim;
 		
-		if(simFile != null)
+		if(simFile != null) {
 			workingFile = simFile;
+		}
 		
 		loadRunConfigsFromSimulation();
+		
+		positionViewers();
+		
 		return this;
 	}
 	
@@ -79,7 +76,7 @@ public class ControlPanel implements ActionListener {
 	private ControlPanel(String title) {
 		
 		frame = new JFrame(title);
-		frame.setLocation(getNextWindowPosX(), getNextWindowPosY());
+		frame.setPreferredSize(windowDimension);
 		Container ctr = frame.getContentPane();
 
 		ctr.setLayout(new BorderLayout(2, 2));
@@ -89,6 +86,11 @@ public class ControlPanel implements ActionListener {
 		String[] actions = {"Open", "Exit"};
 		addToMenu(actions, jm);
 		jmb.add(jm);
+		
+		JMenu jvm = new JMenu("View");
+		String[] viewActions = {"Show All"};
+		addToMenu(viewActions, jvm);
+		jmb.add(jvm);
 		
 		JMenu jmsimulation = new JMenu("Simulation");
 		addToMenuWithShortcut("Reload and Run", jmsimulation, KeyEvent.VK_F6, 0 );
@@ -110,6 +112,49 @@ public class ControlPanel implements ActionListener {
 			runConfigs.put(index++, conf);
 		}
 		
+	}
+	
+	public void positionViewers() {
+		int borderWidth = 30;
+		int start_cursor_x = (int)windowDimension.getWidth() + borderWidth;
+		int start_cursor_y = 0;
+		
+		frame.setLocation(0, 0);
+		
+		// list of 3x2 matrix positions
+		Dimension[] positions = {new Dimension(0,0),
+								 new Dimension(0,1),
+								 new Dimension(1,0),
+								 new Dimension(1,1),
+								 new Dimension(2,0),
+								 new Dimension(2,1)};
+		
+		int viewIndex = 0;
+		
+		for(String key : simulation.getDvHM().keySet()) {
+			if(simulation.getDvHM().get(key) instanceof StandaloneViewer) {
+				StandaloneViewer sViewer = ((StandaloneViewer)simulation.getDvHM().get(key));
+				
+				if(viewerBounds.containsKey(key)) {
+					sViewer.setViewerRectangle(viewerBounds.get(key));
+					continue;
+				}
+				
+				int layer = viewIndex / 6;
+				Dimension pos = positions[(viewIndex%6)];
+				
+				int cursor_x = (int)(start_cursor_x + (layer*borderWidth) + pos.getWidth() * (sViewer.getDimensions().getWidth() + borderWidth));
+				int cursor_y = (int)(start_cursor_y + (layer*borderWidth) + pos.getHeight() * (sViewer.getDimensions().getHeight() + borderWidth));
+				
+				sViewer.setPosition(cursor_x, cursor_y);
+				
+				viewIndex++;
+			}
+		}
+		
+		//give focus to control panel
+		frame.setVisible(true);
+
 	}
 
 	private void addToMenu(String[] actions, JMenu jm) {
@@ -146,7 +191,6 @@ public class ControlPanel implements ActionListener {
 		
 		if (sev.equals("open")) {
 			importNewFile();
-			importFile();
 			try {
 				simulation.run();
 			} catch (Exception ex) {
@@ -156,9 +200,9 @@ public class ControlPanel implements ActionListener {
 			}
 			
 		} else if (sev.equals("exit")) {
-			lastFramePosX = frame.getX();
-			lastFramePosY = frame.getY();
 			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+		} else if(sev.equals("show all")) {
+			bringAllViewersToForeground();
 		} else if (sev.equals("reload and run")) {
 			if(simulation != null)
 				try {
@@ -177,24 +221,48 @@ public class ControlPanel implements ActionListener {
 		}
 	
 	public void clearCurrentSimulation() {
-		for(DataViewer dv : simulation.getDvHM().values()) {
-			if(dv instanceof StandaloneViewer) {
-				((StandaloneViewer)dv).close();
+		for(String key : simulation.getDvHM().keySet()) {
+			if(simulation.getDvHM().get(key) instanceof StandaloneViewer) {
+				StandaloneViewer viewer = ((StandaloneViewer)simulation.getDvHM().get(key));
+				viewerBounds.put(key, viewer.getViewerRectangle());
+				viewer.close();
 			}
 		}
 	}
 	
+	public void bringAllViewersToForeground() {
+		for(String key : simulation.getDvHM().keySet()) {
+			if(simulation.getDvHM().get(key) instanceof StandaloneViewer) {
+				StandaloneViewer viewer = ((StandaloneViewer)simulation.getDvHM().get(key));
+				viewer.show();
+			}
+		}
+		
+		//give focus to control panel
+		frame.setVisible(true);
+
+	}
+	
 	public void importNewFile() {
-		workingFile = SwingDialogs.getInstance().getFileToRead();
+		//importing new file so reset the windows
+		File newfile = SwingDialogs.getInstance().getFileToRead();
+		
+		if(newfile == null)
+			return;
+		
+		workingFile = newfile;
+		
+		clearCurrentSimulation();
+		viewerBounds.clear();
+		runConfigs.clear();
+		
+		importFile();
 	}
 	
 	public void importFile() {
 		FileInclusionReader fir = new FileInclusionReader(workingFile);
 		
 		try {
-			lastFramePosX = frame.getX();
-			lastFramePosY = frame.getY();
-			
 			Sim sim = new Sim(fir.read());
             
 	        sim.readModel();

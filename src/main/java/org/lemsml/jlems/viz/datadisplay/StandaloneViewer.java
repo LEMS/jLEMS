@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -45,6 +46,8 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 	boolean setRange = false;
 	double[] region;
 	
+	Dimension frameDimension = new Dimension(550, 450);
+	
 	Long lastUpdate = 0l;
 
 	public StandaloneViewer() {
@@ -54,10 +57,27 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 	public String getTitle() {
 		return frame.getTitle();
 	}
+	
+	public void setPosition(int x, int y) {
+		frame.setLocation(x, y);
+	}
+	
+	public Dimension getDimensions() {
+		return frameDimension;
+	}
+	
+	public Rectangle getViewerRectangle() {
+		return new Rectangle(frame.getX(), frame.getY(), frame.getWidth(), frame.getHeight());
+	}
+	
+	public void setViewerRectangle(Rectangle rect) {
+		frame.setLocation((int)rect.getX(),(int)rect.getY());
+		frame.setSize((int)rect.getWidth(), (int)rect.getHeight());
+	}
 
 	public StandaloneViewer(String title) {
 		frame = new JFrame(title);
-		frame.setPreferredSize(new Dimension(550, 450));
+		frame.setPreferredSize(frameDimension);
 		Container ctr = frame.getContentPane();
 
 		// viewer = new SceneGraphViewer();
