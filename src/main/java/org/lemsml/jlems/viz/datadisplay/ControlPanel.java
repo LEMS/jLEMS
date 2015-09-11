@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,12 +15,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
 import org.lemsml.jlems.core.run.RunConfig;
@@ -79,7 +82,6 @@ public class ControlPanel implements ActionListener {
 		frame.setPreferredSize(windowDimension);
 		Container ctr = frame.getContentPane();
 
-		ctr.setLayout(new BorderLayout(2, 2));
 	 
 		JMenuBar jmb = new JMenuBar();
 		JMenu jm = new JMenu("File");
@@ -88,7 +90,7 @@ public class ControlPanel implements ActionListener {
 		jmb.add(jm);
 		
 		JMenu jvm = new JMenu("View");
-		String[] viewActions = {"Show All"};
+		String[] viewActions = {"Bring to Front"};
 		addToMenu(viewActions, jvm);
 		jmb.add(jvm);
 		
@@ -98,11 +100,34 @@ public class ControlPanel implements ActionListener {
 		
 		ctr.add(jmb, BorderLayout.NORTH);
 		
-		ctr.add(pmain, BorderLayout.WEST);
+		ctr.add(pmain, BorderLayout.SOUTH);
+		
+		createToolbar();
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		show();
+	}
+	
+	public void createToolbar() {
+		JToolBar toolbar = new JToolBar();
+		toolbar.setFloatable(false);
+	    toolbar.setRollover(true);
+	    toolbar.addSeparator();
+	    
+	    JButton buttonOpen = new JButton("Open");
+	    toolbar.add(buttonOpen);
+	    toolbar.addSeparator();
+	    
+	    JButton buttonBringToFront = new JButton("Bring To Front");
+	    toolbar.add(buttonBringToFront);
+	    toolbar.addSeparator();
+	    
+	    JButton buttonReloadAndRun = new JButton("Reload and Run");
+	    toolbar.add(buttonReloadAndRun);
+	    toolbar.addSeparator();
+	    
+	    frame.add(toolbar, BorderLayout.NORTH);
 	}
 	
 	public void loadRunConfigsFromSimulation() {
@@ -201,7 +226,7 @@ public class ControlPanel implements ActionListener {
 			
 		} else if (sev.equals("exit")) {
 			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
-		} else if(sev.equals("show all")) {
+		} else if(sev.equals("bring to front")) {
 			bringAllViewersToForeground();
 		} else if (sev.equals("reload and run")) {
 			if(simulation != null)

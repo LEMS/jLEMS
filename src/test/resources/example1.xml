@@ -1,6 +1,6 @@
 <Lems>
 
-    <Target component="sim1" />
+    <Target component="set1" />
 
     <Dimension name="voltage" m="1" l="2" t="-3" i="-1" />
     <Dimension name="time" t="1" />
@@ -261,15 +261,83 @@
     </Network>
 
 
-    <Include file="SingleSimulation.xml" />
-    
-    <Simulation id="sim1" length="80ms" step="0.01ms" target="net1">
-        <Display id="d0" title="Example 1: Dimensions, Units, ComponentTypes and Components" 
-                 timeScale="1ms" xmin="-10" xmax="90" ymin="-90" ymax="60">
-            <Line id="tsince" quantity="p1[0]/tsince" scale="1ms" timeScale="1ms" color="#00c000" />
-            <Line id="p3v" quantity="p3[0]/v" scale="1mV" timeScale="1ms" color="#0000f0" />
-            <Line id="p0v" quantity="hhpop[0]/v" scale="1mV" timeScale="1ms" color="#ff4040" />
-        </Display>
-    </Simulation>
+    <Include file="MultiRunSimulation.xml" />
+
+    <SimulationSet id="set1">
+
+		<Simulation id="sim1" length="80ms" step="0.01ms" target="net1" display="d0">
+			<Display id="d0" title="Example 1: Dimensions, Units, ComponentTypes and Components" xmin="-10" xmax="90" ymin="-90" ymax="60"
+			timeScale="1ms">
+				<Line id="tsince" quantity="p1[0]/tsince" scale="1ms" timeScale="1ms" color="#00c000" />
+			</Display>
+		</Simulation>
+
+		<Simulation id="sim1" length="40ms" step="0.02ms" target="net1" display="d1">
+			<Display id="d1" title="Example 2: Dimensions, Units, ComponentTypes and Components"  xmin="-10" xmax="90" ymin="-90" ymax="60"
+			timeScale="1ms">
+				<Line id="p3v" quantity="p3[0]/v" scale="1mV" timeScale="1ms" color="#0000f0" />
+				<Line id="p0v" quantity="hhpop[0]/v" scale="1mV" timeScale="1ms" color="#ff4040" />
+			</Display>
+		</Simulation>
+
+    <Simulation id="sim1" length="40ms" step="0.02ms" target="net1" display="d2">
+			<Display id="d2" title="Example 2: Dimensions, Units, ComponentTypes and Components"  xmin="-10" xmax="90" ymin="-90" ymax="60"
+			timeScale="1ms">
+				<Line id="p3v" quantity="p3[0]/v" scale="1mV" timeScale="1ms" color="#0000f0" />
+				<Line id="p0v" quantity="hhpop[0]/v" scale="1mV" timeScale="1ms" color="#ff4040" />
+			</Display>
+		</Simulation>
+
+    <Simulation id="sim1" length="40ms" step="0.02ms" target="net1" display="d3">
+			<Display id="d3" title="Example 2: Dimensions, Units, ComponentTypes and Components"  xmin="-10" xmax="90" ymin="-90" ymax="60"
+			timeScale="1ms">
+				<Line id="p3v" quantity="p3[0]/v" scale="1mV" timeScale="1ms" color="#0000f0" />
+				<Line id="p0v" quantity="hhpop[0]/v" scale="1mV" timeScale="1ms" color="#ff4040" />
+			</Display>
+		</Simulation>
+
+    <Simulation id="sim1" length="40ms" step="0.02ms" target="net1" display="d4">
+			<Display id="d4" title="Example 2: Dimensions, Units, ComponentTypes and Components"  xmin="-10" xmax="90" ymin="-90" ymax="60"
+			timeScale="1ms">
+				<Line id="p3v" quantity="p3[0]/v" scale="1mV" timeScale="1ms" color="#0000f0" />
+				<Line id="p0v" quantity="hhpop[0]/v" scale="1mV" timeScale="1ms" color="#ff4040" />
+			</Display>
+		</Simulation>
+
+    <Simulation id="sim1" length="40ms" step="0.02ms" target="net1" display="d5">
+			<Display id="d5" title="Example 2: Dimensions, Units, ComponentTypes and Components"  xmin="-10" xmax="90" ymin="-90" ymax="60"
+			timeScale="1ms">
+				<Line id="p3v" quantity="p3[0]/v" scale="1mV" timeScale="1ms" color="#0000f0" />
+				<Line id="p0v" quantity="hhpop[0]/v" scale="1mV" timeScale="1ms" color="#ff4040" />
+			</Display>
+		</Simulation>
+
+    <Simulation id="sim1" length="40ms" step="0.02ms" target="net1" display="d6">
+			<Display id="d6" title="Example 2: Dimensions, Units, ComponentTypes and Components"  xmin="-10" xmax="90" ymin="-90" ymax="60"
+			timeScale="1ms">
+				<Line id="p3v" quantity="p3[0]/v" scale="1mV" timeScale="1ms" color="#0000f0" />
+				<Line id="p0v" quantity="hhpop[0]/v" scale="1mV" timeScale="1ms" color="#ff4040" />
+			</Display>
+		</Simulation>
+
+    <Simulation id="sim1" length="40ms" step="0.02ms" target="net1" display="d7">
+			<Display id="d7" title="Example 2: Dimensions, Units, ComponentTypes and Components"  xmin="-10" xmax="90" ymin="-90" ymax="60"
+			timeScale="1ms">
+				<Line id="p3v" quantity="p3[0]/v" scale="1mV" timeScale="1ms" color="#0000f0" />
+				<Line id="p0v" quantity="hhpop[0]/v" scale="1mV" timeScale="1ms" color="#ff4040" />
+			</Display>
+		</Simulation>
+
+    <Simulation id="sim1" length="40ms" step="0.02ms" target="net1" display="d8">
+			<Display id="d8" title="Example 2: Dimensions, Units, ComponentTypes and Components"  xmin="-10" xmax="90" ymin="-90" ymax="60"
+			timeScale="1ms">
+				<Line id="p3v" quantity="p3[0]/v" scale="1mV" timeScale="1ms" color="#0000f0" />
+				<Line id="p0v" quantity="hhpop[0]/v" scale="1mV" timeScale="1ms" color="#ff4040" />
+			</Display>
+		</Simulation>
+
+
+
+    </SimulationSet>
 
 </Lems>
