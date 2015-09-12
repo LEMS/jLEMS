@@ -4,17 +4,19 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.LayoutManager;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -24,6 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+import javax.swing.border.LineBorder;
 
 import org.lemsml.jlems.core.run.RunConfig;
 import org.lemsml.jlems.core.sim.Sim;
@@ -39,7 +42,7 @@ public class ControlPanel implements ActionListener {
 	Map<String, Rectangle> viewerBounds = new HashMap<String, Rectangle>();
 	
 	JPanel pmain = new JPanel();
-	Dimension windowDimension = new Dimension(200, 100);
+	Dimension windowDimension = new Dimension(200, 300);
 
 	Color mainBackground = new Color(120, 120, 120);
 	// RCC displayList contains all the data that traceInfo was saving
@@ -98,7 +101,7 @@ public class ControlPanel implements ActionListener {
 		addToMenuWithShortcut("Reload and Run", jmsimulation, KeyEvent.VK_F6, 0 );
 		jmb.add(jmsimulation);	
 		
-		ctr.add(jmb, BorderLayout.NORTH);
+		frame.setJMenuBar(jmb);
 		
 		ctr.add(pmain, BorderLayout.SOUTH);
 		
@@ -110,22 +113,40 @@ public class ControlPanel implements ActionListener {
 	}
 	
 	public void createToolbar() {
+		
+		int iconSize = 30;
+		
 		JToolBar toolbar = new JToolBar();
 		toolbar.setFloatable(false);
 	    toolbar.setRollover(true);
-	    toolbar.addSeparator();
+	    toolbar.setPreferredSize(new Dimension(0,iconSize+20));
 	    
-	    JButton buttonOpen = new JButton("Open");
+	    URL imgURL = getClass().getResource("/org/lemsml/jlems/viz/datadisplay/open.png");
+	    ImageIcon iconOpen = new ImageIcon(imgURL);
+	    Image img = iconOpen.getImage().getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH);
+	    iconOpen.setImage(img);
+	    JButton buttonOpen = new JButton(iconOpen);
+	    buttonOpen.setSize(iconSize,iconSize);
+	    buttonOpen.setToolTipText("Open");
 	    toolbar.add(buttonOpen);
-	    toolbar.addSeparator();
 	    
-	    JButton buttonBringToFront = new JButton("Bring To Front");
+	    imgURL = getClass().getResource("/org/lemsml/jlems/viz/datadisplay/layer.png");
+	    ImageIcon iconBringToFront = new ImageIcon(imgURL);
+	    img = iconBringToFront.getImage().getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH);
+	    iconBringToFront.setImage(img);
+	    JButton buttonBringToFront = new JButton(iconBringToFront);
+	    buttonBringToFront.setSize(iconSize,iconSize);
+	    buttonBringToFront.setToolTipText("Bring Windows to Front");
 	    toolbar.add(buttonBringToFront);
-	    toolbar.addSeparator();
 	    
-	    JButton buttonReloadAndRun = new JButton("Reload and Run");
+	    imgURL = getClass().getResource("/org/lemsml/jlems/viz/datadisplay/run.png");
+	    ImageIcon iconReloadAndRun = new ImageIcon(imgURL);
+	    img = iconReloadAndRun.getImage().getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH);
+	    iconReloadAndRun.setImage(img);
+	    JButton buttonReloadAndRun = new JButton(iconReloadAndRun);
+	    buttonReloadAndRun.setSize(iconSize,iconSize);
+	    buttonReloadAndRun.setToolTipText("Load and Run");
 	    toolbar.add(buttonReloadAndRun);
-	    toolbar.addSeparator();
 	    
 	    frame.add(toolbar, BorderLayout.NORTH);
 	}
@@ -140,21 +161,18 @@ public class ControlPanel implements ActionListener {
 	}
 	
 	public void positionViewers() {
-		int borderWidth = 30;
+		int borderWidth = 10;
+		int layerWidth = 30;
 		int start_cursor_x = (int)windowDimension.getWidth() + borderWidth;
 		int start_cursor_y = 0;
 		
 		frame.setLocation(0, 0);
 		
-		// list of 3x2 matrix positions
-		Dimension[] positions = {new Dimension(0,0),
-								 new Dimension(0,1),
-								 new Dimension(1,0),
-								 new Dimension(1,1),
-								 new Dimension(2,0),
-								 new Dimension(2,1)};
+		int screenWidth = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width;
+		int screenHeight = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height;
 		
-		int viewIndex = 0;
+		int cursor_x = start_cursor_x;
+		int cursor_y = start_cursor_y;
 		
 		for(String key : simulation.getDvHM().keySet()) {
 			if(simulation.getDvHM().get(key) instanceof StandaloneViewer) {
@@ -162,18 +180,28 @@ public class ControlPanel implements ActionListener {
 				
 				if(viewerBounds.containsKey(key)) {
 					sViewer.setViewerRectangle(viewerBounds.get(key));
+					sViewer.show();
 					continue;
 				}
 				
-				int layer = viewIndex / 6;
-				Dimension pos = positions[(viewIndex%6)];
-				
-				int cursor_x = (int)(start_cursor_x + (layer*borderWidth) + pos.getWidth() * (sViewer.getDimensions().getWidth() + borderWidth));
-				int cursor_y = (int)(start_cursor_y + (layer*borderWidth) + pos.getHeight() * (sViewer.getDimensions().getHeight() + borderWidth));
-				
 				sViewer.setPosition(cursor_x, cursor_y);
+				sViewer.show();
 				
-				viewIndex++;
+				cursor_y += sViewer.getDimensions().getHeight() + borderWidth;
+				
+				if((cursor_y + sViewer.getDimensions().getHeight()) > screenHeight - start_cursor_y) {
+					cursor_y = start_cursor_y;
+					if((cursor_x + sViewer.getDimensions().getWidth()) > screenWidth - start_cursor_x) {
+						start_cursor_y += layerWidth;
+						start_cursor_x += layerWidth;
+						cursor_y = start_cursor_y;
+						cursor_x = start_cursor_x;
+					} else {
+						cursor_x += sViewer.getDimensions().getWidth() + borderWidth;
+					}
+				} else {
+					cursor_y += sViewer.getDimensions().getHeight() + borderWidth;
+				}
 			}
 		}
 		
