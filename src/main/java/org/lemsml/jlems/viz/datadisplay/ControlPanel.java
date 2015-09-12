@@ -26,9 +26,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
-import javax.swing.border.LineBorder;
 
+import org.lemsml.jlems.core.expression.ParseError;
+import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.RunConfig;
+import org.lemsml.jlems.core.run.RuntimeError;
+import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.sim.Sim;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
 
@@ -61,7 +64,7 @@ public class ControlPanel implements ActionListener {
 		return instance;
 	}
 
-	public ControlPanel registerSimulation(Sim sim, File simFile) {
+	public ControlPanel registerSimulation(Sim sim, File simFile) throws ConnectionError, ContentError, RuntimeError, ParseError {
 		simulation = sim;
 		
 		if(simFile != null) {
@@ -114,7 +117,7 @@ public class ControlPanel implements ActionListener {
 	
 	public void createToolbar() {
 		
-		int iconSize = 30;
+		int iconSize = 20;
 		
 		JToolBar toolbar = new JToolBar();
 		toolbar.setFloatable(false);
@@ -128,6 +131,8 @@ public class ControlPanel implements ActionListener {
 	    JButton buttonOpen = new JButton(iconOpen);
 	    buttonOpen.setSize(iconSize,iconSize);
 	    buttonOpen.setToolTipText("Open");
+	    buttonOpen.setActionCommand("open");
+	    buttonOpen.addActionListener(this);
 	    toolbar.add(buttonOpen);
 	    
 	    imgURL = getClass().getResource("/org/lemsml/jlems/viz/datadisplay/layer.png");
@@ -137,6 +142,8 @@ public class ControlPanel implements ActionListener {
 	    JButton buttonBringToFront = new JButton(iconBringToFront);
 	    buttonBringToFront.setSize(iconSize,iconSize);
 	    buttonBringToFront.setToolTipText("Bring Windows to Front");
+	    buttonBringToFront.setActionCommand("bring to front");
+	    buttonBringToFront.addActionListener(this);
 	    toolbar.add(buttonBringToFront);
 	    
 	    imgURL = getClass().getResource("/org/lemsml/jlems/viz/datadisplay/run.png");
@@ -145,7 +152,9 @@ public class ControlPanel implements ActionListener {
 	    iconReloadAndRun.setImage(img);
 	    JButton buttonReloadAndRun = new JButton(iconReloadAndRun);
 	    buttonReloadAndRun.setSize(iconSize,iconSize);
-	    buttonReloadAndRun.setToolTipText("Load and Run");
+	    buttonReloadAndRun.setToolTipText("Reload and Run");
+	    buttonReloadAndRun.setActionCommand("reload and run");
+	    buttonReloadAndRun.addActionListener(this);
 	    toolbar.add(buttonReloadAndRun);
 	    
 	    frame.add(toolbar, BorderLayout.NORTH);

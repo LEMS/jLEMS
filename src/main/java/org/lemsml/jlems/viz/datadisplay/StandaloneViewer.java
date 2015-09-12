@@ -277,7 +277,7 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 
 	private void checkUpdate() {
 		long currentTime = System.nanoTime() / 1000000;
-		if (currentTime - lastUpdate > 250) {
+		if (currentTime - lastUpdate > 1) {
 			lastUpdate = currentTime;
 		 	
 			if (!setRange) {
