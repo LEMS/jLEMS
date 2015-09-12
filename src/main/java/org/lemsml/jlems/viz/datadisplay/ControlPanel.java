@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -15,10 +16,15 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -26,6 +32,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.run.ConnectionError;
@@ -46,6 +53,10 @@ public class ControlPanel implements ActionListener {
 	
 	JPanel pmain = new JPanel();
 	Dimension windowDimension = new Dimension(200, 300);
+	
+	ExecutorService service = Executors.newFixedThreadPool(1);
+	
+	JLabel statusLabel = new JLabel("");
 
 	Color mainBackground = new Color(120, 120, 120);
 	// RCC displayList contains all the data that traceInfo was saving
@@ -69,11 +80,14 @@ public class ControlPanel implements ActionListener {
 		
 		if(simFile != null) {
 			workingFile = simFile;
+			statusLabel.setText(workingFile.getName());
 		}
 		
 		loadRunConfigsFromSimulation();
 		
 		positionViewers();
+		
+		
 		
 		return this;
 	}
@@ -106,7 +120,20 @@ public class ControlPanel implements ActionListener {
 		
 		frame.setJMenuBar(jmb);
 		
+		
+		statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		statusLabel.setVerticalAlignment(SwingConstants.TOP);
+		statusLabel.setFont(new Font(statusLabel.getFont().getFontName(), 10, 10));
+		statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		
+		JPanel statusPanel = new JPanel();
+		statusPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+		statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
+		statusPanel.add(statusLabel);
+		
+		
 		ctr.add(pmain, BorderLayout.SOUTH);
+		ctr.add(statusPanel, BorderLayout.SOUTH);
 		
 		createToolbar();
 		
@@ -161,14 +188,13 @@ public class ControlPanel implements ActionListener {
 	}
 	
 	public void loadRunConfigsFromSimulation() {
-		
 		int index = -1;
 		for(RunConfig conf : simulation.getRunConfigs()) {			
 			runConfigs.put(index++, conf);
 		}
 		
 	}
-	
+
 	public void positionViewers() {
 		int borderWidth = 10;
 		int layerWidth = 30;
@@ -208,8 +234,6 @@ public class ControlPanel implements ActionListener {
 					} else {
 						cursor_x += sViewer.getDimensions().getWidth() + borderWidth;
 					}
-				} else {
-					cursor_y += sViewer.getDimensions().getHeight() + borderWidth;
 				}
 			}
 		}
@@ -247,40 +271,44 @@ public class ControlPanel implements ActionListener {
 		frame.pack();
 		frame.setVisible(true);
 	}
+	
+	private void runSimulationInNewThread() {
+		for(final Entry<Integer, RunConfig> conf : runConfigs.entrySet()) {
+			service.execute(new Runnable() {
+
+				@Override
+				public void run() {
+					try {
+						simulation.run(conf.getValue(), false);
+					} catch (Exception ex) {
+						JOptionPane.showMessageDialog(new JFrame(), 
+								String.format("Failed to run simulation : %s", ex.getMessage()), 
+								"Error", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+				
+			});
+		}
+	}
 
 	public void actionPerformed(ActionEvent e) {
 		String sev = e.getActionCommand();
 		
 		if (sev.equals("open")) {
 			importNewFile();
-			try {
-				simulation.run();
-			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(new JFrame(), 
-						String.format("Failed to run simulation : %s", ex.getMessage()), 
-						"Error", JOptionPane.ERROR_MESSAGE);
-			}
-			
+			runSimulationInNewThread();
 		} else if (sev.equals("exit")) {
 			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 		} else if(sev.equals("bring to front")) {
 			bringAllViewersToForeground();
 		} else if (sev.equals("reload and run")) {
-			if(simulation != null)
-				try {
-					clearCurrentSimulation();
-					importFile();
-					for(Entry<Integer, RunConfig> conf : runConfigs.entrySet()) {
-						simulation.run(conf.getValue(), false);
-					}
-					
-				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(new JFrame(), 
-							String.format("Failed to run simulation : %s", ex.getMessage()), 
-							"Error", JOptionPane.ERROR_MESSAGE);
-				}
+			if(simulation != null) {
+				clearCurrentSimulation();
+				importFile();
+				runSimulationInNewThread();
 			}
 		}
+	}
 	
 	public void clearCurrentSimulation() {
 		for(String key : simulation.getDvHM().keySet()) {
@@ -313,6 +341,8 @@ public class ControlPanel implements ActionListener {
 			return;
 		
 		workingFile = newfile;
+		
+		statusLabel.setText(workingFile.getName());
 		
 		clearCurrentSimulation();
 		viewerBounds.clear();
