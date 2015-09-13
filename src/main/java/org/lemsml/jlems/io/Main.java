@@ -91,7 +91,7 @@ public final class Main {
         sim.readModel();
         sim.build();
         
-        ControlPanel.getInstance("jLEMS").registerSimulation(sim, simFile);
+        ControlPanel.getInstance().registerSimulation(sim, simFile);
         
         StateInstance si = sim.getRootState(false);
         StateType st = sim.getTargetBehavior();

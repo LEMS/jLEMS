@@ -43,66 +43,39 @@ import org.lemsml.jlems.core.sim.Sim;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
 
 public class ControlPanel implements ActionListener {
+	
 	JFrame frame;
+	JPanel pmain = new JPanel();
+	JLabel statusLabel = new JLabel("");
 	
 	File workingFile;
-	
 	Sim simulation;
-	Map<Integer, RunConfig> runConfigs = new HashMap<Integer, RunConfig>();
-	Map<String, Rectangle> viewerBounds = new HashMap<String, Rectangle>();
 	
-	JPanel pmain = new JPanel();
+	Map<Integer, RunConfig> runConfigs = new HashMap<Integer, RunConfig>();
+	Map<String, Rectangle> viewerRects = new HashMap<String, Rectangle>();
+	
 	Dimension windowDimension = new Dimension(200, 300);
 	
-	ExecutorService service = Executors.newFixedThreadPool(1);
-	
-	JLabel statusLabel = new JLabel("");
-
-	Color mainBackground = new Color(120, 120, 120);
-	// RCC displayList contains all the data that traceInfo was saving
-	
-	boolean setRange = false;
-	double[] region;
-	
-	Long lastUpdate = 0l;
+	ExecutorService multiThreadService = Executors.newFixedThreadPool(1);
 	
 	private static ControlPanel instance;
 	
-	public static ControlPanel getInstance(String title) {
+	public static ControlPanel getInstance() {
 		if(instance == null)
-			instance = new ControlPanel(title);
+			instance = new ControlPanel();
 		
 		return instance;
 	}
 
-	public ControlPanel registerSimulation(Sim sim, File simFile) throws ConnectionError, ContentError, RuntimeError, ParseError {
-		simulation = sim;
+	private ControlPanel() {
 		
-		if(simFile != null) {
-			workingFile = simFile;
-			statusLabel.setText(workingFile.getName());
-		}
-		
-		loadRunConfigsFromSimulation();
-		
-		positionViewers();
-		
-		
-		
-		return this;
-	}
-	
-	public String getTitle() {
-		return frame.getTitle();
-	}
-
-	private ControlPanel(String title) {
-		
-		frame = new JFrame(title);
+		frame = new JFrame("jLEMS");
 		frame.setPreferredSize(windowDimension);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		Container ctr = frame.getContentPane();
-
 	 
+		// Set up the menu items
 		JMenuBar jmb = new JMenuBar();
 		JMenu jm = new JMenu("File");
 		String[] actions = {"Open", "Exit"};
@@ -120,7 +93,7 @@ public class ControlPanel implements ActionListener {
 		
 		frame.setJMenuBar(jmb);
 		
-		
+		// Set up the status bar at the bottom of the window
 		statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		statusLabel.setVerticalAlignment(SwingConstants.TOP);
 		statusLabel.setFont(new Font(statusLabel.getFont().getFontName(), 10, 10));
@@ -131,18 +104,48 @@ public class ControlPanel implements ActionListener {
 		statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
 		statusPanel.add(statusLabel);
 		
-		
 		ctr.add(pmain, BorderLayout.SOUTH);
 		ctr.add(statusPanel, BorderLayout.SOUTH);
 		
 		createToolbar();
 		
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
 		show();
 	}
 	
-	public void createToolbar() {
+	/**
+	 * The control panel handles one simulation at a time, this should be "registered" using this method.
+	 * Load all the windows, one per display
+	 * @param sim - simulation object
+	 * @param simFile - new file to load (can be null)
+	 * @throws ConnectionError
+	 * @throws ContentError
+	 * @throws RuntimeError
+	 * @throws ParseError
+	 */
+	public void registerSimulation(Sim sim, File simFile) 
+			throws ConnectionError, ContentError, RuntimeError, ParseError {
+		simulation = sim;
+		
+		// if we're reloading the same file, we would expect simFile to be null
+		if(simFile != null) {
+			workingFile = simFile;
+			statusLabel.setText(workingFile.getName());
+		}
+		
+		loadRunConfigsFromSimulation();
+		
+		positionViewers();
+	}
+	
+	public void setTitle(String title) {
+		frame.setTitle(title);
+	}
+	
+	/**
+	 * The toolbar for the control panel - open, layer and run
+	 * The buttons have matching menu items performing the same actions 
+	 */
+	private void createToolbar() {
 		
 		int iconSize = 20;
 		
@@ -187,15 +190,21 @@ public class ControlPanel implements ActionListener {
 	    frame.add(toolbar, BorderLayout.NORTH);
 	}
 	
-	public void loadRunConfigsFromSimulation() {
+	/**
+	 * load the runConfigs from the simulation into the runConfigs map.
+	 * The runConfigs map is indexed for easy referencing
+	 */
+	private void loadRunConfigsFromSimulation() {
 		int index = -1;
 		for(RunConfig conf : simulation.getRunConfigs()) {			
 			runConfigs.put(index++, conf);
 		}
-		
 	}
 
-	public void positionViewers() {
+	/**
+	 * Lay out the StandaloneViewer windows in a  
+	 */
+	private void positionViewers() {
 		int borderWidth = 10;
 		int layerWidth = 30;
 		int start_cursor_x = (int)windowDimension.getWidth() + borderWidth;
@@ -213,17 +222,28 @@ public class ControlPanel implements ActionListener {
 			if(simulation.getDvHM().get(key) instanceof StandaloneViewer) {
 				StandaloneViewer sViewer = ((StandaloneViewer)simulation.getDvHM().get(key));
 				
-				if(viewerBounds.containsKey(key)) {
-					sViewer.setViewerRectangle(viewerBounds.get(key));
+				// If there's a viewer Rect with this key (we're reloading an existing file) let's use it
+				// instead of putting it back in the default position
+				if(viewerRects.containsKey(key)) {
+					sViewer.setViewerRectangle(viewerRects.get(key));
+					// use show() here to repaint the window and bring it to the foreground
+					// to get a nice cascading effect of the windows
 					sViewer.show();
 					continue;
 				}
 				
-				sViewer.setPosition(cursor_x, cursor_y);
+				// 
+				sViewer.setViewerRectangle(new Rectangle(cursor_x, cursor_y, 
+						(int)sViewer.getDimensions().getWidth(), (int)sViewer.getDimensions().getHeight()));
+				// use show() here to repaint the window and bring it to the foreground
+				// to get a nice cascading effect of the windows
 				sViewer.show();
 				
 				cursor_y += sViewer.getDimensions().getHeight() + borderWidth;
 				
+				// first try to place a window below the last one, if that'll go over the bottom edge,
+				// then place it to the right. If to the right goes over the right edge then
+				// begin again with a slight offset
 				if((cursor_y + sViewer.getDimensions().getHeight()) > screenHeight - start_cursor_y) {
 					cursor_y = start_cursor_y;
 					if((cursor_x + sViewer.getDimensions().getWidth()) > screenWidth - start_cursor_x) {
@@ -238,7 +258,7 @@ public class ControlPanel implements ActionListener {
 			}
 		}
 		
-		//give focus to control panel
+		//give focus to control panel for easy spamming of the F6 key!
 		frame.setVisible(true);
 
 	}
@@ -272,9 +292,13 @@ public class ControlPanel implements ActionListener {
 		frame.setVisible(true);
 	}
 	
+	/**
+	 * When simulation.run() is called from the actionPerformed method below, it holds up the 
+	 * Java Swing display thread and we don't get the nice animation, so call run() in its own thread here.
+	 */
 	private void runSimulationInNewThread() {
 		for(final Entry<Integer, RunConfig> conf : runConfigs.entrySet()) {
-			service.execute(new Runnable() {
+			multiThreadService.execute(new Runnable() {
 
 				@Override
 				public void run() {
@@ -310,17 +334,24 @@ public class ControlPanel implements ActionListener {
 		}
 	}
 	
-	public void clearCurrentSimulation() {
+	/*
+	 * For each StandaloneViewer window, store the size and location in viewerRects to be remembered
+	 * when reloading. Then close the window.
+	 */
+	private void clearCurrentSimulation() {
 		for(String key : simulation.getDvHM().keySet()) {
 			if(simulation.getDvHM().get(key) instanceof StandaloneViewer) {
 				StandaloneViewer viewer = ((StandaloneViewer)simulation.getDvHM().get(key));
-				viewerBounds.put(key, viewer.getViewerRectangle());
+				viewerRects.put(key, viewer.getViewerRectangle());
 				viewer.close();
 			}
 		}
 	}
 	
-	public void bringAllViewersToForeground() {
+	/*
+	 * Bring all the StandaloneViewer windows to the foreground
+	 */
+	private void bringAllViewersToForeground() {
 		for(String key : simulation.getDvHM().keySet()) {
 			if(simulation.getDvHM().get(key) instanceof StandaloneViewer) {
 				StandaloneViewer viewer = ((StandaloneViewer)simulation.getDvHM().get(key));
@@ -333,7 +364,7 @@ public class ControlPanel implements ActionListener {
 
 	}
 	
-	public void importNewFile() {
+	private void importNewFile() {
 		//importing new file so reset the windows
 		File newfile = SwingDialogs.getInstance().getFileToRead();
 		
@@ -345,13 +376,13 @@ public class ControlPanel implements ActionListener {
 		statusLabel.setText(workingFile.getName());
 		
 		clearCurrentSimulation();
-		viewerBounds.clear();
+		viewerRects.clear();
 		runConfigs.clear();
 		
 		importFile();
 	}
 	
-	public void importFile() {
+	private void importFile() {
 		FileInclusionReader fir = new FileInclusionReader(workingFile);
 		
 		try {
@@ -360,7 +391,7 @@ public class ControlPanel implements ActionListener {
 	        sim.readModel();
 	        sim.build();
 	        
-	        ControlPanel.getInstance("jLEMS").registerSimulation(sim, null);
+	        ControlPanel.getInstance().registerSimulation(sim, null);
 			
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(new JFrame(), 

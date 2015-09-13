@@ -58,10 +58,6 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 		return frame.getTitle();
 	}
 	
-	public void setPosition(int x, int y) {
-		frame.setLocation(x, y);
-	}
-	
 	public Dimension getDimensions() {
 		return frameDimension;
 	}
@@ -303,21 +299,14 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 		sv.show();
 	}
 	
-	public void clear() {
+	private void clear() {
 		displayList.clear();
-	
-		dataDisplay.repaint();
-	}
-	
-	public void repaint() {
 		dataDisplay.repaint();
 	}
 	
 	public void close() {
 		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 	}
-
-	
 	
 	public String buildHTMLLegend() {
 		StringBuilder sb = new StringBuilder("<html><b>Traces present:</b><br/>");
