@@ -204,6 +204,10 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 		frame.pack();
 		frame.setVisible(true);
 	}
+	
+	public void showWithoutPack() {
+		frame.setVisible(true);
+	}
 
 	public void frameData() {
 		dataDisplay.frameData();

@@ -40,15 +40,17 @@ import org.lemsml.jlems.core.run.RunConfig;
 import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.sim.Sim;
-import org.lemsml.jlems.io.reader.FileInclusionReader;
 
-public class ControlPanel implements ActionListener {
+public abstract class ControlPanel implements ActionListener {
 	
 	JFrame frame;
 	JPanel pmain = new JPanel();
 	JLabel statusLabel = new JLabel("");
+	JMenuItem menuItemReloadAndRun;
+	JButton buttonReloadAndRun;
 	
 	File workingFile;
+	File prevWorkingFile;
 	Sim simulation;
 	
 	Map<Integer, RunConfig> runConfigs = new HashMap<Integer, RunConfig>();
@@ -57,17 +59,8 @@ public class ControlPanel implements ActionListener {
 	Dimension windowDimension = new Dimension(200, 300);
 	
 	ExecutorService multiThreadService = Executors.newFixedThreadPool(1);
-	
-	private static ControlPanel instance;
-	
-	public static ControlPanel getInstance() {
-		if(instance == null)
-			instance = new ControlPanel();
-		
-		return instance;
-	}
 
-	private ControlPanel() {
+	public ControlPanel() {
 		
 		frame = new JFrame("jLEMS");
 		frame.setPreferredSize(windowDimension);
@@ -88,7 +81,7 @@ public class ControlPanel implements ActionListener {
 		jmb.add(jvm);
 		
 		JMenu jmsimulation = new JMenu("Simulation");
-		addToMenuWithShortcut("Reload and Run", jmsimulation, KeyEvent.VK_F6, 0 );
+		menuItemReloadAndRun = addToMenuWithShortcut("Reload and Run", jmsimulation, KeyEvent.VK_F6, 0 );
 		jmb.add(jmsimulation);	
 		
 		frame.setJMenuBar(jmb);
@@ -109,8 +102,27 @@ public class ControlPanel implements ActionListener {
 		
 		createToolbar();
 		
+		//Initially the simulation buttons are disabled as we don't have a workingFile yet so have nothing to "reload and run"
+		setRunSimulationEnabled(false);
+		
 		show();
 	}
+	
+	public void setTitle(String title) {
+		frame.setTitle(title);
+	}
+	
+	/*
+	 * The initialise method calls importFile (has to have been defined in a child class) and registers the simulation object
+	 * so that it can be manipulated from the Control Panel.
+	 * Note it is expected that importFile has called sim.build() before this method
+	 */
+	public Sim initialise(File file) {
+		Sim sim = importFile(file);
+		registerSimulation(sim, file);
+		return sim;
+	}
+	
 	
 	/**
 	 * The control panel handles one simulation at a time, this should be "registered" using this method.
@@ -122,14 +134,15 @@ public class ControlPanel implements ActionListener {
 	 * @throws RuntimeError
 	 * @throws ParseError
 	 */
-	public void registerSimulation(Sim sim, File simFile) 
-			throws ConnectionError, ContentError, RuntimeError, ParseError {
+	protected void registerSimulation(Sim sim, File simFile) {
 		simulation = sim;
+		
+		if(sim == null)
+			return;
 		
 		// if we're reloading the same file, we would expect simFile to be null
 		if(simFile != null) {
-			workingFile = simFile;
-			statusLabel.setText(workingFile.getName());
+			setNewWorkingFile(simFile);
 		}
 		
 		loadRunConfigsFromSimulation();
@@ -137,15 +150,18 @@ public class ControlPanel implements ActionListener {
 		positionViewers();
 	}
 	
-	public void setTitle(String title) {
-		frame.setTitle(title);
-	}
+	/*
+	 * importFile should handle creating a built (Sim.build() must be called) sim instance.
+	 * This will be called each time the Control Panel tries to open a new file or reload the existing simulation
+	 * It is called in the initialise method.
+	 */
+	protected abstract Sim importFile(File sourceFile);
 	
 	/**
 	 * The toolbar for the control panel - open, layer and run
 	 * The buttons have matching menu items performing the same actions 
 	 */
-	private void createToolbar() {
+	protected void createToolbar() {
 		
 		int iconSize = 20;
 		
@@ -180,7 +196,9 @@ public class ControlPanel implements ActionListener {
 	    ImageIcon iconReloadAndRun = new ImageIcon(imgURL);
 	    img = iconReloadAndRun.getImage().getScaledInstance(iconSize, iconSize, Image.SCALE_SMOOTH);
 	    iconReloadAndRun.setImage(img);
-	    JButton buttonReloadAndRun = new JButton(iconReloadAndRun);
+	    buttonReloadAndRun = new JButton(iconReloadAndRun);
+	    //initially this is disabled as we don't have anything to "reload and run"
+	    buttonReloadAndRun.setEnabled(false);
 	    buttonReloadAndRun.setSize(iconSize,iconSize);
 	    buttonReloadAndRun.setToolTipText("Reload and Run");
 	    buttonReloadAndRun.setActionCommand("reload and run");
@@ -194,7 +212,7 @@ public class ControlPanel implements ActionListener {
 	 * load the runConfigs from the simulation into the runConfigs map.
 	 * The runConfigs map is indexed for easy referencing
 	 */
-	private void loadRunConfigsFromSimulation() {
+	protected void loadRunConfigsFromSimulation() {
 		int index = -1;
 		for(RunConfig conf : simulation.getRunConfigs()) {			
 			runConfigs.put(index++, conf);
@@ -204,7 +222,7 @@ public class ControlPanel implements ActionListener {
 	/**
 	 * Lay out the StandaloneViewer windows in a  
 	 */
-	private void positionViewers() {
+	protected void positionViewers() {
 		int borderWidth = 10;
 		int layerWidth = 30;
 		int start_cursor_x = (int)windowDimension.getWidth() + borderWidth;
@@ -228,7 +246,7 @@ public class ControlPanel implements ActionListener {
 					sViewer.setViewerRectangle(viewerRects.get(key));
 					// use show() here to repaint the window and bring it to the foreground
 					// to get a nice cascading effect of the windows
-					sViewer.show();
+					sViewer.showWithoutPack();
 					continue;
 				}
 				
@@ -262,8 +280,13 @@ public class ControlPanel implements ActionListener {
 		frame.setVisible(true);
 
 	}
+	
+	protected void setRunSimulationEnabled(boolean enabled) {
+		menuItemReloadAndRun.setEnabled(enabled);
+		buttonReloadAndRun.setEnabled(enabled);
+	}
 
-	private void addToMenu(String[] actions, JMenu jm) {
+	protected void addToMenu(String[] actions, JMenu jm) {
 	for (String s : actions) {
 		JMenuItem jmi = new JMenuItem(s);
 		jmi.setActionCommand(s.toLowerCase());
@@ -279,12 +302,13 @@ public class ControlPanel implements ActionListener {
 	 * @param key - int representing the ID of KeyEvent (eg KeyEvent.VK_F6)
 	 * @param modifier - int representing the ID of ActionEvent (eg ActionEvent.ALT_MASK , 0 for no modifier)
 	 */
-	private void addToMenuWithShortcut(String action, JMenu jm, int key, int modifier) {
+	protected JMenuItem addToMenuWithShortcut(String action, JMenu jm, int key, int modifier) {
 		JMenuItem jmi = new JMenuItem(action);
 		jmi.setActionCommand(action.toLowerCase());
 		jmi.addActionListener(this);
 		jmi.setAccelerator(KeyStroke.getKeyStroke(key, modifier));
 		jm.add(jmi);
+		return jmi;
 	}
 	
 	public void show() {
@@ -296,7 +320,7 @@ public class ControlPanel implements ActionListener {
 	 * When simulation.run() is called from the actionPerformed method below, it holds up the 
 	 * Java Swing display thread and we don't get the nice animation, so call run() in its own thread here.
 	 */
-	private void runSimulationInNewThread() {
+	protected void runSimulationInNewThread() {
 		for(final Entry<Integer, RunConfig> conf : runConfigs.entrySet()) {
 			multiThreadService.execute(new Runnable() {
 
@@ -319,16 +343,46 @@ public class ControlPanel implements ActionListener {
 		String sev = e.getActionCommand();
 		
 		if (sev.equals("open")) {
-			importNewFile();
+			//importing new file so reset the windows
+			File newfile = SwingDialogs.getInstance().getFileToRead();
+			
+			//probably we cancelled the dialog box
+			if(newfile == null)
+				return;
+				
+			clearAll();
+			try {
+				setNewWorkingFile(newfile);
+				Sim sim = importFile(newfile);
+				registerSimulation(sim, workingFile);
+			} catch (Exception ex) {
+				setPrevWorkingFile();
+				restoreViewerWindows();
+				JOptionPane.showMessageDialog(new JFrame(), 
+						String.format("Unexpected error while opening and building simulation with message : %s", ex.getMessage()), 
+						"Error", JOptionPane.ERROR_MESSAGE);
+				
+			}
 			runSimulationInNewThread();
 		} else if (sev.equals("exit")) {
 			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 		} else if(sev.equals("bring to front")) {
-			bringAllViewersToForeground();
+			restoreViewerWindows();
 		} else if (sev.equals("reload and run")) {
 			if(simulation != null) {
 				clearCurrentSimulation();
-				importFile();
+				try {
+					Sim sim = importFile(workingFile);
+					registerSimulation(sim, null);
+				} catch (Exception ex) {
+					//if we failed to load the new sim, bring back our old windows.
+					restoreViewerWindows();
+					JOptionPane.showMessageDialog(new JFrame(), 
+							String.format("Unexpected error while opening and building simulation with message : %s", ex.getMessage()), 
+							"Error", JOptionPane.ERROR_MESSAGE);
+					
+				}
+				
 				runSimulationInNewThread();
 			}
 		}
@@ -338,7 +392,7 @@ public class ControlPanel implements ActionListener {
 	 * For each StandaloneViewer window, store the size and location in viewerRects to be remembered
 	 * when reloading. Then close the window.
 	 */
-	private void clearCurrentSimulation() {
+	protected void clearCurrentSimulation() {
 		for(String key : simulation.getDvHM().keySet()) {
 			if(simulation.getDvHM().get(key) instanceof StandaloneViewer) {
 				StandaloneViewer viewer = ((StandaloneViewer)simulation.getDvHM().get(key));
@@ -351,7 +405,7 @@ public class ControlPanel implements ActionListener {
 	/*
 	 * Bring all the StandaloneViewer windows to the foreground
 	 */
-	private void bringAllViewersToForeground() {
+	protected void restoreViewerWindows() {
 		for(String key : simulation.getDvHM().keySet()) {
 			if(simulation.getDvHM().get(key) instanceof StandaloneViewer) {
 				StandaloneViewer viewer = ((StandaloneViewer)simulation.getDvHM().get(key));
@@ -364,42 +418,33 @@ public class ControlPanel implements ActionListener {
 
 	}
 	
-	private void importNewFile() {
-		//importing new file so reset the windows
-		File newfile = SwingDialogs.getInstance().getFileToRead();
+	protected void clearAll() {
+		clearCurrentSimulation();
+		viewerRects.clear();
+		runConfigs.clear();
+	}
+	
+	protected void setNewWorkingFile(File newfile) {
 		
 		if(newfile == null)
 			return;
 		
+		prevWorkingFile = workingFile;
 		workingFile = newfile;
 		
+		setRunSimulationEnabled(true);
 		statusLabel.setText(workingFile.getName());
-		
-		clearCurrentSimulation();
-		viewerRects.clear();
-		runConfigs.clear();
-		
-		importFile();
 	}
 	
-	private void importFile() {
-		FileInclusionReader fir = new FileInclusionReader(workingFile);
-		
-		try {
-			Sim sim = new Sim(fir.read());
-            
-	        sim.readModel();
-	        sim.build();
-	        
-	        ControlPanel.getInstance().registerSimulation(sim, null);
-			
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(new JFrame(), 
-					String.format("Unexpected error while opening model file with message : %s", e.getMessage()), 
-					"Error", JOptionPane.ERROR_MESSAGE);
-			
+	protected void setPrevWorkingFile() {
+		workingFile = prevWorkingFile;
+		if(prevWorkingFile != null) {
+			setRunSimulationEnabled(true);
+			statusLabel.setText(prevWorkingFile.getName());
+		} else {
+			setRunSimulationEnabled(false);
+			statusLabel.setText("");
 		}
-		
 	}
 	
 }

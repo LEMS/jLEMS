@@ -75,23 +75,38 @@ public final class Main {
         	System.exit(1);
         }
         
-        File simFile = new File(modelName);
- 
-        if (!simFile.exists()) {
-        	E.error("No such file: " + simFile.getAbsolutePath());
-        	System.exit(1);
-        }
-
-        FileInclusionReader fir = new FileInclusionReader(simFile);
-        if (typePath != null) {
-        	fir.addSearchPaths(typePath);
-        }
-        Sim sim = new Sim(fir.read());
-            
-        sim.readModel();
-        sim.build();
+        final String typePathArg = typePath;
         
-        ControlPanel.getInstance().registerSimulation(sim, simFile);
+        ControlPanel cp = new ControlPanel() {
+
+			@Override
+			public Sim importFile(File simFile) {
+				
+		        if (!simFile.exists()) {
+		        	E.error("No such file: " + simFile.getAbsolutePath());
+		        	System.exit(1);
+		        }
+
+		        FileInclusionReader fir = new FileInclusionReader(simFile);
+		        if (typePathArg != null) {
+		        	fir.addSearchPaths(typePathArg);
+		        }
+		        
+				try {
+					Sim sim = new Sim(fir.read());
+					sim.readModel();
+			        sim.build();
+			        
+			        return sim;
+				} catch (Exception e) {
+					return null;
+				}            
+			}
+        	
+        };
+        
+        File simFile = new File(modelName);
+        Sim sim = cp.initialise(simFile);
         
         StateInstance si = sim.getRootState(false);
         StateType st = sim.getTargetBehavior();
