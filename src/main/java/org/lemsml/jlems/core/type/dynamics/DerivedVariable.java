@@ -46,8 +46,6 @@ public class DerivedVariable extends ExpressionValued implements Valued {
 	@ModelProperty(info="")
 	public String exposure;   
 	public Exposure r_exposure;
-
-	ParseTree parseTree;
  
 	 
 	@ModelProperty(info="Set to true if it OK for this variable to be absent. " +
@@ -57,7 +55,7 @@ public class DerivedVariable extends ExpressionValued implements Valued {
 	
 	private boolean resolved = false;
 	
-   public DerivedVariable() {
+    public DerivedVariable() {
     }
 
     public DerivedVariable(String s) {
@@ -84,8 +82,8 @@ public class DerivedVariable extends ExpressionValued implements Valued {
     }
 	
 
-     
 	
+    @Override
 	public String getName() {
 		return name;
 	}
@@ -136,6 +134,7 @@ public class DerivedVariable extends ExpressionValued implements Valued {
 	}
 
  
+    @Override
 	public double getValue() {
 		return Double.NaN;
 	}
@@ -262,17 +261,11 @@ public class DerivedVariable extends ExpressionValued implements Valued {
 		dimension = dn;
 	}
 
-	public void setValue(String sv) {
-		value = sv;
-	}
 
 	public void setExposure(String s) {
 		exposure = s;
 	}
 
-	public ParseTree getParseTree() {
-		return parseTree;
-	}
 
 	public DerivedVariable makeCopy() {
 		DerivedVariable ret = new DerivedVariable();

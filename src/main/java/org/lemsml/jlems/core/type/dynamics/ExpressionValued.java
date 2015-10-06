@@ -14,6 +14,7 @@ public class ExpressionValued implements IVisitable {
 		value = s;
 	}
 	
+    @Override
 	public String getValueExpression() {
 		return value;
 	}
