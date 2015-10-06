@@ -39,6 +39,7 @@ public class ComponentTypeBuilder {
 		DerivedParameter dp = new DerivedParameter();
 		dp.setName(newName);
 		dp.setDimension(dim);
+		dp.setValue(val);
 		target.addDerivedParameter(dp);
 		
 	}

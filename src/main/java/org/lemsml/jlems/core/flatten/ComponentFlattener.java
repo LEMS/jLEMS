@@ -17,16 +17,14 @@ import org.lemsml.jlems.core.type.ComponentReference;
 import org.lemsml.jlems.core.type.ComponentType;
 import org.lemsml.jlems.core.type.ComponentTypeBuilder;
 import org.lemsml.jlems.core.type.Constant;
+import org.lemsml.jlems.core.type.DerivedParameter;
 import org.lemsml.jlems.core.type.EventPort;
 import org.lemsml.jlems.core.type.Exposure;
 import org.lemsml.jlems.core.type.FinalParam;
 import org.lemsml.jlems.core.type.Lems;
-import org.lemsml.jlems.core.type.LemsCollection;
 import org.lemsml.jlems.core.type.ParamValue;
 import org.lemsml.jlems.core.type.Requirement;
 import org.lemsml.jlems.core.type.Text;
-import org.lemsml.jlems.core.type.dynamics.Case;
-import org.lemsml.jlems.core.type.dynamics.ConditionalDerivedVariable;
 import org.lemsml.jlems.core.type.dynamics.DerivedVariable;
 import org.lemsml.jlems.core.type.dynamics.Dynamics;
 import org.lemsml.jlems.core.type.dynamics.OnCondition;
@@ -115,10 +113,17 @@ public class ComponentFlattener {
             constantsAdded.add(fname);
             typeB.addConstant(fname, ct.getDimension(), ct.getStringValue());
         }
+        
+        ArrayList<String> derivedParametersAdded = new ArrayList<String>();
+        for (DerivedParameter dp : typ.getDerivedParameters()) {
+            String fname = flatName(dp.getName(), prefix);
+            derivedParametersAdded.add(fname);
+            typeB.addDerivedParameter(fname, dp.getDimension(), dp.getValue());
+        }
 
         for (FinalParam p : typ.getFinalParams()) {
             String fname = flatName(p.getName(), prefix, varHM);
-            if (!constantsAdded.contains(fname)) {
+            if (!constantsAdded.contains(fname) && !derivedParametersAdded.contains(fname)) {
                 E.info("+++ fname: " + fname + ", p.getName: " + p.getName());
                 typeB.addParameter(fname, p.getDimension());
             }

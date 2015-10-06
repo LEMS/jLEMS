@@ -22,6 +22,7 @@
         <Exposure name="v" dimension="voltage" description="Membrane potential"/>
         <Exposure name="rv" dimension="voltage" description="Membrane potential"/>
 
+        <DerivedParameter name="mid_v" dimension="voltage" value="(v1-v0)/2"/>
 
         <Dynamics>
             <DerivedVariable name="v" dimension="voltage" exposure="v" value="v0 + (t*(v1-v0)/tau)"/>
