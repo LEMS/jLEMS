@@ -40,9 +40,10 @@ public class OnEvent extends PointResponse {
 
 
 	public OnEvent makeCopy() {
-		OnEvent oe = new OnEvent();
-		oe.port = port;
-		return oe;
+        OnEvent oe = new OnEvent();
+        oe.port = port;
+        this.copyInto(oe);
+        return oe;
 	}
 
 
