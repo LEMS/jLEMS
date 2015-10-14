@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.logging.E;
-import org.lemsml.jlems.core.logging.MinimalMessageHandler;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.StateInstance;
@@ -16,7 +15,6 @@ import org.lemsml.jlems.core.sim.Sim;
 import org.lemsml.jlems.core.type.BuildException;
 import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
-import org.lemsml.jlems.viz.datadisplay.ControlPanel;
  
 
 public final class Main {
@@ -75,38 +73,21 @@ public final class Main {
         	System.exit(1);
         }
         
-        final String typePathArg = typePath;
-        
-        ControlPanel cp = new ControlPanel() {
-
-			@Override
-			public Sim importFile(File simFile) {
-				
-		        if (!simFile.exists()) {
-		        	E.error("No such file: " + simFile.getAbsolutePath());
-		        	System.exit(1);
-		        }
-
-		        FileInclusionReader fir = new FileInclusionReader(simFile);
-		        if (typePathArg != null) {
-		        	fir.addSearchPaths(typePathArg);
-		        }
-		        
-				try {
-					Sim sim = new Sim(fir.read());
-					sim.readModel();
-			        sim.build();
-			        
-			        return sim;
-				} catch (Exception e) {
-					return null;
-				}            
-			}
-        	
-        };
-        
         File simFile = new File(modelName);
-        Sim sim = cp.initialise(simFile);
+ 
+        if (!simFile.exists()) {
+        	E.error("No such file: " + simFile.getAbsolutePath());
+        	System.exit(1);
+        }
+
+        FileInclusionReader fir = new FileInclusionReader(simFile);
+        if (typePath != null) {
+        	fir.addSearchPaths(typePath);
+        }
+        Sim sim = new Sim(fir.read());
+            
+        sim.readModel();
+        sim.build();
         
         StateInstance si = sim.getRootState(false);
         StateType st = sim.getTargetBehavior();
@@ -134,7 +115,7 @@ public final class Main {
     
     
      
-    private static HashMap<String, String> parseArguments(String[] argv) {
+    public static HashMap<String, String> parseArguments(String[] argv) {
     	HashMap<String, String> ret = new HashMap<String, String>();
     	
     	int iarg = 0;

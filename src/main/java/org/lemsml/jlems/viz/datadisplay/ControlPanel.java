@@ -56,56 +56,66 @@ public abstract class ControlPanel implements ActionListener {
 	Map<Integer, RunConfig> runConfigs = new HashMap<Integer, RunConfig>();
 	Map<String, Rectangle> viewerRects = new HashMap<String, Rectangle>();
 	
-	Dimension windowDimension = new Dimension(200, 300);
+	Dimension windowDimension = new Dimension(200, 120);
 	
 	ExecutorService multiThreadService = Executors.newFixedThreadPool(1);
+    
+    boolean showGui;
+    
+    private static final String OPEN = "Open LEMS file";
+    private static final String EXIT = "Exit";
+    
+    public final static String DEFAULT_NAME = "jLEMS";
 
-	public ControlPanel() {
-		
-		frame = new JFrame("jLEMS");
-		frame.setPreferredSize(windowDimension);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		Container ctr = frame.getContentPane();
-	 
-		// Set up the menu items
-		JMenuBar jmb = new JMenuBar();
-		JMenu jm = new JMenu("File");
-		String[] actions = {"Open", "Exit"};
-		addToMenu(actions, jm);
-		jmb.add(jm);
-		
-		JMenu jvm = new JMenu("View");
-		String[] viewActions = {"Bring to Front"};
-		addToMenu(viewActions, jvm);
-		jmb.add(jvm);
-		
-		JMenu jmsimulation = new JMenu("Simulation");
-		menuItemReloadAndRun = addToMenuWithShortcut("Reload and Run", jmsimulation, KeyEvent.VK_F6, 0 );
-		jmb.add(jmsimulation);	
-		
-		frame.setJMenuBar(jmb);
-		
-		// Set up the status bar at the bottom of the window
-		statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		statusLabel.setVerticalAlignment(SwingConstants.TOP);
-		statusLabel.setFont(new Font(statusLabel.getFont().getFontName(), 10, 10));
-		statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		
-		JPanel statusPanel = new JPanel();
-		statusPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-		statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
-		statusPanel.add(statusLabel);
-		
-		ctr.add(pmain, BorderLayout.SOUTH);
-		ctr.add(statusPanel, BorderLayout.SOUTH);
-		
-		createToolbar();
-		
-		//Initially the simulation buttons are disabled as we don't have a workingFile yet so have nothing to "reload and run"
-		setRunSimulationEnabled(false);
-		
-		show();
+	public ControlPanel(String name, boolean showGui) {
+        
+		this.showGui = showGui;
+        
+        if (showGui) {
+            frame = new JFrame(name+" Control Panel");
+            frame.setPreferredSize(windowDimension);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            Container ctr = frame.getContentPane();
+
+            // Set up the menu items
+            JMenuBar jmb = new JMenuBar();
+            JMenu jm = new JMenu("File");
+            String[] actions = {OPEN, EXIT};
+            addToMenu(actions, jm);
+            jmb.add(jm);
+
+            JMenu jvm = new JMenu("View");
+            String[] viewActions = {"Bring to Front"};
+            addToMenu(viewActions, jvm);
+            jmb.add(jvm);
+
+            JMenu jmsimulation = new JMenu("Simulation");
+            menuItemReloadAndRun = addToMenuWithShortcut("Reload and Run", jmsimulation, KeyEvent.VK_F6, 0 );
+            jmb.add(jmsimulation);	
+
+            frame.setJMenuBar(jmb);
+
+            // Set up the status bar at the bottom of the window
+            statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
+            statusLabel.setVerticalAlignment(SwingConstants.TOP);
+            statusLabel.setFont(new Font(statusLabel.getFont().getFontName(), 10, 10));
+            statusLabel.setHorizontalAlignment(SwingConstants.LEFT);
+
+            JPanel statusPanel = new JPanel();
+            statusPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+            statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
+            statusPanel.add(statusLabel);
+
+            ctr.add(pmain, BorderLayout.SOUTH);
+            ctr.add(statusPanel, BorderLayout.SOUTH);
+
+            createToolbar();
+            //Initially the simulation buttons are disabled as we don't have a workingFile yet so have nothing to "reload and run"
+            setRunSimulationEnabled(false);
+
+            show();
+        }
 	}
 	
 	public void setTitle(String title) {
@@ -147,7 +157,8 @@ public abstract class ControlPanel implements ActionListener {
 		
 		loadRunConfigsFromSimulation();
 		
-		positionViewers();
+		if (showGui)
+            positionViewers();
 	}
 	
 	/*
@@ -161,7 +172,7 @@ public abstract class ControlPanel implements ActionListener {
 	 * The toolbar for the control panel - open, layer and run
 	 * The buttons have matching menu items performing the same actions 
 	 */
-	protected void createToolbar() {
+	protected final void createToolbar() {
 		
 		int iconSize = 20;
 		
@@ -176,8 +187,8 @@ public abstract class ControlPanel implements ActionListener {
 	    iconOpen.setImage(img);
 	    JButton buttonOpen = new JButton(iconOpen);
 	    buttonOpen.setSize(iconSize,iconSize);
-	    buttonOpen.setToolTipText("Open");
-	    buttonOpen.setActionCommand("open");
+	    buttonOpen.setToolTipText(OPEN);
+	    buttonOpen.setActionCommand(OPEN);
 	    buttonOpen.addActionListener(this);
 	    toolbar.add(buttonOpen);
 	    
@@ -281,18 +292,18 @@ public abstract class ControlPanel implements ActionListener {
 
 	}
 	
-	protected void setRunSimulationEnabled(boolean enabled) {
+	protected final void setRunSimulationEnabled(boolean enabled) {
 		menuItemReloadAndRun.setEnabled(enabled);
 		buttonReloadAndRun.setEnabled(enabled);
 	}
 
-	protected void addToMenu(String[] actions, JMenu jm) {
-	for (String s : actions) {
-		JMenuItem jmi = new JMenuItem(s);
-		jmi.setActionCommand(s.toLowerCase());
-		jmi.addActionListener(this);
-		jm.add(jmi);
-	}
+	protected final void addToMenu(String[] actions, JMenu jm) {
+        for (String s : actions) {
+            JMenuItem jmi = new JMenuItem(s);
+            jmi.setActionCommand(s.toLowerCase());
+            jmi.addActionListener(this);
+            jm.add(jmi);
+        }
 	}
 	
 	/**
@@ -301,8 +312,9 @@ public abstract class ControlPanel implements ActionListener {
 	 * @param jm - the menu for this item to be added to
 	 * @param key - int representing the ID of KeyEvent (eg KeyEvent.VK_F6)
 	 * @param modifier - int representing the ID of ActionEvent (eg ActionEvent.ALT_MASK , 0 for no modifier)
+     * @return JMenuItem
 	 */
-	protected JMenuItem addToMenuWithShortcut(String action, JMenu jm, int key, int modifier) {
+	protected final JMenuItem addToMenuWithShortcut(String action, JMenu jm, int key, int modifier) {
 		JMenuItem jmi = new JMenuItem(action);
 		jmi.setActionCommand(action.toLowerCase());
 		jmi.addActionListener(this);
@@ -339,10 +351,11 @@ public abstract class ControlPanel implements ActionListener {
 		}
 	}
 
+    @Override
 	public void actionPerformed(ActionEvent e) {
 		String sev = e.getActionCommand();
 		
-		if (sev.equals("open")) {
+		if (sev.equalsIgnoreCase(OPEN)) {
 			//importing new file so reset the windows
 			File newfile = SwingDialogs.getInstance().getFileToRead();
 			
@@ -364,7 +377,7 @@ public abstract class ControlPanel implements ActionListener {
 				
 			}
 			runSimulationInNewThread();
-		} else if (sev.equals("exit")) {
+		} else if (sev.equalsIgnoreCase(EXIT)) {
 			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 		} else if(sev.equals("bring to front")) {
 			restoreViewerWindows();
@@ -432,8 +445,10 @@ public abstract class ControlPanel implements ActionListener {
 		prevWorkingFile = workingFile;
 		workingFile = newfile;
 		
-		setRunSimulationEnabled(true);
-		statusLabel.setText(workingFile.getName());
+		if (showGui) {
+            setRunSimulationEnabled(true);
+            statusLabel.setText(workingFile.getName());
+        }
 	}
 	
 	protected void setPrevWorkingFile() {
