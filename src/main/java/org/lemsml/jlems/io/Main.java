@@ -16,6 +16,7 @@ import org.lemsml.jlems.core.sim.Sim;
 import org.lemsml.jlems.core.type.BuildException;
 import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
+import org.lemsml.jlems.viz.datadisplay.ControlPanel;
  
 
 public final class Main {
@@ -74,21 +75,38 @@ public final class Main {
         	System.exit(1);
         }
         
-        File simFile = new File(modelName);
- 
-        if (!simFile.exists()) {
-        	E.error("No such file: " + simFile.getAbsolutePath());
-        	System.exit(1);
-        }
+        final String typePathArg = typePath;
+        
+        ControlPanel cp = new ControlPanel() {
 
-        FileInclusionReader fir = new FileInclusionReader(simFile);
-        if (typePath != null) {
-        	fir.addSearchPaths(typePath);
-        }
-        Sim sim = new Sim(fir.read());
-            
-        sim.readModel();
-        sim.build();
+			@Override
+			public Sim importFile(File simFile) {
+				
+		        if (!simFile.exists()) {
+		        	E.error("No such file: " + simFile.getAbsolutePath());
+		        	System.exit(1);
+		        }
+
+		        FileInclusionReader fir = new FileInclusionReader(simFile);
+		        if (typePathArg != null) {
+		        	fir.addSearchPaths(typePathArg);
+		        }
+		        
+				try {
+					Sim sim = new Sim(fir.read());
+					sim.readModel();
+			        sim.build();
+			        
+			        return sim;
+				} catch (Exception e) {
+					return null;
+				}            
+			}
+        	
+        };
+        
+        File simFile = new File(modelName);
+        Sim sim = cp.initialise(simFile);
         
         StateInstance si = sim.getRootState(false);
         StateType st = sim.getTargetBehavior();

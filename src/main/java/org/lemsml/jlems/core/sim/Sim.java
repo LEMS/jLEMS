@@ -2,6 +2,8 @@ package org.lemsml.jlems.core.sim;
  
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.lemsml.jlems.core.display.DataViewPort;
 import org.lemsml.jlems.core.display.DataViewer;
@@ -21,7 +23,6 @@ import org.lemsml.jlems.core.run.RuntimeRecorder;
 import org.lemsml.jlems.core.run.StateInstance;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.type.Component;
- 
 import org.lemsml.jlems.core.type.Meta;
 import org.lemsml.jlems.core.type.Target;
  
@@ -54,8 +55,14 @@ public class Sim extends LemsProcess {
     public Sim(String srcStr) {
     	super(srcStr);
     }
+    
+    public Map<String, DataViewer> getDvHM() {
+    	return dvHM;
+    }
  
- 	
+ 	public List<RunConfig> getRunConfigs() {
+ 		return runConfigs;
+ 	}
     	
     public void build() throws ContentError, ConnectionError, ParseError {
     	

@@ -4,13 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.io.File;
-import java.util.HashMap;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -18,14 +17,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.UIManager;
-import javax.swing.plaf.ColorUIResource;
 
 import org.lemsml.jlems.core.display.DataViewPort;
 import org.lemsml.jlems.core.display.DataViewer;
 import org.lemsml.jlems.core.logging.E;
-import org.lemsml.jlems.io.data.FormattedDataUtil;
 import org.lemsml.jlems.io.util.FileUtil;
 import org.lemsml.jlems.viz.plot.DataDisplay;
 import org.lemsml.jlems.viz.plot.DisplayLine;
@@ -51,6 +46,8 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 	boolean setRange = false;
 	double[] region;
 	
+	Dimension frameDimension = new Dimension(550, 450);
+	
 	Long lastUpdate = 0l;
 
 	public StandaloneViewer() {
@@ -60,10 +57,23 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 	public String getTitle() {
 		return frame.getTitle();
 	}
+	
+	public Dimension getDimensions() {
+		return frameDimension;
+	}
+	
+	public Rectangle getViewerRectangle() {
+		return new Rectangle(frame.getX(), frame.getY(), frame.getWidth(), frame.getHeight());
+	}
+	
+	public void setViewerRectangle(Rectangle rect) {
+		frame.setLocation((int)rect.getX(),(int)rect.getY());
+		frame.setSize((int)rect.getWidth(), (int)rect.getHeight());
+	}
 
 	public StandaloneViewer(String title) {
 		frame = new JFrame(title);
-		frame.setPreferredSize(new Dimension(550, 450));
+		frame.setPreferredSize(frameDimension);
 		Container ctr = frame.getContentPane();
 
 		// viewer = new SceneGraphViewer();
@@ -72,14 +82,9 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 
 	 
 		JMenuBar jmb = new JMenuBar();
-		JMenu jm = new JMenu("File");
-		String[] actions = {"Open", "Save", "Import", "Clear", "Exit"};
-		addToMenu(actions, jm);
-		jmb.add(jm);
-		
-		
+
 		JMenu jmview = new JMenu("View");
-		String[] va = {"Frame", "Legend"};
+		String[] va = {"Frame", "Legend", "Clear"};
 		addToMenu(va, jmview);
 		jmb.add(jmview);
 		
@@ -89,10 +94,7 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 		addToMenu(ma, jmmouse);
 		jmb.add(jmmouse);
 		
-		
-		
 		ctr.add(jmb, BorderLayout.NORTH);
-		
 		
 		
 		dataDisplay = new DataDisplay();
@@ -105,7 +107,7 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 
 		dataDisplay.setMode("labels", true);
 
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		displayList = new DisplayList();
 
@@ -202,6 +204,10 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 		frame.pack();
 		frame.setVisible(true);
 	}
+	
+	public void showWithoutPack() {
+		frame.setVisible(true);
+	}
 
 	public void frameData() {
 		dataDisplay.frameData();
@@ -223,12 +229,8 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 	public void actionPerformed(ActionEvent e) {
 		String sev = e.getActionCommand();
 		
-		if (sev.equals("import")) {
-			importFile();
-			
-		} else if (sev.equals("clear")) {
-			displayList.clear();
-			dataDisplay.repaint();
+		if (sev.equals("clear")) {
+			clear();
 			
 		} else if (sev.equals("exit")) {
 			frame.dispose();
@@ -275,7 +277,7 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 
 	private void checkUpdate() {
 		long currentTime = System.nanoTime() / 1000000;
-		if (currentTime - lastUpdate > 250) {
+		if (currentTime - lastUpdate > 1) {
 			lastUpdate = currentTime;
 		 	
 			if (!setRange) {
@@ -300,8 +302,15 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 		sv.frameData();
 		sv.show();
 	}
-
 	
+	private void clear() {
+		displayList.clear();
+		dataDisplay.repaint();
+	}
+	
+	public void close() {
+		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+	}
 	
 	public String buildHTMLLegend() {
 		StringBuilder sb = new StringBuilder("<html><b>Traces present:</b><br/>");
@@ -317,23 +326,6 @@ public final class StandaloneViewer implements ActionListener, DataViewer, DataV
 	public void showFinal() {
 //		frameData();
 //		show();
-	}
-
-	
-	
-	
-	public void importFile() {
-		File f = SwingDialogs.getInstance().getFileToRead();
-		if (f != null) {
-			double[][] dat = FormattedDataUtil.readDataArray(f);
-			double[][] cols = FormattedDataUtil.transpose(dat);
-			
-			int nc = cols.length;
-			for (int i = 1; i < nc; i++) {
-				displayList.addLine(cols[0], cols[i], "#00ff00");
-			}
-			dataDisplay.repaint();
-		}
 	}
 	
 	
