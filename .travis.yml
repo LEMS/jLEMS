@@ -7,4 +7,4 @@ jdk:
 
 script:
   - pwd
-  - ./lems src/test/resources/example1.xml
+  - ./lems src/test/resources/example1.xml -nogui
