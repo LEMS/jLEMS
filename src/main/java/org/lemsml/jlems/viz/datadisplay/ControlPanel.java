@@ -39,7 +39,11 @@ import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.RunConfig;
 import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.sim.ContentError;
+import org.lemsml.jlems.core.sim.LEMSException;
+import org.lemsml.jlems.core.sim.ParseException;
 import org.lemsml.jlems.core.sim.Sim;
+import org.lemsml.jlems.core.type.BuildException;
+import org.lemsml.jlems.core.xml.XMLException;
 
 public abstract class ControlPanel implements ActionListener {
 	
@@ -127,7 +131,7 @@ public abstract class ControlPanel implements ActionListener {
 	 * so that it can be manipulated from the Control Panel.
 	 * Note it is expected that importFile has called sim.build() before this method
 	 */
-	public Sim initialise(File file) {
+	public Sim initialise(File file) throws LEMSException {
 		Sim sim = importFile(file);
 		registerSimulation(sim, file);
 		return sim;
@@ -166,7 +170,7 @@ public abstract class ControlPanel implements ActionListener {
 	 * This will be called each time the Control Panel tries to open a new file or reload the existing simulation
 	 * It is called in the initialise method.
 	 */
-	protected abstract Sim importFile(File sourceFile);
+	protected abstract Sim importFile(File sourceFile) throws LEMSException;
 	
 	/**
 	 * The toolbar for the control panel - open, layer and run

@@ -9,6 +9,7 @@ import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.StateInstance;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
+import org.lemsml.jlems.core.sim.LEMSException;
 import org.lemsml.jlems.core.sim.ParseException;
 import org.lemsml.jlems.core.sim.Sim;
 import org.lemsml.jlems.core.type.BuildException;
@@ -29,7 +30,7 @@ public final class VizMain {
 
     }
 
-    public static void main(String[] argv) throws ConnectionError, ContentError, RuntimeError, ParseError, ParseException, BuildException, XMLException {
+    public static void main(String[] argv) throws LEMSException {
         
         boolean useGui = true;
         FileResultWriterFactory.initialize();
@@ -79,7 +80,7 @@ public final class VizMain {
         ControlPanel cp = new ControlPanel(ControlPanel.DEFAULT_NAME, useGui) {
 
 			@Override
-			public Sim importFile(File simFile) {
+			public Sim importFile(File simFile) throws LEMSException {
 				
 		        if (!simFile.exists()) {
 		        	E.error("No such file: " + simFile.getAbsolutePath());
@@ -90,16 +91,12 @@ public final class VizMain {
 		        if (typePathArg != null) {
 		        	fir.addSearchPaths(typePathArg);
 		        }
-		        
-				try {
-					Sim sim = new Sim(fir.read());
-					sim.readModel();
-			        sim.build();
-			        
-			        return sim;
-				} catch (Exception e) {
-					return null;
-				}            
+
+                Sim sim = new Sim(fir.read());
+                sim.readModel();
+                sim.build();
+
+                return sim;          
 			}
         	
         };
