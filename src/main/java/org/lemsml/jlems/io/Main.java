@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.logging.E;
-import org.lemsml.jlems.core.logging.MinimalMessageHandler;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.StateInstance;
@@ -116,7 +115,7 @@ public final class Main {
     
     
      
-    private static HashMap<String, String> parseArguments(String[] argv) {
+    public static HashMap<String, String> parseArguments(String[] argv) {
     	HashMap<String, String> ret = new HashMap<String, String>();
     	
     	int iarg = 0;

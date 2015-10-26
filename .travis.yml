@@ -4,3 +4,7 @@ jdk:
   - openjdk7
   - openjdk6
   - oraclejdk7
+
+script:
+  - pwd
+  - ./lems src/test/resources/example1.xml -nogui
