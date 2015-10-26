@@ -137,11 +137,11 @@ public class FileResultWriter implements ResultWriter {
             try
             {
                 E.informativeError("This LEMS file is requesting to write to a file: "+fileName+", resolved as: "+fdest.getCanonicalPath()
-                        +"\nHowever parent directory: "+fdest.getParentFile().getCanonicalPath()+" does not exist!");
+                        +"\nHowever, parent directory: "+fdest.getParentFile().getCanonicalPath()+" does not exist!");
             } catch (IOException ex)
             {
                 E.informativeError("This LEMS file is requesting to write to a file: "+fileName+", resolved as: "+fdest.getAbsolutePath()
-                        +"\nHowever parent directory: "+fdest.getParentFile().getAbsolutePath()+" does not exist!");
+                        +"\nHowever, parent directory: "+fdest.getParentFile().getAbsolutePath()+" does not exist!");
             }
             System.exit(1);
         }
