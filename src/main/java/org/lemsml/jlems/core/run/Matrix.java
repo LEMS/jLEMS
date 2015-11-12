@@ -90,14 +90,14 @@ public final class Matrix extends Object implements Cloneable {
       }
    }
 
-
+/*
    public void randomise() {
       for (int i = 0; i < n; i++) {
          for (int j = 0; j < n; j++) {
             a[i][j] = Math.random();
          }
       }
-   }
+   }*/
 
 
    public void zero() {
@@ -116,12 +116,12 @@ public final class Matrix extends Object implements Cloneable {
       return m;
    }
 
-
+/*
    public Matrix random() {
       Matrix m = copy();
       m.randomise();
       return m;
-   }
+   }*/
 
 
 
@@ -608,7 +608,7 @@ public final class Matrix extends Object implements Cloneable {
    }
 
 
-
+/*
    public int randomIndexFromColumn(int c) {
       return randomIndexFromColumn(c, Math.random());
    }
@@ -622,6 +622,7 @@ public final class Matrix extends Object implements Cloneable {
       }
       return ir;
    }
+   */
 
 
 
@@ -635,7 +636,7 @@ public final class Matrix extends Object implements Cloneable {
    }
 
 
-
+/*
    public int randomIndexFromOffsetColumn(int c, int off) {
       double r = Math.random();
       int ir;
@@ -644,7 +645,7 @@ public final class Matrix extends Object implements Cloneable {
       }
       return ir;
    }
-
+*/
 
 
    public double[] ev1vec(int np) throws MatrixException {

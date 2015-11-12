@@ -1,6 +1,6 @@
 @echo off
 
-set LEMS_VERSION=0.9.8.0
+set LEMS_VERSION=0.9.8.1
 
 set CLASSPATH=target\jlems-%LEMS_VERSION%.jar;%LEMS_HOME%\target\jlems-%LEMS_VERSION%.jar
 
