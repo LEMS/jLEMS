@@ -100,6 +100,11 @@ public final class FileUtil
 	}
 
 	public static boolean writeStringToFile(String sdat, File f) throws IOException
+    {
+        return writeStringToFile(sdat, f, false);
+    }
+
+	public static boolean writeStringToFile(String sdat, File f, boolean checkForIdenticalFile) throws IOException
 	{
 		if (!f.exists())
 		{
@@ -115,7 +120,19 @@ public final class FileUtil
 		boolean ok = false;
 		if (f != null)
 		{
-			boolean dogz = fnm.endsWith(".gz");
+            if (f.exists() && checkForIdenticalFile) 
+            {
+                String existing = readStringFromFile(f);
+                if (sdat.equals(existing)) 
+                {
+                    E.info("File "+f.getAbsolutePath()+" exists and is identical");
+                    return true;
+                } else {
+                    E.info("File "+f.getAbsolutePath()+" exists but is different");
+                }
+            
+            }
+ 			boolean dogz = fnm.endsWith(".gz");
 
 			OutputStream fos = new FileOutputStream(f);
 			if (dogz)
@@ -523,5 +540,20 @@ public final class FileUtil
 	{
 		return new Scanner(url.openStream(), "UTF-8").useDelimiter("\\A").next();
 	}
+  
+    public static void main(String[] args) throws Exception
+    {
+        String st = "1234";
+        File f = new File("/tmp/test.txt");
+        
+        if (f.exists()) {
+            System.out.println("File exists: "+f.lastModified());
+        }
+        
+        FileUtil.writeStringToFile(st, f, true);
+        
+        System.out.println("File exists: "+f.lastModified());
+    }  
+    
 
 }
