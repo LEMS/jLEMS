@@ -58,7 +58,8 @@ public class Lems implements ILEMSDocument{
     private final LemsCollection<Valued> globals = new LemsCollection<Valued>();
     private LemsCollection<Valued> constantValued = null;
     
-    private static Random randomGenerator = new Random();
+    private static Random randomGenerator = null;
+    private static int seedForRandomGenerator = 1234;
 
     private boolean resolved = false;
     
@@ -90,6 +91,11 @@ public class Lems implements ILEMSDocument{
     
     
     public static Random getRandomGenerator() {
+        if (randomGenerator == null) {
+            
+            E.info("Initialising random generator in jLEMS with seed: "+seedForRandomGenerator);
+            randomGenerator = new Random(seedForRandomGenerator);
+        }
         return randomGenerator;
     }
 
@@ -343,6 +349,10 @@ public class Lems implements ILEMSDocument{
       	StateInstance ret = cptb.newInstance();
       //  ret.setEventManager(em);
         
+        Component simCmpt = targets.first().getComponent();
+        if (simCmpt.hasAttribute("seed")) {
+            seedForRandomGenerator = Integer.parseInt(simCmpt.getAttributeValue("seed"));
+        }
         ret.checkBuilt();
 
         return ret;

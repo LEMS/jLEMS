@@ -3,7 +3,6 @@ package org.lemsml.jlems.core.run;
 import java.util.ArrayList;
 
 import org.lemsml.jlems.core.expression.ParseError;
-import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.Component;
 
@@ -62,7 +61,7 @@ public class RunConfig
 	}
 
 	public Component getControlComponent() {
-		E.missing();
+		//E.missing();
 		return null;
 	}
 

@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -33,17 +32,14 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
-
 import org.lemsml.jlems.core.expression.ParseError;
+import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.RunConfig;
 import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.sim.LEMSException;
-import org.lemsml.jlems.core.sim.ParseException;
 import org.lemsml.jlems.core.sim.Sim;
-import org.lemsml.jlems.core.type.BuildException;
-import org.lemsml.jlems.core.xml.XMLException;
 
 public abstract class ControlPanel implements ActionListener {
 	
@@ -132,6 +128,7 @@ public abstract class ControlPanel implements ActionListener {
 	 * Note it is expected that importFile has called sim.build() before this method
 	 */
 	public Sim initialise(File file) throws LEMSException {
+        E.info("Loading LEMS file from: "+file.getAbsolutePath());
 		Sim sim = importFile(file);
 		registerSimulation(sim, file);
 		return sim;
@@ -327,7 +324,7 @@ public abstract class ControlPanel implements ActionListener {
 		return jmi;
 	}
 	
-	public void show() {
+	public final void show() {
 		frame.pack();
 		frame.setVisible(true);
 	}
