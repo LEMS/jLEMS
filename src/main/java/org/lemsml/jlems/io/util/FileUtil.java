@@ -34,7 +34,7 @@ public final class FileUtil {
     }
 
     public static byte[] readHeader(File f, int n) throws IOException {
-        byte[] ret = null;
+        byte[] ret;
 
         FileInputStream ins = new FileInputStream(f);
         ret = new byte[n];
@@ -48,7 +48,7 @@ public final class FileUtil {
     }
 
     public static byte[] readBytes(File f) throws IOException {
-        byte[] ret = null;
+        byte[] ret;
 
         FileInputStream fis = new FileInputStream(f);
         BufferedInputStream bis = new BufferedInputStream(fis);
@@ -66,11 +66,8 @@ public final class FileUtil {
     }
 
 
-    public static String readStringFromFile(File f) throws IOException {
-        return readStringFromFile(f, true); // As this was the default behaviour originally of readStringFromFile
-    }
 
-    public static String readStringFromFile(File f, boolean appendReturn) throws IOException {
+    public static String readStringFromFile(File f) throws IOException {
         String sdat = "null";
         if (f != null) {
 
@@ -84,9 +81,7 @@ public final class FileUtil {
 
             StringBuilder sb = new StringBuilder();
             while (fr.ready()) {
-                sb.append(fr.readLine());
-                if (appendReturn)
-                    sb.append("\n");
+                sb.append(fr.readLine()).append("\n");
             }
             fr.close();
             sdat = sb.toString();
@@ -105,12 +100,12 @@ public final class FileUtil {
         
         if (f != null) {
             if (f.exists() && checkForIdenticalFile) {
-                String existing = readStringFromFile(f, false);
+                String existing = readStringFromFile(f);
                 if (sdat.equals(existing)) {
                     E.info("File " + f.getAbsolutePath() + " exists and is identical");
                     return true;
                 } else {
-                    E.info("File " + f.getAbsolutePath() + " exists but is different");//: ["+existing+"] ["+sdat+"]");
+                    E.info("File " + f.getAbsolutePath() + " exists but is different");// : existing- <<<"+existing+">>>, new- <<<"+wouldGetWritten+">>>");
                 }
 
             }
@@ -141,9 +136,9 @@ public final class FileUtil {
     }
 
     public static boolean appendStringToFile(String sdat, File f) throws IOException {
-        String fnm = f.getName();
         boolean ok = false;
         if (f != null) {
+            String fnm = f.getName();
             OutputStream fos = new FileOutputStream(f, true);
 
             OutputStreamWriter osw = new OutputStreamWriter(fos);
@@ -260,7 +255,7 @@ public final class FileUtil {
     }
 
     public static String readNLinesFromFile(File f, int n) throws IOException {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         if (f != null) {
 
@@ -306,7 +301,7 @@ public final class FileUtil {
     // MAYDO make this smarter (or use GlobFileFilter from jakarta ORO ?)
     public static ArrayList<File> matchingFiles(String srcPattern) {
         ArrayList<File> ret = new ArrayList<File>();
-        if (srcPattern.indexOf("*") < 0) {
+        if (!srcPattern.contains("*")) {
             File fd = new File(srcPattern);
             if (fd.exists() && fd.isDirectory()) {
                 for (File f : fd.listFiles()) {
@@ -472,7 +467,8 @@ public final class FileUtil {
         System.out.println("File exists: " + f.lastModified());
         
         FileUtil.writeStringToFile(st, f, true);
-        FileUtil.writeStringToFile(st+"?", f, true);
+        FileUtil.writeStringToFile(st+"?\n\n", f, true);
+        FileUtil.writeStringToFile(st+"?\n\n", f, true);
     }
 
 }
