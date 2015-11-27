@@ -13,7 +13,7 @@ import org.lemsml.jlems.core.xml.XMLElement;
 import org.lemsml.jlems.core.xml.XMLAttribute;
 import org.lemsml.jlems.core.logging.E;
 // NB this is generated code. Don't edit it. If there is a problem, fix the superclass,
-// the generator - org.lemsml.jlems.schema.LemsFactoryGenerator, or the class being instantiated.
+// the generator - org.lemsml.jlems.io.reader.LemsFactoryGenerator, or the class being instantiated.
 
 public class LemsFactory extends AbstractLemsFactory {
 
@@ -61,10 +61,10 @@ public class LemsFactory extends AbstractLemsFactory {
             ret = buildChild(xel);
         } else if (tag.equals("Children")) {
             ret = buildChildren(xel);
-        } else if (tag.equals("ComponentReference")) {
-            ret = buildComponentReference(xel);
         } else if (tag.equals("Link")) {
             ret = buildLink(xel);
+        } else if (tag.equals("ComponentReference")) {
+            ret = buildComponentReference(xel);
         } else if (tag.equals("ComponentTypeReference")) {
             ret = buildComponentTypeReference(xel);
         } else if (tag.equals("Collection")) {
@@ -171,6 +171,8 @@ public class LemsFactory extends AbstractLemsFactory {
             ret = buildDataDisplay(xel);
         } else if (tag.equals("DataWriter")) {
             ret = buildDataWriter(xel);
+        } else if (tag.equals("EventWriter")) {
+            ret = buildEventWriter(xel);
         } else if (tag.equals("Run")) {
             ret = buildRun(xel);
         } else if (tag.equals("Procedure")) {
@@ -220,9 +222,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Dimension) {
                 ret.dimensions.add((Dimension)obj);
@@ -412,9 +411,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Insertion) {
                 ret.insertions.add((Insertion)obj);
@@ -461,9 +457,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Parameter) {
                 ret.parameters.add((Parameter)obj);
@@ -781,8 +774,8 @@ public class LemsFactory extends AbstractLemsFactory {
         return ret;
     }
 
-    private ComponentReference buildComponentReference(XMLElement xel) {
-        ComponentReference ret = new ComponentReference();
+    private Link buildLink(XMLElement xel) {
+        Link ret = new Link();
 
         for (XMLAttribute xa : xel.getAttributes()) {
             String xn = internalFieldName(xa.getName());
@@ -812,8 +805,8 @@ public class LemsFactory extends AbstractLemsFactory {
         return ret;
     }
 
-    private Link buildLink(XMLElement xel) {
-        Link ret = new Link();
+    private ComponentReference buildComponentReference(XMLElement xel) {
+        ComponentReference ret = new ComponentReference();
 
         for (XMLAttribute xa : xel.getAttributes()) {
             String xn = internalFieldName(xa.getName());
@@ -1111,9 +1104,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Super) {
                 ret.supers.add((Super)obj);
@@ -1268,9 +1258,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof StateAssignment) {
                 ret.stateAssignments.add((StateAssignment)obj);
@@ -1307,9 +1294,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof StateAssignment) {
                 ret.stateAssignments.add((StateAssignment)obj);
@@ -1346,9 +1330,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof StateAssignment) {
                 ret.stateAssignments.add((StateAssignment)obj);
@@ -1445,9 +1426,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof DerivedVariable) {
                 ret.derivedVariables.add((DerivedVariable)obj);
@@ -1492,9 +1470,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof StateAssignment) {
                 ret.stateAssignments.add((StateAssignment)obj);
@@ -1573,9 +1548,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Case) {
                 ret.cases.add((Case)obj);
@@ -1629,9 +1601,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof DerivedVariable) {
                 ret.derivedVariables.add((DerivedVariable)obj);
@@ -1735,9 +1704,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
@@ -1776,9 +1742,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Assign) {
                 ret.assigns.add((Assign)obj);
@@ -1817,9 +1780,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Assign) {
                 ret.assigns.add((Assign)obj);
@@ -1875,9 +1835,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
@@ -1912,9 +1869,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Assign) {
                 ret.assigns.add((Assign)obj);
@@ -1951,9 +1905,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
@@ -1998,9 +1949,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Assign) {
                 ret.assigns.add((Assign)obj);
@@ -2047,9 +1995,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
@@ -2090,9 +2035,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
@@ -2125,9 +2067,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
@@ -2160,9 +2099,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
@@ -2201,9 +2137,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
@@ -2236,9 +2169,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
@@ -2271,9 +2201,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
@@ -2308,9 +2235,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
@@ -2349,9 +2273,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
@@ -2382,9 +2303,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Record) {
                 ret.records.add((Record)obj);
@@ -2394,6 +2312,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.dataDisplays.add((DataDisplay)obj);
             } else if (obj instanceof DataWriter) {
                 ret.dataWriters.add((DataWriter)obj);
+            } else if (obj instanceof EventWriter) {
+                ret.eventWriters.add((EventWriter)obj);
             } else {
                 E.warning("unrecognized element " + cel);
             }
@@ -2474,6 +2394,33 @@ public class LemsFactory extends AbstractLemsFactory {
         return ret;
     }
 
+    private EventWriter buildEventWriter(XMLElement xel) {
+        EventWriter ret = new EventWriter();
+
+        for (XMLAttribute xa : xel.getAttributes()) {
+            String xn = internalFieldName(xa.getName());
+            String xv = xa.getValue();
+
+            if (xn.equals("UNUSED")) {
+            } else if (xn.equals("id")) {
+                ret.id = parseString(xv);
+            } else if (xn.equals("path")) {
+                ret.path = parseString(xv);
+            } else if (xn.equals("fileName")) {
+                ret.fileName = parseString(xv);
+            } else if (xn.equals("select")) {
+                ret.select = parseString(xv);
+            } else if (xn.equals("eventPort")) {
+                ret.eventPort = parseString(xv);
+            } else {
+                E.warning("unrecognized attribute " + xa + " " + xv);
+            }
+        }
+
+
+        return ret;
+    }
+
     private Run buildRun(XMLElement xel) {
         Run ret = new Run();
 
@@ -2517,9 +2464,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Statement) {
                 ret.statements.add((Statement)obj);
@@ -2571,9 +2515,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Statement) {
                 ret.statements.add((Statement)obj);
@@ -2625,9 +2566,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof Frustum) {
                 ret.frustums.add((Frustum)obj);
@@ -2745,9 +2683,6 @@ public class LemsFactory extends AbstractLemsFactory {
             String xn = cel.getTag();
 
             Object obj = instantiateFromXMLElement(cel);
-            if (obj != null && obj instanceof DeprecatedElement) {
-                obj = ((DeprecatedElement)obj).getReplacement();
-            }
             if (xn.equals("UNUSED")) {
             } else if (obj instanceof ScalarField) {
                 ret.scalarFields.add((ScalarField)obj);

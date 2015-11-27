@@ -1,22 +1,24 @@
 package org.lemsml.jlems.core.type.simulation;
  
-import org.lemsml.jlems.core.run.RuntimeOutput;
+import org.lemsml.jlems.core.run.RuntimeEventOutput;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.Component;
  
 
-public class DataWriter {
+public class EventWriter {
 
 	public String id;
 	
 	public String path;
 	
 	public String fileName;
-
 	
+	public String select;
 	
-	public RuntimeOutput getRuntimeOutput(Component cpt) throws ContentError {
-		RuntimeOutput ret = new RuntimeOutput();
+	public String eventPort;
+	
+	public RuntimeEventOutput getRuntimeEventOutput(Component cpt) throws ContentError {
+		RuntimeEventOutput ret = new RuntimeEventOutput();
 		ret.setID(cpt.getID());
  		if (cpt.hasTextParam(path)) {
 			ret.setPath(cpt.getTextParam(path));
@@ -24,8 +26,5 @@ public class DataWriter {
 		ret.setFileName(cpt.getTextParam(fileName));
 		return ret;
 	}
-	
-	 
-  
  
 }

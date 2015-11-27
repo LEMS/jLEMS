@@ -400,6 +400,8 @@ public class StateInstance implements StateRunnable, ILEMSStateInstance {
 		outPortHM.put(s, op);
 	}
 
+    
+    
 	public void sendFromPort(String sop) throws RuntimeError {
 		outPortHM.get(sop).send();
 	}

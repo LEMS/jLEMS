@@ -3,6 +3,7 @@ package org.lemsml.jlems.core.type.simulation;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.out.ResultWriter;
 import org.lemsml.jlems.core.run.RuntimeDisplay;
+import org.lemsml.jlems.core.run.RuntimeEventOutput;
 import org.lemsml.jlems.core.run.RuntimeOutput;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
@@ -23,6 +24,8 @@ public class Simulation {
 	public transient LemsCollection <DataDisplay> dataDisplays = new LemsCollection<DataDisplay>();
 
 	public transient LemsCollection <DataWriter> dataWriters = new LemsCollection<DataWriter>();
+
+	public transient LemsCollection <EventWriter> eventWriters = new LemsCollection<EventWriter>();
 
 	
 	public static int idCounter = 0;
@@ -66,6 +69,13 @@ public class Simulation {
 		 for (DataWriter dw : dataWriters) {
 			 final RuntimeOutput ro = dw.getRuntimeOutput(cpt);
 			 ret.addRuntimeOutput(ro);
+		 }
+	 }
+	 
+	 if (eventWriters.size() > 0) {
+		 for (EventWriter ew : eventWriters) {
+			 final RuntimeEventOutput reo = ew.getRuntimeEventOutput(cpt);
+			 ret.addRuntimeEventOutput(reo);
 		 }
 	 }
 	 

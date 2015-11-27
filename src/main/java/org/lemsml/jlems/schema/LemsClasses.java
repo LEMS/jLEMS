@@ -69,6 +69,7 @@ import org.lemsml.jlems.core.type.procedure.Print;
 import org.lemsml.jlems.core.type.procedure.Procedure;
 import org.lemsml.jlems.core.type.simulation.DataDisplay;
 import org.lemsml.jlems.core.type.simulation.DataWriter;
+import org.lemsml.jlems.core.type.simulation.EventWriter;
 import org.lemsml.jlems.core.type.simulation.Record;
 import org.lemsml.jlems.core.type.simulation.Run;
 import org.lemsml.jlems.core.type.simulation.Simulation;
@@ -238,6 +239,7 @@ public final class LemsClasses {
 		ret.add(new LemsClass(Record.class, section));
 		ret.add(new LemsClass(DataDisplay.class, section));
 		ret.add(new LemsClass(DataWriter.class, section));
+		ret.add(new LemsClass(EventWriter.class, section));
 		ret.add(new LemsClass(Run.class, section));
 		return ret;
 	}
