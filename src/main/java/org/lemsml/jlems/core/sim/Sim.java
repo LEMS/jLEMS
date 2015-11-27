@@ -19,6 +19,7 @@ import org.lemsml.jlems.core.run.RunConfig;
 import org.lemsml.jlems.core.run.RuntimeDisplay;
 import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.RuntimeEventOutput;
+import org.lemsml.jlems.core.run.RuntimeEventRecorder;
 import org.lemsml.jlems.core.run.RuntimeOutput;
 import org.lemsml.jlems.core.run.RuntimeRecorder;
 import org.lemsml.jlems.core.run.StateInstance;
@@ -109,6 +110,7 @@ public class Sim extends LemsProcess {
 	    rwHM = new HashMap<String, ResultWriter>();
  	    for (RuntimeOutput ro : runtimeOutputs) {
  	    	ResultWriter rw = ResultWriterFactory.getFactory().newResultWriter(ro);
+            //System.out.println("Putting "+ro.getID()+" in rwHM");
 	    	rwHM.put(ro.getID(), rw);
 	    	resultWriters.add(rw);
 	    }
@@ -123,13 +125,14 @@ public class Sim extends LemsProcess {
 	    erwHM = new HashMap<String, EventResultWriter>();
  	    for (RuntimeEventOutput reo : runtimeEventOutputs) {
  	    	EventResultWriter erw = ResultWriterFactory.getFactory().newEventResultWriter(reo);
+            //System.out.println("Putting "+reo.getID()+" in erwHM");
 	    	erwHM.put(reo.getID(), erw);
 	    	eventResultWriters.add(erw);
 	    }
         
         
-	   	    
 	    runConfigs = new ArrayList<RunConfig>();
+        
 	    RunConfigCollector rcc = new RunConfigCollector(runConfigs);
 	    rootBehavior.visitAll(rcc);
 	}
@@ -225,7 +228,6 @@ public class Sim extends LemsProcess {
   	       
   	    ArrayList<RuntimeRecorder> recorders = rc.getRecorders();
   	    
-  	    
   	    for (RuntimeRecorder rr : recorders) {
   	    	String disp = rr.getDisplay();
   	    	if (dvHM.containsKey(disp)) {
@@ -235,11 +237,24 @@ public class Sim extends LemsProcess {
   	    		ResultWriter rw = rwHM.get(disp);
   	    		rw.addedRecorder();
   	    		rr.connectRunnable(ra, rw);
-  	    		
-  	    		//E.info("Connected runnable to " + disp + " " + rwHM.get(disp));
+                //System.out.println("Connected ["+rw.getID()+"] to ["+rr.toString()+"]");
   	    		
   	    	} else {
   	    		throw new ConnectionError("No such data viewer " + disp + " needed for " + rr);
+  	    	}
+  	    }
+  	       
+  	    ArrayList<RuntimeEventRecorder> eventRecorders = rc.getEventRecorders();
+  	    
+  	    for (RuntimeEventRecorder rer : eventRecorders) {
+  	    	String id = rer.getParent();
+  	    	if (erwHM.containsKey(id)) {
+  	    		EventResultWriter erw = erwHM.get(id);
+  	    		erw.addedRecorder();
+  	    		rer.connectRunnable(ra, erw);
+  	    		
+  	    	} else {
+  	    		throw new ConnectionError("No such writer " + id + " needed for [[" + rer.toString() +"]], <<"+erwHM.keySet()+">>, <<"+erwHM.values()+">>");
   	    	}
   	    }
   	    

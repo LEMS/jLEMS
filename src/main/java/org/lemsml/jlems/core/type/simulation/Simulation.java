@@ -124,9 +124,9 @@ public class Simulation {
                 {
                     throw new ContentError("No path specified for recorder (" + er.quantity + ") in " + cpt);
                 }
-
+                Component cparent = cpt.getParent();
                 
-                ret.addEventRecorder(cpt.id, path);
+                ret.addEventRecorder(cpt.id, path, cparent.getID());
             }
         }
      

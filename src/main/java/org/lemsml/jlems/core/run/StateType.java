@@ -1329,8 +1329,8 @@ public class StateType implements RuntimeType, ILEMSStateType {
 		runtimeRecorders.add(new RuntimeRecorder(id, q, tsc, ysc, col, display));
 	}
     
-	public void addEventRecorder(String id, String q) {
-		runtimeEventRecorders.add(new RuntimeEventRecorder(id, q));
+	public void addEventRecorder(String id, String q, String parent) {
+		runtimeEventRecorders.add(new RuntimeEventRecorder(id, q, parent));
 	}
 	
 	
@@ -1360,6 +1360,10 @@ public class StateType implements RuntimeType, ILEMSStateType {
 	
 	public ArrayList<RuntimeRecorder> getRuntimeRecorders() {
 		return runtimeRecorders;
+	}
+	
+	public ArrayList<RuntimeEventRecorder> getRuntimeEventRecorders() {
+		return runtimeEventRecorders;
 	}
 
     @Override

@@ -1,7 +1,7 @@
 package org.lemsml.jlems.core.run;
 
 //import org.lemsml.jlems.core.display.DataViewer;
-import org.lemsml.jlems.core.out.ResultWriter;
+import org.lemsml.jlems.core.out.EventResultWriter;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.sim.RunnableAccessor;
 
@@ -11,25 +11,25 @@ public class RuntimeEventRecorder
     String id;
     String quantity;
     //String color;
-    //String display;
+    String parent;
 
     StateWrapper stateWrapper;
 
     // on or the other of these will be set - maybe common interface?
     //DataViewer dataViewer;
-    ResultWriter resultWriter;
+    EventResultWriter eventResultWriter;
 
     //double tscale;
     //double yscale;
 
-    public RuntimeEventRecorder(String aid, String q)
+    public RuntimeEventRecorder(String aid, String q, String p)
     {
         id = aid;
         quantity = q;
         //tscale = tsc;
         //yscale = ysc;
         //color = col;
-        //display = d;
+        parent = p;
     }
 
     @Override
@@ -43,12 +43,12 @@ public class RuntimeEventRecorder
         return id;
     }
     
-    /*
-    public String getDisplay()
+    
+    public String getParent()
     {
-        return display;
+        return parent;
     }
-
+/*
     
     public void connectRunnable(RunnableAccessor ra, DataViewer dv) throws ConnectionError, ContentError
     {
@@ -64,8 +64,9 @@ public class RuntimeEventRecorder
         dataViewer = dv;
     }*/
 
-    public void connectRunnable(RunnableAccessor ra, ResultWriter rw) throws ConnectionError, ContentError
+    public void connectRunnable(RunnableAccessor ra, EventResultWriter erw) throws ConnectionError, ContentError
     {
+        System.out.println("Connecting "+ra.toString()+" to "+erw.getID());
         if (quantity == null)
         {
             throw new ConnectionError("Recorder has null quantity " + toString());
@@ -75,7 +76,7 @@ public class RuntimeEventRecorder
         {
             throw new ConnectionError("unable to access state variable: " + quantity);
         }
-        resultWriter = rw;
+        eventResultWriter = erw;
     }
 
     public void appendState(double ft) throws ContentError, RuntimeError
@@ -85,9 +86,9 @@ public class RuntimeEventRecorder
         double y = stateWrapper.getValue() / 1;
         // E.info("Adding point: ("+x+", "+y+")");
 
-        if (resultWriter != null)
+        if (eventResultWriter != null)
         {
-            resultWriter.addPoint(id, x, y);
+            eventResultWriter.addPoint(id, x, y);
         }
     }
 

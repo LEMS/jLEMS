@@ -2,8 +2,8 @@ package org.lemsml.jlems.core.sim;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.lemsml.jlems.core.run.RunConfig;
+import org.lemsml.jlems.core.run.RuntimeEventRecorder;
 import org.lemsml.jlems.core.run.RuntimeRecorder;
 import org.lemsml.jlems.core.run.StateType;
 
@@ -26,6 +26,12 @@ public class RunConfigCollector implements StateTypeVisitor {
 			cb.visitAll(recc);
 			 
 			rc.setRecorders(arc);
+			
+			ArrayList<RuntimeEventRecorder> rers = new ArrayList<RuntimeEventRecorder>();
+			EventRecorderCollector erecc = new EventRecorderCollector(rers);
+			cb.visitAll(erecc);
+            
+            rc.setEventRecorders(rers);
 		}
 	}
 
