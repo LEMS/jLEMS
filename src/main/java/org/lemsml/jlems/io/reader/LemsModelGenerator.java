@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.type.Attribute;
 import org.lemsml.jlems.core.type.LemsCollection;

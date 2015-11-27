@@ -1,7 +1,6 @@
 package org.lemsml.jlems.io.reader;
  
 import java.util.ArrayList;
- 
 import org.lemsml.jlems.core.type.About;
 import org.lemsml.jlems.core.type.Assertion;
 import org.lemsml.jlems.core.type.Attachments;
@@ -70,6 +69,7 @@ import org.lemsml.jlems.core.type.simulation.DataDisplay;
 import org.lemsml.jlems.core.type.simulation.DataWriter;
 import org.lemsml.jlems.core.type.simulation.EventWriter;
 import org.lemsml.jlems.core.type.simulation.Record;
+import org.lemsml.jlems.core.type.simulation.EventRecord;
 import org.lemsml.jlems.core.type.simulation.Run;
 import org.lemsml.jlems.core.type.simulation.Simulation;
 import org.lemsml.jlems.core.type.structure.Apply;
@@ -88,7 +88,6 @@ import org.lemsml.jlems.core.type.structure.PairsEventConnection;
 import org.lemsml.jlems.core.type.structure.Structure;
 import org.lemsml.jlems.core.type.structure.Tunnel;
 import org.lemsml.jlems.core.type.structure.With;
- 
 public final class LemsClasses {
 
 	
@@ -219,7 +218,7 @@ public final class LemsClasses {
  		ret.add(new LemsClass(ComponentTypeReference.class, section));
  		ret.add(new LemsClass(Collection.class, section));
  		ret.add(new LemsClass(PairCollection.class, section));
-		ret.add(new LemsClass(EventPort.class, section));
+		ret.add(new LemsClass(EventPort.class, section)); // Deprecated
 		ret.add(new LemsClass(Text.class, section));
 		ret.add(new LemsClass(Path.class, section));
 		ret.add(new LemsClass(Attachments.class, section));
@@ -236,6 +235,7 @@ public final class LemsClasses {
 		String section = "simulation";
 		ret.add(new LemsClass(Simulation.class, section));
 		ret.add(new LemsClass(Record.class, section));
+		ret.add(new LemsClass(EventRecord.class, section));
 		ret.add(new LemsClass(DataDisplay.class, section));
 		ret.add(new LemsClass(DataWriter.class, section));
 		ret.add(new LemsClass(EventWriter.class, section));

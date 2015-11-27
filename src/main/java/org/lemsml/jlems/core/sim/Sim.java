@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.lemsml.jlems.core.display.DataViewPort;
 import org.lemsml.jlems.core.display.DataViewer;
 import org.lemsml.jlems.core.display.DataViewerFactory;
 import org.lemsml.jlems.core.display.StateTypeWriter;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jlems.core.out.EventResultWriter;
 import org.lemsml.jlems.core.out.ResultWriter;
 import org.lemsml.jlems.core.out.ResultWriterFactory;
 import org.lemsml.jlems.core.run.ConnectionError;
@@ -18,6 +18,7 @@ import org.lemsml.jlems.core.run.EventManager;
 import org.lemsml.jlems.core.run.RunConfig;
 import org.lemsml.jlems.core.run.RuntimeDisplay;
 import org.lemsml.jlems.core.run.RuntimeError;
+import org.lemsml.jlems.core.run.RuntimeEventOutput;
 import org.lemsml.jlems.core.run.RuntimeOutput;
 import org.lemsml.jlems.core.run.RuntimeRecorder;
 import org.lemsml.jlems.core.run.StateInstance;
@@ -36,8 +37,10 @@ public class Sim extends LemsProcess {
      
     HashMap<String, DataViewer> dvHM;
     HashMap<String, ResultWriter> rwHM;
+    HashMap<String, EventResultWriter> erwHM;
     
     ArrayList<ResultWriter> resultWriters = new ArrayList<ResultWriter>();
+    ArrayList<EventResultWriter> eventResultWriters = new ArrayList<EventResultWriter>();
     
     ArrayList<RunConfig> runConfigs;
     
@@ -102,13 +105,29 @@ public class Sim extends LemsProcess {
 	    OutputCollector oco = new OutputCollector(runtimeOutputs);
 	    rootBehavior.visitAll(oco);
 	   
-	    // build the displays and keep them in dvHM
+	    // build the outputs and keep them in rwHM
 	    rwHM = new HashMap<String, ResultWriter>();
  	    for (RuntimeOutput ro : runtimeOutputs) {
  	    	ResultWriter rw = ResultWriterFactory.getFactory().newResultWriter(ro);
 	    	rwHM.put(ro.getID(), rw);
 	    	resultWriters.add(rw);
 	    }
+        
+	 
+	    // collect everything in the StateType tree that records events
+	    ArrayList<RuntimeEventOutput> runtimeEventOutputs = new ArrayList<RuntimeEventOutput>();
+	    EventOutputCollector eoco = new EventOutputCollector(runtimeEventOutputs);
+	    rootBehavior.visitAll(eoco);
+	   
+	    // build the event outputs and keep them in dvHM
+	    erwHM = new HashMap<String, EventResultWriter>();
+ 	    for (RuntimeEventOutput reo : runtimeEventOutputs) {
+ 	    	EventResultWriter erw = ResultWriterFactory.getFactory().newEventResultWriter(reo);
+	    	erwHM.put(reo.getID(), erw);
+	    	eventResultWriters.add(erw);
+	    }
+        
+        
 	   	    
 	    runConfigs = new ArrayList<RunConfig>();
 	    RunConfigCollector rcc = new RunConfigCollector(runConfigs);
@@ -251,6 +270,10 @@ public class Sim extends LemsProcess {
                 for (ResultWriter rw : resultWriters) {
                     rw.advance(t);
                 }
+                
+                for (EventResultWriter erw : eventResultWriters) {
+                    erw.advance(t);
+                }
 
                 for (RuntimeRecorder rr : recorders) {
                     rr.appendState(t);
@@ -292,6 +315,10 @@ public class Sim extends LemsProcess {
         for (ResultWriter rw : resultWriters) {
     		rw.advance(t);
     		rw.close();
+    	}  
+        for (EventResultWriter erw : eventResultWriters) {
+    		erw.advance(t);
+    		erw.close();
     	}
         
         simulationSaveTime = System.currentTimeMillis();

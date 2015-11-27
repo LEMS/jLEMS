@@ -5,12 +5,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.lemsml.jlems.core.logging.E;
-import org.lemsml.jlems.core.out.ResultWriter;
+import org.lemsml.jlems.core.out.EventResultWriter;
 import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.RuntimeOutput;
 import org.lemsml.jlems.io.util.FileUtil;
 
-public class FileResultWriter implements ResultWriter {
+public class FileEventResultWriter implements EventResultWriter {
 
     String id;
 
@@ -29,7 +29,7 @@ public class FileResultWriter implements ResultWriter {
     boolean verbose = false;
 
 
-    public FileResultWriter(RuntimeOutput ro) {
+    public FileEventResultWriter(RuntimeOutput ro) {
          id = ro.getID();
          path = ro.getPath();
          fileName = ro.getFileName();
@@ -155,7 +155,7 @@ public class FileResultWriter implements ResultWriter {
         flush();
 
         File f = getFile();
-        E.info("Written to the file " + f.getAbsolutePath() + " " + f.length());
+        E.info("Written to the event file " + f.getAbsolutePath() + " " + f.length());
     }
 
 

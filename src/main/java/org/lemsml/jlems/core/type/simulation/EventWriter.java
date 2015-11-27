@@ -13,9 +13,6 @@ public class EventWriter {
 	
 	public String fileName;
 	
-	public String select;
-	
-	public String eventPort;
 	
 	public RuntimeEventOutput getRuntimeEventOutput(Component cpt) throws ContentError {
 		RuntimeEventOutput ret = new RuntimeEventOutput();

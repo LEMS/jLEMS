@@ -1,5 +1,6 @@
 package org.lemsml.jlems.core.out;
 
+import org.lemsml.jlems.core.run.RuntimeEventOutput;
 import org.lemsml.jlems.core.run.RuntimeOutput;
 
 public class ResultWriterFactory {
@@ -32,6 +33,18 @@ public class ResultWriterFactory {
 			ret = delegatedFactory.newResultWriter(ro);
 		} else {
 			ret = new DummyResultWriter(ro);
+		}
+		
+		return ret;
+	}
+	
+	public EventResultWriter newEventResultWriter(RuntimeEventOutput ro) {
+		EventResultWriter ret = null;
+		
+		if (delegatedFactory != null) {
+			ret = delegatedFactory.newEventResultWriter(ro);
+		} else {
+			ret = new DummyEventResultWriter(ro);
 		}
 		
 		return ret;

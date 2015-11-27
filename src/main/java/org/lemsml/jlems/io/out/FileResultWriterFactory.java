@@ -1,9 +1,9 @@
 package org.lemsml.jlems.io.out;
 
-import org.lemsml.jlems.core.display.DataViewer;
-import org.lemsml.jlems.core.display.DataViewerFactory;
+import org.lemsml.jlems.core.out.EventResultWriter;
 import org.lemsml.jlems.core.out.ResultWriter;
 import org.lemsml.jlems.core.out.ResultWriterFactory;
+import org.lemsml.jlems.core.run.RuntimeEventOutput;
 import org.lemsml.jlems.core.run.RuntimeOutput;
 
 public final class FileResultWriterFactory extends ResultWriterFactory {
@@ -27,6 +27,12 @@ public final class FileResultWriterFactory extends ResultWriterFactory {
 	@Override
 	public ResultWriter newResultWriter(RuntimeOutput ro) {
 		ResultWriter ret = new FileResultWriter(ro);	
+		return ret;
+	}
+    
+	@Override
+	public EventResultWriter newEventResultWriter(RuntimeEventOutput ro) {
+		EventResultWriter ret = new FileEventResultWriter(ro);	
 		return ret;
 	}
 

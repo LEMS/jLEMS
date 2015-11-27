@@ -1,5 +1,7 @@
 package org.lemsml.jlems.schema;
 
+import org.lemsml.jlems.io.reader.LemsClasses;
+import org.lemsml.jlems.io.reader.LemsClass;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;

@@ -18,6 +18,8 @@ public class Simulation {
 
 	 
 	public transient LemsCollection <Record> records = new LemsCollection<Record>();
+	 
+	public transient LemsCollection <EventRecord> eventRecords = new LemsCollection<EventRecord>();
 	
 	public transient LemsCollection <Run> runs = new LemsCollection<Run>();
 	
@@ -112,6 +114,22 @@ public class Simulation {
 			 ret.addRecorder(cpt.id, path, tsc, ysc, cpt.getTextParam(r.color), cdisp.id);
 		 }
 	 }
+
+        if (eventRecords.size() > 0)
+        {
+            for (EventRecord er : eventRecords)
+            {
+                final String path = cpt.getPathParameterPath(er.quantity);
+                if (path == null)
+                {
+                    throw new ContentError("No path specified for recorder (" + er.quantity + ") in " + cpt);
+                }
+
+                
+                ret.addEventRecorder(cpt.id, path);
+            }
+        }
+     
 	}
 
 	

@@ -79,6 +79,8 @@ public class StateType implements RuntimeType, ILEMSStateType {
 	
 	ArrayList<RuntimeRecorder> runtimeRecorders = new ArrayList<RuntimeRecorder>();
 	
+	ArrayList<RuntimeEventRecorder> runtimeEventRecorders = new ArrayList<RuntimeEventRecorder>();
+	
 	RunConfig runConfig = null;
 	
 	ArrayList<Builder> builders;
@@ -1326,6 +1328,10 @@ public class StateType implements RuntimeType, ILEMSStateType {
 	public void addRecorder(String id, String q, double tsc, double ysc, String col, String display) {
 		runtimeRecorders.add(new RuntimeRecorder(id, q, tsc, ysc, col, display));
 	}
+    
+	public void addEventRecorder(String id, String q) {
+		runtimeEventRecorders.add(new RuntimeEventRecorder(id, q));
+	}
 	
 	
 	public void visitAll(StateTypeVisitor v) {
@@ -1346,6 +1352,10 @@ public class StateType implements RuntimeType, ILEMSStateType {
 
 	public ArrayList<RuntimeOutput> getRuntimeOutputs() {
 		return runtimeOutputs;
+	}
+
+	public ArrayList<RuntimeEventOutput> getRuntimeEventOutputs() {
+		return runtimeEventOutputs;
 	}
 	
 	public ArrayList<RuntimeRecorder> getRuntimeRecorders() {

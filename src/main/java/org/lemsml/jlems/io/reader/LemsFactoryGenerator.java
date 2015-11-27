@@ -34,7 +34,7 @@ public class LemsFactoryGenerator {
 		sb.append("import org.lemsml.jlems.core.logging.E;\n");
 		
 		sb.append("// NB this is generated code. Don't edit it. If there is a problem, fix the superclass,\n");
-		sb.append("// the generator - org.lemsml.jlems.io.reader.LemsFactoryGenerator, or the class being instantiated.\n\n");
+		sb.append("// the generator - org.lemsml.jlems.schema.LemsFactoryGenerator, or the class being instantiated.\n\n");
 		sb.append("public class LemsFactory extends AbstractLemsFactory {\n\n\n");
 	
 		
@@ -110,7 +110,7 @@ public class LemsFactoryGenerator {
 		
 		
 		sb.append("            } else {\n");
-		sb.append("                E.warning(\"unrecognized attribute \" + xa + \" \" + xv);\n");
+		sb.append("                E.warning(\"Unrecognized attribute \" + xa + \" \" + xv);\n");
 		sb.append("            }\n");
 		sb.append("        }\n\n\n");
 		
@@ -167,6 +167,10 @@ public class LemsFactoryGenerator {
 	sb.append("            String xn = cel.getTag();\n\n");
 	sb.append("            Object obj = instantiateFromXMLElement(cel);\n");
 	
+	sb.append("            if (obj != null && obj instanceof DeprecatedElement) {\n");
+	sb.append("                obj = ((DeprecatedElement)obj).getReplacement();\n");
+	sb.append("            }\n");
+	
 	sb.append("            if (xn.equals(\"UNUSED\")) {\n");
 	
 	for (Field f : c.getFields()) {
@@ -183,7 +187,7 @@ public class LemsFactoryGenerator {
 	}	
  
 	sb.append("            } else {\n");
-	sb.append("                E.warning(\"unrecognized element \" + cel);\n");
+	sb.append("                E.warning(\"Unrecognized element (\"+xn+\"): \" + cel);\n");
 	sb.append("            }\n");
 	sb.append("        }\n\n\n");
 	}
@@ -196,13 +200,13 @@ public class LemsFactoryGenerator {
  		
 		File f = new File("src/main/java/org/lemsml/jlems/core/reader/LemsFactory.java");
 
-        if (FileUtil.writeStringToFile(txt, f))
+		// E.info("About to write " + f.getAbsolutePath() + " local "+ (new File("")).getAbsolutePath());
+		
+		boolean success = FileUtil.writeStringToFile(txt, f);
+		if (success) {
             E.info("Written " + f.getAbsolutePath());
-        else
-            E.info("Problem writing " + f.getAbsolutePath());
+        }
 		 
 	}
-
-	
 	
 }
