@@ -28,15 +28,15 @@ public class FunctionNode extends AbstractUnaryNode implements DoubleParseTreeNo
 	public String toString() {
 		return "Function: " + fname + "(" + right + ")";
 	}
-	
-	
+
+
 	@Override
 	public String toExpression() throws ContentError {
 		checkArg();
 		return fname + "(" + argEvaluable.toExpression() + ")";
 	}
-	
-	
+
+
 
 	@Override
 	public void claim() throws ParseError {
@@ -56,17 +56,17 @@ public class FunctionNode extends AbstractUnaryNode implements DoubleParseTreeNo
 	public double call(double arg) {
 		return evaluate(arg, fname);
 	}
- 
+
 
 	public static double evaluate(double arg, String fname) {
 		double ret = Double.NaN;
-		
+
 		if (fname.equals(Parser.SIN)) {
 			ret = Math.sin(arg);
-			
+
 		} else if (fname.equals(Parser.COS)) {
 			ret = Math.cos(arg);
-		
+
 		} else if (fname.equals(Parser.TAN)) {
 			ret = Math.tan(arg);
 
@@ -78,7 +78,10 @@ public class FunctionNode extends AbstractUnaryNode implements DoubleParseTreeNo
 
 		} else if (fname.equals(Parser.TANH)) {
 			ret = Math.tanh(arg);
-		
+
+		} else if (fname.equals(Parser.STEP)) {
+			ret = 0.5*(Math.signum(arg)+1.);
+
 		} else if (fname.equals(Parser.LN) || fname.equals(Parser.LOG)) {
 			if (arg<=0)
 			{
@@ -86,11 +89,11 @@ public class FunctionNode extends AbstractUnaryNode implements DoubleParseTreeNo
 				return Double.NaN;
 			}
 			ret = Math.log(arg);
-		
+
 		} else if (fname.equals(Parser.EXP)) {
 			ret = Math.exp(arg);
-			
-		} else if (fname.equals(Parser.ABS)) {   
+
+		} else if (fname.equals(Parser.ABS)) {
 			ret = Math.abs(arg);
 
 		} else if (fname.equals(Parser.SQRT)) {
@@ -100,7 +103,7 @@ public class FunctionNode extends AbstractUnaryNode implements DoubleParseTreeNo
 				return Double.NaN;
 			}
 			ret = Math.sqrt(arg);
-			
+
 		} else if (fname.equals(Parser.CEIL)) {
 			ret = Math.ceil(arg);
 
@@ -119,7 +122,7 @@ public class FunctionNode extends AbstractUnaryNode implements DoubleParseTreeNo
 				return Double.NaN;
 			}
 			int intVal = (int)arg;
-			int fact = 1; 
+			int fact = 1;
 	        for (int i = 1; i <= intVal; i++) {
 	            fact *= i;
 	        }
@@ -130,18 +133,18 @@ public class FunctionNode extends AbstractUnaryNode implements DoubleParseTreeNo
 		}
 		return ret;
 	}
- 
+
 	private void checkArg() throws ContentError {
 		if (argEvaluable == null) {
 			if (right instanceof DoubleParseTreeNode) {
-				argEvaluable = (DoubleParseTreeNode) right;		
+				argEvaluable = (DoubleParseTreeNode) right;
 			} else {
 				throw new ContentError("Wrong node type in function " + right);
 			}
 		}
 	}
-	
-	
+
+
 	public AbstractDVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
 		checkArg();
 		return new DFunc(fname, argEvaluable.makeEvaluable(fixedHM));
@@ -160,23 +163,23 @@ public class FunctionNode extends AbstractUnaryNode implements DoubleParseTreeNo
 		return ret;
 	}
 
-	 
+
 	public Dimensional evaluateDimensional(HashMap<String, Dimensional> dhm) throws ContentError {
 		throw new ContentError("Can't apply function operations to dimensions");
 	}
-	
-	 
+
+
 	public void substituteVariables(HashMap<String, String> varHM) throws ContentError {
 		 checkArg();
 		 argEvaluable.substituteVariables(varHM);
 	}
-	 
+
 
 
 	@Override
 	public void doVisit(ExpressionVisitor ev) throws ContentError {
 		checkArg();
-		ev.visitFunctionNode(fname, argEvaluable);	
+		ev.visitFunctionNode(fname, argEvaluable);
 	}
-	
+
 }
