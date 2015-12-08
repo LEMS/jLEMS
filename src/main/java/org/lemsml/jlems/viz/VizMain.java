@@ -32,6 +32,8 @@ public final class VizMain {
 
     public static void main(String[] argv) throws LEMSException {
         
+        boolean debug = true;
+        
         boolean useGui = true;
         FileResultWriterFactory.initialize();
         
@@ -42,7 +44,7 @@ public final class VizMain {
         if (useGui) SwingDataViewerFactory.initialize();
         DefaultLogger.initialize();
 
-        if (argv.length == 0) {
+        if (argv.length == 0 && !debug) {
             System.err.println("No model file specified!");
             Main.showUsage();
             System.exit(1);
@@ -63,11 +65,15 @@ public final class VizMain {
         if (argMap.containsKey("-cp")) {
         	typePath = argMap.get("-cp");
         	argMap.remove("-cp");
+        } else if (debug) {
+            typePath = "../NeuroML2/NeuroML2CoreTypes/";
         }
         
         if (argMap.containsKey("0")) {
         	modelName = argMap.get("0");
         	argMap.remove("0");
+        } else if (debug) {
+            modelName = "../NeuroML2/LEMSexamples/LEMS_NML2_Ex22_Spiketimes.xml";
         }
         
         if (modelName == null) {
