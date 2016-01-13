@@ -15,20 +15,20 @@ import org.lemsml.jlems.io.logging.DefaultLogger;
 import org.lemsml.jlems.test.Main;
 
 /**
- * 
+ *
  * @author Padraig
  */
 public class ExpressionTest {
-    
-    
+
+
 	@Test
 	public void testEvaluatingDouble() throws ParseError, ContentError {
  		Parser p = new Parser();
  		String src1 = "a + b";
- 		ParseTree pt1 = p.parseExpression(src1); 		
- 		// DoubleEvaluator dev = 
+ 		ParseTree pt1 = p.parseExpression(src1);
+ 		// DoubleEvaluator dev =
  				pt1.makeFloatEvaluator();
- 		
+
 		String src = "3 + (1.3e-4 + 5) + (3 *4)+ 4/(4.*45) + 34.2E-2 + sin(a + b) / cos(b + c)";
 		ParseTree pt = p.parseExpression(src);
 
@@ -67,15 +67,19 @@ public class ExpressionTest {
 
 		testEval("5e24", 5e24, valHM);
 		testEval("5e-24", 5e-24, valHM);
-		
+
 
 		testEval("ceil(1.00001)", 2, null);
 		testEval("ceil(0)", 0, null);
 		testEval("ceil(b/a)", 2, valHM);
-		
+
 
 		testEval("abs(2)", 2, valHM);
 		testEval("abs(-2)", 2, valHM);
+
+		testEval("H(-2)", 0, valHM);
+		testEval("H(2)", 1, valHM);
+		testEval("H(0)", 0.5, valHM);
 
 		testEval("factorial(2)", 2, valHM);
 		testEval("factorial(9)", 362880, valHM);
@@ -87,7 +91,7 @@ public class ExpressionTest {
 		testEval("sqrt(9)", 3, valHM);
 
 		checkFailure("sqrt(-10)", 0, null);
-	
+
 
 		String[] tests = new String[] { "(v/VOLT)", "rate * exp((v - midpoint)/scale)", "(exp(73 * X))",
 				"( 0.76 ) / TIME_SCALE", "sqrt(4)", "exp (x * (-0.059))", "1.2 * 5 * 5.0e-3 * 6e34", "ceil(2.4)" };
@@ -98,12 +102,12 @@ public class ExpressionTest {
 			E.info("Parsed to: " + pt.toString());
 		}
 
-	
-		
+
+
 		ParseTree de1 = p.parseExpression("(exp ( (1e-3 * (-1.5 + (-1)/(1+(exp ((v-(-40))/5)))) * (v-11) * 9.648e4) / (8.315*(273.16+ (celsius) )) ))");
 		ParseTree de2 = p.parseExpression("(exp ( ( ( (-1.5) - 1/(1+(exp ((v-(-40))/5)))) * (v-11) * 96.48) / (8.315*(273.16+ (celsius) )) ))");
-		  
-		
+
+
 		valHM.clear();
 		valHM.put("v", -65d);
 		valHM.put("celsius", 30d);
@@ -113,15 +117,15 @@ public class ExpressionTest {
 		E.info("2 evaluates to " + eval2);
 
 		assertEquals(eval1, eval2, 0);
-        
-        
+
+
         testEval("2^3", 8, null);
         testEval("2.5^2.5", Math.pow(2.5, 2.5), null);
         checkFailure("(-2.5)^2.5", Math.pow(-2.5, 2.5), null);
         testEval("2.5^-2.5", Math.pow(2.5, -2.5), null);
-        
+
         testEval("-1.00000008E8", -1.00000008E8, null);
-		
+
 	}
 
 	private void checkFailure(String expr, double val, HashMap<String, Double> valHM)
@@ -138,10 +142,10 @@ public class ExpressionTest {
 			fail("Expression: "+expr+" was supposed to lead to an exception, but didn't!");
 		} catch (Exception e) {
 			//e.printStackTrace();
-		} 
+		}
 	}
-	
-	
+
+
 	private void testEval(String expr, double val, HashMap<String, Double> valHM) throws ParseError, ContentError
 	{
  		Parser p = new Parser();
@@ -197,7 +201,7 @@ public class ExpressionTest {
 		valHM.put("X", -0.2);
 		res = pt.makeBooleanEvaluator().evalB(valHM);
 		assertFalse(src, res);
-		
+
 
 		src = "S1 .gt. 1.5E-5";
 		pt = p.parseCondition(src);
@@ -206,33 +210,33 @@ public class ExpressionTest {
 		res = pt.makeBooleanEvaluator().evalB(valHM);
 		assertFalse(src, res);
 	}
-    
+
 	@Test
 	public void testEvaluatingDimensional() throws ParseError, ContentError {
-        
+
         HashMap<String, Dimensional> adml = new HashMap<String, Dimensional>();
-        
-        
-        
+
+
+
         ExprDimensional a = new ExprDimensional();
         a.setDoubleValue(1);
         a.setT(1);
         adml.put("a", a);
-        
+
         ExprDimensional b = new ExprDimensional();
         b.setDoubleValue(2);
-        b.setT(1); 
+        b.setT(1);
         adml.put("b", b);
-        
+
         ExprDimensional b2 = new ExprDimensional();
         b2.setDoubleValue(2);
-        //b2.setT(2); 
+        //b2.setT(2);
         adml.put("b2", b2);
-        
-        
+
+
         Parser p = new Parser();
  		String src1 = "a .lt. b";
- 		ParseTree pt1 = p.parseCondition(src1); 
+ 		ParseTree pt1 = p.parseCondition(src1);
         System.out.println("pt1: "+pt1);
         AbstractComparisonNode node = (AbstractComparisonNode)pt1.root;
         Dimensional d = node.dimop(a, b);
@@ -243,11 +247,11 @@ public class ExpressionTest {
         } catch (ContentError e) {
             System.out.println("Correctly incompatible: "+a+" and "+b2);
         }
-        
-        
-        
+
+
+
     }
-    
+
 
 	public static void main(String[] args) {
 		DefaultLogger.initialize();
