@@ -73,6 +73,13 @@ public class LemsFactoryGenerator {
 		String cnm = c.getSimpleName();
 		sb.append("    private " + cnm + " build" + cnm + "(XMLElement xel) {\n");
 		sb.append("        " + cnm + " ret = new " + cnm + "();\n\n");
+        if (cnm.equals("Component")) {
+            sb.append("        // Extra code for a Component...\n"
+                    + "        if (xel.getBody()!=null) {\n" +
+                      "            ret.abouts.add(new About((xel.getBody())));\n" +
+                      "        }\n"+
+                      "        //System.out.println(\"Adding component: \"+ret.getID()+\" (\"+ret.getAbout()+\")\");\n\n");
+        }
 		
 		sb.append("        for (XMLAttribute xa : xel.getAttributes()) {\n");
 		sb.append("            String xn = internalFieldName(xa.getName());\n");

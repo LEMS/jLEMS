@@ -2,18 +2,11 @@ package org.lemsml.jlems.viz;
 
 import java.io.File;
 import java.util.HashMap;
-import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.logging.E;
-import org.lemsml.jlems.core.run.ConnectionError;
-import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.StateInstance;
 import org.lemsml.jlems.core.run.StateType;
-import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.sim.LEMSException;
-import org.lemsml.jlems.core.sim.ParseException;
 import org.lemsml.jlems.core.sim.Sim;
-import org.lemsml.jlems.core.type.BuildException;
-import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.IOUtil;
 import org.lemsml.jlems.io.Main;
 import org.lemsml.jlems.io.logging.DefaultLogger;

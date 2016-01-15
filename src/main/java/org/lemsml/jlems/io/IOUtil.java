@@ -2,13 +2,16 @@ package org.lemsml.jlems.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.sim.ContentError;
+import org.lemsml.jlems.core.sim.LEMSException;
 import org.lemsml.jlems.core.sim.Sim;
 import org.lemsml.jlems.core.type.Lems;
 import org.lemsml.jlems.core.type.Target;
+import org.lemsml.jlems.io.reader.FileInclusionReader;
 import org.lemsml.jlems.io.util.FileUtil;
 
 public class IOUtil {
@@ -60,5 +63,19 @@ public class IOUtil {
         } catch (IOException ex) {
             throw new RuntimeError("Problem saving traces to file", ex);
         }
+    }
+    
+    public static void main(String[] argv) throws LEMSException {
+        
+		File f = new File("src/test/resources/example1.xml");
+
+    	FileInclusionReader fir = new FileInclusionReader(f);
+    	Sim sim = new Sim(fir.read());
+
+        sim.readModel();
+        
+        sim.build();
+        
+        E.info("OK - laoded " + f.getAbsolutePath());
     }
 }
