@@ -5,6 +5,16 @@ import org.lemsml.jlems.core.xml.XMLContainer;
 public class About implements XMLContainer {
 
 	String text = "";
+
+    public About()
+    {
+    }
+
+    public About(String text)
+    {
+        this.text = text;
+    }
+    
 	
 	public void setBodyValue(String s) {
 		text += s;

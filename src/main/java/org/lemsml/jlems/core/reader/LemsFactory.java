@@ -387,6 +387,12 @@ public class LemsFactory extends AbstractLemsFactory {
     private Component buildComponent(XMLElement xel) {
         Component ret = new Component();
 
+        // Extra code for a Component...
+        if (xel.getBody()!=null) {
+            ret.abouts.add(new About((xel.getBody())));
+        }
+        //System.out.println("Adding component: "+ret.getID()+" ("+ret.getAbout()+")");
+
         for (XMLAttribute xa : xel.getAttributes()) {
             String xn = internalFieldName(xa.getName());
             String xv = xa.getValue();
