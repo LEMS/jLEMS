@@ -265,7 +265,8 @@ public class Lems implements ILEMSDocument{
         if (t == null) {
             StringBuilder error = new StringBuilder("No such type " + nm + ", "
                     + componentTypes.size() + " existing types: ");
-            for (ComponentType class_ : componentTypes) {
+            
+            for (ComponentType class_ : componentTypes.getContentsSorted()) {
                 error.append("\n" + class_.getName());
             }
             throw new ContentError(error.toString());
