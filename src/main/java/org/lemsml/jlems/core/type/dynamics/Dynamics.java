@@ -19,7 +19,6 @@ import org.lemsml.jlems.core.run.ComponentRegime;
 import org.lemsml.jlems.core.run.ConditionAction;
 import org.lemsml.jlems.core.run.EventAction;
 import org.lemsml.jlems.core.run.KScheme;
-import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.Component;
@@ -32,7 +31,6 @@ import org.lemsml.jlems.core.type.Lems;
 import org.lemsml.jlems.core.type.LemsCollection;
 import org.lemsml.jlems.core.type.Named;
 import org.lemsml.jlems.core.type.ParamValue;
-import org.lemsml.jlems.core.type.Property;
 import org.lemsml.jlems.core.type.Requirement;
 
 
@@ -337,7 +335,7 @@ public class Dynamics  {
 	 
 
 	public StateType makeStateType(Component cpt, HashMap<String, Double> fixedHM) throws ContentError, ParseError {
- 		
+        
          StateType ret = new StateType(cpt.getID(), cpt.getComponentType().getName());
 		 
          ret.setSimultaneous(simultaneous);
@@ -367,12 +365,13 @@ public class Dynamics  {
 				ret.addExposureMapping(sv.getName(), sv.getExposure().getName());
 			}
 		 }
-		 
-		 for (Property p : cpt.getComponentType().getPropertys()) {
-			 String pnm = p.getName();
-			 ret.addExposureMapping(pnm, pnm);
-			// E.info("Added Exposure mapping for " + pnm + " in " + cpt);
-		 }
+         
+        
+		for (InstanceProperty ip : cpt.getComponentType().getInstancePropertys()) {
+			String pnm = ip.getName();
+			ret.addExposureMapping(pnm, pnm);
+            ret.addInstanceProperty(ip);
+		}
 		 
 		 /*
 		 for (ExternalQuantity equan : externalQuantitys) {

@@ -15,6 +15,10 @@ public class Property implements Named {
 	@ModelProperty(info="")
 	public String dimension;
 	public Dimension r_dimension;
+    
+	@ModelProperty(info="The defaultValue for the property must be a plain number (no units) giving the SI " +
+			"magnitude of the quantity.")
+	public String defaultValue;
 	
 	
 	public void resolve(LemsCollection<Dimension> dimensions) throws ContentError {
@@ -34,6 +38,7 @@ public class Property implements Named {
 	}
 
 
+    @Override
 	public String getName() {
 		return name;
 	}
@@ -42,6 +47,13 @@ public class Property implements Named {
 	public Dimension getDimension() {
 		return r_dimension;
 	}
+
+    public String getDefaultValue()
+    {
+        return defaultValue;
+    }
+    
+    
 
  
 }

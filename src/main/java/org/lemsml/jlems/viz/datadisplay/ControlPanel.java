@@ -18,6 +18,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -47,11 +49,12 @@ public abstract class ControlPanel implements ActionListener {
 	JPanel pmain = new JPanel();
 	JLabel statusLabel = new JLabel("");
 	JMenuItem menuItemReloadAndRun;
+	JMenuItem menuItemDump;
 	JButton buttonReloadAndRun;
 	
 	File workingFile;
 	File prevWorkingFile;
-	Sim simulation;
+	Sim curentSimulation;
 	
 	Map<Integer, RunConfig> runConfigs = new HashMap<Integer, RunConfig>();
 	Map<String, Rectangle> viewerRects = new HashMap<String, Rectangle>();
@@ -92,6 +95,7 @@ public abstract class ControlPanel implements ActionListener {
 
             JMenu jmsimulation = new JMenu("Simulation");
             menuItemReloadAndRun = addToMenuWithShortcut("Reload and Run", jmsimulation, KeyEvent.VK_F6, 0 );
+            menuItemDump = addToMenuWithShortcut("Dump simulation info", jmsimulation, KeyEvent.VK_F7, 0 );
             jmb.add(jmsimulation);	
 
             frame.setJMenuBar(jmb);
@@ -146,7 +150,7 @@ public abstract class ControlPanel implements ActionListener {
 	 * @throws ParseError
 	 */
 	protected void registerSimulation(Sim sim, File simFile) {
-		simulation = sim;
+		curentSimulation = sim;
 		
 		if(sim == null)
 			return;
@@ -226,7 +230,7 @@ public abstract class ControlPanel implements ActionListener {
 	 */
 	protected void loadRunConfigsFromSimulation() {
 		int index = -1;
-		for(RunConfig conf : simulation.getRunConfigs()) {			
+		for(RunConfig conf : curentSimulation.getRunConfigs()) {			
 			runConfigs.put(index++, conf);
 		}
 	}
@@ -248,9 +252,9 @@ public abstract class ControlPanel implements ActionListener {
 		int cursor_x = start_cursor_x;
 		int cursor_y = start_cursor_y;
 		
-		for(String key : simulation.getDvHM().keySet()) {
-			if(simulation.getDvHM().get(key) instanceof StandaloneViewer) {
-				StandaloneViewer sViewer = ((StandaloneViewer)simulation.getDvHM().get(key));
+		for(String key : curentSimulation.getDvHM().keySet()) {
+			if(curentSimulation.getDvHM().get(key) instanceof StandaloneViewer) {
+				StandaloneViewer sViewer = ((StandaloneViewer)curentSimulation.getDvHM().get(key));
 				
 				// If there's a viewer Rect with this key (we're reloading an existing file) let's use it
 				// instead of putting it back in the default position
@@ -340,7 +344,7 @@ public abstract class ControlPanel implements ActionListener {
 				@Override
 				public void run() {
 					try {
-						simulation.run(conf.getValue(), false);
+						curentSimulation.run(conf.getValue(), false);
 					} catch (Exception ex) {
 						JOptionPane.showMessageDialog(new JFrame(), 
 								String.format("Failed to run simulation : %s", ex.getMessage()), 
@@ -383,7 +387,7 @@ public abstract class ControlPanel implements ActionListener {
 		} else if(sev.equals("bring to front")) {
 			restoreViewerWindows();
 		} else if (sev.equals("reload and run")) {
-			if(simulation != null) {
+			if(curentSimulation != null) {
 				clearCurrentSimulation();
 				try {
 					Sim sim = importFile(workingFile);
@@ -399,6 +403,14 @@ public abstract class ControlPanel implements ActionListener {
 				
 				runSimulationInNewThread();
 			}
+		} else if (sev.equals("dump simulation info")) {
+            System.out.println("========================================\n\nPrinting simulation information\n  State Types:\n\n");
+            
+            System.out.println(curentSimulation.getTargetBehavior().getSummary("  ", "| ")+"\n\n----------------------------------\n\n State Instances:\n\n");
+       
+            System.out.println(curentSimulation.getCurrentRootState().getSummary("  ", "| ")+"\n");
+           
+            System.out.println("\n========================================\n");
 		}
 	}
 	
@@ -407,9 +419,9 @@ public abstract class ControlPanel implements ActionListener {
 	 * when reloading. Then close the window.
 	 */
 	protected void clearCurrentSimulation() {
-		for(String key : simulation.getDvHM().keySet()) {
-			if(simulation.getDvHM().get(key) instanceof StandaloneViewer) {
-				StandaloneViewer viewer = ((StandaloneViewer)simulation.getDvHM().get(key));
+		for(String key : curentSimulation.getDvHM().keySet()) {
+			if(curentSimulation.getDvHM().get(key) instanceof StandaloneViewer) {
+				StandaloneViewer viewer = ((StandaloneViewer)curentSimulation.getDvHM().get(key));
 				viewerRects.put(key, viewer.getViewerRectangle());
 				viewer.close();
 			}
@@ -420,9 +432,9 @@ public abstract class ControlPanel implements ActionListener {
 	 * Bring all the StandaloneViewer windows to the foreground
 	 */
 	protected void restoreViewerWindows() {
-		for(String key : simulation.getDvHM().keySet()) {
-			if(simulation.getDvHM().get(key) instanceof StandaloneViewer) {
-				StandaloneViewer viewer = ((StandaloneViewer)simulation.getDvHM().get(key));
+		for(String key : curentSimulation.getDvHM().keySet()) {
+			if(curentSimulation.getDvHM().get(key) instanceof StandaloneViewer) {
+				StandaloneViewer viewer = ((StandaloneViewer)curentSimulation.getDvHM().get(key));
 				viewer.show();
 			}
 		}

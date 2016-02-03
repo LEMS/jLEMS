@@ -89,7 +89,7 @@ public final class Main {
         sim.readModel();
         sim.build();
         
-        StateInstance si = sim.getRootState(false);
+        StateInstance si = sim.getCurrentRootState();
         StateType st = sim.getTargetBehavior();
         
         if (verbose) {

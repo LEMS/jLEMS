@@ -97,7 +97,7 @@ public final class VizMain {
         File simFile = new File(modelName);
         Sim sim = cp.initialise(simFile);
         
-        StateInstance si = sim.getRootState(false);
+        StateInstance si = sim.getCurrentRootState();
         StateType st = sim.getTargetBehavior();
         
         if (verbose) {

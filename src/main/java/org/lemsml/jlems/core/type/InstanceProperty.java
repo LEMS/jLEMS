@@ -35,12 +35,12 @@ public class InstanceProperty implements Valued {
 		}
 	}
 	
-        @Override
+    @Override
 	public String toString() {
 		if (r_dimension == null) {
 			E.error("no dimension for final param: " + name + " " + svalue);
 		}
-		return name + "(" + r_dimension.getName() + ")";
+		return "InstanceProperty: "+name + "(" + r_dimension.getName() + ") = "+svalue;
 	}
 	
 	public String getName() {
