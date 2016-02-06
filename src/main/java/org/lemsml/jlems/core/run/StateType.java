@@ -12,6 +12,7 @@ import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.sim.StateTypeVisitor;
 import org.lemsml.jlems.core.type.Component;
+import org.lemsml.jlems.core.type.InstanceProperty;
 
 @SuppressWarnings("StringConcatenationInsideStringBufferAppend")
 public class StateType implements RuntimeType, ILEMSStateType {
@@ -27,6 +28,8 @@ public class StateType implements RuntimeType, ILEMSStateType {
 	ArrayList<String> indeps = new ArrayList<String>();
 	
 	ArrayList<FixedQuantity> fixeds = new ArrayList<FixedQuantity>();
+    
+	ArrayList<InstanceProperty> instanceProperties = new ArrayList<InstanceProperty>();
 	
 	ArrayList<PathDerivedVariable> pathderiveds = new ArrayList<PathDerivedVariable>();
 	
@@ -227,7 +230,7 @@ public class StateType implements RuntimeType, ILEMSStateType {
 	}
 		
     private StateInstance ownNewInstance() throws ContentError, ConnectionError, RuntimeError {
-					
+    	
     	
     	//E.info("Making new instance " + dimensions);
     	
@@ -243,6 +246,8 @@ public class StateType implements RuntimeType, ILEMSStateType {
 		uin.setIndependents(indeps);
 		
 		uin.setFixeds(fixeds);
+		
+		uin.setInstanceProperties(instanceProperties);
 		
 		uin.setExpressionDerived(exderiveds);
 
@@ -694,6 +699,10 @@ public class StateType implements RuntimeType, ILEMSStateType {
 		fixeds.add(fq);
 	}
 	
+	public void addInstanceProperty(InstanceProperty ip) {
+        //System.out.println("Adding "+ip);
+		instanceProperties.add(ip);
+	}
 	
 	public void addIndependentVariable(String vnm, String dim) {
 		if (indeps.contains(vnm)) {
@@ -1043,8 +1052,7 @@ public class StateType implements RuntimeType, ILEMSStateType {
 	
 	public StateType makeFlattened(String knownas) throws ContentError {	
 		Flattener flattener = new Flattener();
-
-		// E.info("FLAT making flattened of " + typeName + " " + cptid + " " + indeps);
+		E.info("FLAT making flattened of " + typeName + " " + cptid + " " + indeps);
 		
 		addToFlattener(null, flattener);
 		
@@ -1265,6 +1273,10 @@ public class StateType implements RuntimeType, ILEMSStateType {
 		
 		for (FixedQuantity fq : fixeds) {
 			ret.addFixed(fq.name, fq.value);
+		}
+        
+		for (InstanceProperty ip : instanceProperties) {
+			ret.addInstanceProperty(new InstanceProperty(ip.getName(), ip.getDimension(), ip.getSValue()));
 		}
 		
 		ret.addInPorts(inPorts);

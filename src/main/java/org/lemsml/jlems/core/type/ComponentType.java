@@ -324,7 +324,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		}
 		
 		for (Property prop : propertys) {
-			instancePropertys.add(new InstanceProperty(prop.getName(), prop.getDimension()));
+            instancePropertys.add(new InstanceProperty(prop.getName(), prop.getDimension(), prop.getDefaultValue()));
 		}
 
 		for (Parameter dp : parameters) {
@@ -437,12 +437,6 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		resolved = true;
 	}
 
-	
-	
-	
-	
-	
-	
 	
 	public LemsCollection<EventPort> getEventPorts() {
 		return eventPorts;
@@ -937,9 +931,10 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		}
 	 
 	
-		for (Property p : getPropertys()) {
-			String pnm = p.getName();
+		for (InstanceProperty ip : getInstancePropertys()) {
+			String pnm = ip.getName();
 			ret.addExposureMapping(pnm, pnm);
+            ret.addInstanceProperty(ip);
 		}
 
 		for (Text text : getTexts()) {

@@ -8,6 +8,7 @@ import org.lemsml.jlems.api.interfaces.ILEMSStateInstance;
 import org.lemsml.jlems.core.display.LineDisplay;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
+import org.lemsml.jlems.core.type.InstanceProperty;
 
 
 @SuppressWarnings("StringConcatenationInsideStringBufferAppend")
@@ -345,6 +346,12 @@ public class StateInstance implements StateRunnable, ILEMSStateInstance {
 		}
 	}
 
+	public void setInstanceProperties(ArrayList<InstanceProperty> ips) {
+		for (InstanceProperty ip : ips) {
+			varHM.put(ip.getName(), new DoublePointer(ip.getValue()));
+		}
+	}
+
 	public void setLocalValues(LocalValues lpvals) {
 	 	for (String s : lpvals.keySet()) {
 			double v = lpvals.getValue(s);
@@ -629,11 +636,12 @@ public class StateInstance implements StateRunnable, ILEMSStateInstance {
                 info.append(si.getSummary(indent+prefix+" c ", prefix)+"\n");
             }
         }*/
-
+        ArrayList<String> shown = new ArrayList<String>();
         if (childHM != null) {
             for (String k : childHM.keySet()) {
                 StateRunnable sr = childHM.get(k);
                 StateInstance si = (StateInstance) sr;
+                shown.add(si.getID());
                 info.append(si.getSummary(indent+prefix+"   ", prefix)+"\n");
             }
         }
@@ -643,12 +651,22 @@ public class StateInstance implements StateRunnable, ILEMSStateInstance {
                 info.append(pre + mi + "\n");
             }
         }
-
+*/
         if (multiHM != null) {
             for (String mi : multiHM.keySet()) {
-                info.append(pre + "(" + mi + ")" + multiHM.get(mi) + "\n");
+                //info.append(pre + "+++ (" + mi + ")" + multiHM.get(mi) + "\n");
+                int index = 0;
+                for (StateRunnable sr: multiHM.get(mi).getStateInstances()) {
+                    StateInstance si = (StateInstance) sr;
+                    // TODO: find a better way to prevent repetition... 
+                    if (!shown.contains(si.getID()) || true) {
+                        info.append(si.getSummary(indent+prefix+"   "+mi+index, prefix)+"\n");
+                    }
+                    index+=1;
+                }
+                
             }
-        }*/
+        }
         
         info.append(""+indent + line);
         return info.toString();

@@ -602,6 +602,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.name = parseString(xv);
             } else if (xn.equals("dimension")) {
                 ret.dimension = parseString(xv);
+            } else if (xn.equals("defaultValue")) {
+                ret.defaultValue = parseString(xv);
             } else {
                 E.warning("Unrecognized attribute " + xa + " " + xv);
             }

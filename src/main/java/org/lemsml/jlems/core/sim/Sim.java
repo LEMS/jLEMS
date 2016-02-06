@@ -35,6 +35,7 @@ public class Sim extends LemsProcess {
     StateType rootBehavior;
     StateType targetBehavior;
     
+    StateInstance currentRootState;
      
     HashMap<String, DataViewer> dvHM;
     HashMap<String, ResultWriter> rwHM;
@@ -166,10 +167,14 @@ public class Sim extends LemsProcess {
     public StateType getTargetBehavior() {
         return targetBehavior;
     }
+    
+    public StateInstance getCurrentRootState() {
+        return currentRootState;
+    }
   
     /*
     Temporary method for testing 
-    */
+    
     public StateInstance getRootState(boolean flatten) throws ContentError, ParseError, ConnectionError, RuntimeError {
         
   		StateType raw = runConfigs.get(0).getTarget();
@@ -181,7 +186,7 @@ public class Sim extends LemsProcess {
   	    StateInstance rootState = lems.build(targetBehavior, eventManager);
         
         return rootState;
-    }
+    }*/
 
     
     public void run(RunConfig rc, boolean flatten) throws ConnectionError, ContentError, RuntimeError, ParseError {
@@ -222,9 +227,9 @@ public class Sim extends LemsProcess {
   			targetBehavior = raw;
   		}
   		
-  	    StateInstance rootState = lems.build(targetBehavior, eventManager);
+  	    currentRootState = lems.build(targetBehavior, eventManager);
   	
-  	    RunnableAccessor ra = new RunnableAccessor(rootState);
+  	    RunnableAccessor ra = new RunnableAccessor(currentRootState);
   	       
   	    ArrayList<RuntimeRecorder> recorders = rc.getRecorders();
   	    
@@ -268,7 +273,7 @@ public class Sim extends LemsProcess {
         times = new double[nstep+1];
        
        
-        rootState.initialize(null);  
+        currentRootState.initialize(null);  
           
         long realTimeStart = System.currentTimeMillis();
         int nsDone = 0;
@@ -278,7 +283,7 @@ public class Sim extends LemsProcess {
             for (int istep = 0; istep <= nstep; istep++) {
                 if (istep > 0) {
                     eventManager.advance(t);
-                    rootState.advance(null, t, dt);
+                    currentRootState.advance(null, t, dt);
                 }
 
 

@@ -1,9 +1,11 @@
 package org.lemsml.jlems.core.type;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-
+import java.util.Set;
 import org.lemsml.jlems.core.sim.ContentError;
 
 @SuppressWarnings("StringConcatenationInsideStringBufferAppend")
@@ -287,6 +289,23 @@ public class LemsCollection<T> implements Iterable<T> {
 
     public ArrayList<T> getContents() {
         return contents;
+    }
+
+    public ArrayList<T> getContentsSorted() throws ContentError
+    {
+        ArrayList<T> sorted = new ArrayList<T>(contents);
+        
+        Collections.sort(sorted, new Comparator<T>()
+        {
+            @Override
+            public int compare(T t1, T t2)
+            {
+
+                return t1.toString().compareTo(t2.toString());
+            }
+        });
+
+        return sorted;
     }
 
     
