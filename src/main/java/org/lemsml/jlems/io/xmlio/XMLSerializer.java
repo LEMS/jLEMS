@@ -2,8 +2,10 @@ package org.lemsml.jlems.io.xmlio;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.serial.WrapperElement;
@@ -27,10 +29,19 @@ public class XMLSerializer {
 
 	boolean conciseTags;
 	boolean quoteStrings;
+	
+	List<Component> refComponents = new ArrayList<Component>();
+	Boolean includeRefComponents = false;
 
 	public XMLSerializer() {
 		conciseTags = true;
 		quoteStrings = true;
+	}
+	
+	public XMLSerializer(Boolean includeRefComponents) {
+		conciseTags = true;
+		quoteStrings = true;
+		this.includeRefComponents = includeRefComponents;
 	}
 
 	public void setConciseTags(boolean b) {
@@ -49,17 +60,25 @@ public class XMLSerializer {
 		return getSerialization(ob);
 	}
 
-	 
-
 	public static String getSerialization(Object ob) throws ContentError {
 		return newInstance().writeObject(ob);
 	}
 
 	public String writeObject(Object obj) throws ContentError {
 		XMLElement xe = makeXMLElement(null, null, null, obj);
-		return xe.serialize();
+		String serializeObject = xe.serialize();
+		
+		// If includeRedComponents = true, serialise ref component too
+		// Probably because it is a resolved lems component
+		if (this.includeRefComponents){
+			this.includeRefComponents = false;
+			for (Component refComponent : refComponents){
+				serializeObject += makeXMLElement(null, null, null, refComponent).serialize();
+			}
+		}
+		return serializeObject;
 	}
-
+	
 	public XMLElement makeXMLElement(XMLElement dest, Object parent, String knownAs, Object ob) throws ContentError {
 		XMLElement ret = null;
 
@@ -241,6 +260,10 @@ public class XMLSerializer {
 				Component tgt = refHM.get(s);
 				ret.addAttribute(s, tgt.getID());
 				atts.add(s);
+				
+				// Add Ref Components to list to serialise them
+				if (includeRefComponents)
+					refComponents.add(tgt);
 			}
 		}
 
