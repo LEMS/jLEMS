@@ -66,12 +66,13 @@ public class RuntimeEventRecorder
 
     public void connectRunnable(RunnableAccessor ra, EventResultWriter erw) throws ConnectionError, ContentError
     {
-        System.out.println("Connecting "+ra.toString()+" to "+erw.getID());
+        ////System.out.println("Connecting "+ra.toString()+" (?) to "+erw.getID());
         if (quantity == null)
         {
             throw new ConnectionError("Recorder has null quantity " + toString());
         }
         stateWrapper = ra.getStateWrapper(quantity);
+        ////System.out.println("Connected "+stateWrapper.unitInstance.id);
         if (stateWrapper == null)
         {
             throw new ConnectionError("unable to access state variable: " + quantity);
@@ -84,7 +85,8 @@ public class RuntimeEventRecorder
 
         double x = ft / 1;
         double y = stateWrapper.getValue() / 1;
-        // E.info("Adding point: ("+x+", "+y+")");
+        //E.info("Adding point: ("+x+", "+y+")");
+        ///System.out.println("appendState: "+id);
 
         if (eventResultWriter != null)
         {

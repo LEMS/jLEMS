@@ -26,7 +26,7 @@ public class FileEventResultWriter implements EventResultWriter {
     double[] wk = null;
     boolean newFile = true;
 
-    boolean verbose = false;
+    boolean verbose = true;
 
 
     public FileEventResultWriter(RuntimeOutput ro) {

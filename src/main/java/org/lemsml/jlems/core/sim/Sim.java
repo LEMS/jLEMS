@@ -298,6 +298,9 @@ public class Sim extends LemsProcess {
                 for (RuntimeRecorder rr : recorders) {
                     rr.appendState(t);
                 }
+                for (RuntimeEventRecorder rer : eventRecorders) {
+                    rer.appendState(t);
+                }
 
                 times[istep] = t;
 
