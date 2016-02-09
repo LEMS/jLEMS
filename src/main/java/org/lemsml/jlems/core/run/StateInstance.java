@@ -95,6 +95,12 @@ public class StateInstance implements StateRunnable, ILEMSStateInstance {
 	public String getID() {
 		return id;
 	}
+    
+    
+	public String getInfo() {
+        String parentInfo = getParent()!=null ? ", parent: "+ getParent().getID() : "";
+        return "StateInstance: " + getID() + " [StateType: " +stateType.getTypeName() + parentInfo +"]";
+	}
 
     @Override
 	public void setParent(StateRunnable p) {
@@ -591,8 +597,7 @@ public class StateInstance implements StateRunnable, ILEMSStateInstance {
         info.append(indent + line);
         //info.append("    >>> i: ["+indent+"]  pref: ["+prefix+"]  p: ["+pre+"]");
         info.append("\n");
-        String parentInfo = getParent()!=null ? ", parent: "+ getParent().getID() : "";
-        info.append(pre + "StateInstance: " + getID() + " [StateType: " + stateType.getID() + parentInfo +"] \n");
+        info.append(pre + getInfo()+ " \n");
         
         info.append(pre +     "  Variables: {");
         int count = 0;
@@ -626,7 +631,7 @@ public class StateInstance implements StateRunnable, ILEMSStateInstance {
         }
         info.append("}\n");
         
-
+        ArrayList<String> shown = new ArrayList<String>();
         /*
         if (childA != null) {
             for (StateRunnable sr : childA) {
@@ -634,12 +639,12 @@ public class StateInstance implements StateRunnable, ILEMSStateInstance {
                 info.append(si.getSummary(indent+prefix+" c ", prefix)+"\n");
             }
         }*/
-        ArrayList<String> shown = new ArrayList<String>();
+        
         if (childHM != null) {
             for (String k : childHM.keySet()) {
                 StateRunnable sr = childHM.get(k);
                 StateInstance si = (StateInstance) sr;
-                shown.add(si.getID());
+                shown.add(si.getInfo());
                 info.append(si.getSummary(indent+prefix+"   ", prefix)+"\n");
             }
         }
@@ -657,13 +662,14 @@ public class StateInstance implements StateRunnable, ILEMSStateInstance {
                 for (StateRunnable sr: multiHM.get(mi).getStateInstances()) {
                     StateInstance si = (StateInstance) sr;
                     // TODO: find a better way to prevent repetition... 
-                    if (!shown.contains(si.getID()) || true) {
-                        info.append(si.getSummary(indent+prefix+"   "+mi+index, prefix)+"\n");
+                    if (!shown.contains(si.getInfo())) {
+                        info.append(si.getSummary(indent+prefix+"   | "+mi+"["+index+"] ", prefix)+"\n");
                     }
                     index+=1;
                 }
                 
             }
+            info.append(""+indent+prefix+"   " + line+"\n");
         }
         
         info.append(""+indent + line);

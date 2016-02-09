@@ -22,9 +22,12 @@ import org.lemsml.jlems.core.type.EventPort;
 import org.lemsml.jlems.core.type.Exposure;
 import org.lemsml.jlems.core.type.FinalParam;
 import org.lemsml.jlems.core.type.Lems;
+import org.lemsml.jlems.core.type.LemsCollection;
 import org.lemsml.jlems.core.type.ParamValue;
 import org.lemsml.jlems.core.type.Requirement;
 import org.lemsml.jlems.core.type.Text;
+import org.lemsml.jlems.core.type.dynamics.Case;
+import org.lemsml.jlems.core.type.dynamics.ConditionalDerivedVariable;
 import org.lemsml.jlems.core.type.dynamics.DerivedVariable;
 import org.lemsml.jlems.core.type.dynamics.Dynamics;
 import org.lemsml.jlems.core.type.dynamics.OnCondition;
@@ -97,7 +100,7 @@ public class ComponentFlattener {
 
     private void importFlattened(Component cpt, String prefix, boolean withExposures) throws ContentError, ParseError, ConnectionError {
 
-        System.out.println(">>>  Doing: "+prefix+": "+cpt+", ");
+        E.info("Flattening: "+prefix+": "+cpt+", ");
         HashMap<String, String> varHM = new HashMap<String, String>();
 
         ComponentType typ = cpt.getComponentType();
@@ -144,26 +147,28 @@ public class ComponentFlattener {
         }
 
         Dynamics dyn = typ.getDynamics();
-        for (StateVariable sv : dyn.getStateVariables()) {
-            String fname = flatName(sv.getName(), prefix, varHM);
-            typeB.addStateVariable(fname, sv.getDimension());
+        if (dyn!=null) {
+            for (StateVariable sv : dyn.getStateVariables()) {
+                String fname = flatName(sv.getName(), prefix, varHM);
+                typeB.addStateVariable(fname, sv.getDimension());
 
-            if (sv.getExposure() != null) {
-                String enm = flatName(sv.getExposureName(), prefix);
-                typeB.setStateExposure(fname, enm);
+                if (sv.getExposure() != null) {
+                    String enm = flatName(sv.getExposureName(), prefix);
+                    typeB.setStateExposure(fname, enm);
+                }
             }
-        }
 
-        for (OnEvent oe : dyn.getOnEvents()) {
-            typeB.addOnEvent(oe.makeCopy());
-        }
+            for (OnEvent oe : dyn.getOnEvents()) {
+                typeB.addOnEvent(oe.makeCopy());
+            }
 
-        for (EventPort ep : typ.getEventPorts()) {
-            typeB.addEventPort(ep.makeCopy());
-        }
+            for (EventPort ep : typ.getEventPorts()) {
+                typeB.addEventPort(ep.makeCopy());
+            }
 
-        for (OnCondition oc : dyn.getOnConditions()) {
-            typeB.addOnCondition(oc.makeCopy());
+            for (OnCondition oc : dyn.getOnConditions()) {
+                typeB.addOnCondition(oc.makeCopy());
+            }
         }
 
         for (ParamValue pv : cpt.getParamValues()) {
@@ -196,90 +201,122 @@ public class ComponentFlattener {
             importFlattened(child, childPrefix, withChildExposures);
         }
 
-        for (DerivedVariable dv : dyn.getDerivedVariables()) {
+        
+        if (dyn!=null) {
+            for (DerivedVariable dv : dyn.getDerivedVariables()) {
 
-            String fname = flatName(dv.getName(), prefix, varHM);
+                String fname = flatName(dv.getName(), prefix, varHM);
 
-            String val = dv.getValueExpression();
-            String sel = dv.getSelect();
-            E.info("--------DerivedVariable, fname: " + fname + ", val: " + val + ", sel: " + sel);
+                String val = dv.getValueExpression();
+                String sel = dv.getSelect();
+                E.info("--------DerivedVariable, fname: " + fname + ", val: " + val + ", sel: " + sel);
 
-            if (val != null) {
-                val = substituteVariables(val, varHM);
-                typeB.addDerivedVariable(fname, dv.getDimension(), val);
+                if (val != null) {
+                    val = substituteVariables(val, varHM);
+                    typeB.addDerivedVariable(fname, dv.getDimension(), val);
 
-            } else if (sel != null) {
-                String red = dv.getReduce();
-                String selval = sel;
-                if (red != null) {
-                    String op = " ? ";
-                    String dflt = "";
-                    if (red.equals("add")) {
-                        op = " + ";
-                        dflt = "0";
-                    } else if (red.equals("multiply")) {
-                        op = " * ";
-                        dflt = "1";
-                    } else {
-                        throw new ContentError("Unrecognized reduce: " + red);
+                } else if (sel != null) {
+                    String red = dv.getReduce();
+                    String selval = sel;
+                    if (red != null) {
+                        String op = " ? ";
+                        String dflt = "";
+                        if (red.equals("add")) {
+                            op = " + ";
+                            dflt = "0";
+                        } else if (red.equals("multiply")) {
+                            op = " * ";
+                            dflt = "1";
+                        } else {
+                            throw new ContentError("Unrecognized reduce: " + red);
+                        }
+
+                        String rt;
+                        String var;
+                        if (sel.indexOf("[*]") > 0) {
+                            int iwc = sel.indexOf("[*]");
+                            rt = sel.substring(0, iwc);
+                            var = sel.substring(iwc + 4, sel.length());
+                        } else {
+                            int iwc = sel.lastIndexOf("/");
+                            rt = sel.substring(0, iwc);
+                            var = sel.substring(iwc + 2, sel.length());
+                        }
+
+                        ArrayList<String> items = new ArrayList<String>();
+                        items.add(dflt);
+                        for (Component c : cpt.getChildrenAL(rt)) {
+                            items.add(flatName(c.getID() + "_" + var, prefix));
+                        }
+                        selval = StringUtil.join(items, op);
                     }
 
-                    String rt;
-                    String var;
-                    if (sel.indexOf("[*]") > 0) {
-                        int iwc = sel.indexOf("[*]");
-                        rt = sel.substring(0, iwc);
-                        var = sel.substring(iwc + 4, sel.length());
-                    } else {
-                        int iwc = sel.lastIndexOf("/");
-                        rt = sel.substring(0, iwc);
-                        var = sel.substring(iwc + 2, sel.length());
+                    for (Child child : typ.getChilds()) {
+                        String sp = child.getName();
+                        String fp = flatName(sp, prefix);
+                        selval = selval.replace(sp + "/", fp + "_");
                     }
 
-                    ArrayList<String> items = new ArrayList<String>();
-                    items.add(dflt);
-                    for (Component c : cpt.getChildrenAL(rt)) {
-                        items.add(flatName(c.getID() + "_" + var, prefix));
+                    for (ComponentReference compRef : typ.getComponentReferences()) {
+                        String sp = compRef.getName();
+                        String refid = cpt.getRefComponents().get(compRef.getName()).getID();
+                        String fp = flatName(refid, prefix);
+                        selval = selval.replace(sp + "/", fp + "_");
                     }
-                    selval = StringUtil.join(items, op);
+
+                    typeB.addDerivedVariable(fname, dv.getDimension(), selval);
                 }
 
-                for (Child child : typ.getChilds()) {
-                    String sp = child.getName();
-                    String fp = flatName(sp, prefix);
-                    selval = selval.replace(sp + "/", fp + "_");
+                if (withExposures && dv.exposure != null) {
+                    String enm = flatName(dv.exposure, prefix);
+                    typeB.setDerivedVariableExposure(fname, enm);
                 }
+            }
+            
+            for (ConditionalDerivedVariable cdv : dyn.getConditionalDerivedVariables()) {
 
-                for (ComponentReference compRef : typ.getComponentReferences()) {
-                    String sp = compRef.getName();
-                    String refid = cpt.getRefComponents().get(compRef.getName()).getID();
-                    String fp = flatName(refid, prefix);
-                    selval = selval.replace(sp + "/", fp + "_");
+                String fname = flatName(cdv.getName(), prefix, varHM);
+                
+                E.info("--------ConditionalDerivedVariable, fname: " + fname);
+
+                LemsCollection<Case> cases = new LemsCollection<Case>();
+                
+                for (Case c: cdv.cases) {
+                    Case newCase = new Case();
+                    String val = c.getValueExpression();
+                    val = substituteVariables(val, varHM);
+                    newCase.value = val;
+                    if (c.condition!=null) {
+                        String cond = substituteVariables(c.condition, varHM);
+                        newCase.condition = cond;
+                    }
+                    cases.add(newCase);
                 }
+                
+                typeB.addConditionalDerivedVariable(fname, cdv.getDimension(), cases);
 
-                typeB.addDerivedVariable(fname, dv.getDimension(), selval);
+
+                if (withExposures && cdv.exposure != null) {
+                    String enm = flatName(cdv.exposure, prefix);
+                    typeB.setConditionalDerivedVariableExposure(fname, enm);
+                }
             }
 
-            if (withExposures && dv.exposure != null) {
-                String enm = flatName(dv.exposure, prefix);
-                typeB.setDerivedVariableExposure(fname, enm);
+            for (TimeDerivative td : dyn.getTimeDerivatives()) {
+
+                String val = substituteVariables(td.getValueExpression(), varHM);
+
+                String varnm = flatName(td.getVariable(), prefix);
+                typeB.addTimeDerivative(varnm, val);
             }
-        }
 
-        for (TimeDerivative td : dyn.getTimeDerivatives()) {
+            for (OnStart os : dyn.getOnStarts()) {
+                for (StateAssignment sa : os.stateAssignments) {
 
-            String val = substituteVariables(td.getValueExpression(), varHM);
-
-            String varnm = flatName(td.getVariable(), prefix);
-            typeB.addTimeDerivative(varnm, val);
-        }
-
-        for (OnStart os : dyn.getOnStarts()) {
-            for (StateAssignment sa : os.stateAssignments) {
-
-                String vnm = flatName(sa.getVariable(), prefix);
-                String val = substituteVariables(sa.getValueExpression(), varHM);
-                typeB.addOnStart(vnm, val);
+                    String vnm = flatName(sa.getVariable(), prefix);
+                    String val = substituteVariables(sa.getValueExpression(), varHM);
+                    typeB.addOnStart(vnm, val);
+                }
             }
         }
 
