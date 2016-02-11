@@ -2525,6 +2525,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.path = parseString(xv);
             } else if (xn.equals("fileName")) {
                 ret.fileName = parseString(xv);
+            } else if (xn.equals("format")) {
+                ret.format = parseString(xv);
             } else {
                 E.warning("Unrecognized attribute " + xa + " " + xv);
             }
