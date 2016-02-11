@@ -13,6 +13,11 @@ public class EventWriter {
 	
 	public String fileName;
 	
+	public String format;
+    
+    public static final String FORMAT_TIME_ID = "TIME_ID";
+    public static final String FORMAT_ID_TIME = "ID_TIME";
+	
 	
 	public RuntimeEventOutput getRuntimeEventOutput(Component cpt) throws ContentError {
 		RuntimeEventOutput ret = new RuntimeEventOutput();
@@ -21,6 +26,7 @@ public class EventWriter {
 			ret.setPath(cpt.getTextParam(path));
 		}  
 		ret.setFileName(cpt.getTextParam(fileName));
+		ret.setFormat(cpt.getTextParam(format));
 		return ret;
 	}
  

@@ -1341,8 +1341,8 @@ public class StateType implements RuntimeType, ILEMSStateType {
 		runtimeRecorders.add(new RuntimeRecorder(id, q, tsc, ysc, col, display));
 	}
     
-	public void addEventRecorder(String id, String q, String parent) {
-		runtimeEventRecorders.add(new RuntimeEventRecorder(id, q, parent));
+	public void addEventRecorder(String id, String q, String eventPort, String parent) {
+		runtimeEventRecorders.add(new RuntimeEventRecorder(id, q, eventPort, parent));
 	}
 	
 	

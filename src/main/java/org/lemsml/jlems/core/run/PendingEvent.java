@@ -3,10 +3,10 @@ package org.lemsml.jlems.core.run;
 
 public class PendingEvent {
 
-	InPort port;
+	InPortReceiver port;
 	double time;
 	
-	public PendingEvent(InPort ip, double t) {
+	public PendingEvent(InPortReceiver ip, double t) {
 		port = ip;
 		time = t;
 	}
@@ -30,9 +30,5 @@ public class PendingEvent {
 	public double getTime() {
 		return time;
 	}
-
-	
-
- 
 	
 }

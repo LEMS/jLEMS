@@ -122,7 +122,7 @@ public class Sim extends LemsProcess {
 	    EventOutputCollector eoco = new EventOutputCollector(runtimeEventOutputs);
 	    rootBehavior.visitAll(eoco);
 	   
-	    // build the event outputs and keep them in dvHM
+	    // build the event outputs and keep them in erwHM
 	    erwHM = new HashMap<String, EventResultWriter>();
  	    for (RuntimeEventOutput reo : runtimeEventOutputs) {
  	    	EventResultWriter erw = ResultWriterFactory.getFactory().newEventResultWriter(reo);
@@ -297,9 +297,6 @@ public class Sim extends LemsProcess {
 
                 for (RuntimeRecorder rr : recorders) {
                     rr.appendState(t);
-                }
-                for (RuntimeEventRecorder rer : eventRecorders) {
-                    rer.appendState(t);
                 }
 
                 times[istep] = t;

@@ -75,7 +75,7 @@
 
 
     <!-- Main NeuroML2 content -->
-    <iafTauRefCell id="iafTauRef" leakReversal="-70mV" thresh="-55mV"
+    <iafTauRefCell id="iafTauRef" leakReversal="-50mV" thresh="-55mV"
                    reset="-75mV" tau="30ms" refract="25ms"/>
 
 

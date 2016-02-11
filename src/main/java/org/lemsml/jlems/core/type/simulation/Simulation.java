@@ -120,13 +120,14 @@ public class Simulation {
             for (EventRecord er : eventRecords)
             {
                 final String path = cpt.getPathParameterPath(er.quantity);
+                final String eventPort = cpt.getPathParameterPath(er.eventPort);
                 if (path == null)
                 {
                     throw new ContentError("No path specified for recorder (" + er.quantity + ") in " + cpt);
                 }
                 Component cparent = cpt.getParent();
                 
-                ret.addEventRecorder(cpt.id, path, cparent.getID());
+                ret.addEventRecorder(cpt.id, path, eventPort, cparent.getID());
             }
         }
      

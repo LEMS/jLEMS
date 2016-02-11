@@ -1062,6 +1062,9 @@ public class StateInstance implements StateRunnable, ILEMSStateInstance {
 
     @Override
 	public OutPort getOutPort(String sop) {
+		if (!outPortHM.containsKey(sop)) {
+			E.error("No OutPort "+sop+" on "+getInfo()+". Existing OutPorts: "+outPortHM);
+		}
 		return outPortHM.get(sop);
 	}
 

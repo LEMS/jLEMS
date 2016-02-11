@@ -15,7 +15,7 @@ public class DummyEventResultWriter implements EventResultWriter {
 	}
 
 	@Override
-	public void addPoint(String id, double x, double y) {
+    public void recordEvent(String id) {
 		// TODO Auto-generated method stub
 		
 	}

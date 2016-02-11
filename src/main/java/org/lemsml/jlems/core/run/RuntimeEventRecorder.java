@@ -10,32 +10,26 @@ public class RuntimeEventRecorder
 
     String id;
     String quantity;
-    //String color;
+    String eventPort;
     String parent;
 
     StateWrapper stateWrapper;
+    InPortRecorder inPort;
 
-    // on or the other of these will be set - maybe common interface?
-    //DataViewer dataViewer;
     EventResultWriter eventResultWriter;
 
-    //double tscale;
-    //double yscale;
-
-    public RuntimeEventRecorder(String aid, String q, String p)
+    public RuntimeEventRecorder(String id, String quantity, String eventPort, String parent)
     {
-        id = aid;
-        quantity = q;
-        //tscale = tsc;
-        //yscale = ysc;
-        //color = col;
-        parent = p;
+        this.id = id;
+        this.quantity = quantity;
+        this.eventPort = eventPort;
+        this.parent = parent;
     }
 
     @Override
     public String toString()
     {
-        return "RuntimeEventRecorder, " + id + " of " + quantity;
+        return "RuntimeEventRecorder, " + id + " of " + quantity+ ", port: "+eventPort;
     }
 
     public String getID()
@@ -43,56 +37,29 @@ public class RuntimeEventRecorder
         return id;
     }
     
-    
     public String getParent()
     {
         return parent;
     }
-/*
-    
-    public void connectRunnable(RunnableAccessor ra, DataViewer dv) throws ConnectionError, ContentError
-    {
-        if (quantity == null)
-        {
-            throw new ConnectionError("Recorder has null quantity " + toString());
-        }
-        stateWrapper = ra.getStateWrapper(quantity);
-        if (stateWrapper == null)
-        {
-            throw new ConnectionError("unable to access state variable: " + quantity);
-        }
-        dataViewer = dv;
-    }*/
 
     public void connectRunnable(RunnableAccessor ra, EventResultWriter erw) throws ConnectionError, ContentError
     {
-        ////System.out.println("Connecting "+ra.toString()+" (?) to "+erw.getID());
+        //System.out.println("Connecting "+ra.toString()+" (?) to "+erw.getID());
         if (quantity == null)
         {
             throw new ConnectionError("Recorder has null quantity " + toString());
         }
-        stateWrapper = ra.getStateWrapper(quantity);
-        ////System.out.println("Connected "+stateWrapper.unitInstance.id);
-        if (stateWrapper == null)
+        StateRunnable si = ra.getStateInstance(quantity);
+        if (si == null)
         {
             throw new ConnectionError("unable to access state variable: " + quantity);
         }
+        OutPort op = si.getOutPort(eventPort);
+        inPort = new InPortRecorder(id,erw);
+        op.connectTo(inPort);
         eventResultWriter = erw;
     }
-
-    public void appendState(double ft) throws ContentError, RuntimeError
-    {
-
-        double x = ft / 1;
-        double y = stateWrapper.getValue() / 1;
-        //E.info("Adding point: ("+x+", "+y+")");
-        ///System.out.println("appendState: "+id);
-
-        if (eventResultWriter != null)
-        {
-            eventResultWriter.addPoint(id, x, y);
-        }
-    }
+   
 
     public String getQuantity()
     {

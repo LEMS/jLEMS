@@ -4,7 +4,9 @@ import org.lemsml.jlems.core.run.RuntimeError;
 
 public interface EventResultWriter {
 
-	void addPoint(String id, double x, double y);
+	//void addPoint(String id, double x, double y);
+    
+    void recordEvent(String id);
 	
 	String getID();
 
