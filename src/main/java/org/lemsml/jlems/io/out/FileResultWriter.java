@@ -13,30 +13,25 @@ import org.lemsml.jlems.io.util.FileUtil;
 public class FileResultWriter implements ResultWriter {
 
     String id;
-
     String path;
-
     String fileName;
-
     int colCount;
 
-    ArrayList<double[]> dat;
+    ArrayList<double[]> allData;
 
-    int wkCount;
-    double[] wk = null;
+    int columnCounter;
+    double[] currentRow = null;
     boolean newFile = true;
 
     boolean verbose = false;
-
 
     public FileResultWriter(RuntimeOutput ro) {
          id = ro.getID();
          path = ro.getPath();
          fileName = ro.getFileName();
          colCount = 1;
-         dat = new ArrayList<double[]>();
+         allData = new ArrayList<double[]>();
     }
-
 
     @Override
     public String getID()
@@ -47,32 +42,31 @@ public class FileResultWriter implements ResultWriter {
     @Override
     public void addPoint(String id, double x, double y) {
 
-        if (verbose) System.out.println("addPoint: "+id+", "+wkCount+" ("+(float)x+", "+(float)y+", ...)");
-        wk[wkCount] = y;
-        wkCount += 1;
-
+        if (verbose) System.out.println("addPoint: "+id+", "+columnCounter+" ("+(float)x+", "+(float)y+", ...)");
+        currentRow[columnCounter] = y;
+        columnCounter += 1;
+        
     }
 
 
     @Override
     public void advance(double t) throws RuntimeError {
 
-        if (wk != null) {
-            if (verbose) System.out.println(".. advance: "+(float)t+", "+ wk.length+" points  ("+(float)wk[0]+", "+ (wk.length>1 ? (float)wk[1]: "--")+", ...)");
-            dat.add(wk);
-            if (verbose) System.out.println("a Last dat of "+dat.size()+" ("+(float)dat.get(dat.size()-1)[0]+", "+(float)dat.get(dat.size()-1)[1]+", ...)");
+        if (currentRow != null) {
+            if (verbose) System.out.println(".. advance: "+(float)t+", "+ currentRow.length+" points  ("+(float)currentRow[0]+", "+ (currentRow.length>1 ? (float)currentRow[1]: "--")+", ...)");
+            allData.add(currentRow);
+            if (verbose) System.out.println("a Last dat of "+allData.size()+" ("+(float)allData.get(allData.size()-1)[0]+", "+(float)allData.get(allData.size()-1)[1]+", ...)");
         } else {
             if (verbose) System.out.println(".. no data advance...");
         }
 
-
-        if (dat.size() > 1000) {
+        if (allData.size() > 1000) {
             flush();
         }
 
-        wk = new double[colCount];
-        wk[0] = t;
-        wkCount = 1;
+        currentRow = new double[colCount];
+        currentRow[0] = t;
+        columnCounter = 1;
     }
 
 
@@ -84,9 +78,9 @@ public class FileResultWriter implements ResultWriter {
 
     public void flush() throws RuntimeError {
 
-        if (verbose) System.out.println("--------------\nf Last dat ("+(float)dat.get(dat.size()-1)[0]+", "+(float)dat.get(dat.size()-1)[1]+", ...)");
+        if (verbose) System.out.println("--------------\nf Last dat ("+(float)allData.get(allData.size()-1)[0]+", "+(float)allData.get(allData.size()-1)[1]+", ...)");
         StringBuilder sb = new StringBuilder();
-        for (double[] d : dat) {
+        for (double[] d : allData) {
             for (int i = 0; i < d.length; i++) {
                 sb.append((float)d[i]);
                 sb.append("\t");
@@ -95,13 +89,13 @@ public class FileResultWriter implements ResultWriter {
         }
 
         if (verbose) {
-            System.out.println("Flushed "+dat.size()+" sets of points...");
-            System.out.println("("+(float)dat.get(0)[0]+", "+(float)dat.get(0)[1]+", ...)");
+            System.out.println("Flushed "+allData.size()+" sets of points...");
+            System.out.println("("+(float)allData.get(0)[0]+", "+(float)allData.get(0)[1]+", ...)");
             System.out.println("...");
-            System.out.println("("+(float)dat.get(dat.size()-1)[0]+", "+(float)dat.get(dat.size()-1)[1]+", ...)");
+            System.out.println("("+(float)allData.get(allData.size()-1)[0]+", "+(float)allData.get(allData.size()-1)[1]+", ...)");
         }
 
-        dat = new ArrayList<double[]>();
+        allData = new ArrayList<double[]>();
 
         File fdest = getFile();
 
@@ -120,7 +114,7 @@ public class FileResultWriter implements ResultWriter {
 
 
 
-    private File getFile() {
+    protected File getFile() {
         File fdir;
         if (path != null) {
             fdir = new File(path);
@@ -155,7 +149,7 @@ public class FileResultWriter implements ResultWriter {
         flush();
 
         File f = getFile();
-        E.info("Written the file " + f.getAbsolutePath() + " " + f.length());
+        E.info("Written to the file " + f.getAbsolutePath() + " " + f.length());
     }
 
 

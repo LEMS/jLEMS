@@ -13,6 +13,7 @@ public class RunConfig
 	double total;
 	
 	ArrayList<RuntimeRecorder> recorders;
+	ArrayList<RuntimeEventRecorder> eventRecorders;
 
 	public RunConfig(Component cpt, double st, double tot) {
 		targetComponent = cpt;
@@ -58,6 +59,17 @@ public class RunConfig
 			recorders = new ArrayList<RuntimeRecorder>();
 		}
 		return recorders;
+	}
+
+	public void setEventRecorders(ArrayList<RuntimeEventRecorder> arc) {
+		eventRecorders = arc;
+	}
+	
+	public ArrayList<RuntimeEventRecorder> getEventRecorders() {
+		if (eventRecorders == null) {
+			eventRecorders = new ArrayList<RuntimeEventRecorder>();
+		}
+		return eventRecorders;
 	}
 
 	public Component getControlComponent() {

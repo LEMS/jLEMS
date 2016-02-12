@@ -1,8 +1,5 @@
 package org.lemsml.jlems.core.type.simulation;
  
-import org.lemsml.jlems.core.logging.E;
-import org.lemsml.jlems.core.out.ResultWriter;
-import org.lemsml.jlems.core.out.ResultWriterFactory;
 import org.lemsml.jlems.core.run.RuntimeOutput;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.Component;

@@ -3,6 +3,7 @@ package org.lemsml.jlems.core.type.simulation;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.out.ResultWriter;
 import org.lemsml.jlems.core.run.RuntimeDisplay;
+import org.lemsml.jlems.core.run.RuntimeEventOutput;
 import org.lemsml.jlems.core.run.RuntimeOutput;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
@@ -17,12 +18,16 @@ public class Simulation {
 
 	 
 	public transient LemsCollection <Record> records = new LemsCollection<Record>();
+	 
+	public transient LemsCollection <EventRecord> eventRecords = new LemsCollection<EventRecord>();
 	
 	public transient LemsCollection <Run> runs = new LemsCollection<Run>();
 	
 	public transient LemsCollection <DataDisplay> dataDisplays = new LemsCollection<DataDisplay>();
 
 	public transient LemsCollection <DataWriter> dataWriters = new LemsCollection<DataWriter>();
+
+	public transient LemsCollection <EventWriter> eventWriters = new LemsCollection<EventWriter>();
 
 	
 	public static int idCounter = 0;
@@ -69,6 +74,13 @@ public class Simulation {
 		 }
 	 }
 	 
+	 if (eventWriters.size() > 0) {
+		 for (EventWriter ew : eventWriters) {
+			 final RuntimeEventOutput reo = ew.getRuntimeEventOutput(cpt);
+			 ret.addRuntimeEventOutput(reo);
+		 }
+	 }
+	 
 	 
 	 
 	 if (records.size() > 0) {
@@ -102,6 +114,23 @@ public class Simulation {
 			 ret.addRecorder(cpt.id, path, tsc, ysc, cpt.getTextParam(r.color), cdisp.id);
 		 }
 	 }
+
+        if (eventRecords.size() > 0)
+        {
+            for (EventRecord er : eventRecords)
+            {
+                final String path = cpt.getPathParameterPath(er.quantity);
+                final String eventPort = cpt.getPathParameterPath(er.eventPort);
+                if (path == null)
+                {
+                    throw new ContentError("No path specified for recorder (" + er.quantity + ") in " + cpt);
+                }
+                Component cparent = cpt.getParent();
+                
+                ret.addEventRecorder(cpt.id, path, eventPort, cparent.getID());
+            }
+        }
+     
 	}
 
 	

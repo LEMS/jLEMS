@@ -78,7 +78,11 @@ public class StateType implements RuntimeType, ILEMSStateType {
 	
 	ArrayList<RuntimeOutput> runtimeOutputs = new ArrayList<RuntimeOutput>();
 	
+	ArrayList<RuntimeEventOutput> runtimeEventOutputs = new ArrayList<RuntimeEventOutput>();
+	
 	ArrayList<RuntimeRecorder> runtimeRecorders = new ArrayList<RuntimeRecorder>();
+	
+	ArrayList<RuntimeEventRecorder> runtimeEventRecorders = new ArrayList<RuntimeEventRecorder>();
 	
 	RunConfig runConfig = null;
 	
@@ -1328,9 +1332,17 @@ public class StateType implements RuntimeType, ILEMSStateType {
 	public void addRuntimeOutput(RuntimeOutput rw) {
 		runtimeOutputs.add(rw);
 	}
+
+	public void addRuntimeEventOutput(RuntimeEventOutput rw) {
+		runtimeEventOutputs.add(rw);
+	}
 	
 	public void addRecorder(String id, String q, double tsc, double ysc, String col, String display) {
 		runtimeRecorders.add(new RuntimeRecorder(id, q, tsc, ysc, col, display));
+	}
+    
+	public void addEventRecorder(String id, String q, String eventPort, String parent) {
+		runtimeEventRecorders.add(new RuntimeEventRecorder(id, q, eventPort, parent));
 	}
 	
 	
@@ -1353,9 +1365,17 @@ public class StateType implements RuntimeType, ILEMSStateType {
 	public ArrayList<RuntimeOutput> getRuntimeOutputs() {
 		return runtimeOutputs;
 	}
+
+	public ArrayList<RuntimeEventOutput> getRuntimeEventOutputs() {
+		return runtimeEventOutputs;
+	}
 	
 	public ArrayList<RuntimeRecorder> getRuntimeRecorders() {
 		return runtimeRecorders;
+	}
+	
+	public ArrayList<RuntimeEventRecorder> getRuntimeEventRecorders() {
+		return runtimeEventRecorders;
 	}
 
     @Override
