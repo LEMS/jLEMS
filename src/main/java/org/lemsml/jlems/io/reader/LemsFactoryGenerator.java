@@ -73,6 +73,13 @@ public class LemsFactoryGenerator {
 		String cnm = c.getSimpleName();
 		sb.append("    private " + cnm + " build" + cnm + "(XMLElement xel) {\n");
 		sb.append("        " + cnm + " ret = new " + cnm + "();\n\n");
+        if (cnm.equals("Component")) {
+            sb.append("        // Extra code for a Component...\n"
+                    + "        if (xel.getBody()!=null) {\n" +
+                      "            ret.abouts.add(new About((xel.getBody())));\n" +
+                      "        }\n"+
+                      "        //System.out.println(\"Adding component: \"+ret.getID()+\" (\"+ret.getAbout()+\")\");\n\n");
+        }
 		
 		sb.append("        for (XMLAttribute xa : xel.getAttributes()) {\n");
 		sb.append("            String xn = internalFieldName(xa.getName());\n");
@@ -166,7 +173,7 @@ public class LemsFactoryGenerator {
 	sb.append("        for (XMLElement cel : xel.getXMLElements()) {\n");
 	sb.append("            String xn = cel.getTag();\n\n");
 	sb.append("            Object obj = instantiateFromXMLElement(cel);\n");
-	
+    
 	sb.append("            if (obj != null && obj instanceof DeprecatedElement) {\n");
 	sb.append("                obj = ((DeprecatedElement)obj).getReplacement();\n");
 	sb.append("            }\n");
@@ -199,14 +206,16 @@ public class LemsFactoryGenerator {
 		String txt = lfg.generateJava();
  		
 		File f = new File("src/main/java/org/lemsml/jlems/core/reader/LemsFactory.java");
-
+	 
 		// E.info("About to write " + f.getAbsolutePath() + " local "+ (new File("")).getAbsolutePath());
 		
 		boolean success = FileUtil.writeStringToFile(txt, f);
 		if (success) {
-            E.info("Written " + f.getAbsolutePath());
+			E.info("Written " + f.getAbsolutePath());
         }
 		 
 	}
+
+	
 	
 }
