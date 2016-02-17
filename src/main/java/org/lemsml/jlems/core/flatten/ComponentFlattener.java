@@ -65,6 +65,13 @@ public class ComponentFlattener {
         this.withChildExposures = false;
 
     }
+    
+    public boolean requiresFlattenning() {
+        
+        if (!srcComponent.getAllChildren().isEmpty()) return true;
+           
+        return false;
+    }
 
     public void checkBuilt() throws ContentError, ParseError, ConnectionError {
         parser = lems.getParser();
@@ -127,7 +134,7 @@ public class ComponentFlattener {
         for (FinalParam p : typ.getFinalParams()) {
             String fname = flatName(p.getName(), prefix, varHM);
             if (!constantsAdded.contains(fname) && !derivedParametersAdded.contains(fname)) {
-                E.info("+++ fname: " + fname + ", p.getName: " + p.getName());
+                //E.info("+++ fname: " + fname + ", p.getName: " + p.getName());
                 typeB.addParameter(fname, p.getDimension());
             }
         }
@@ -135,7 +142,7 @@ public class ComponentFlattener {
         for (Exposure ex : typ.getExposures()) {
             String fname = flatName(ex.getName(), prefix);
             if (withExposures) {
-                System.out.println("Adding : "+fname);
+                //System.out.println("Adding : "+fname);
                 typeB.addExposure(fname, ex.getDimension());
             } else {
                 E.info("Leaving out exposure " + fname + " from flattened version of " + srcComponent.getID());
@@ -209,7 +216,7 @@ public class ComponentFlattener {
 
                 String val = dv.getValueExpression();
                 String sel = dv.getSelect();
-                E.info("--------DerivedVariable, fname: " + fname + ", val: " + val + ", sel: " + sel);
+                //E.info("--------DerivedVariable, fname: " + fname + ", val: " + val + ", sel: " + sel);
 
                 if (val != null) {
                     val = substituteVariables(val, varHM);
