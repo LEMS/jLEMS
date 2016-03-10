@@ -8,8 +8,8 @@ public abstract class AbstractInclusionReader {
 
 	HashSet<String> included = new HashSet<String>();
 
-	protected static final String FILE="file";
-	protected static final String URL="url";
+	public static final String FILE="file";
+	public static final String URL="url";
 	public static final String JAR ="jar";
  	
 	public abstract String getRootContent() throws ContentError;
