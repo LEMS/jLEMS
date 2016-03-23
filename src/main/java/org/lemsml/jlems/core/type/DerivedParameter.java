@@ -48,6 +48,10 @@ public class DerivedParameter extends ExpressionValued implements Named {
 		}
 	}
 
+    @Override
+    public String toString() {
+        return "DerivedParameter{" + "name=" + name + ", dimension=" + dimension + ", r_dimension=" + r_dimension + ", select=" + select  + ", value=" + value + '}';
+    }
 
     @Override
 	public String getName() {
@@ -81,5 +85,14 @@ public class DerivedParameter extends ExpressionValued implements Named {
         this.r_dimension = dim;
     }
     
+    public DerivedParameter makeCopy() {
+        DerivedParameter ret = new DerivedParameter();
+        ret.name = name;
+        ret.dimension = dimension;
+        ret.r_dimension = r_dimension;
+        ret.select = select;
+        ret.value = value;
+        return ret;
+    }
     
 }

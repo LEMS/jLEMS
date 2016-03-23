@@ -362,6 +362,14 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 			for (Exposure exp : r_extends.getExposures()) {
 				exposures.addIfNew(exp.makeCopy());
 			}
+            
+			for (DerivedParameter dp : r_extends.getDerivedParameters()) {
+				derivedParameters.addIfNew(dp.makeCopy());
+			}
+            
+			for (Constant con : r_extends.getConstants()) {
+				constants.addIfNew(con.makeCopy());
+			}
 			
 			for (Children chn : r_extends.getChildrens()) {
 				childrens.addIfNew(chn.makeCopy());
@@ -394,7 +402,7 @@ public class ComponentType extends Base implements Named, Summaried, Inheritor {
 		for (Constant c : constants) {
 			FinalParam fp = new FinalParam(c.getName(), c.getDimension());
 			fp.setSValue(c.getStringValue());
-			finalParams.add(fp);
+			finalParams.addIfNew(fp);
 		}
 
 		for (EventPort ep : eventPorts) {

@@ -55,7 +55,7 @@ public class ComponentFlattener {
         srcComponent = c;
         this.withExposures = withExposures;
         this.withChildExposures = withChildExposures;
-
+        
     }
     public ComponentFlattener(Lems l, Component c) {
         lems = l;
@@ -107,7 +107,7 @@ public class ComponentFlattener {
 
     private void importFlattened(Component cpt, String prefix, boolean withExposures) throws ContentError, ParseError, ConnectionError {
 
-        E.info("Flattening: "+prefix+": "+cpt+", ");
+        E.info("=================    Flattening: "+prefix+": "+cpt+", ");
         HashMap<String, String> varHM = new HashMap<String, String>();
 
         ComponentType typ = cpt.getComponentType();
@@ -119,7 +119,7 @@ public class ComponentFlattener {
 
         ArrayList<String> constantsAdded = new ArrayList<String>();
         for (Constant ct : typ.getConstants()) {
-            String fname = flatName(ct.getName(), prefix);
+            String fname = flatName(ct.getName(), prefix, varHM);
             constantsAdded.add(fname);
             typeB.addConstant(fname, ct.getDimension(), ct.getStringValue());
         }
@@ -128,7 +128,9 @@ public class ComponentFlattener {
         for (DerivedParameter dp : typ.getDerivedParameters()) {
             String fname = flatName(dp.getName(), prefix);
             derivedParametersAdded.add(fname);
-            typeB.addDerivedParameter(fname, dp.getDimension(), dp.getValue());
+            String val = dp.getValue();
+            val = substituteVariables(val, varHM);
+            typeB.addDerivedParameter(fname, dp.getDimension(), val);
         }
 
         for (FinalParam p : typ.getFinalParams()) {
@@ -216,7 +218,7 @@ public class ComponentFlattener {
 
                 String val = dv.getValueExpression();
                 String sel = dv.getSelect();
-                //E.info("--------DerivedVariable, fname: " + fname + ", val: " + val + ", sel: " + sel);
+                //E.info("--------DerivedVariable, fname: " + fname + ", val: " + val + ", sel: " + sel+", prefix: "+prefix);
 
                 if (val != null) {
                     val = substituteVariables(val, varHM);
@@ -257,6 +259,7 @@ public class ComponentFlattener {
                         }
                         selval = StringUtil.join(items, op);
                     }
+                    //E.info("-------- selval: "+selval);
 
                     for (Child child : typ.getChilds()) {
                         String sp = child.getName();
@@ -270,6 +273,7 @@ public class ComponentFlattener {
                         String fp = flatName(refid, prefix);
                         selval = selval.replace(sp + "/", fp + "_");
                     }
+                    //E.info("-------- selval: "+selval);
 
                     typeB.addDerivedVariable(fname, dv.getDimension(), selval);
                 }
