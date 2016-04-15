@@ -477,16 +477,18 @@ public class StateInstance implements StateRunnable, ILEMSStateInstance {
     @Override
 	public StateRunnable getChild(String snm) throws ConnectionError {
 		StateRunnable ret = null;
-
+        boolean verbose = false;
+        if (verbose) E.info("   -- getChild called in: "+this.getID()+" for: "+snm);
 		if (snm.startsWith("[") && singleAMI) {
 			int idx = Integer.parseInt(snm.substring(1, snm.length() - 1));
 			ret = onlyAMI.getInstance(idx);
+            if (verbose) E.info("From onlyAMI "+onlyAMI);
 
 		} else if (childHM != null && childHM.containsKey(snm)) {
 			ret = childHM.get(snm);
+            if (verbose) E.info("From childHM "+childHM);
 
 		} else {
-
 			// TODO this is rather adhoc for resolving paths - should be
 			// external
 			if (childA != null) {
@@ -496,6 +498,33 @@ public class StateInstance implements StateRunnable, ILEMSStateInstance {
 						break;
 					}
 				}
+			}
+            String[] multiHMbits = snm.split(":");
+            
+			if (ret == null && multiHM != null && snm.indexOf(":")>0 && multiHM.containsKey(multiHMbits[0])) {
+                if (verbose) E.info("Checking in multiHM for: "+multiHMbits[0]+", id: "+multiHMbits[1]+", index: "+multiHMbits[2]);
+                MultiInstance mi = multiHM.get(multiHMbits[0]);
+                int count=0;
+                for (StateRunnable sr : mi.getStateInstances()) {
+                    if (verbose) E.info("StateRunnable: "+sr);
+                    if (sr == null) {
+                        throw new ConnectionError("null sr in multi instance?");
+
+                    } else if (sr.getID() == null) {
+                        // throw new ConnectionError("null id in sr " + sr);
+                        // not a problem - can have children without ids if
+                        // we don't ever need to access them
+                    } else if (sr.getID().equals(multiHMbits[1])) {
+                        if (count==Integer.parseInt(multiHMbits[2])) {
+                            ret = sr;
+                            if (verbose) E.info("Found: "+ret);
+                            break;
+                        } else {
+                            count +=1;
+                        }
+                    }
+                }
+                
 			}
 			if (ret == null && multiA != null) {
 				for (MultiInstance mi : multiA) {
@@ -515,13 +544,15 @@ public class StateInstance implements StateRunnable, ILEMSStateInstance {
 				}
 			}
 		}
-
+		
 		if (ret == null) {
 			String err = "No such child element or variable " + snm + " in " + this + "\n";
 			err += "childHM= " + childHM + "\n"; 
+			err += "multiHM= " + this.multiHM + "\n"; 
 			err += "childA= " + childA;
 			throw new ConnectionError(err);
 		}
+        if (verbose) E.info("=== ret "+ret);
 		return ret;
 	}
 

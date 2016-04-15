@@ -1,10 +1,13 @@
 package org.lemsml.jlems.core.sim;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.MultiInstance;
+import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.StateInstance;
 import org.lemsml.jlems.core.run.StateRunnable;
 import org.lemsml.jlems.core.run.StateWrapper;
@@ -21,17 +24,23 @@ public class RunnableAccessor {
 
 	public StateWrapper getStateWrapper(String path) throws ConnectionError, ContentError {
 		StateWrapper ret = null;
+        boolean verbose = false;
 		
-		// E.info("seeking sw for " + path);
+		if (verbose) E.info("-------------  getStateWrapper for " + path);
 		
 		String spath = path;
 		spath = spath.replace("[", "/[");
 		
 		String[] bits = spath.split("/");
- 		
+        String info = "Broken info: ";
+		for (int i = 0; i < bits.length-1; i++) {
+			info +="{" + bits[i]+"}" ;
+        }
+ 		if (verbose) E.info(info);
+        
 		StateRunnable wk = root;
 		for (int i = 0; i < bits.length-1; i++) {
-			// E.srcinfo("seeking child " + bits[i] + " in " + wk);
+			if (verbose) E.info("Seeking child " + bits[i] + " in " + wk);
  		
 			if (bits[i].trim().length() == 0) {
 				// skip it
@@ -44,29 +53,34 @@ public class RunnableAccessor {
 		}
 		
 		if (wk != null) {
-			String lastbit = bits[bits.length - 1];
-			
-			ret = wk.getWrapper(lastbit);
-		
-			//E.info("Seeking " + lastbit + " in " + wk + ", got " + ret + " " + wk.getDimensionString(lastbit));
+            try {
+                String lastbit = bits[bits.length - 1];
+                
+                ret = wk.getWrapper(lastbit);
+                
+                if (verbose) E.info("------------ Sought " + lastbit + " in " + wk + ", got " + ret.getValue() + " " + wk.getDimensionString(lastbit));
+            }
+            catch (RuntimeError ex) {
+                //
+            }
 			
 		}
 		if (ret == null) {
-			E.info("starting from " + root);
+			if (verbose) E.info("starting from " + root);
 			StateRunnable pwk = root;
 			for (int i = 0; i < bits.length-1; i++) {
 				// E.srcinfo("seeking child " + bits[i] + " in " + wk);
 				
 				pwk = pwk.getChild(bits[i]);
 				if (pwk == null) {
-					E.info("failed to get child " + bits[i]);
+					if (verbose) E.info("failed to get child " + bits[i]);
 					break;
 				} else {
-					E.info("got child " + pwk);
+					if (verbose) E.info("got child " + pwk);
 				}
 			}
 			if (pwk != null) {
-				E.info("now need wrapper for " + bits[bits.length-1] + " within " + pwk);
+				if (verbose) E.info("now need wrapper for " + bits[bits.length-1] + " within " + pwk);
 			}
             
 			throw new ConnectionError("Can't parse " + spath + " (orig: "+path+").\nLast component: " + wk+" ("+wk.getVariables()+"), root: "+root);
