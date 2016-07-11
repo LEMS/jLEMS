@@ -1,9 +1,11 @@
 package org.lemsml.jlems.core.type;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-
+import java.util.Set;
 import org.lemsml.jlems.core.sim.ContentError;
 
 @SuppressWarnings("StringConcatenationInsideStringBufferAppend")
@@ -40,6 +42,7 @@ public class LemsCollection<T> implements Iterable<T> {
     }
 
     
+	
     public void addIfNew(final T arg) throws ContentError {
         if (arg instanceof Named) {
             String nm = ((Named)arg).getName();
@@ -64,13 +67,12 @@ public class LemsCollection<T> implements Iterable<T> {
 
     }
 
-    
     private void checkCreateNameHM() throws ContentError {
         if (nameHM == null) {
             nameHM = new HashMap<String, T>();
             for (T t : contents) {
                 if (t instanceof Named) {
-                    final String tnm = ((Named) t).getName();
+				final String tnm = ((Named)t).getName();
                     if (nameHM.containsKey(tnm)) {
                         throw new ContentError("Duplicate name for " + t + ": " + tnm + "\n" + "Contents: " + contents);
 
@@ -83,7 +85,7 @@ public class LemsCollection<T> implements Iterable<T> {
     }
 
     
-    public boolean hasName(String pvn) throws ContentError {
+	public boolean hasName(String pvn) throws ContentError   {
         checkCreateNameHM();
         boolean ret = false;
         if (nameHM.containsKey(pvn)) {
@@ -93,7 +95,11 @@ public class LemsCollection<T> implements Iterable<T> {
     }
 
     
+	
+	
+	
 	// TODO the following three methods duplicate the above with a different interface - could make it generic
+	
     public T getByPseudoName(String name) throws ContentError {
         checkCreatePseudoNameHM();
         T ret = null;
@@ -104,13 +110,12 @@ public class LemsCollection<T> implements Iterable<T> {
 
     }
 
-    
     private void checkCreatePseudoNameHM() throws ContentError {
         if (pseudoNameHM == null) {
             pseudoNameHM = new HashMap<String, T>();
             for (T t : contents) {
                 if (t instanceof PseudoNamed) {
-                    String pn = ((PseudoNamed) t).getPseudoName();
+				String pn = ((PseudoNamed)t).getPseudoName();
                     if (pseudoNameHM.containsKey(pn)) {
                         throw new ContentError("duplicate name for " + t);
                     } else {
@@ -132,6 +137,9 @@ public class LemsCollection<T> implements Iterable<T> {
     }
 
     
+	
+	
+	
     public T getByID(String sid) throws ContentError {
         checkCreateIDHM();
         T ret = null;
@@ -142,13 +150,12 @@ public class LemsCollection<T> implements Iterable<T> {
 
     }
 
-    
     private void checkCreateIDHM() throws ContentError {
         if (idHM == null) {
             idHM = new HashMap<String, T>();
             for (T t : contents) {
                 if (t instanceof IDd) {
-                    String pn = ((IDd) t).getID();
+				String pn = ((IDd)t).getID();
                     if (pn != null && idHM.containsKey(pn)) {
                         throw new ContentError("Duplicate id: " + pn + "\nidHM: " + idHM);
                     } else {
@@ -284,6 +291,23 @@ public class LemsCollection<T> implements Iterable<T> {
         return contents;
     }
 
+    public ArrayList<T> getContentsSorted() throws ContentError
+    {
+        ArrayList<T> sorted = new ArrayList<T>(contents);
+        
+        Collections.sort(sorted, new Comparator<T>()
+        {
+            @Override
+            public int compare(T t1, T t2)
+            {
+
+                return t1.toString().compareTo(t2.toString());
+            }
+        });
+
+        return sorted;
+    }
+
     
     public void clear() {
         contents.clear();
@@ -305,5 +329,24 @@ public class LemsCollection<T> implements Iterable<T> {
     public T get(int i) {
         return contents.get(i);
     }
+
+
+	public boolean containsName(String name) throws ContentError {
+		checkCreateNameHM();
+		boolean ret = false;
+		if (nameHM.containsKey(name)) {
+			ret = true;
+        }
+		return ret;
+	}
+
+
+	public void remove(String rnm) throws ContentError {
+		checkCreateNameHM();
+		if (nameHM.containsKey(rnm)) {
+			T t = nameHM.get(rnm);
+			contents.remove(t);
+		}
+	}
 
 }

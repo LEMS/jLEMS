@@ -27,5 +27,8 @@ public class Plus extends AbstractDOp {
 	}
 
         
-	
+	@Override
+	public String toReversePolishExpression() {
+		return left.toReversePolishExpression() + " " + right.toReversePolishExpression() +" +";
+	}
 }

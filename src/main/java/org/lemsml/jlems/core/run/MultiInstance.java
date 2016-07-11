@@ -21,10 +21,7 @@ public class MultiInstance {
 	
     @Override
 	public String toString() {
-		String ret = "MultiInstance of " + typeName + " " + instances.size() + " ";
-		for (StateRunnable si : instances) {
-			ret += si + " ";
-		}
+		String ret = "MultiInstance of " + typeName + " " + instances.size();
 		return ret;
 	}
 	

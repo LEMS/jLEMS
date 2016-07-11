@@ -21,59 +21,60 @@ import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.logging.DefaultLogger;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
 import org.lemsml.jlems.io.xmlio.XMLSerializer;
- 
 
+public class ComponentFlatteningTest
+{
 
-public class ComponentFlatteningTest {
-
-	
-	 
-/*
-    public static void main(String[] args) {
-    	DefaultLogger.initialize();
+    /*
+     public static void main(String[] args) {
+     DefaultLogger.initialize();
     	
-    	ComponentFlatteningTest ct = new ComponentFlatteningTest();
-        Result r = org.junit.runner.JUnitCore.runClasses(ct.getClass());
-        MainTest.checkResults(r);
+     ComponentFlatteningTest ct = new ComponentFlatteningTest();
+     Result r = org.junit.runner.JUnitCore.runClasses(ct.getClass());
+     MainTest.checkResults(r);
+
+     }
+     */
+    public static void main(String[] args) throws ContentError, ParseError, ConnectionError, RuntimeError, IOException, ParseException, BuildException, XMLException
+    {
+        DefaultLogger.initialize();
+
+        ComponentFlatteningTest cft = new ComponentFlatteningTest();
+        cft.runExample1();
+        cft.runExampleB();
 
     }
-*/
-	
-	 
-    public static void main(String[] args) throws ContentError, ParseError, ConnectionError, RuntimeError, IOException, ParseException, BuildException, XMLException {
-    	DefaultLogger.initialize();
-       
-     
-    		ComponentFlatteningTest cft = new ComponentFlatteningTest();
-    		cft.runExample1();
-    		
-    	 
+
+    @Test
+    public void runExample1() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException
+    {
+        URL url = this.getClass().getResource("/example1.xml");
+        File f1 = new File(url.getFile());
+        flattenFromFile(f1, "na");
     }
     
     @Test
-    public void runExample1() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException {
-    	URL url = this.getClass().getResource("/example1.xml");
-		File f1 = new File(url.getFile());
-		flattenFromFile(f1, "na");
+    public void runExampleB() throws ContentError, ConnectionError, ParseError, IOException, RuntimeError, ParseException, BuildException, XMLException
+    {
+        URL url = this.getClass().getResource("/devexamples/SimpleDV.xml");
+        File f1 = new File(url.getFile());
+        flattenFromFile(f1, "cell0");
     }
-    
-    
-    
-    
+
     public void flattenFromFile(File f, String tgtid) throws ContentError,
-    		ConnectionError, ParseError, IOException, RuntimeError, ParseException, 
-    		BuildException, XMLException {
-    	E.info("Loading a LEMS file from: " + f.getAbsolutePath());
+            ConnectionError, ParseError, IOException, RuntimeError, ParseException,
+            BuildException, XMLException
+    {
+        E.info("Loading a LEMS file from: " + f.getAbsolutePath());
 
         FileInclusionReader fir = new FileInclusionReader(f);
         Sim sim = new Sim(fir.read());
 
         sim.readModel();
-     
+
         sim.build();
 
         //sim.run();
-
         Lems lems = sim.getLems();
         Component cpt = lems.getComponent(tgtid);
 
@@ -81,18 +82,18 @@ public class ComponentFlatteningTest {
 
         ComponentType ct = cf.getFlatType();
         Component cp = cf.getFlatComponent();
-        
+
         String typeOut = XMLSerializer.serialize(ct);
         String cptOut = XMLSerializer.serialize(cp);
-      
+
         E.info("Flat type: \n" + typeOut);
         E.info("Flat cpt: \n" + cptOut);
-        
-		lems.addComponentType(ct);
-		lems.addComponent(cp);
-	
-		lems.resolve(ct);
-		lems.resolve(cp);
-	 
+
+        lems.addComponentType(ct);
+        lems.addComponent(cp);
+
+        lems.resolve(ct);
+        lems.resolve(cp);
+
     }
 }

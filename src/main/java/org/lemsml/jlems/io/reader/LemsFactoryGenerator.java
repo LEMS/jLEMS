@@ -21,20 +21,20 @@ public class LemsFactoryGenerator {
 		
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append("package org.lemsml.jlems.reader;\n\n");
-		sb.append("import org.lemsml.jlems.type.*;\n");
-		sb.append("import org.lemsml.jlems.type.dynamics.*;\n");
-		sb.append("import org.lemsml.jlems.type.structure.*;\n");
-		sb.append("import org.lemsml.jlems.type.simulation.*;\n\n");
-		sb.append("import org.lemsml.jlems.type.procedure.*;\n\n");
-		sb.append("import org.lemsml.jlems.type.geometry.*;\n\n");
+		sb.append("package org.lemsml.jlems.core.reader;\n\n");
+		sb.append("import org.lemsml.jlems.core.type.*;\n");
+		sb.append("import org.lemsml.jlems.core.type.dynamics.*;\n");
+		sb.append("import org.lemsml.jlems.core.type.structure.*;\n");
+		sb.append("import org.lemsml.jlems.core.type.simulation.*;\n\n");
+		sb.append("import org.lemsml.jlems.core.type.procedure.*;\n\n");
+		sb.append("import org.lemsml.jlems.core.type.geometry.*;\n\n");
 		
-		sb.append("import org.lemsml.jlems.xml.XMLElement;\n");
-		sb.append("import org.lemsml.jlems.xml.XMLAttribute;\n");
-		sb.append("import org.lemsml.jlems.logging.E;\n");
+		sb.append("import org.lemsml.jlems.core.xml.XMLElement;\n");
+		sb.append("import org.lemsml.jlems.core.xml.XMLAttribute;\n");
+		sb.append("import org.lemsml.jlems.core.logging.E;\n");
 		
 		sb.append("// NB this is generated code. Don't edit it. If there is a problem, fix the superclass,\n");
-		sb.append("// the generator - org.jlems.jlemsio.LemsFactoryGenerator, or the class being instantiated.\n\n");
+		sb.append("// the generator - org.lemsml.jlems.schema.LemsFactoryGenerator, or the class being instantiated.\n\n");
 		sb.append("public class LemsFactory extends AbstractLemsFactory {\n\n\n");
 	
 		
@@ -73,6 +73,13 @@ public class LemsFactoryGenerator {
 		String cnm = c.getSimpleName();
 		sb.append("    private " + cnm + " build" + cnm + "(XMLElement xel) {\n");
 		sb.append("        " + cnm + " ret = new " + cnm + "();\n\n");
+        if (cnm.equals("Component")) {
+            sb.append("        // Extra code for a Component...\n"
+                    + "        if (xel.getBody()!=null) {\n" +
+                      "            ret.abouts.add(new About((xel.getBody())));\n" +
+                      "        }\n"+
+                      "        //System.out.println(\"Adding component: \"+ret.getID()+\" (\"+ret.getAbout()+\")\");\n\n");
+        }
 		
 		sb.append("        for (XMLAttribute xa : xel.getAttributes()) {\n");
 		sb.append("            String xn = internalFieldName(xa.getName());\n");
@@ -110,7 +117,7 @@ public class LemsFactoryGenerator {
 		
 		
 		sb.append("            } else {\n");
-		sb.append("                E.warning(\"unrecognized attribute \" + xa);\n");
+		sb.append("                E.warning(\"Unrecognized attribute \" + xa + \" \" + xv);\n");
 		sb.append("            }\n");
 		sb.append("        }\n\n\n");
 		
@@ -166,6 +173,10 @@ public class LemsFactoryGenerator {
 	sb.append("        for (XMLElement cel : xel.getXMLElements()) {\n");
 	sb.append("            String xn = cel.getTag();\n\n");
 	sb.append("            Object obj = instantiateFromXMLElement(cel);\n");
+    
+	sb.append("            if (obj != null && obj instanceof DeprecatedElement) {\n");
+	sb.append("                obj = ((DeprecatedElement)obj).getReplacement();\n");
+	sb.append("            }\n");
 	
 	sb.append("            if (xn.equals(\"UNUSED\")) {\n");
 	
@@ -183,7 +194,7 @@ public class LemsFactoryGenerator {
 	}	
  
 	sb.append("            } else {\n");
-	sb.append("                E.warning(\"unrecognized element \" + cel);\n");
+	sb.append("                E.warning(\"Unrecognized element (\"+xn+\"): \" + cel);\n");
 	sb.append("            }\n");
 	sb.append("        }\n\n\n");
 	}
@@ -194,10 +205,14 @@ public class LemsFactoryGenerator {
 		
 		String txt = lfg.generateJava();
  		
-		File f = new File("src/org/lemsml/jlems/reader/LemsFactory.java");
+		File f = new File("src/main/java/org/lemsml/jlems/core/reader/LemsFactory.java");
 	 
-			FileUtil.writeStringToFile(txt, f);
+		// E.info("About to write " + f.getAbsolutePath() + " local "+ (new File("")).getAbsolutePath());
+		
+		boolean success = FileUtil.writeStringToFile(txt, f);
+		if (success) {
 			E.info("Written " + f.getAbsolutePath());
+        }
 		 
 	}
 

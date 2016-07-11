@@ -53,6 +53,11 @@ public class Parameter implements Named {
             }
         }
     }
+    
+    @Override
+    public String toString() {
+        return "Parameter{" + "name=" + name + ", dimension=" + dimension + ", r_dimension=" + r_dimension + '}';
+    }
 
     @Override
     public String getName() {

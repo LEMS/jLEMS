@@ -66,6 +66,10 @@ public class VariableROC {
 	public String getTextExpression() {
 		 return rateexp.getExpressionString();
 	}
+	
+	public String getReversePolishExpressionString() {
+		return rateexp.getReversePolishExpressionString();
+	}
 
 	public void substituteVariableWith(String vnm, String pth) {
 		rateexp.substituteVariableWith(vnm, pth);

@@ -8,12 +8,9 @@ public class RuntimeOutput {
 	
 	String fileName;
 	
-
-	public RuntimeOutput() {
-		
-	}
+ 
 	
-	
+    @Override
 	public String toString() {
 		return "RuntimeOutput, id=" + id + " file=" + fileName;
 	}

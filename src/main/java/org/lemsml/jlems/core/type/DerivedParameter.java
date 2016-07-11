@@ -4,6 +4,7 @@ import org.lemsml.jlems.core.annotation.ModelElement;
 import org.lemsml.jlems.core.annotation.ModelProperty;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
+import org.lemsml.jlems.core.type.dynamics.ExpressionValued;
 
 @ModelElement(info="A parameter that comes from other parameter values in the model rather than being set explicitly. Its value " +
 		"can be supplied either with the 'value' attribute that evaluates within the scope of the definition, or with the " +
@@ -12,7 +13,7 @@ import org.lemsml.jlems.core.sim.ContentError;
 		" a channel's reversal potential to taken from a single global setting according to its permeant ion, rather " +
 		"than explicitly supplied locally.")
         
-public class DerivedParameter implements Named {
+public class DerivedParameter extends ExpressionValued implements Named {
 
 	public String name;
 	public String dimension;
@@ -21,8 +22,6 @@ public class DerivedParameter implements Named {
 	@ModelProperty(info="Path to the parameter that supplies the value. Exactly one of 'select' and 'value' is required.")
 	public String select;
 	
-	@ModelProperty(info="Expression that supplies the value. Exactly one of 'select' and 'value' is required.")
-	public String value;
     
     public DerivedParameter() {
     }
@@ -49,6 +48,10 @@ public class DerivedParameter implements Named {
 		}
 	}
 
+    @Override
+    public String toString() {
+        return "DerivedParameter{" + "name=" + name + ", dimension=" + dimension + ", r_dimension=" + r_dimension + ", select=" + select  + ", value=" + value + '}';
+    }
 
     @Override
 	public String getName() {
@@ -77,10 +80,19 @@ public class DerivedParameter implements Named {
     public void setSelect(String select) {
         this.select = select;
     }
-
-    public void setValue(String value) {
-        this.value = value;
+    
+    public void setDimension(Dimension dim) {
+        this.r_dimension = dim;
     }
     
+    public DerivedParameter makeCopy() {
+        DerivedParameter ret = new DerivedParameter();
+        ret.name = name;
+        ret.dimension = dimension;
+        ret.r_dimension = r_dimension;
+        ret.select = select;
+        ret.value = value;
+        return ret;
+    }
     
 }

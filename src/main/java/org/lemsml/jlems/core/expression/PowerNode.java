@@ -10,68 +10,62 @@ import org.lemsml.jlems.core.sim.ContentError;
 public class PowerNode extends AbstractFloatResultNode {
 
     public static final String SYMBOL = "^";
-    
-	public PowerNode() {
-		super(SYMBOL);
-	}
-	
-    @Override
-	public PowerNode copy() {
-		return new PowerNode();
-	}
-	
-    @Override
-	public int getPrecedence() {
-		return 1;
-	}
 
-	
-    @Override
-	public double op(double x, double y) {
-		return Math.pow(x, y);
-	}
-	
-    @Override
-	public AbstractDVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
-		checkLeftRight();
-		return new Power(leftEvaluable.makeEvaluable(fixedHM), rightEvaluable.makeEvaluable(fixedHM));
-	}
-
-	 
-    @Override
-	public Dimensional dimop(Dimensional dl, Dimensional dr) throws ContentError {
-		Dimensional ret = null;
-		if (dl.isDimensionless()) {
-			ret = new ExprDimensional();
-			
-		} else if (dr.isDimensionless()) {
-			double dpow = dr.getDoubleValue();
-			if (Double.isNaN(dpow)) {
-				E.repeatableWarning("Can't check dimensionality in power operation (power not known to be constant) " + dl + " " + dr);
-				E.info("class of power node is " + dr.getClass() + " left=" + leftEvaluable + " right=" + rightEvaluable);
-			} else {
-				ret = dl.power(dpow);				
-			}
-			
-		} else {
-			throw new ContentError("powers must be dimensionless");
-		}
-		return ret;
-	}
-	
-	
+    public PowerNode() {
+        super(SYMBOL);
+    }
 
     @Override
-	public Dimensional evaluateDimensional(HashMap<String, Dimensional> dhm) throws ContentError {
-		throw new ContentError("Can't (yet) apply power operations to dimensions");
-	}
+    public PowerNode copy() {
+        return new PowerNode();
+    }
 
+    @Override
+    public int getPrecedence() {
+        return 1;
+    }
 
-	@Override
-	public void doVisit(ExpressionVisitor ev) throws ContentError {
-			checkLeftRight();
-			ev.visitPowerNode(leftEvaluable, rightEvaluable);
-		}
-		
- 
+    @Override
+    public double op(double x, double y) {
+        return Math.pow(x, y);
+    }
+
+    @Override
+    public AbstractDVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
+        checkLeftRight();
+        return new Power(leftEvaluable.makeEvaluable(fixedHM), rightEvaluable.makeEvaluable(fixedHM));
+    }
+
+    @Override
+    public Dimensional dimop(Dimensional dl, Dimensional dr) throws ContentError {
+        Dimensional ret = null;
+        if (dl.isDimensionless()) {
+            ret = new ExprDimensional();
+
+        } else if (dr.isDimensionless()) {
+            double dpow = dr.getDoubleValue();
+            if (Double.isNaN(dpow)) {
+                E.repeatableWarning("Can't check dimensionality in power operation (power not known to be constant) " + dl + " " + dr);
+                E.info("class of power node is " + dr.getClass() + " left=" + leftEvaluable + " right=" + rightEvaluable);
+            } else {
+                ret = dl.power(dpow);
+            }
+
+        } else {
+            throw new ContentError("powers must be dimensionless");
+        }
+        return ret;
+    }
+
+    @Override
+    public Dimensional evaluateDimensional(HashMap<String, Dimensional> dhm) throws ContentError {
+        throw new ContentError("Can't (yet) apply power operations to dimensions");
+    }
+
+    @Override
+    public void doVisit(ExpressionVisitor ev) throws ContentError {
+        checkLeftRight();
+        ev.visitPowerNode(leftEvaluable, rightEvaluable);
+    }
+
 }

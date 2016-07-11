@@ -1,10 +1,13 @@
 package org.lemsml.jlems.core.sim;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.MultiInstance;
+import org.lemsml.jlems.core.run.RuntimeError;
 import org.lemsml.jlems.core.run.StateInstance;
 import org.lemsml.jlems.core.run.StateRunnable;
 import org.lemsml.jlems.core.run.StateWrapper;
@@ -12,7 +15,6 @@ import org.lemsml.jlems.core.run.StateWrapper;
 public class RunnableAccessor {
 
 	StateRunnable root;
-
 	
 	
 	public RunnableAccessor(StateRunnable sr) {
@@ -22,17 +24,23 @@ public class RunnableAccessor {
 
 	public StateWrapper getStateWrapper(String path) throws ConnectionError, ContentError {
 		StateWrapper ret = null;
+        boolean verbose = false;
 		
-		// E.info("seeking sw for " + path);
+		if (verbose) E.info("-------------  getStateWrapper for " + path);
 		
 		String spath = path;
 		spath = spath.replace("[", "/[");
 		
 		String[] bits = spath.split("/");
- 		
+        String info = "Broken info: ";
+		for (int i = 0; i < bits.length-1; i++) {
+			info +="{" + bits[i]+"}" ;
+        }
+ 		if (verbose) E.info(info);
+        
 		StateRunnable wk = root;
 		for (int i = 0; i < bits.length-1; i++) {
-			// E.srcinfo("seeking child " + bits[i] + " in " + wk);
+			if (verbose) E.info("Seeking child " + bits[i] + " in " + wk);
  		
 			if (bits[i].trim().length() == 0) {
 				// skip it
@@ -45,28 +53,34 @@ public class RunnableAccessor {
 		}
 		
 		if (wk != null) {
-			String lastbit = bits[bits.length - 1];
-			ret = wk.getWrapper(bits[bits.length-1]);
-		 
-			
+            try {
+                String lastbit = bits[bits.length - 1];
+                
+                ret = wk.getWrapper(lastbit);
+                
+                if (verbose) E.info("------------ Sought " + lastbit + " in " + wk + ", got " + ret.getValue() + " " + wk.getDimensionString(lastbit));
+            }
+            catch (RuntimeError ex) {
+                //
+            }
 			
 		}
 		if (ret == null) {
-			E.info("starting from " + root);
+			if (verbose) E.info("starting from " + root);
 			StateRunnable pwk = root;
 			for (int i = 0; i < bits.length-1; i++) {
 				// E.srcinfo("seeking child " + bits[i] + " in " + wk);
 				
 				pwk = pwk.getChild(bits[i]);
 				if (pwk == null) {
-					E.info("failed to get child " + bits[i]);
+					if (verbose) E.info("failed to get child " + bits[i]);
 					break;
 				} else {
-					E.info("got child " + pwk);
+					if (verbose) E.info("got child " + pwk);
 				}
 			}
 			if (pwk != null) {
-				E.info("now need wrapper for " + bits[bits.length-1] + " within " + pwk);
+				if (verbose) E.info("now need wrapper for " + bits[bits.length-1] + " within " + pwk);
 			}
             
 			throw new ConnectionError("Can't parse " + spath + " (orig: "+path+").\nLast component: " + wk+" ("+wk.getVariables()+"), root: "+root);
@@ -134,33 +148,73 @@ public class RunnableAccessor {
 		return ret;
 	}
 	
-	
-	
-	public ArrayList<StateRunnable> getStateInstances(String path) throws ConnectionError {
+	public ArrayList<StateRunnable> getRelativeStateInstances(StateRunnable base, String path) throws ConnectionError, ContentError {
 		ArrayList<StateRunnable> ret = null;
+		
+		
+		//E.info("Seeking path " + path + " rel to " + base);
 		
 		String[] bits = path.split("/");
 		
-		StateRunnable wk = root;
-		for (int i = 0; i < bits.length-1; i++) {
+		String b0 = bits[0];
+		StateRunnable wk = base;		
+		if (!wk.hasChildInstance(b0)) {
+		
+			int nup = 0;
+			while (true && nup < 10) {
+				wk = wk.getParent();
+				//E.info("Seeking child " + b0 + " in " + wk + " built=" + wk.isBuilt());
+				nup += 1;
+				if (wk == null) {
+					break;
+				} else if (wk.hasChildInstance(b0)) {
+					break;
+				} else {
+					E.info("Children: " + wk.getChildSummary());
+				}
+			}
+		}
+		if (wk == null) {
+			throw new  ConnectionError("Can't locate " + b0 + " relative to " + base);
+		}
+		
+		
+		for (int i = 0; i < bits.length; i++) {
 			wk = wk.getChild(bits[i]);
 			if (wk == null) {
 				break;
 			}
 		}
+		
 		if (wk == null) {
 			throw new ConnectionError("cant find instances at " + path);
 		}  
 		if (wk instanceof StateInstance) {
-			ret = new ArrayList<StateRunnable>();
-			ret.add((StateInstance)wk);
+			
+			StateInstance si = (StateInstance)wk;
+			if (si.isList()) {
+				//E.info("IS a LIST " + si);
+				ret = si.getListItems();
+			} else {
+				//E.info("NOT a list "  + si);
+				ret = new ArrayList<StateRunnable>();
+				ret.add((StateInstance)wk);
+			}
 		} else if (wk instanceof MultiInstance) {
 			ret = ((MultiInstance)wk).getStateInstances();
+		
 		} else {
 			throw new ConnectionError("need instances, but resolved path to " + wk);
 		}
 			
 		return ret;
 	}
+
+	
+	public ArrayList<StateRunnable> getStateInstances(String path) throws ConnectionError, ContentError {
+		return getRelativeStateInstances(root, path);
+	}
+		
+	 
 
 }

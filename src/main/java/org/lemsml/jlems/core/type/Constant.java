@@ -43,6 +43,18 @@ public class Constant implements Named, Valued  {
         this.value = value;
     }
     
+    public Constant makeCopy() {
+        Constant ret = new Constant();
+        ret.name = name;
+        ret.dimension = dimension;
+        ret.description = description;
+        ret.r_dimension = r_dimension;
+        ret.value = value;
+        ret.p_value = p_value;
+        ret.symbol = symbol;
+        return ret;
+    }
+    
 
     @Override
     public String toString() {

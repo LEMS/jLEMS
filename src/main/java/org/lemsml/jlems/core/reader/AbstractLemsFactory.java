@@ -26,7 +26,7 @@ public abstract class AbstractLemsFactory {
 		if (root.isTag("Lems")) {
 			ret = readLems(root);
 		} else {
-			throw new ContentError("Cant read lems from " + root);
+			throw new ContentError("Can't read LEMS from " + root);
 		}
 		return ret;
 	}
@@ -51,7 +51,13 @@ public abstract class AbstractLemsFactory {
 			} else if (xel.isTag("ComponentType")) {
 				ret.componentTypes.add((ComponentType)instantiateFromXMLElement(xel));
 			} else {
- 				ret.components.add(readComponentFromXMLElement(xel));
+                Component comp = readComponentFromXMLElement(xel);
+                if (xel.getBody()!=null) {
+                    comp.abouts.add(new About((xel.getBody())));
+                    //System.out.println("Adding component: "+comp.getID()+" ("+comp.getAbout()+")");
+                }
+                //
+ 				ret.components.add(comp);
 			}
 		}
 		return ret;
@@ -62,6 +68,7 @@ public abstract class AbstractLemsFactory {
 
 	private Component readComponentFromXMLElement(XMLElement xel) throws ContentError {
 		Component ret = new Component();
+        
 		if (xel.getTag().equals("Component")) {
 			// should have a type field
 		} else {
@@ -80,6 +87,11 @@ public abstract class AbstractLemsFactory {
 				ret.addAttribute(xa.makeCopy());
 			}
 		}
+        
+        if (xel.getBody()!=null) {
+            ret.abouts.add(new About((xel.getBody())));
+            //System.out.println("Adding component: "+ret.getID()+" ("+ret.getAbout()+")");
+        }
 		
 		for (XMLElement cel : xel.getXMLElements()) {
 			String ct = cel.getTag();

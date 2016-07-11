@@ -33,6 +33,12 @@ public class DFunc extends AbstractDVal {
             return fname + "(" + arg.toExpression() + ")";
     }
 
+    
+	@Override
+	public String toReversePolishExpression() {
+		return arg.toReversePolishExpression() + " " + fname + "()";
+	}
+
 
 	public double eval() {
 		return FunctionNode.evaluate(arg.eval(), fname);
@@ -98,4 +104,7 @@ public class DFunc extends AbstractDVal {
 		return arg.variablesIn(known);
 	}
  
+	public boolean isTrivial() {
+		return false;
+    }
 }

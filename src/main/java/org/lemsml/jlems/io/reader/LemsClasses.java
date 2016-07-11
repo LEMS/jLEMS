@@ -1,7 +1,6 @@
 package org.lemsml.jlems.io.reader;
  
 import java.util.ArrayList;
- 
 import org.lemsml.jlems.core.type.About;
 import org.lemsml.jlems.core.type.Assertion;
 import org.lemsml.jlems.core.type.Attachments;
@@ -10,6 +9,7 @@ import org.lemsml.jlems.core.type.Children;
 import org.lemsml.jlems.core.type.Collection;
 import org.lemsml.jlems.core.type.Component;
 import org.lemsml.jlems.core.type.ComponentReference;
+import org.lemsml.jlems.core.type.ComponentRequirement;
 import org.lemsml.jlems.core.type.ComponentType;
 import org.lemsml.jlems.core.type.ComponentTypeReference;
 import org.lemsml.jlems.core.type.Constant;
@@ -18,7 +18,9 @@ import org.lemsml.jlems.core.type.Dimension;
 import org.lemsml.jlems.core.type.EventPort;
 import org.lemsml.jlems.core.type.Exposure;
 import org.lemsml.jlems.core.type.Fixed;
+import org.lemsml.jlems.core.type.IndexParameter;
 import org.lemsml.jlems.core.type.Insertion;
+import org.lemsml.jlems.core.type.InstanceRequirement;
 import org.lemsml.jlems.core.type.IntegerParameter;
 import org.lemsml.jlems.core.type.Lems;
 import org.lemsml.jlems.core.type.Link;
@@ -65,7 +67,9 @@ import org.lemsml.jlems.core.type.procedure.Print;
 import org.lemsml.jlems.core.type.procedure.Procedure;
 import org.lemsml.jlems.core.type.simulation.DataDisplay;
 import org.lemsml.jlems.core.type.simulation.DataWriter;
+import org.lemsml.jlems.core.type.simulation.EventWriter;
 import org.lemsml.jlems.core.type.simulation.Record;
+import org.lemsml.jlems.core.type.simulation.EventRecord;
 import org.lemsml.jlems.core.type.simulation.Run;
 import org.lemsml.jlems.core.type.simulation.Simulation;
 import org.lemsml.jlems.core.type.structure.Apply;
@@ -82,8 +86,8 @@ import org.lemsml.jlems.core.type.structure.MultiInstantiate;
 import org.lemsml.jlems.core.type.structure.PairFilter;
 import org.lemsml.jlems.core.type.structure.PairsEventConnection;
 import org.lemsml.jlems.core.type.structure.Structure;
+import org.lemsml.jlems.core.type.structure.Tunnel;
 import org.lemsml.jlems.core.type.structure.With;
- 
 public final class LemsClasses {
 
 	
@@ -177,6 +181,7 @@ public final class LemsClasses {
 	 	ret.add(new LemsClass(ChildInstance.class, section));	
 	 	ret.add(new LemsClass(ForEach.class, section));
 	 	ret.add(new LemsClass(EventConnection.class, section));
+	 	ret.add(new LemsClass(Tunnel.class, section));
 		ret.add(new LemsClass(PairsEventConnection.class, section));
 		ret.add(new LemsClass(PairFilter.class, section));
 		ret.add(new LemsClass(IncludePair.class, section));
@@ -201,6 +206,8 @@ public final class LemsClasses {
 		ret.add(new LemsClass(DerivedParameter.class, section));
 		ret.add(new LemsClass(Fixed.class, section));
 		ret.add(new LemsClass(Requirement.class, section));
+		ret.add(new LemsClass(ComponentRequirement.class, section));
+		ret.add(new LemsClass(InstanceRequirement.class, section));
 		ret.add(new LemsClass(Exposure.class, section));
 		ret.add(new LemsClass(Child.class, section));
 		ret.add(new LemsClass(Children.class, section));
@@ -211,12 +218,13 @@ public final class LemsClasses {
  		ret.add(new LemsClass(ComponentTypeReference.class, section));
  		ret.add(new LemsClass(Collection.class, section));
  		ret.add(new LemsClass(PairCollection.class, section));
-		ret.add(new LemsClass(EventPort.class, section));
+		ret.add(new LemsClass(EventPort.class, section)); // Deprecated
 		ret.add(new LemsClass(Text.class, section));
 		ret.add(new LemsClass(Path.class, section));
 		ret.add(new LemsClass(Attachments.class, section));
  		ret.add(new LemsClass(Insertion.class, section));
 		ret.add(new LemsClass(IntegerParameter.class, section));
+		ret.add(new LemsClass(IndexParameter.class, section));
 		ret.add(new LemsClass(About.class, section));
 		ret.add(new LemsClass(Meta.class, section));
 		return ret;
@@ -227,8 +235,10 @@ public final class LemsClasses {
 		String section = "simulation";
 		ret.add(new LemsClass(Simulation.class, section));
 		ret.add(new LemsClass(Record.class, section));
+		ret.add(new LemsClass(EventRecord.class, section));
 		ret.add(new LemsClass(DataDisplay.class, section));
 		ret.add(new LemsClass(DataWriter.class, section));
+		ret.add(new LemsClass(EventWriter.class, section));
 		ret.add(new LemsClass(Run.class, section));
 		return ret;
 	}

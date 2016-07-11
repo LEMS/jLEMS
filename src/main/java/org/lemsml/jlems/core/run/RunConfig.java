@@ -3,17 +3,17 @@ package org.lemsml.jlems.core.run;
 import java.util.ArrayList;
 
 import org.lemsml.jlems.core.expression.ParseError;
-import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.Component;
 
-public class RunConfig {
-
+public class RunConfig
+{
 	Component targetComponent;
 	double step;
 	double total;
 	
 	ArrayList<RuntimeRecorder> recorders;
+	ArrayList<RuntimeEventRecorder> eventRecorders;
 
 	public RunConfig(Component cpt, double st, double tot) {
 		targetComponent = cpt;
@@ -61,9 +61,22 @@ public class RunConfig {
 		return recorders;
 	}
 
+	public void setEventRecorders(ArrayList<RuntimeEventRecorder> arc) {
+		eventRecorders = arc;
+	}
+	
+	public ArrayList<RuntimeEventRecorder> getEventRecorders() {
+		if (eventRecorders == null) {
+			eventRecorders = new ArrayList<RuntimeEventRecorder>();
+		}
+		return eventRecorders;
+	}
+
 	public Component getControlComponent() {
 		//E.missing();
 		return null;
 	}
+
+
 	
 }

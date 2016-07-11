@@ -1,6 +1,7 @@
 package org.lemsml.jlems.core.run;
 
 import java.util.ArrayList;
+import org.lemsml.jlems.core.logging.E;
 
  
 public class OutPort {
@@ -8,7 +9,7 @@ public class OutPort {
 	public String name;
 	
 	
-	ArrayList<InPort> recipients = new ArrayList<InPort>();
+	ArrayList<InPortReceiver> recipients = new ArrayList<InPortReceiver>();
 	
 	ArrayList<DelayRecipient> delayRecipients = new ArrayList<DelayRecipient>();
 	
@@ -16,12 +17,13 @@ public class OutPort {
 		name = s;
 	}
 	
-	public void connectTo(InPort ip) {
+	public void connectTo(InPortReceiver ip) {
+        //E.info("Connecting outport "+name+" to "+ip.getName());
 		recipients.add(ip);
 	}
 	
 	
-	public void connectTo(InPort ip, double delay, EventManager em) {
+	public void connectTo(InPortReceiver ip, double delay, EventManager em) {
 		if (delay <= 0) {
 			connectTo(ip);
 		
@@ -31,7 +33,7 @@ public class OutPort {
 	}
 	
 	public void send() throws RuntimeError {
-		for (InPort ip : recipients) {
+		for (InPortReceiver ip : recipients) {
 			ip.receive();
 		}
 		for (DelayRecipient dr : delayRecipients) {

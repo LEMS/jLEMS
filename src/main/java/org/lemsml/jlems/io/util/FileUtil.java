@@ -14,8 +14,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
@@ -25,496 +27,448 @@ import java.util.zip.GZIPOutputStream;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 
-public final class FileUtil
-{
+public final class FileUtil {
 
-	private FileUtil()
-	{
+    private FileUtil() {
 
-	}
+    }
 
-	public static byte[] readHeader(File f, int n) throws IOException
-	{
-		byte[] ret = null;
+    public static byte[] readHeader(File f, int n) throws IOException {
+        byte[] ret;
 
-		FileInputStream ins = new FileInputStream(f);
-		ret = new byte[n];
-		int nread = ins.read(ret);
-		if (nread != n)
-		{
-			E.error("readNBytes wanted " + n + " but got " + nread);
-		}
-		ins.close();
+        FileInputStream ins = new FileInputStream(f);
+        ret = new byte[n];
+        int nread = ins.read(ret);
+        if (nread != n) {
+            E.error("readNBytes wanted " + n + " but got " + nread);
+        }
+        ins.close();
 
-		return ret;
-	}
+        return ret;
+    }
 
-	public static byte[] readBytes(File f) throws IOException
-	{
-		byte[] ret = null;
+    public static byte[] readBytes(File f) throws IOException {
+        byte[] ret;
 
-		FileInputStream fis = new FileInputStream(f);
-		BufferedInputStream bis = new BufferedInputStream(fis);
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        FileInputStream fis = new FileInputStream(f);
+        BufferedInputStream bis = new BufferedInputStream(fis);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-		byte[] bb = new byte[4096];
-		int nread = bis.read(bb);
-		while (nread > 0)
-		{
-			baos.write(bb, 0, nread);
-			nread = bis.read(bb);
-		}
-		ret = baos.toByteArray();
-		bis.close();
-		return ret;
-	}
+        byte[] bb = new byte[4096];
+        int nread = bis.read(bb);
+        while (nread > 0) {
+            baos.write(bb, 0, nread);
+            nread = bis.read(bb);
+        }
+        ret = baos.toByteArray();
+        bis.close();
+        return ret;
+    }
 
-	public static String readStringFromFile(File f) throws IOException
-	{
-		String sdat = "null";
-		if (f != null)
-		{
 
-			boolean dogz = f.getName().endsWith(".gz");
-			InputStream ins = new FileInputStream(f);
-			if (dogz)
-			{
-				ins = new GZIPInputStream(ins);
-			}
-			InputStreamReader insr = new InputStreamReader(ins);
-			BufferedReader fr = new BufferedReader(insr);
 
-			StringBuilder sb = new StringBuilder();
-			while (fr.ready())
-			{
-				sb.append(fr.readLine());
-				sb.append("\n");
-			}
-			fr.close();
-			sdat = sb.toString();
+    public static String readStringFromFile(File f) throws IOException {
+        String sdat = "null";
+        if (f != null) {
 
-		}
-		return sdat;
-	}
-
-	public static boolean writeStringToFile(String sdat, File f) throws IOException
-	{
-		if (!f.exists())
-		{
-            try {
-                f.createNewFile();
-                
-            } catch (IOException ex) {
-                E.error("Problem creating the file: "+f.getAbsolutePath()+"\n"+ex.getMessage());
-                return false;
+            boolean dogz = f.getName().endsWith(".gz");
+            InputStream ins = new FileInputStream(f);
+            if (dogz) {
+                ins = new GZIPInputStream(ins);
             }
-		}
-		String fnm = f.getName();
-		boolean ok = false;
-		if (f != null)
-		{
-			boolean dogz = fnm.endsWith(".gz");
+            InputStreamReader insr = new InputStreamReader(ins);
+            BufferedReader fr = new BufferedReader(insr);
 
-			OutputStream fos = new FileOutputStream(f);
-			if (dogz)
-			{
-				fos = new GZIPOutputStream(fos);
-			}
-			OutputStreamWriter osw = new OutputStreamWriter(fos);
+            StringBuilder sb = new StringBuilder();
+            while (fr.ready()) {
+                sb.append(fr.readLine()).append("\n");
+            }
+            fr.close();
+            sdat = sb.toString();
 
-			osw.write(sdat, 0, sdat.length());
-			osw.close();
-			ok = true;
+        }
+        return sdat;
+    }
 
-		}
-		return ok;
-	}
+    public static boolean writeStringToFile(String sdat, File f) throws IOException {
+        return writeStringToFile(sdat, f, false);
+    }
 
-	public static boolean appendStringToFile(String sdat, File f) throws IOException
-	{
-		String fnm = f.getName();
-		boolean ok = false;
-		if (f != null)
-		{
-			OutputStream fos = new FileOutputStream(f, true);
+    public static boolean writeStringToFile(String sdat, File f, boolean checkForIdenticalFile) throws IOException {
+        
+        boolean ok = false;
+        
+        if (f != null) {
+            if (f.exists() && checkForIdenticalFile) {
+                String existing = readStringFromFile(f);
+                if (sdat.equals(existing)) {
+                    E.info("File " + f.getAbsolutePath() + " exists and is identical");
+                    return true;
+                } else {
+                    E.info("File " + f.getAbsolutePath() + " exists but is different");// : existing- <<<"+existing+">>>, new- <<<"+wouldGetWritten+">>>");
+                }
 
-			OutputStreamWriter osw = new OutputStreamWriter(fos);
+            }
 
-			osw.write(sdat, 0, sdat.length());
-			osw.close();
-			ok = true;
+            if (!f.exists()) {
+                try {
+                    f.createNewFile();
 
-		}
-		return ok;
-	}
+                } catch (IOException ex) {
+                    E.error("Problem creating the file: " + f.getAbsolutePath() + "\n" + ex.getMessage());
+                    return false;
+                }
+            }
+            boolean dogz = f.getName().endsWith(".gz");
 
-	public static String getRootName(File f)
-	{
-		String fnm = f.getName();
-		return getRootName(fnm);
-	}
+            OutputStream fos = new FileOutputStream(f);
+            if (dogz) {
+                fos = new GZIPOutputStream(fos);
+            }
+            OutputStreamWriter osw = new OutputStreamWriter(fos);
 
-	public static String getRootName(String fnm)
-	{
-		int ild = fnm.lastIndexOf(".");
+            osw.write(sdat, 0, sdat.length());
+            osw.close();
+            ok = true;
 
-		String root = fnm;
-		if (ild > 0)
-		{
-			root = fnm.substring(0, fnm.lastIndexOf("."));
-		}
-		return root;
-	}
+        }
+        return ok;
+    }
 
-	public static void writeBytes(byte[] ba, File f)
-	{
-		writeByteArrayToFile(ba, f);
-	}
+    public static boolean appendStringToFile(String sdat, File f) throws IOException {
+        boolean ok = false;
+        if (f != null) {
+            String fnm = f.getName();
+            OutputStream fos = new FileOutputStream(f, true);
 
-	public static void writeByteArrayToFile(byte[] ba, File f)
-	{
-		if (f == null)
-		{
-			return;
-		}
-		try
-		{
-			OutputStream os = new BufferedOutputStream(new FileOutputStream(f));
-			os.write(ba);
-			os.flush();
-			os.close();
-		}
-		catch (Exception e)
-		{
-			E.error("cant write byte array " + ba + " to " + f);
-		}
-	}
+            OutputStreamWriter osw = new OutputStreamWriter(fos);
 
-	public static void copyFile(File fsrc, File fdestin) throws IOException
-	{
-		File fdest = fdestin;
-		if (fdest.isDirectory())
-		{
-			fdest = new File(fdest, fsrc.getName());
-		}
+            osw.write(sdat, 0, sdat.length());
+            osw.close();
+            ok = true;
 
-		if (fsrc.exists())
-		{
+        }
+        return ok;
+    }
 
-			InputStream in = new FileInputStream(fsrc);
-			OutputStream out = new FileOutputStream(fdest);
+    public static String getRootName(File f) {
+        String fnm = f.getName();
+        return getRootName(fnm);
+    }
 
-			// Transfer bytes from in to out
-			byte[] buf = new byte[1024];
-			int len;
-			while ((len = in.read(buf)) > 0)
-			{
-				out.write(buf, 0, len);
-			}
-			in.close();
-			out.close();
+    public static String getRootName(String fnm) {
+        int ild = fnm.lastIndexOf(".");
 
-		}
-		else
-		{
-			E.warning("copy - missing file " + fsrc);
-		}
-	}
+        String root = fnm;
+        if (ild > 0) {
+            root = fnm.substring(0, fnm.lastIndexOf("."));
+        }
+        return root;
+    }
 
-	public static String findPath(File f, String name)
-	{
-		String ret = null;
+    public static void writeBytes(byte[] ba, File f) {
+        writeByteArrayToFile(ba, f);
+    }
 
-		for (File fs : f.listFiles())
-		{
-			if (fs.getName().equals(name))
-			{
-				ret = "";
-				break;
-			}
-		}
+    public static void writeByteArrayToFile(byte[] ba, File f) {
+        if (f == null) {
+            return;
+        }
+        try {
+            OutputStream os = new BufferedOutputStream(new FileOutputStream(f));
+            os.write(ba);
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+            E.error("cant write byte array " + ba + " to " + f);
+        }
+    }
 
-		if (ret == null)
-		{
-			for (File fd : f.listFiles())
-			{
-				if (fd.isDirectory())
-				{
-					String s = findPath(fd, name);
-					if (s != null)
-					{
-						if (s.equals(""))
-						{
-							ret = fd.getName();
-						}
-						else
-						{
-							ret = fd.getName() + "/" + s;
-						}
-						break;
-					}
-				}
-			}
-		}
-		return ret;
-	}
+    public static void copyFile(File fsrc, File fdestin) throws IOException {
+        File fdest = fdestin;
+        if (fdest.isDirectory()) {
+            fdest = new File(fdest, fsrc.getName());
+        }
 
-	public static String readFirstLine(File f) throws IOException
-	{
+        if (fsrc.exists()) {
 
-		String ret = null;
-		if (f != null)
-		{
+            InputStream in = new FileInputStream(fsrc);
+            OutputStream out = new FileOutputStream(fdest);
 
-			InputStream ins = new FileInputStream(f);
-			InputStreamReader insr = new InputStreamReader(ins);
-			BufferedReader fr = new BufferedReader(insr);
-			while (ret == null || ret.trim().length() == 0)
-			{
-				ret = fr.readLine().trim();
-			}
-			fr.close();
+            // Transfer bytes from in to out
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+            in.close();
+            out.close();
 
-		}
-		return ret;
-	}
+        } else {
+            E.warning("copy - missing file " + fsrc);
+        }
+    }
 
-	public static String readNLinesFromFile(File f, int n) throws IOException
-	{
-		StringBuffer sb = new StringBuffer();
+    public static String findPath(File f, String name) {
+        String ret = null;
 
-		if (f != null)
-		{
+        for (File fs : f.listFiles()) {
+            if (fs.getName().equals(name)) {
+                ret = "";
+                break;
+            }
+        }
 
-			InputStream ins = new FileInputStream(f);
-			InputStreamReader insr = new InputStreamReader(ins);
-			BufferedReader fr = new BufferedReader(insr);
-			int nread = 0;
-			while (fr.ready() && nread < n)
-			{
-				sb.append(fr.readLine());
-				sb.append("\n");
-				nread++;
-			}
-			fr.close();
+        if (ret == null) {
+            for (File fd : f.listFiles()) {
+                if (fd.isDirectory()) {
+                    String s = findPath(fd, name);
+                    if (s != null) {
+                        if (s.equals("")) {
+                            ret = fd.getName();
+                        } else {
+                            ret = fd.getName() + "/" + s;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+        return ret;
+    }
 
-		}
-		return sb.toString();
-	}
+    public static String readFirstLine(File f) throws IOException {
 
-	public static String getRelativeDirectory(File ftgt, File rtFolder) throws ContentError
-	{
-		File fpar = ftgt.getParentFile();
-		int ns = 0;
+        String ret = null;
+        if (f != null) {
 
-		String sret = null;
+            InputStream ins = new FileInputStream(f);
+            InputStreamReader insr = new InputStreamReader(ins);
+            BufferedReader fr = new BufferedReader(insr);
+            while (ret == null || ret.trim().length() == 0) {
+                ret = fr.readLine().trim();
+            }
+            fr.close();
 
-		while (fpar != null && !(fpar.equals(rtFolder)))
-		{
-			if (sret == null)
-			{
-				sret = fpar.getName();
-			}
-			else
-			{
-				sret = fpar.getName() + "/" + sret;
-			}
-			fpar = fpar.getParentFile();
+        }
+        return ret;
+    }
 
-			ns += 1;
-			if (ns > 8)
-			{
-				throw new ContentError("too many steps trying to get relative files ? " + ftgt.getAbsolutePath() + " " + rtFolder.getAbsolutePath());
+    public static String readNLinesFromFile(File f, int n) throws IOException {
+        StringBuilder sb = new StringBuilder();
 
-			}
-		}
+        if (f != null) {
 
-		return sret;
-	}
+            InputStream ins = new FileInputStream(f);
+            InputStreamReader insr = new InputStreamReader(ins);
+            BufferedReader fr = new BufferedReader(insr);
+            int nread = 0;
+            while (fr.ready() && nread < n) {
+                sb.append(fr.readLine());
+                sb.append("\n");
+                nread++;
+            }
+            fr.close();
 
-	// MAYDO make this smarter (or use GlobFileFilter from jakarta ORO ?)
-	public static ArrayList<File> matchingFiles(String srcPattern)
-	{
-		ArrayList<File> ret = new ArrayList<File>();
-		if (srcPattern.indexOf("*") < 0)
-		{
-			File fd = new File(srcPattern);
-			if (fd.exists() && fd.isDirectory())
-			{
-				for (File f : fd.listFiles())
-				{
-					ret.add(f);
-				}
-			}
+        }
+        return sb.toString();
+    }
 
-		}
-		else
-		{
-			int istar = srcPattern.indexOf("*");
-			String sa = srcPattern.substring(0, istar);
-			String sb = srcPattern.substring(istar + 1, srcPattern.length());
-			File ftop = new File(sa);
-			for (File fg : ftop.listFiles())
-			{
-				File fp = new File(fg, sb);
-				if (fp.exists())
-				{
-					ret.add(fp);
-				}
-			}
-		}
-		return ret;
-	}
+    public static String getRelativeDirectory(File ftgt, File rtFolder) throws ContentError {
+        File fpar = ftgt.getParentFile();
+        int ns = 0;
 
-	public static File[] routeToAncestor(File dtgt, File dtop)
-	{
-		int nup = 0;
-		File[] dh = new File[10];
-		File dwk = dtgt;
-		dh[nup++] = dwk;
+        String sret = null;
 
-		while (true)
-		{
-			if (dwk == null || dwk.equals(dtop) || nup == 10)
-			{
-				break;
-			}
+        while (fpar != null && !(fpar.equals(rtFolder))) {
+            if (sret == null) {
+                sret = fpar.getName();
+            } else {
+                sret = fpar.getName() + "/" + sret;
+            }
+            fpar = fpar.getParentFile();
 
-			dwk = dwk.getParentFile();
-			dh[nup++] = dwk;
-		}
-		File[] fr = new File[nup];
-		for (int i = 0; i < nup; i++)
-		{
-			fr[i] = dh[i];
-		}
-		return fr;
-	}
+            ns += 1;
+            if (ns > 8) {
+                throw new ContentError("Too many steps trying to get relative files ? " + ftgt.getAbsolutePath() + " " + rtFolder.getAbsolutePath());
 
-	public static String pathFromAncestor(File ftop, File ftgt)
-	{
-		File[] af = routeToAncestor(ftgt, ftop);
-		String sr = "";
-		for (int i = 0; i < af.length - 1; i++)
-		{
-			sr += af[af.length - 2 - i].getName();
-			sr += "/";
-		}
-		return sr;
-	}
+            }
+        }
 
-	public static String relpath(int nl)
-	{
-		String arel = "../";
-		String srel = "";
-		for (int k = 0; k < nl; k++)
-		{
-			srel += arel;
-		}
-		if (nl == 0)
-		{
-			srel = "./"; // POSERR
-		}
-		return srel;
-	}
+        return sret;
+    }
 
-	public static String[] getResourceList(File fdir, String extn)
-	{
-		ArrayList<String> als = new ArrayList<String>();
-		for (File f : fdir.listFiles())
-		{
-			String fnm = f.getName();
-			if (fnm.endsWith(extn))
-			{
-				als.add(fnm.substring(0, fnm.length())); // - extn.length()));
-			}
-		}
-		return als.toArray(new String[als.size()]);
-	}
+    // MAYDO make this smarter (or use GlobFileFilter from jakarta ORO ?)
+    public static ArrayList<File> matchingFiles(String srcPattern) {
+        ArrayList<File> ret = new ArrayList<File>();
+        if (!srcPattern.contains("*")) {
+            File fd = new File(srcPattern);
+            if (fd.exists() && fd.isDirectory()) {
+                for (File f : fd.listFiles()) {
+                    ret.add(f);
+                }
+            }
 
-	public static File extensionSibling(File rootFile, String sext)
-	{
-		return new File(rootFile.getParentFile(), getRootName(rootFile) + sext);
-	}
+        } else {
+            int istar = srcPattern.indexOf("*");
+            String sa = srcPattern.substring(0, istar);
+            String sb = srcPattern.substring(istar + 1, srcPattern.length());
+            File ftop = new File(sa);
+            for (File fg : ftop.listFiles()) {
+                File fp = new File(fg, sb);
+                if (fp.exists()) {
+                    ret.add(fp);
+                }
+            }
+        }
+        return ret;
+    }
 
-	public static String absoluteRoot(File rootFile)
-	{
-		return new File(rootFile.getParentFile(), getRootName(rootFile)).getAbsolutePath();
-	}
+    public static File[] routeToAncestor(File dtgt, File dtop) {
+        int nup = 0;
+        File[] dh = new File[10];
+        File dwk = dtgt;
+        dh[nup++] = dwk;
 
-	public static void copyFiles(File srcdir, File destdir) throws IOException
-	{
-		for (File f : srcdir.listFiles())
-		{
-			copyFile(f, new File(destdir, f.getName()));
-		}
-	}
+        while (true) {
+            if (dwk == null || dwk.equals(dtop) || nup == 10) {
+                break;
+            }
 
-	public static void writeJarFile(ArrayList<File> tojar, File fout, HashMap<String, String> mats) throws IOException
-	{
+            dwk = dwk.getParentFile();
+            dh[nup++] = dwk;
+        }
+        File[] fr = new File[nup];
+        for (int i = 0; i < nup; i++) {
+            fr[i] = dh[i];
+        }
+        return fr;
+    }
 
-		Manifest m = new Manifest();
-		if (mats != null)
-		{
-			for (String s : mats.keySet())
-			{
-				m.getMainAttributes().putValue(s, mats.get(s));
-			}
-		}
+    public static String pathFromAncestor(File ftop, File ftgt) {
+        File[] af = routeToAncestor(ftgt, ftop);
+        String sr = "";
+        for (int i = 0; i < af.length - 1; i++) {
+            sr += af[af.length - 2 - i].getName();
+            sr += "/";
+        }
+        return sr;
+    }
 
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		JarOutputStream zos = new JarOutputStream(baos, m);
-		for (File f : tojar)
-		{
-			zos.putNextEntry(new JarEntry(f.getName()));
-			FileInputStream fis = new FileInputStream(f);
-			byte[] buf = new byte[4096];
-			int nread = 0;
-			while ((nread = fis.read(buf)) > 0)
-			{
-				zos.write(buf, 0, nread);
-			}
-			fis.close();
+    public static String relpath(int nl) {
+        String arel = "../";
+        String srel = "";
+        for (int k = 0; k < nl; k++) {
+            srel += arel;
+        }
+        if (nl == 0) {
+            srel = "./"; // POSERR
+        }
+        return srel;
+    }
 
-			zos.closeEntry();
-		}
-		zos.flush();
-		zos.close();
+    public static String[] getResourceList(File fdir, String extn) {
+        ArrayList<String> als = new ArrayList<String>();
+        for (File f : fdir.listFiles()) {
+            String fnm = f.getName();
+            if (fnm.endsWith(extn)) {
+                als.add(fnm.substring(0, fnm.length())); // - extn.length()));
+            }
+        }
+        return als.toArray(new String[als.size()]);
+    }
 
-		byte[] ba = baos.toByteArray();
-		writeByteArrayToFile(ba, fout);
+    public static File extensionSibling(File rootFile, String sext) {
+        return new File(rootFile.getParentFile(), getRootName(rootFile) + sext);
+    }
 
-	}
+    public static String absoluteRoot(File rootFile) {
+        return new File(rootFile.getParentFile(), getRootName(rootFile)).getAbsolutePath();
+    }
 
-	public static File getSiblingFile(File fme, String ext)
-	{
-		String fnm = fme.getName();
-		int ild = fnm.lastIndexOf(".");
-		if (ild > 1)
-		{
-			fnm = fnm.substring(0, ild);
-		}
-		File fret = new File(fme.getParentFile(), fnm + ext);
-		return fret;
+    public static void copyFiles(File srcdir, File destdir) throws IOException {
+        for (File f : srcdir.listFiles()) {
+            copyFile(f, new File(destdir, f.getName()));
+        }
+    }
 
-	}
+    public static void writeJarFile(ArrayList<File> tojar, File fout, HashMap<String, String> mats) throws IOException {
 
-	public static void clearNew(File flog) throws IOException
-	{
-		if (flog.exists())
-		{
-			flog.delete();
-		}
-		writeStringToFile("", flog);
-	}
+        Manifest m = new Manifest();
+        if (mats != null) {
+            for (String s : mats.keySet()) {
+                m.getMainAttributes().putValue(s, mats.get(s));
+            }
+        }
 
-	public static void appendLine(File flog, String txt) throws IOException
-	{
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        JarOutputStream zos = new JarOutputStream(baos, m);
+        for (File f : tojar) {
+            zos.putNextEntry(new JarEntry(f.getName()));
+            FileInputStream fis = new FileInputStream(f);
+            byte[] buf = new byte[4096];
+            int nread = 0;
+            while ((nread = fis.read(buf)) > 0) {
+                zos.write(buf, 0, nread);
+            }
+            fis.close();
 
-		BufferedWriter out = new BufferedWriter(new FileWriter(flog, true));
-		out.write(txt + "\n");
-		out.close();
+            zos.closeEntry();
+        }
+        zos.flush();
+        zos.close();
 
-	}
+        byte[] ba = baos.toByteArray();
+        writeByteArrayToFile(ba, fout);
+
+    }
+
+    public static File getSiblingFile(File fme, String ext) {
+        String fnm = fme.getName();
+        int ild = fnm.lastIndexOf(".");
+        if (ild > 1) {
+            fnm = fnm.substring(0, ild);
+        }
+        File fret = new File(fme.getParentFile(), fnm + ext);
+        return fret;
+
+    }
+
+    public static void clearNew(File flog) throws IOException {
+        if (flog.exists()) {
+            flog.delete();
+        }
+        writeStringToFile("", flog);
+    }
+
+    public static void appendLine(File flog, String txt) throws IOException {
+
+        BufferedWriter out = new BufferedWriter(new FileWriter(flog, true));
+        out.write(txt + "\n");
+        out.close();
+
+    }
+
+    public static String readStringFromURL(URL url) throws IOException {
+        return new Scanner(url.openStream(), "UTF-8").useDelimiter("\\A").next();
+    }
+
+    public static void main(String[] args) throws Exception {
+        String st = "1234";
+        File f = new File("/tmp/test.txt");
+        
+        if (f.exists()) {
+            f.delete();
+        }
+        System.out.println("File exists? " + f.exists());
+
+        FileUtil.writeStringToFile(st, f, true);
+
+        System.out.println("File exists: " + f.lastModified());
+        
+        FileUtil.writeStringToFile(st, f, true);
+        FileUtil.writeStringToFile(st+"?\n\n", f, true);
+        FileUtil.writeStringToFile(st+"?\n\n", f, true);
+    }
 
 }

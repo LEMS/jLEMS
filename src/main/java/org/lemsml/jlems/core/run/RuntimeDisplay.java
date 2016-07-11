@@ -8,8 +8,9 @@ public class RuntimeDisplay {
 	double[] box;
  
 
+    @Override
 	public String toString() {
-		return "RuntimeOutput, id=" + id + " title=" + title;
+		return "RuntimeDisplay, id=" + id + " title=" + title;
 	}
 	
 

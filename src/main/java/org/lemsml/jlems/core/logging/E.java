@@ -186,6 +186,14 @@ public final class E {
    public static void error(String s) {
 	   multiError(s, true);
    }
+   
+   public static void informativeError(String s) {
+       
+       String wrapped = "\n\n *******************************************************************************\n *\n *    " +
+               s.replaceAll("\n", "\n *    ") +
+               "\n *\n *******************************************************************************\n";
+	   multiError(wrapped, true);
+   }
 
    public static void multiError(String s, boolean b) {
       if (lastErr != null && lastErr.equals(s)) {

@@ -2,13 +2,15 @@ package org.lemsml.jlems.core.sim;
  
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.List;
+import java.util.Map;
 import org.lemsml.jlems.core.display.DataViewPort;
 import org.lemsml.jlems.core.display.DataViewer;
 import org.lemsml.jlems.core.display.DataViewerFactory;
 import org.lemsml.jlems.core.display.StateTypeWriter;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.logging.E;
+import org.lemsml.jlems.core.out.EventResultWriter;
 import org.lemsml.jlems.core.out.ResultWriter;
 import org.lemsml.jlems.core.out.ResultWriterFactory;
 import org.lemsml.jlems.core.run.ConnectionError;
@@ -16,6 +18,8 @@ import org.lemsml.jlems.core.run.EventManager;
 import org.lemsml.jlems.core.run.RunConfig;
 import org.lemsml.jlems.core.run.RuntimeDisplay;
 import org.lemsml.jlems.core.run.RuntimeError;
+import org.lemsml.jlems.core.run.RuntimeEventOutput;
+import org.lemsml.jlems.core.run.RuntimeEventRecorder;
 import org.lemsml.jlems.core.run.RuntimeOutput;
 import org.lemsml.jlems.core.run.RuntimeRecorder;
 import org.lemsml.jlems.core.run.StateInstance;
@@ -31,11 +35,14 @@ public class Sim extends LemsProcess {
     StateType rootBehavior;
     StateType targetBehavior;
     
+    StateInstance currentRootState;
      
     HashMap<String, DataViewer> dvHM;
     HashMap<String, ResultWriter> rwHM;
+    HashMap<String, EventResultWriter> erwHM;
     
     ArrayList<ResultWriter> resultWriters = new ArrayList<ResultWriter>();
+    ArrayList<EventResultWriter> eventResultWriters = new ArrayList<EventResultWriter>();
     
     ArrayList<RunConfig> runConfigs;
     
@@ -49,11 +56,18 @@ public class Sim extends LemsProcess {
     public double[] times;
     
     
+    
     public Sim(String srcStr) {
     	super(srcStr);
     }
+    
+    public Map<String, DataViewer> getDvHM() {
+    	return dvHM;
+    }
  
- 	
+ 	public List<RunConfig> getRunConfigs() {
+ 		return runConfigs;
+ 	}
     	
     public void build() throws ContentError, ConnectionError, ParseError {
     	
@@ -93,19 +107,35 @@ public class Sim extends LemsProcess {
 	    OutputCollector oco = new OutputCollector(runtimeOutputs);
 	    rootBehavior.visitAll(oco);
 	   
-	    // build the displays and keep them in dvHM
+	    // build the outputs and keep them in rwHM
 	    rwHM = new HashMap<String, ResultWriter>();
  	    for (RuntimeOutput ro : runtimeOutputs) {
  	    	ResultWriter rw = ResultWriterFactory.getFactory().newResultWriter(ro);
+            //System.out.println("Putting "+ro.getID()+" in rwHM");
 	    	rwHM.put(ro.getID(), rw);
 	    	resultWriters.add(rw);
 	    }
-	   	    
+        
+	 
+	    // collect everything in the StateType tree that records events
+	    ArrayList<RuntimeEventOutput> runtimeEventOutputs = new ArrayList<RuntimeEventOutput>();
+	    EventOutputCollector eoco = new EventOutputCollector(runtimeEventOutputs);
+	    rootBehavior.visitAll(eoco);
+	   
+	    // build the event outputs and keep them in erwHM
+	    erwHM = new HashMap<String, EventResultWriter>();
+ 	    for (RuntimeEventOutput reo : runtimeEventOutputs) {
+ 	    	EventResultWriter erw = ResultWriterFactory.getFactory().newEventResultWriter(reo);
+            //System.out.println("Putting "+reo.getID()+" in erwHM");
+	    	erwHM.put(reo.getID(), erw);
+	    	eventResultWriters.add(erw);
+	    }
+        
+        
 	    runConfigs = new ArrayList<RunConfig>();
+        
 	    RunConfigCollector rcc = new RunConfigCollector(runConfigs);
 	    rootBehavior.visitAll(rcc);
-
-	   
 	}
 
     
@@ -129,7 +159,34 @@ public class Sim extends LemsProcess {
     		run(rc, false);
     	}
     }
+    
+    public StateType getRootBehavior() {
+        return rootBehavior;
+    }
+    
+    public StateType getTargetBehavior() {
+        return targetBehavior;
+    }
+    
+    public StateInstance getCurrentRootState() {
+        return currentRootState;
+    }
   
+    /*
+    Temporary method for testing 
+    
+    public StateInstance getRootState(boolean flatten) throws ContentError, ParseError, ConnectionError, RuntimeError {
+        
+  		StateType raw = runConfigs.get(0).getTarget();
+  		if (flatten) {
+  			targetBehavior = raw.getConsolidatedStateType("root");
+  		} else {
+  			targetBehavior = raw;
+  		}
+  	    StateInstance rootState = lems.build(targetBehavior, eventManager);
+        
+        return rootState;
+    }*/
 
     
     public void run(RunConfig rc, boolean flatten) throws ConnectionError, ContentError, RuntimeError, ParseError {
@@ -170,12 +227,11 @@ public class Sim extends LemsProcess {
   			targetBehavior = raw;
   		}
   		
-  	    StateInstance rootState = lems.build(targetBehavior, eventManager);
+  	    currentRootState = lems.build(targetBehavior, eventManager);
   	
-  	    RunnableAccessor ra = new RunnableAccessor(rootState);
+  	    RunnableAccessor ra = new RunnableAccessor(currentRootState);
   	       
   	    ArrayList<RuntimeRecorder> recorders = rc.getRecorders();
-  	    
   	    
   	    for (RuntimeRecorder rr : recorders) {
   	    	String disp = rr.getDisplay();
@@ -186,11 +242,24 @@ public class Sim extends LemsProcess {
   	    		ResultWriter rw = rwHM.get(disp);
   	    		rw.addedRecorder();
   	    		rr.connectRunnable(ra, rw);
-  	    		
-  	    		//E.info("Connected runnable to " + disp + " " + rwHM.get(disp));
+                //System.out.println("Connected ["+rw.getID()+"] to ["+rr.toString()+"]");
   	    		
   	    	} else {
   	    		throw new ConnectionError("No such data viewer " + disp + " needed for " + rr);
+  	    	}
+  	    }
+  	       
+  	    ArrayList<RuntimeEventRecorder> eventRecorders = rc.getEventRecorders();
+  	    
+  	    for (RuntimeEventRecorder rer : eventRecorders) {
+  	    	String id = rer.getParent();
+  	    	if (erwHM.containsKey(id)) {
+  	    		EventResultWriter erw = erwHM.get(id);
+  	    		erw.addedRecorder();
+  	    		rer.connectRunnable(ra, erw);
+  	    		
+  	    	} else {
+  	    		throw new ConnectionError("No such writer " + id + " needed for [[" + rer.toString() +"]], <<"+erwHM.keySet()+">>, <<"+erwHM.values()+">>");
   	    	}
   	    }
   	    
@@ -203,47 +272,73 @@ public class Sim extends LemsProcess {
         double t = 0;
         times = new double[nstep+1];
        
-        rootState.initialize(null);  
+       
+        currentRootState.initialize(null);  
           
         long realTimeStart = System.currentTimeMillis();
         int nsDone = 0;
+        
+        try{
      
-        for (int istep = 0; istep <= nstep; istep++) {
-        	if (istep > 0) {
-        		eventManager.advance(t);
-                rootState.advance(null, t, dt);
-        	}
-        	//System.out.println("Time: "+(float)t);
-        	
-        	
-        	for (ResultWriter rw : resultWriters) {
-        		rw.advance(t);
-        	}
-        	for (RuntimeRecorder rr : recorders) {
-        		rr.appendState(t);
-        	}
-           
-        	times[istep] = t;
-  
-            t += dt;
-            
-            if (maxExecutionTime > 0 && istep % 100 == 0) {
-            	long realTimeNow = System.currentTimeMillis();
-            	long dtReal = realTimeNow - realTimeStart;
-            	if (dtReal > maxExecutionTime) {
-            		E.info("Stopped execution at t=" + t + " (exceeded maxExecutionTime) " + (dtReal));
-            		break;
-            	}
+            for (int istep = 0; istep <= nstep; istep++) {
+                if (istep > 0) {
+                    eventManager.advance(t);
+                    currentRootState.advance(null, t, dt);
+                }
+
+
+                for (ResultWriter rw : resultWriters) {
+                    rw.advance(t);
+                }
+                
+                for (EventResultWriter erw : eventResultWriters) {
+                    erw.advance(t);
+                }
+
+                for (RuntimeRecorder rr : recorders) {
+                    rr.appendState(t);
+                }
+
+                times[istep] = t;
+
+                t += dt;
+
+                if (maxExecutionTime > 0 && istep % 100 == 0) {
+                    long realTimeNow = System.currentTimeMillis();
+                    long dtReal = realTimeNow - realTimeStart;
+                    if (dtReal > maxExecutionTime) {
+                        E.info("Stopped execution at t=" + t + " (exceeded maxExecutionTime) " + (dtReal));
+                        break;
+                    }
+                }
+                nsDone = istep;
             }
-            nsDone = istep;
+        } catch (RuntimeError rt) {
+            E.error(rt.toString());
+            rt.printStackTrace();
+            
+            String info = "Error occurred when running jLEMS!";
+            if (t>0) {
+                info+="\n\nNote: LEMS model description was successfully parsed, and simulation started (t = "+(float)t+" sec)\n"
+                        + "This error *MAY* be caused by too large a time step (dt = "+dt+" sec currently)\n"
+                        + "Try reducing the 'step' attribute in the <Simulation> element";
+            }
+            E.informativeError(info);
+            System.exit(0);
         }
-        E.info("Finished " + nsDone + " steps");
         
         simulationEndTime = System.currentTimeMillis();
+        
+        E.info("Finished " + nsDone + " steps "
+                + "in "+((simulationEndTime-simulationStartTime)/1000f)+" seconds (sim duration: "+rc.getRuntime()*1000+"ms; dt: "+dt*1000+"ms)");
     	        
         for (ResultWriter rw : resultWriters) {
     		rw.advance(t);
     		rw.close();
+    	}  
+        for (EventResultWriter erw : eventResultWriters) {
+    		erw.advance(t);
+    		erw.close();
     	}
         
         simulationSaveTime = System.currentTimeMillis();
@@ -273,8 +368,8 @@ public class Sim extends LemsProcess {
 		
 	}
 
-	public void setMaxExecutionTime(int i) {
-		maxExecutionTime = i;
+	public void setMaxExecutionTime(int nms) {
+		maxExecutionTime = nms;
 	}
 	
 	

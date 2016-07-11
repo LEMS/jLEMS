@@ -19,7 +19,12 @@ public class ExpressionDerivedVariable {
 
     @Override
     public String toString() {
-        return "ExpressionDerivedVariable: "+ varname+" (ex: " + exposeAs + "), " + rateexp;
+    	String ret = "ExpressionDerivedVariable " + varname;
+    	if (exposeAs != null) {
+    		ret += ", exposed as " + exposeAs;
+    	}
+    	ret += ", expression=" + rateexp.getExpressionString();
+        return ret;
     }
 
 
@@ -90,12 +95,30 @@ public class ExpressionDerivedVariable {
 		return rateexp.getExpressionString();
 	}
 
+	public String getReversePolishExpressionString() {
+		return rateexp.getReversePolishExpressionString();
+	}
+
+	
+	
 	public boolean onlyDependsOn(HashSet<String> known) {
 		boolean ret = false;
 		if (rateexp.variablesIn(known)) {
 			ret = true;
 		}
 		return ret;
+	}
+
+	public boolean isTrivial() {
+		boolean ret = false;
+		if (rateexp.isTrivial()) {
+			ret = true;
+		}
+		return ret;
+	}
+
+	public String getSimpleValueName() {
+		return rateexp.getSimpleValueName();
 	}
 
 

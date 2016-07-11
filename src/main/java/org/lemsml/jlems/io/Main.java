@@ -7,6 +7,8 @@ import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.ConnectionError;
 import org.lemsml.jlems.core.run.RuntimeError;
+import org.lemsml.jlems.core.run.StateInstance;
+import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.sim.ParseException;
 import org.lemsml.jlems.core.sim.Sim;
@@ -17,7 +19,7 @@ import org.lemsml.jlems.io.reader.FileInclusionReader;
 
 public final class Main {
 
-	 public static final String VERSION = "0.9.5.3";
+	 public static final String VERSION = "0.9.8.6";
 	 
 	 static String usage = "USAGE: java -jar target/jlems-"+VERSION+".jar [-cp folderpaths] model-file [-nogui]\n";
      
@@ -33,7 +35,11 @@ public final class Main {
 	 
 	 
 	
-    public static void main(String[] argv) throws ConnectionError, ContentError, RuntimeError, ParseError, ParseException, BuildException, XMLException {        
+    public static void main(String[] argv) throws ConnectionError, ContentError, RuntimeError, ParseError, ParseException, BuildException, XMLException {    
+        
+        //MinimalMessageHandler.setVeryMinimal(true);
+        //E.setDebug(false);
+        
         if (argv.length == 0) {
             System.err.println("No model file specified!");
             showUsage();
@@ -49,11 +55,14 @@ public final class Main {
         
         String typePath = null;
         String modelName = null;
+        //boolean verbose = true;
+        boolean verbose = false;
         
         if (argMap.containsKey("-cp")) {
         	typePath = argMap.get("-cp");
         	argMap.remove("-cp");
         }
+        
         if (argMap.containsKey("0")) {
         	modelName = argMap.get("0");
         	argMap.remove("0");
@@ -80,6 +89,18 @@ public final class Main {
         sim.readModel();
         sim.build();
         
+        StateInstance si = sim.getCurrentRootState();
+        StateType st = sim.getTargetBehavior();
+        
+        if (verbose) {
+
+            System.out.println("Pre run StateType: \n");
+            System.out.println(st.getSummary("  ", "| ")+"\n");
+
+            System.out.println("Pre run: \n");
+            System.out.println(si.getSummary("  ", "| ")+"\n");
+        }
+        
             
         boolean doRun = true;
             
@@ -87,14 +108,14 @@ public final class Main {
         	sim.run();
         	E.info("Finished reading, building, running and displaying the LEMS model");
         }    
-        	
+        
         IOUtil.saveReportAndTimesFile(sim);
         
     }
     
     
      
-    private static HashMap<String, String> parseArguments(String[] argv) {
+    public static HashMap<String, String> parseArguments(String[] argv) {
     	HashMap<String, String> ret = new HashMap<String, String>();
     	
     	int iarg = 0;

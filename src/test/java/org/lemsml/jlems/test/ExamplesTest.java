@@ -25,6 +25,7 @@ import org.lemsml.jlems.core.type.BuildException;
 import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.logging.DefaultLogger;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
+import org.lemsml.jlems.viz.datadisplay.SwingDataViewerFactory;
  
 public class ExamplesTest {
 
@@ -72,17 +73,14 @@ public class ExamplesTest {
            boolean ok = executeExample("example8.xml");
            assertTrue("Example 8", ok);
     }
-    @Test
-    public void testExample9() throws ContentError, ConnectionError, RuntimeError, ParseError, ParseException, BuildException, XMLException   {
-           boolean ok = executeProcessExample("example9.xml");
-         assertTrue("Example 9", ok); 
-    }
     
+    
+    /*
     @Test
     public void testExample10() throws ContentError, ConnectionError, RuntimeError, ParseError, ParseException, BuildException, XMLException, IOException   {
           boolean ok = executeTreeExample("example10_Q10.xml");
           assertTrue("Example 10", ok);
-    }
+    }*/
     
     
     public boolean executeExample(String filename) throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException,  XMLException {

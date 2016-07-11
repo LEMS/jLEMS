@@ -48,7 +48,7 @@ public class EventManager {
 		}
 	}
 
-	public  void addEvent(InPort port, double delay) {
+	public  void addEvent(InPortReceiver port, double delay) {
 	// 	E.info("event manager adding event with delay " + delay);
 		PendingEvent pe = new PendingEvent(port, time + delay);
 		

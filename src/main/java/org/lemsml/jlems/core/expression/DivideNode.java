@@ -8,45 +8,42 @@ import org.lemsml.jlems.core.sim.ContentError;
 
 public class DivideNode extends AbstractFloatResultNode {
 
-	
-	
-	public DivideNode() {
-		super("/");
-	}
+    public static final String SYMBOL = "/";
 
-   
-	
-	public DivideNode copy() {
-		return new DivideNode();
-	}
-	
-	public int getPrecedence() {
-		return 2;
-	}
+    public DivideNode() {
+        super(SYMBOL);
+    }
 
- 
-	public double op(double x, double y) {
-		return (Double.isNaN(x) ? 1 : x) / y;
-	}
-	
-	public AbstractDVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
-		checkLeftRight();
-		return new Divide(leftEvaluable.makeEvaluable(fixedHM), rightEvaluable.makeEvaluable(fixedHM));
-	}
+    @Override
+    public DivideNode copy() {
+        return new DivideNode();
+    }
 
- 
-	public Dimensional dimop(Dimensional dl, Dimensional dr) {
-		return dl.getDivideBy(dr);
-	}
+    @Override
+    public int getPrecedence() {
+        return 2;
+    }
 
+    @Override
+    public double op(double x, double y) {
+        return (Double.isNaN(x) ? 1 : x) / y;
+    }
 
+    @Override
+    public AbstractDVal makeEvaluable(HashMap<String, Double> fixedHM) throws ContentError {
+        checkLeftRight();
+        return new Divide(leftEvaluable.makeEvaluable(fixedHM), rightEvaluable.makeEvaluable(fixedHM));
+    }
 
-	@Override
-	public void doVisit(ExpressionVisitor ev) throws ContentError {
-			checkLeftRight();
-			ev.visitDivideNode(leftEvaluable, rightEvaluable);
-		}
-		
- 
-	
+    @Override
+    public Dimensional dimop(Dimensional dl, Dimensional dr) {
+        return dl.getDivideBy(dr);
+    }
+
+    @Override
+    public void doVisit(ExpressionVisitor ev) throws ContentError {
+        checkLeftRight();
+        ev.visitDivideNode(leftEvaluable, rightEvaluable);
+    }
+
 }

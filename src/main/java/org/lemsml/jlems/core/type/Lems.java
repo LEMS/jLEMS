@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import org.lemsml.jlems.core.annotation.ModelElement;
+import org.lemsml.jlems.api.interfaces.ILEMSDocument;
 import org.lemsml.jlems.core.expression.Dimensional;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.Parser;
@@ -19,7 +20,7 @@ import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.sim.ContentError;
 
 @ModelElement(info="Root element for any lems content")
-public class Lems {
+public class Lems implements ILEMSDocument{
 	
 		
 	final static int STRICT = 0;
@@ -57,7 +58,8 @@ public class Lems {
     private final LemsCollection<Valued> globals = new LemsCollection<Valued>();
     private LemsCollection<Valued> constantValued = null;
     
-    private static Random randomGenerator = new Random();
+    private static Random randomGenerator = null;
+    private static int seedForRandomGenerator = 1234;
 
     private boolean resolved = false;
     
@@ -89,6 +91,11 @@ public class Lems {
     
     
     public static Random getRandomGenerator() {
+        if (randomGenerator == null) {
+            
+            E.info("Initialising random generator in jLEMS with seed: "+seedForRandomGenerator);
+            randomGenerator = new Random(seedForRandomGenerator);
+        }
         return randomGenerator;
     }
 
@@ -258,7 +265,8 @@ public class Lems {
         if (t == null) {
             StringBuilder error = new StringBuilder("No such type " + nm + ", "
                     + componentTypes.size() + " existing types: ");
-            for (ComponentType class_ : componentTypes) {
+            
+            for (ComponentType class_ : componentTypes.getContentsSorted()) {
                 error.append("\n" + class_.getName());
             }
             throw new ContentError(error.toString());
@@ -342,6 +350,10 @@ public class Lems {
       	StateInstance ret = cptb.newInstance();
       //  ret.setEventManager(em);
         
+        Component simCmpt = targets.first().getComponent();
+        if (simCmpt.hasAttribute("seed")) {
+            seedForRandomGenerator = Integer.parseInt(simCmpt.getAttributeValue("seed"));
+        }
         ret.checkBuilt();
 
         return ret;
