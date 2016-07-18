@@ -3,6 +3,7 @@ package org.lemsml.jlems.core.eval;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
  
 import org.lemsml.jlems.core.run.DoublePointer;
 import org.lemsml.jlems.core.run.RuntimeError;
@@ -64,8 +65,13 @@ public class DVar extends AbstractDVal {
 
 	public void setPtr(HashMap<String, DoublePointer> valptrHM) throws RuntimeError {
 		if (!valptrHM.containsKey(varname)) {
-			throw new RuntimeError("No such variable: " + varname + ".\n Existing variables: " + 
-					splitString(valptrHM.toString()));
+            String exting = "Existing variables: ";
+            List<String> list = new ArrayList<String>(valptrHM.keySet());
+            java.util.Collections.sort(list);
+            for (String name: list) {
+                exting += "\n    "+name+": "+valptrHM.get(name);
+            }
+			throw new RuntimeError("No such variable: " + varname + ".\n" + exting);
 		}
 		
 		varval = valptrHM.get(varname).get();
