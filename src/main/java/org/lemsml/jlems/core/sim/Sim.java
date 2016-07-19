@@ -324,7 +324,7 @@ public class Sim extends LemsProcess {
                         + "Try reducing the 'step' attribute in the <Simulation> element";
             }
             E.informativeError(info);
-            System.exit(0);
+            System.exit(1);
         }
         
         simulationEndTime = System.currentTimeMillis();
