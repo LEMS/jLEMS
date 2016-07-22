@@ -76,6 +76,8 @@ public class IOUtil {
         
         sim.build();
         
+        sim.getLems().setAllIncludedFiles(fir.getAllIncludedFiles());
+        
         E.info("OK - laoded " + f.getAbsolutePath());
     }
 }

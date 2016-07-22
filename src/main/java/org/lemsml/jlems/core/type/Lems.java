@@ -2,6 +2,7 @@ package org.lemsml.jlems.core.type;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Random;
 
 import org.lemsml.jlems.core.annotation.ModelElement;
@@ -52,7 +53,6 @@ public class Lems implements ILEMSDocument{
     Parser parser;
 
     public String description;
-
     
     
     private final LemsCollection<Valued> globals = new LemsCollection<Valued>();
@@ -63,7 +63,9 @@ public class Lems implements ILEMSDocument{
 
     private boolean resolved = false;
     
-     
+    // As a record of the files used to generate this representation
+    private HashSet<String> included = new HashSet<String>();
+    
     
     public Lems() {
         globals.add(new IndVar("t"));
@@ -437,6 +439,13 @@ public class Lems implements ILEMSDocument{
 		
 	}
  
-
+     
+    public void setAllIncludedFiles(HashSet<String> included) {
+        this.included = included;
+    }
+     
+    public HashSet<String> getAllIncludedFiles() {
+        return included;
+    }
 
 }

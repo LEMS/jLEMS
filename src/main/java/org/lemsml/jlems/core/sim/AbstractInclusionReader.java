@@ -23,6 +23,10 @@ public abstract class AbstractInclusionReader {
 		String ret = insertIncludes(sroot);
 		return ret;
 	}
+    
+    public HashSet<String> getAllIncludedFiles() {
+        return included;
+    }
 	
 	protected String getIncludeContent(String attribute,String srel) throws ContentError {
 			String ret = "";

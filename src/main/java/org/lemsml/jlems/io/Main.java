@@ -89,6 +89,8 @@ public final class Main {
         sim.readModel();
         sim.build();
         
+        sim.getLems().setAllIncludedFiles(fir.getAllIncludedFiles());
+        
         StateInstance si = sim.getCurrentRootState();
         StateType st = sim.getTargetBehavior();
         
