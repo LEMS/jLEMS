@@ -65,6 +65,10 @@ public class XMLSerializer {
 	}
 
 	public String writeObject(Object obj) throws ContentError {
+        return writeObject(obj, null, null);
+    }
+
+	public String writeObject(Object obj, String knownAs, String typeAttribute) throws ContentError {
 		XMLElement xe = makeXMLElement(null, null, null, obj);
 		String serializeObject = xe.serialize();
 		
@@ -73,13 +77,17 @@ public class XMLSerializer {
 		if (this.includeRefComponents){
 			this.includeRefComponents = false;
 			for (Component refComponent : refComponents){
-				serializeObject += makeXMLElement(null, null, null, refComponent).serialize();
+				serializeObject += makeXMLElement(null, null, knownAs, typeAttribute, refComponent).serialize();
 			}
 		}
 		return serializeObject;
 	}
 	
 	public XMLElement makeXMLElement(XMLElement dest, Object parent, String knownAs, Object ob) throws ContentError {
+        return makeXMLElement(dest, parent, knownAs, null, ob);
+    }
+	
+	public XMLElement makeXMLElement(XMLElement dest, Object parent, String knownAs, String typeAttribute, Object ob) throws ContentError {
 		XMLElement ret = null;
 
 		if (ob instanceof String) {
