@@ -69,8 +69,9 @@ public class DVar extends AbstractDVal {
             List<String> list = new ArrayList<String>(valptrHM.keySet());
             java.util.Collections.sort(list);
             for (String name: list) {
-                exting += "\n    "+name+": "+valptrHM.get(name);
+                exting += "\n    "+name+" = "+valptrHM.get(name);
             }
+            
 			throw new RuntimeError("No such variable: " + varname + ".\n" + exting);
 		}
 		

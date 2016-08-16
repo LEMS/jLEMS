@@ -175,12 +175,6 @@ public class ComponentRegime {
 		eventHM.put(er.getPortName(), er.getAction());	
 	}
 
-	
-	public void addConditionResponce(ConditionAction cr) {
-		conditionResponses.add(cr);
-	 	
-	}
-
 	public void addInitialization(ActionBlock ab) {
 		initBlocks.add(ab);
 	}
@@ -211,6 +205,14 @@ public class ComponentRegime {
 				vHS.add(s);
 			}
 		}
+        /* PG: Required? 
+		for (ExpressionDerivedVariable edv : exderiveds) {
+			String s = edv.getVariableName();
+			if (!vHS.contains(s)) {
+				vars.add(s);
+				vHS.add(s);
+			}
+		}*/
 	 
 		for (ActionBlock ab : entryBlocks) {
 			ab.addVarsTo(vars);
@@ -248,7 +250,7 @@ public class ComponentRegime {
 	public void addStateVariable(String name) {
 		svars.add(name);
 	}
- 
+
 	
 	public void addPathDerivedVariable(PathDerivedVariable pdv) {
 		pathderiveds.add(pdv);
@@ -272,8 +274,6 @@ public class ComponentRegime {
 		conditionResponses.add(cr);
 	 	
 	}
-
-	 
 
 	public ArrayList<ActionBlock> getInitBlocks() {
 		return initBlocks;

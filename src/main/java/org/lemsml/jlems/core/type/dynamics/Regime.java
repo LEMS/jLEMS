@@ -282,7 +282,7 @@ public class Regime implements Named {
 			 ConditionAction cr = new ConditionAction(bb);
 			 ActionBlock ea = oc.makeEventAction(fixedHM);
 			 cr.setAction(ea);
-			 ret.addConditionResponce(cr);
+			 ret.addConditionResponse(cr);
 		 }
 		 
 		  
