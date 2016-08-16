@@ -71,48 +71,17 @@ public class JarResourceInclusionReader extends AbstractInclusionReader {
     
     @Override
     public String getRelativeContent(String attribute, String s) throws ContentError {
+        
     	if(attribute.equals(URL))
     	{
     		throw new IllegalArgumentException("URL is not supported when using the FileInclusionReader!");
     	}
     	String ret = "";
-    	
-        //E.info("Getting rel path for: "+s+", searchPathsInJar: "+ searchPathsInJar);
-
-        if (searchPathsInJar.isEmpty())
-            searchPathsInJar.add("");
         
-        for (String path: searchPathsInJar) {
-        	String toTry = path+"/"+s;
-            //System.out.println("Trying: "+toTry);
-            if (toTry.contains("..")) {
-                ArrayList<String> elements = new ArrayList<String>();
-                for (String el: toTry.split("/")) {
-                    if (!el.equals(".."))
-                        elements.add(el);
-                    else
-                        if (elements.size()>0) {
-                            elements.remove(elements.size()-1);
-                        }
-                }
-                toTry = "";
-                for (String el:elements)
-                    toTry += "/"+el;
-                toTry = toTry.substring(1);
-            }
-            
-        	try {
-        		ret = JUtil.getRelativeResource(toTry);
-        		//System.out.println("Resource found in jar: "+toTry);
-                return ret;
-        	} catch (ContentError ce) {
-        		//System.out.println("Resource not found in jar: "+toTry);
-        	}
-        }
+        // Search for included file on local paths first, as these are more likely to be edited by users
         
         File f = new File(prefDir, s);
 
-        ///E.info("Trying for: "+f.getAbsolutePath()+", searchDirs: "+ searchDirs);
         if (f.exists()) {
             // we're OK
         } else {
@@ -141,7 +110,56 @@ public class JarResourceInclusionReader extends AbstractInclusionReader {
             } else {
                 searchDirs.add(0, fpar);
             }
+            
+            boolean readOK;
+            try {
+                ret = FileUtil.readStringFromFile(f);
+                readOK = true;
+            } catch (IOException ex) {
+                readOK = false;
+                // not readable - readOK remains false and will be reported later
+            }
+
+            if (!readOK) {
+                 throw new ContentError("Error reading file " + f.getAbsolutePath());
+            }
+
+            return ret;
         } else {
+            
+            // Now search for file in jar
+            
+            if (searchPathsInJar.isEmpty())
+                searchPathsInJar.add("");
+
+            for (String path: searchPathsInJar) {
+                String toTry = path+"/"+s;
+                //System.out.println("Trying: "+toTry);
+                if (toTry.contains("..")) {
+                    ArrayList<String> elements = new ArrayList<String>();
+                    for (String el: toTry.split("/")) {
+                        if (!el.equals(".."))
+                            elements.add(el);
+                        else
+                            if (elements.size()>0) {
+                                elements.remove(elements.size()-1);
+                            }
+                    }
+                    toTry = "";
+                    for (String el:elements)
+                        toTry += "/"+el;
+                    toTry = toTry.substring(1);
+                }
+
+                try {
+                    ret = JUtil.getRelativeResource(toTry);
+                    //System.out.println("Resource found in jar: "+toTry);
+                    return ret;
+                } catch (ContentError ce) {
+                    //System.out.println("Resource not found in jar: "+toTry);
+                }
+            }
+            
         	final StringBuilder sb = new StringBuilder();
         	sb.append("Can't find file at path: " + s + "\n");
         	sb.append("Search directories are: " + searchDirs + "\n");
@@ -149,21 +167,6 @@ public class JarResourceInclusionReader extends AbstractInclusionReader {
          	throw new ContentError(sb.toString());
         }
         
-        boolean readOK;
-        try {
-           // E.info("Reading " + f.getCanonicalPath());
-            ret = FileUtil.readStringFromFile(f);
-            readOK = true;
-        } catch (IOException ex) {
-        	readOK = false;
-        	// not readable - readOK remains false and will be reported later
-        }
-        
-        if (!readOK) {
-        	 throw new ContentError("Error reading fole " + f.getAbsolutePath());
-        }
-        
-        return ret;
     }
 
     
