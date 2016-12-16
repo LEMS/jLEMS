@@ -64,8 +64,13 @@ public final class QuantityReader {
             String snum = snv[0];
             String su = snv[1];
 
-            double d = Double.parseDouble(snum);
-            // E.info("Val is " +d+", unit is "+su);
+            double d;
+            try {
+                d = Double.parseDouble(snum);
+            } catch (NumberFormatException nfe ) {
+                throw new ParseError("Error parsing: "+aarg+" (= ["+snum+"] ["+su+"] ??)", nfe);
+            }
+            
 
             if (su == null || su.length() <= 0) {
                 ret.setValue(d, units.getByPseudoName("none"));
