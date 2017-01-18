@@ -67,7 +67,30 @@ public class JarResourceInclusionReader extends AbstractInclusionReader {
 			addSearchPath(s);
 		}
 	}
+    
+    protected File getPossibleFile(String filename)
+    {
+        File f = new File(prefDir, filename);
 
+        if (f.exists()) {
+            // we're OK
+        } else {
+            f = new File(filename);
+
+            if (!f.exists()) {
+
+                for (File fd : searchDirs) {
+                    File ftry = new File(fd, filename);
+                    if (ftry.exists()) {
+                        f = ftry;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        return f;
+    }
     
     @Override
     public String getRelativeContent(String attribute, String s) throws ContentError {
@@ -80,24 +103,7 @@ public class JarResourceInclusionReader extends AbstractInclusionReader {
         
         // Search for included file on local paths first, as these are more likely to be edited by users
         
-        File f = new File(prefDir, s);
-
-        if (f.exists()) {
-            // we're OK
-        } else {
-            f = new File(s);
-
-            if (!f.exists()) {
-
-                for (File fd : searchDirs) {
-                    File ftry = new File(fd, s);
-                    if (ftry.exists()) {
-                        f = ftry;
-                        break;
-                    }
-                }
-            }
-        }
+        File f = getPossibleFile(s);
         
         if (f.exists()) {
             // NB its possible that fpar is different from one of the search dirs because s could be a
@@ -115,6 +121,11 @@ public class JarResourceInclusionReader extends AbstractInclusionReader {
             try {
                 ret = FileUtil.readStringFromFile(f);
                 readOK = true;
+                if (fullFilePathsIncluded.contains(f.getCanonicalPath()))
+                {
+                    return "";
+                }
+                fullFilePathsIncluded.add(f.getCanonicalPath());
             } catch (IOException ex) {
                 readOK = false;
                 // not readable - readOK remains false and will be reported later
@@ -123,6 +134,7 @@ public class JarResourceInclusionReader extends AbstractInclusionReader {
             if (!readOK) {
                  throw new ContentError("Error reading file " + f.getAbsolutePath());
             }
+            
 
             return ret;
         } else {

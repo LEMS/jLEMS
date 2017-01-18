@@ -7,6 +7,7 @@ import org.lemsml.jlems.core.logging.E;
 public abstract class AbstractInclusionReader {
 
 	HashSet<String> included = new HashSet<String>();
+	protected HashSet<String> fullFilePathsIncluded = new HashSet<String>();
 
 	public static final String FILE="file";
 	public static final String URL="url";
@@ -79,6 +80,9 @@ public abstract class AbstractInclusionReader {
 	
 
 	public String trimOuterElement(String s) {
+        if (s.length()==0)
+            return "";
+        
 		String ret = "";
 		String swk = removeXMLComments(s);
 		swk = swk.trim();
@@ -106,7 +110,7 @@ public abstract class AbstractInclusionReader {
 			}
 		} else {
 			int l = swk.length();
-			E.error("Cant extract content from " + swk.substring(0, (20 < l ? 20 : l)));
+			E.error("Can't extract content from " + swk.substring(0, (20 < l ? 20 : l)));
 		}
 	
 		return ret;
