@@ -133,13 +133,18 @@ public final class E
     {
         handler.msg("WARNING - " + s);
     }
+    
+    private static boolean isMilestone(int nwrep)
+    {
+        return (nwrep == 3 || nwrep == 10 || nwrep == 30 || nwrep == 100 || nwrep == 300 || nwrep == 1000 || nwrep == 3000 || nwrep == 10000);
+    }
 
     public static void warning(String s)
     {
         if (lastWarning != null && s.startsWith(lastWarning))
         {
             nwrep += 1;
-            if (nwrep == 3 || nwrep == 10 || nwrep == 30 || nwrep == 100)
+            if (isMilestone(nwrep))
             {
                 handler.msg(" .......  last warning repeated " + nwrep + " times");
             }
@@ -165,7 +170,7 @@ public final class E
         if (lastWarning != null && s.startsWith(lastWarning))
         {
             nwrep += 1;
-            if (nwrep == 3 || nwrep == 10 || nwrep == 30 || nwrep == 100)
+            if (isMilestone(nwrep))
             {
                 handler.msg(" .......  last warning repeated " + nwrep + " times");
             }
@@ -226,7 +231,7 @@ public final class E
         if (lastErr != null && lastErr.equals(s))
         {
             nrep += 1;
-            if (nrep == 3 || nrep == 10 || nrep == 30 || nrep == 100)
+            if (isMilestone(nwrep))
             {
                 handler.msg(" .......  last error repeated " + nrep + " times");
             }
