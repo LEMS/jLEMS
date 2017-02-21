@@ -1,6 +1,8 @@
 package org.lemsml.jlems.core.type.structure;
 
 import org.lemsml.jlems.core.expression.ParseError;
+import org.lemsml.jlems.core.expression.ParseTree;
+import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.BuilderElement;
 import org.lemsml.jlems.core.run.StateType;
 import org.lemsml.jlems.core.run.TunnelBuilder;
@@ -8,6 +10,7 @@ import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.Component;
 import org.lemsml.jlems.core.type.ComponentType;
 import org.lemsml.jlems.core.type.Lems;
+import org.lemsml.jlems.core.type.LemsCollection;
 
 public class Tunnel extends BuildElement {
 
@@ -20,6 +23,8 @@ public class Tunnel extends BuildElement {
 	
 	public String componentA;
 	public String componentB;
+    
+	public LemsCollection<Assign> assigns = new LemsCollection<Assign>();
 	
 	
 	@Override
@@ -31,6 +36,10 @@ public class Tunnel extends BuildElement {
 		}
 		if (componentB == null) {
 			throw new ContentError("ComponentB must be specified in " + this);
+		}
+		for (Assign ass : assigns) {
+			ParseTree pt = lems.getParser().parseExpression(ass.getExpression());
+			ass.setDoubleEvaluator(pt.makeFloatEvaluator());
 		}
 		
 	}
@@ -59,7 +68,17 @@ public class Tunnel extends BuildElement {
 		} else {
 			throw new ContentError("Can't locate tunnel component " + componentA +" and/or "+componentB);
 		}
-		
+        
+
+        for (Assign ass : assigns) {
+            String ea = ass.getExposeAs();
+            if (ea != null) {
+                E.warning("Expose as in Tunnel is not used");
+             }
+            String dim = "unknown";
+            tb.addAssignment(ass.getProperty(), ass.getDoubleEvaluator(), dim);
+        }
+
 		return tb;
 	}
 

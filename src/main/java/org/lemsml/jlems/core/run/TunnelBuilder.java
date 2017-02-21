@@ -1,8 +1,9 @@
 package org.lemsml.jlems.core.run;
  
+import java.util.ArrayList;
 import java.util.HashMap;
+import org.lemsml.jlems.core.eval.DoubleEvaluator;
  
-import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 
 public class TunnelBuilder extends AbstractPostBuilder {
@@ -15,6 +16,8 @@ public class TunnelBuilder extends AbstractPostBuilder {
 	
 	StateType endStateTypeA;
 	StateType endStateTypeB;
+
+	ArrayList<ExpressionDerivedVariable> edvAL = new ArrayList<ExpressionDerivedVariable>();
 	
 	public TunnelBuilder(String tnm, String endA, String endB, StateType stA, StateType stB) {
 		super();
@@ -64,11 +67,29 @@ public class TunnelBuilder extends AbstractPostBuilder {
 		siB.addRefChild(tunnelName, siA);
 		siA.addRefChild(tunnelName, siB);
 
+		HashMap<String, DoublePointer> baseHM = base.getVariables();
+        
+        for (ExpressionDerivedVariable edv: edvAL) {
+            try {
+                double d = edv.evalptr(baseHM);
+                String vnm = edv.getVariableName();
+                siA.setNewVariable(vnm, d);
+                siB.setNewVariable(vnm, d);
+            } catch (RuntimeError re) {
+                throw new ConnectionError(re);
+            }
+        }
+
 		//E.info(" Built a tunnel  " + tunnelName + " " + sf + ", " + st + ", " + base +
 		//			" " + sf.hashCode() + " " +st.hashCode());
 		
 	}
 
+	public void addAssignment(String property, DoubleEvaluator de, String dim) throws ContentError {
+		// TOOD - de, or de.makeCopy() ?
+		ExpressionDerivedVariable edv = new ExpressionDerivedVariable(property, de, dim);
+		edvAL.add(edv);
+	}
   
 	 
 

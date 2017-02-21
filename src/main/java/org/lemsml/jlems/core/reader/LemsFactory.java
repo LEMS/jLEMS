@@ -2063,6 +2063,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 obj = ((DeprecatedElement)obj).getReplacement();
             }
             if (xn.equals("UNUSED")) {
+            } else if (obj instanceof Assign) {
+                ret.assigns.add((Assign)obj);
             } else if (obj instanceof BuildElement) {
                 ret.buildElements.add((BuildElement)obj);
             } else {
