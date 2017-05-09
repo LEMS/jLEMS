@@ -19,7 +19,7 @@ import org.lemsml.jlems.io.reader.FileInclusionReader;
 
 public final class Main {
 
-	 public static final String VERSION = "0.9.8.7";
+	 public static final String VERSION = "0.9.8.8";
 	 
 	 static String usage = "USAGE: java -jar target/jlems-"+VERSION+".jar [-cp folderpaths] model-file [-nogui]\n";
      
