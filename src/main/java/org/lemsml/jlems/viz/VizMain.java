@@ -25,7 +25,7 @@ public final class VizMain {
 
     public static void main(String[] argv) throws LEMSException {
         
-        boolean debug = true;
+        boolean debug = false;
         
         boolean useGui = true;
         FileResultWriterFactory.initialize();
