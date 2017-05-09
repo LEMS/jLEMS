@@ -95,8 +95,6 @@ public final class VizMain {
                 sim.readModel();
                 sim.build();
                 sim.getLems().setAllIncludedFiles(fir.getAllIncludedFiles());
-                
-                System.out.println("indl: "+fir.getAllIncludedFiles());
 
                 return sim;          
 			}
