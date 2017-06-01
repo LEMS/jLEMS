@@ -1,7 +1,7 @@
 package org.lemsml.jlems.core.type;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import org.lemsml.jlems.core.annotation.ModelProperty;
 import org.lemsml.jlems.core.expression.ParseError;
 import org.lemsml.jlems.core.expression.ParseTree;
@@ -64,17 +64,18 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	public double yPosition;
 	
 	
-	final HashMap<String, TextParam> textParamHM = new HashMap<String, TextParam>();
+	final LinkedHashMap<String, TextParam> textParamHM = new LinkedHashMap<String, TextParam>();
 
-	HashMap<String, Component> childHM;
+	LinkedHashMap<String, Component> childHM;
 
-     HashMap<String, Component> refHM;
+    LinkedHashMap<String, Component> refHM;
 
      
-     ArrayList<Component> freeChildren;
+    ArrayList<Component> freeChildren;
      
 	ArrayList<String> childrenNames;
-	 HashMap<String, ArrayList<Component>> childrenHM;
+	
+    LinkedHashMap<String, ArrayList<Component>> childrenHM;
  
 	
 	private boolean resolved = false;
@@ -284,14 +285,14 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 			paramValues = new LemsCollection<ParamValue>();
 		}
 		if (childHM == null) {
-			childHM = new HashMap<String, Component>();
+			childHM = new LinkedHashMap<String, Component>();
 		}
 		if (refHM == null) {
-			refHM = new HashMap<String, Component>();
+			refHM = new LinkedHashMap<String, Component>();
 		}
 		if (childrenHM == null) {
 			childrenNames = new ArrayList<String>();
-			childrenHM = new HashMap<String, ArrayList<Component>>();
+			childrenHM = new LinkedHashMap<String, ArrayList<Component>>();
 		} else {
 			for (String children : childrenNames) {
 				for (Component comp : childrenHM.get(children)) {
@@ -567,7 +568,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 
 		if (childrenHM == null) {
 			childrenNames = new ArrayList<String>();
-			childrenHM = new HashMap<String, ArrayList<Component>>();
+			childrenHM = new LinkedHashMap<String, ArrayList<Component>>();
         }
 
 		if (childrenHM.containsKey(childrenName)) {
@@ -586,7 +587,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		if (evaluatedStatic) {
 			return;
 		}
-		HashMap<String, Double> valHM = new HashMap<String, Double>();
+		LinkedHashMap<String, Double> valHM = new LinkedHashMap<String, Double>();
 
 		for (ParamValue pv : paramValues) {
 			valHM.put(pv.getName(), pv.getDoubleValue());
@@ -838,11 +839,11 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	}
 	
 	
-	public HashMap<String, Component> getChildHM() {
+	public LinkedHashMap<String, Component> getChildHM() {
 		return childHM;
 	}
 	
-	public HashMap<String, Component> getRefHM() {
+	public LinkedHashMap<String, Component> getRefHM() {
  		return refHM;
 	}
 
@@ -858,7 +859,7 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		return comps;
 	}
 	
-	public HashMap<String, Component> getRefComponents() {
+	public LinkedHashMap<String, Component> getRefComponents() {
 		return refHM;
 	}
 
@@ -1040,8 +1041,8 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		attributes.clear();
 	}
 
-	public HashMap<String, String> getTextParamMap() {
-		HashMap<String, String> ret = new HashMap<String, String>();
+	public LinkedHashMap<String, String> getTextParamMap() {
+		LinkedHashMap<String, String> ret = new LinkedHashMap<String, String>();
 		for (String s : textParamHM.keySet()) {
 			ret.put(s, textParamHM.get(s).getText());
 		}
