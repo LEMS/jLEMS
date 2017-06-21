@@ -21,6 +21,7 @@ import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.logging.DefaultLogger;
 import org.lemsml.jlems.io.out.FileResultWriterFactory;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
+import org.lemsml.jlems.io.xmlio.XMLSerializer;
 import org.lemsml.jlems.viz.datadisplay.SwingDataViewerFactory;
  
 
@@ -87,12 +88,13 @@ public class FlatComparisionTest {
     public void runComponentFlattened(File f, String tgtid) throws ContentError,
     		ConnectionError, ParseError, IOException, RuntimeError, ParseException, 
     		BuildException, XMLException {
-    	E.info("Loading LEMS file from: " + f.getAbsolutePath());
+    	E.info("Loading aa LEMS file from: " + f.getAbsolutePath());
 
         FileInclusionReader fir = new FileInclusionReader(f);
         Sim sim = new Sim(fir.read());
 
         sim.readModel();
+        
     
         Lems lems = sim.getLems();
         Component cpt = lems.getComponent(tgtid);
@@ -102,11 +104,12 @@ public class FlatComparisionTest {
         ComponentType ct = cf.getFlatType();
         Component cp = cf.getFlatComponent();
         
-        // String typeOut = XMLSerializer.serialize(ct);
-        // String cptOut = XMLSerializer.serialize(cp);
+    	E.info("Loaded aa LEMS file from: " + f.getAbsolutePath());
+        String typeOut = XMLSerializer.serialize(ct);
+        String cptOut = XMLSerializer.serialize(cp);
       
-        // E.info("Flat type: \n" + typeOut);
-        // E.info("Flat cpt: \n" + cptOut);
+        E.info("--------------------------------------\nFlat type: \n" + typeOut);
+        E.info("--------------------------------------\nFlat cpt: \n" + cptOut);
         
 		lems.addComponentType(ct);
 		lems.addComponent(cp);
