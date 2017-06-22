@@ -124,15 +124,20 @@ public class ComponentFlattener {
             typeB.addConstant(fname, ct.getDimension(), ct.getStringValue());
         }
         
+        for (FinalParam p : typ.getFinalParams()) {
+            String fname = flatName(p.getName(), prefix, varHM); // Just add to varHM
+        }
+        
         ArrayList<String> derivedParametersAdded = new ArrayList<String>();
         for (DerivedParameter dp : typ.getDerivedParameters()) {
-            String fname = flatName(dp.getName(), prefix);
+            String fname = flatName(dp.getName(), prefix, varHM);
             derivedParametersAdded.add(fname);
-            String val = dp.getValue();
-            val = substituteVariables(val, varHM);
+            String val0 = dp.getValue();
+            String val = substituteVariables(val0, varHM);
+            //E.info("PPPPPPPPPPPPPPPPP      DerivedParameter, fname: " + fname + ", val0: " + val0 + ", val: " + val+", prefix: "+prefix);
             typeB.addDerivedParameter(fname, dp.getDimension(), val);
         }
-
+        
         for (FinalParam p : typ.getFinalParams()) {
             String fname = flatName(p.getName(), prefix, varHM);
             if (!constantsAdded.contains(fname) && !derivedParametersAdded.contains(fname)) {
@@ -195,20 +200,20 @@ public class ComponentFlattener {
 
         for (Component child : cpt.getAllChildren()) {
             String cid = child.getID();
-            if (cid == null) {
-                cid = child.getDeclaredType();
-            }
-            if (cid == null) {
-                cid = child.getName();
-            }
+                if (cid == null) {
+                    cid = child.getDeclaredType();
+                }
+                if (cid == null) {
+                    cid = child.getName();
+                }
 
-            if (cid == null) {
-                throw new ContentError("No identifier for child: " + child);
-            }
+                if (cid == null) {
+                    throw new ContentError("No identifier for child: " + child);
+                }
 
-            String childPrefix = flatName(cid, prefix);
-            importFlattened(child, childPrefix, withChildExposures);
-        }
+                String childPrefix = flatName(cid, prefix);
+                importFlattened(child, childPrefix, withChildExposures);
+            }
 
         
         if (dyn!=null) {
@@ -218,7 +223,7 @@ public class ComponentFlattener {
 
                 String val = dv.getValueExpression();
                 String sel = dv.getSelect();
-                //E.info("--------DerivedVariable, fname: " + fname + ", val: " + val + ", sel: " + sel+", prefix: "+prefix);
+                //E.info("DDDDDDDDDDDDD      <<<<<<" + fname + ">>>>>, val: " + val + ", sel: " + sel+", prefix: "+prefix);
 
                 if (val != null) {
                     val = substituteVariables(val, varHM);
@@ -226,7 +231,7 @@ public class ComponentFlattener {
 
                 } else if (sel != null) {
                     String red = dv.getReduce();
-                    String selval = sel;
+                    String selval = flatName(sel,prefix);
                     if (red != null) {
                         String op = " ? ";
                         String dflt = "";
@@ -253,27 +258,63 @@ public class ComponentFlattener {
                         }
 
                         ArrayList<String> items = new ArrayList<String>();
+                        
                         items.add(dflt);
-                        for (Component c : cpt.getChildrenAL(rt)) {
-                            items.add(flatName(c.getID() + "_" + var, prefix));
+                        String first = rt.split("/")[0];
+                        
+                        if (cpt.quietGetChild(first)!=null)
+                        {
+                            if (first.equals(rt))
+                            {
+                                items.add(flatName(cpt.getChild(first).getID() == null ? cpt.getChild(first).getTypeName() + "_" + var : cpt.getChild(first).getID() + "_" + var, prefix));
+                            }
+                            else
+                            {
+                                String second = rt.split("/")[1];
+                                for (Component c : cpt.getChild(first).getChildrenAL(second))
+                                {
+                                    items.add(flatName(c.getID() == null ? c.getTypeName() + "_" + var : c.getID() + "_" + var, prefix+first));
+                                }
+                            }
                         }
+                        else
+                        {
+                            for (Component c : cpt.getChildrenAL(rt))
+                            {
+                                items.add(flatName(c.getID() == null ? c.getTypeName() + "_" + var : c.getID() + "_" + var, prefix));
+                            }
+                        }
+                        
                         selval = StringUtil.join(items, op);
                     }
-                    //E.info("-------- selval: "+selval);
+                    else
+                    {
+                        selval = selval.replace("/", "_");
+                    }
 
                     for (Child child : typ.getChilds()) {
                         String sp = child.getName();
-                        String fp = flatName(sp, prefix);
-                        selval = selval.replace(sp + "/", fp + "_");
+                        String ssp = flatName(child.getName(), prefix);
+                    
+                        for (Component childComp : cpt.getChildHM().values()) {
+
+                            if (childComp.getComponentType().getName().equals(child.getComponentType().getName()))
+                            {
+                                String fp = flatName(childComp.getID()==null ? childComp.getTypeName() : childComp.getID(), prefix);
+                                selval = selval.replace(ssp + "_", fp + "_");
+                            }
+                        }
                     }
 
                     for (ComponentReference compRef : typ.getComponentReferences()) {
                         String sp = compRef.getName();
                         String refid = cpt.getRefComponents().get(compRef.getName()).getID();
                         String fp = flatName(refid, prefix);
-                        selval = selval.replace(sp + "/", fp + "_");
+                        String ssp = flatName(compRef.getName(), prefix);
+                        
+                        selval = selval.replace(ssp + "_", fp + "_");
+                        //selval = selval.replace(sp + "_", fp + "_");
                     }
-                    //E.info("-------- selval: "+selval);
 
                     typeB.addDerivedVariable(fname, dv.getDimension(), selval);
                 }
@@ -287,8 +328,6 @@ public class ComponentFlattener {
             for (ConditionalDerivedVariable cdv : dyn.getConditionalDerivedVariables()) {
 
                 String fname = flatName(cdv.getName(), prefix, varHM);
-                
-                E.info("--------ConditionalDerivedVariable, fname: " + fname);
 
                 LemsCollection<Case> cases = new LemsCollection<Case>();
                 
