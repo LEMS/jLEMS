@@ -1,11 +1,11 @@
-dist: trusty
+dist: precise
 sudo: false
 
 language: java
 
 jdk:
+  # - openjdk6 # Not working on precise?
   - openjdk7
-  - openjdk6
   - oraclejdk7
   - oraclejdk8
 
