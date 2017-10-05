@@ -1,6 +1,7 @@
 package org.lemsml.jlems.core.type;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import org.lemsml.jlems.core.annotation.ModelProperty;
 import org.lemsml.jlems.core.expression.ParseError;
@@ -14,7 +15,7 @@ import org.lemsml.jlems.core.xml.XMLAttribute;
 import org.lemsml.jlems.core.xml.XMLElement;
 
 
-public class Component implements Attributed, IDd, Summaried, Namable, Parented {
+public class Component implements Attributed, IDd, Summaried, Namable, Parented, Comparable<Component> {
  
 
     public static final String THIS_COMPONENT = "this";
@@ -828,12 +829,18 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 	}
 
 	public ArrayList<Component> getChildrenAL(String s) {
+        return getChildrenAL(s, false);
+    }
+
+	public ArrayList<Component> getChildrenAL(String s, boolean ordered) {
 
 		ArrayList<Component> ret = childrenHM.get(s);
 		if (ret == null) {
 			//E.info("No children of class: " + s + " in " + this.getID() + ", valid values: " + childrenHM.keySet());
 			ret = new ArrayList<Component>();
 		}
+        if (ordered)
+            Collections.sort(ret);
 		return ret;
 
 	}
@@ -1094,7 +1101,10 @@ public class Component implements Attributed, IDd, Summaried, Namable, Parented 
 		return components;
 	}
 
-
+    public int compareTo(Component o)
+    {
+         return(this.id.compareTo(o.id));
+    }
 
 	public void setHasInstances() {
 		hasInst = true;

@@ -107,7 +107,7 @@ public class ComponentFlattener {
 
     private void importFlattened(Component cpt, String prefix, boolean withExposures) throws ContentError, ParseError, ConnectionError {
 
-        E.info("=================    Flattening: "+prefix+": "+cpt+", ");
+        //E.info("=================    Flattening: "+prefix+": "+cpt+", ");
         HashMap<String, String> varHM = new HashMap<String, String>();
 
         ComponentType typ = cpt.getComponentType();
