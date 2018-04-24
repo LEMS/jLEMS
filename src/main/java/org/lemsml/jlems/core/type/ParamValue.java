@@ -50,7 +50,9 @@ public class ParamValue implements Named {
 		Dimension dtgt = r_finalParam.getDimension();
 		
 		if (dtgt == null) {
-			throw new ContentError("No dimension for param " + r_finalParam);
+			//throw new ContentError("No dimension for param " + r_finalParam);
+			// Assume dimension="none"
+			value = dq.getDoubleValue();
 			
 		} else if (dtgt.isAny()) {
 			value = dq.getDoubleValue();
