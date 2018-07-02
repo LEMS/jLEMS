@@ -14,7 +14,7 @@
     <Include file="/Simulation.xml"/>
 
     <!-- Including file with a <neuroml> root, a "real" NeuroML 2 file -->
-    <Include url="https://dl.dropboxusercontent.com/u/7538688/GeppettoSimulations/SingleComponentHH/NML2_SingleCompHHCell.nml?dl=1"/>
+    <Include url="https://raw.githubusercontent.com/LEMS/jLEMS/master/src/test/resources/SingleComponentHH/NML2_SingleCompHHCell.nml"/>
 
 
 
