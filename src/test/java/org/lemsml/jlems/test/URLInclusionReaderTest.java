@@ -15,7 +15,7 @@ public class URLInclusionReaderTest
 	@Test
 	public void testRead() throws MalformedURLException, ContentError
 	{
-		URL url = new URL("https://www.dropbox.com/s/qzqhdthror8435e/LEMS_NML2_Ex5_DetCell.xml?dl=1");
+		URL url = new URL("https://raw.githubusercontent.com/LEMS/jLEMS/master/src/test/resources/SingleComponentHH/LEMS_NML2_Ex5_DetCell.xml");
 		URLInclusionReader urlInclusionReader = new URLInclusionReader(url);
 		String lemsContent=urlInclusionReader.read();
 		assertNotNull(lemsContent);
