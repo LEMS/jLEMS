@@ -14,7 +14,7 @@
     <Include file="https://raw.githubusercontent.com/NeuroML/NeuroML2/master/NeuroML2CoreTypes/Simulation.xml"/>
 
     <!-- Including file with a <neuroml> root, a "real" NeuroML 2 file -->
-    <Include url="https://raw.githubusercontent.com/LEMS/jLEMS/master/src/test/resources/tests/SingleComponentHH/NML2_SingleCompHHCell.nml"/>
+    <Include url="https://raw.githubusercontent.com/LEMS/jLEMS/development/src/test/resources/tests/SingleComponentHH/NML2_SingleCompHHCell.nml"/>
 
 
 
