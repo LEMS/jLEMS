@@ -1,9 +1,16 @@
+dist: trusty
+sudo: false
+
 language: java
 
 jdk:
   - openjdk7
-  - openjdk6
-  - oraclejdk7
+  - openjdk8
+  - oraclejdk8
+  - oraclejdk9
+  
+install:
+    - mvn install
 
 script:
   - pwd
@@ -20,3 +27,4 @@ script:
   - ./lems src/test/resources/ex-flat.xml -nogui
   - ./lems src/test/resources/test_regime_iaf.xml -nogui
   - ./lems src/test/resources/ex-properties.xml -nogui
+
