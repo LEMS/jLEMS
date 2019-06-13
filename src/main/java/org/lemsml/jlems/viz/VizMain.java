@@ -124,6 +124,6 @@ public final class VizMain {
         	E.info("Finished reading, building, running and displaying the LEMS model");
         }    
         
-        IOUtil.saveReportAndTimesFile(sim);
+        IOUtil.saveReportAndTimesFile(sim, simFile);
     }
 }

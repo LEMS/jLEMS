@@ -3,6 +3,7 @@ package org.lemsml.jlems.io;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.RuntimeError;
@@ -17,7 +18,7 @@ import org.lemsml.jlems.io.util.FileUtil;
 public class IOUtil {
 
 
-    public static void saveReportAndTimesFile(Sim sim) throws ContentError, RuntimeError
+    public static void saveReportAndTimesFile(Sim sim, File lemsFile) throws ContentError, RuntimeError
     {
 
         File reportFile = null;
@@ -46,12 +47,17 @@ public class IOUtil {
         for(double time: sim.times) {
         	times.append((float)time+"\n");
         }
-
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
 
+            info.append("Simulator=jLEMS\n");
+            info.append("SimulatorVersion=" + org.lemsml.jlems.io.Main.VERSION + "\n");
+            info.append("SimulationFile=" + lemsFile.getAbsolutePath() + "\n");
+            
+            info.append("StartTime=" + format.format(sim.initTime) + "\n");
+            info.append("SetupTime=" + ((sim.simulationStartTime - sim.initTime) / 1000.0) + "\n");
             info.append("RealSimulationTime=" + ((sim.simulationEndTime - sim.simulationStartTime) / 1000.0) + "\n");
             info.append("SimulationSaveTime=" + ((sim.simulationSaveTime - sim.simulationEndTime) / 1000.0) + "\n");
-            info.append("SimulatorVersion=" + org.lemsml.jlems.io.Main.VERSION + "\n");
 
             if (reportFile != null) {
                 FileUtil.writeStringToFile(info.toString(), reportFile);

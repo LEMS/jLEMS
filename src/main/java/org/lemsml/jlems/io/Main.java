@@ -111,7 +111,7 @@ public final class Main {
         	E.info("Finished reading, building, running and displaying the LEMS model");
         }    
         
-        IOUtil.saveReportAndTimesFile(sim);
+        IOUtil.saveReportAndTimesFile(sim, simFile);
         
     }
     

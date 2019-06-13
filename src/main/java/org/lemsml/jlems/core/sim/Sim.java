@@ -50,6 +50,7 @@ public class Sim extends LemsProcess {
     
     EventManager eventManager;
 
+    public long initTime = -1; 
     public long simulationStartTime = -1; 
     public long simulationEndTime = -1;  
     public long simulationSaveTime = -1; 
@@ -59,6 +60,7 @@ public class Sim extends LemsProcess {
     
     public Sim(String srcStr) {
     	super(srcStr);
+        initTime = System.currentTimeMillis();
     }
     
     public Map<String, DataViewer> getDvHM() {
@@ -267,7 +269,6 @@ public class Sim extends LemsProcess {
         int nstep = (int) Math.round(rc.getRuntime() / dt);
 
  
-        simulationStartTime = System.currentTimeMillis();
   
         double t = 0;
         times = new double[nstep+1];
@@ -278,6 +279,7 @@ public class Sim extends LemsProcess {
         long realTimeStart = System.currentTimeMillis();
         int nsDone = 0;
         
+        simulationStartTime = System.currentTimeMillis();
         try{
      
             for (int istep = 0; istep <= nstep; istep++) {
