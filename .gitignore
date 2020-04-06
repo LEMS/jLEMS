@@ -8,3 +8,4 @@ target
 tst.txt
 .DS_Store
 src/main/java/META-INF
+/nb-configuration.xml
