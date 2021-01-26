@@ -3,6 +3,7 @@ package org.lemsml.jlems.core.reader;
 import org.lemsml.jlems.core.type.*;
 import org.lemsml.jlems.core.type.dynamics.*;
 import org.lemsml.jlems.core.type.structure.*;
+import org.lemsml.jlems.core.type.simulation.Record;
 import org.lemsml.jlems.core.type.simulation.*;
 
 import org.lemsml.jlems.core.type.procedure.*;
