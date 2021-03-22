@@ -1,13 +1,13 @@
-dist: trusty
-sudo: false
+dist: xenial
 
 language: java
 
 jdk:
-  - openjdk7
+  - oraclejdk11
+  
   - openjdk8
-  - oraclejdk8
-  - oraclejdk9
+  #- openjdk10 # Some non deterministic recurring error with jdk10...
+  - openjdk11
   
 install:
     - mvn install
