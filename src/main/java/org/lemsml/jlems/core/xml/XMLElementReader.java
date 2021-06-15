@@ -131,7 +131,7 @@ public class XMLElementReader {
 						readChildren(child);
 
 					} else if (isp < icb && isp < ice) {
-						// 
+						// has attributes
 						String enm = srcString.substring(inx + 1, isp);			 
 						XMLElement child = new XMLElement(enm);
 						parent.add(child);
