@@ -86,7 +86,7 @@ public class XMLElementReader {
 					String sctag = nextString(tg.length() + 1);
 					if (sctag.equals(tg + ">")) {
 						// OK 
-						iwk += tg.length() + 2; 
+						iwk += tg.length() + 1;
 						break;
 
 					} else {
