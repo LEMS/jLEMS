@@ -91,7 +91,7 @@ public class XMLElementReader {
 
 					} else {
 						throw new XMLException("Non matching close tag at " + printLine() + "\n" +
-								"tag is " + tg + " closer is " + sctag);
+								"tag is " + tg + " closer is " + sctag + "iwk is " + iwk);
 					}
 
 				} else if (nextString(4).equals("<!--")) {
