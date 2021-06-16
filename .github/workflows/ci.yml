@@ -21,5 +21,11 @@ jobs:
       with:
         java-version: '11'
         distribution: 'adopt'
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+    - name: Test with Maven
+      run: mvn install
+    - name: Test examples
+      run: |
+        pwd
+        ls -alt
+        mvn dependency:tree
+        ./lems src/test/resources/example1.xml -nogui
