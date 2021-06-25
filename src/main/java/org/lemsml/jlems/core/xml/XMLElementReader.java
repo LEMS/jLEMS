@@ -66,94 +66,94 @@ public class XMLElementReader {
 
 	private void readChildren(XMLElement parent) throws XMLException {
 		while (iwk < totalLength) {
-		int inx = inext("<");
-		if (inx < 0) {
-			// no element to read - just return
-	 		break;
-			
-		} else {
-			if (inx > iwk) {
-				String stxt = srcString.substring(iwk, inx).trim();
-				if (stxt.length() > 0) {
-					parent.appendBodyText(stxt);
- 				}
-			}
-			iwk = inx;
-						
-			if (nextString(2).equals("</")) {
-				iwk += 2;
-				String tg = parent.getTag();
-				String sctag = nextString(tg.length() + 1);
-				if (sctag.equals(tg + ">")) {
-					// OK 
-					iwk += tg.length() + 2; 
-					break;
-					
-				} else {
-					throw new XMLException("Non matching close tag at " + printLine() + "\n" +
-							"tag is " + tg + " closer is " + sctag);
-				}
-				
-			} else if (nextString(4).equals("<!--")) {
-				int icc = inext("-->");
-				if (icc > 0) {
-			
-					// E.info("extracted comment " + srcString.substring(iwk, icc + 3));
-					iwk = icc + 3;
-					
-				} else {
-					throw new XMLException("No close to comment? " + printLine());
-				}
-				
-				
+			int inx = inext("<");
+			if (inx < 0) {
+				// no element to read - just return
+				break;
+
 			} else {
-			
-			
-			int isp = inextHigh(" ");
-			int icb = inextHigh(">");
-			int ice = inextHigh("/>");
-			
-			
-			if (ice < isp && ice < icb) {
-				// No children, no attributes
-				String enm = srcString.substring(inx + 1, ice);			 
-				XMLElement child = new XMLElement(enm);
-	 			iwk = ice + 2;
-				parent.add(child);
-				
-				
-			} else if (icb < isp && icb < ice) {
-				// has children, but no attributes
-				String enm = srcString.substring(inx + 1, icb);		
-				XMLElement child = new XMLElement(enm);
-				iwk = icb + 1;
-				parent.add(child);
-				readChildren(child);
-				
-			} else if (isp < icb && isp < ice) {
-				// 
-				String enm = srcString.substring(inx + 1, isp);			 
- 				XMLElement child = new XMLElement(enm);
-				parent.add(child);
-				iwk = isp + 1;
-				
-				int jca = inextHigh("/>");
-				int jce = inextHigh(">");
-				if (jca < jce) {
-					// closed without any children or body text
-					String attstring = srcString.substring(iwk, jca);
-					iwk = jca + 2;
-					addAttributes(child, attstring);
- 					
+				if (inx > iwk) {
+					String stxt = srcString.substring(iwk, inx).trim();
+					if (stxt.length() > 0) {
+						parent.appendBodyText(stxt);
+					}
+				}
+				iwk = inx;
+
+				if (nextString(2).equals("</")) {
+					iwk += 2;
+					String tg = parent.getTag();
+					String sctag = nextString(tg.length() + 1);
+					if (sctag.equals(tg + ">")) {
+						// OK 
+						iwk += tg.length() + 1;
+						break;
+
+					} else {
+						throw new XMLException("Non matching close tag at " + printLine() + "\n" +
+								"tag is '" + tg + "' with length " + tg.length() + " and closer found is '" + sctag + "'. iwk is " + iwk + " of " + totalLength);
+					}
+
+				} else if (nextString(4).equals("<!--")) {
+					int icc = inext("-->");
+					if (icc > 0) {
+
+						// E.info("extracted comment " + srcString.substring(iwk, icc + 3));
+						iwk = icc + 3;
+
+					} else {
+						throw new XMLException("No close to comment? " + printLine());
+					}
+
+
 				} else {
-					String attstring = srcString.substring(iwk, jce);
-					iwk = jce + 1;
-					addAttributes(child, attstring);
-					readChildren(child);
+
+
+					int isp = inextHigh(" ");
+					int icb = inextHigh(">");
+					int ice = inextHigh("/>");
+
+
+					if (ice < isp && ice < icb) {
+						// No children, no attributes
+						String enm = srcString.substring(inx + 1, ice);			 
+						XMLElement child = new XMLElement(enm);
+						iwk = ice + 2;
+						parent.add(child);
+
+
+					} else if (icb < isp && icb < ice) {
+						// has children, but no attributes
+						String enm = srcString.substring(inx + 1, icb);		
+						XMLElement child = new XMLElement(enm);
+						iwk = icb + 1;
+						parent.add(child);
+						readChildren(child);
+
+					} else if (isp < icb && isp < ice) {
+						// has attributes
+						String enm = srcString.substring(inx + 1, isp);			 
+						XMLElement child = new XMLElement(enm);
+						parent.add(child);
+						iwk = isp + 1;
+
+						int jca = inextHigh("/>");
+						int jce = inextHigh(">");
+						if (jca < jce) {
+							// closed without any children or body text
+							String attstring = srcString.substring(iwk, jca);
+							iwk = jca + 2;
+							addAttributes(child, attstring);
+
+						} else {
+							String attstring = srcString.substring(iwk, jce);
+							iwk = jce + 1;
+							addAttributes(child, attstring);
+							readChildren(child);
+						}
+					}
 				}
 			}
-			}
-		}
 		}
 	}
 	
