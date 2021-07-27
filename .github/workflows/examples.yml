@@ -1,0 +1,38 @@
+# Check that examples are same in pylems and in jlems
+name: Check LEMS examples
+
+on:
+  push:
+    branches:  [ master, development, experimental ]
+  pull_request:
+    branches:  [ master, development, experimental ]
+
+jobs:
+  verify:
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: nelonoel/branch-name@v1.0.1
+
+    # https://stackoverflow.com/questions/58033366/how-to-get-current-branch-within-github-actions
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
+
+    - name: Checkout pylems
+      uses: actions/checkout@v2
+      with:
+        repository: LEMS/pylems
+        ref: ${{ steps.extract_branch.outputs.branch }}
+        path: pylems
+
+    - name: check examples
+      run: |
+        rm -f pylems/examples/*.py
+        if ! diff -ur src/test/resources/ pylems/examples/ ; then
+          echo "Examples files are not identical"
+          exit -1
+        fi
+
+
