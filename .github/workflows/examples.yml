@@ -1,4 +1,4 @@
-# Check that examples are same in pylems and in jlems
+# Check that examples are same in LEMS and in jlems
 name: Check LEMS examples
 
 on:
@@ -19,21 +19,19 @@ jobs:
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       id: extract_branch
 
-    - name: Checkout pylems
+    - name: Checkout lems
       uses: actions/checkout@v2
       with:
-        repository: LEMS/pylems
+        repository: LEMS/LEMS
         ref: ${{ steps.extract_branch.outputs.branch }}
-        path: pylems
+        path: LEMS
 
     - name: check examples
       run: |
         for ex in "example1.xml" "example2.xml" "example3.xml" "example4.xml" "example5.xml" "example6.xml" "example7.xml" "example8.xml" "bounce-conditional.xml" "bounce.xml" "ex-flat.xml" "test_regime_iaf.xml" "ex-properties.xml"; do
 
-          if ! diff -ur "pylems/examples/$ex" "src/test/resources/$ex" ; then
+          if ! diff -ur "LEMS/examples/$ex" "src/test/resources/$ex" ; then
             echo "Example file $ex is not identical"
             exit -1
           fi
         done
-
-
