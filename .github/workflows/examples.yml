@@ -28,7 +28,7 @@ jobs:
 
     - name: check examples
       run: |
-        for ex in "example1.xml" "example2.xml" "example3.xml" "example4.xml" "example5.xml" "example6.xml" "example7.xml" "example8.xml" "bounce-conditional.xml" "bounce.xml" "ex-flat.xml" "test_regime_iaf.xml" "ex-properties.xml"; do
+        for ex in "example1.xml" "example2.xml" "example3.xml" "example4.xml" "example5.xml" "example6.xml" "example7.xml" "example8.xml" "SimpleNetwork.xml" "SingleSimulation.xml" "elecdims.xml" "ex2dims.xml" "hhaltgate.xml" "hhcell.xml" "hhchannel.xml "hhmodels.xml" "misciaf.xml" "spikegenerators.xml" ; do
 
           if ! diff -ur "LEMS/examples/$ex" "src/test/resources/$ex" ; then
             echo "Example file $ex is not identical"
