@@ -13,17 +13,21 @@ jobs:
   build_and_test:
 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ '8', '11', '13', '15' ]
 
+    name: Test on Java ${{ matrix.Java }}
     steps:
     - uses: actions/checkout@v2
-    - name: Set up JDK 11
+    - name: Set up JDK ${{ matrix.Java }}
       uses: actions/setup-java@v2
       with:
-        java-version: '11'
+        java-version: ${{ matrix.Java }}
         distribution: 'adopt'
     - name: Test with Maven
       run: mvn install
-    - name: Test examples
+    - name: Further tests
       run: |
         pwd
         ls -alt
