@@ -1,5 +1,6 @@
 jLEMS
 =====
+[![Java CI with Maven](https://github.com/LEMS/jLEMS/actions/workflows/ci.yml/badge.svg)](https://github.com/LEMS/jLEMS/actions/workflows/ci.yml)
 
 Java Interpreter for the Low Entropy Model Specification language.
 
@@ -28,7 +29,6 @@ Run an example:
     ./lems src/test/resources/example1.xml        (Linux/Mac)
     lems.bat src\test\resources\example1.xml      (Windows)
 
-[![Build Status](https://travis-ci.com/LEMS/jLEMS.png?branch=master)](https://travis-ci.com/LEMS/jLEMS)
 [![DOI](https://www.zenodo.org/badge/4614078.svg)](https://www.zenodo.org/badge/latestdoi/4614078)
 
 
