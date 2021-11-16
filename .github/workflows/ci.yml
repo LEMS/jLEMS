@@ -12,12 +12,12 @@ on:
 jobs:
   build_and_test:
 
-    runs-on: ubuntu-latest
+    runs-on: [ubuntu-latest, macos-latest, windows-latest]
     strategy:
       matrix:
         java: [ '8', '11', '13', '15' ]
 
-    name: Test on Java ${{ matrix.Java }}
+    name: Test on Java ${{ matrix.Java }} on ${{ matrix.runs-on }}
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK ${{ matrix.Java }}
