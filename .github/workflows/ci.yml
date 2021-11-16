@@ -48,3 +48,10 @@ jobs:
         ./lems src/test/resources/ex-flat.xml -nogui
         ./lems src/test/resources/test_regime_iaf.xml -nogui
         ./lems src/test/resources/ex-properties.xml -nogui
+        
+    - name: Further tests, Windows
+      if: ${{ matrix.runs-on == 'windows-latest' }}
+      run: |
+        pwd
+        dir
+        mvn dependency:tree
