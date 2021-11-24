@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [ '8', '11', '13', '15' ]
+        java: [ '8', '11', '16', '17' ]
         runs-on: [ubuntu-latest, macos-11, windows-latest]
 
     name: Test on Java ${{ matrix.Java }} on ${{ matrix.runs-on }}
@@ -55,3 +55,17 @@ jobs:
         pwd
         dir
         mvn dependency:tree
+        
+        ./lems.bat src\test\resources\example1.xml -nogui
+        ./lems.bat src\test\resources\eexample2.xml -nogui
+        ./lems.bat src\test\resources\example3.xml -nogui
+        ./lems.bat src\test\resources\example4.xml -nogui
+        ./lems.bat src\test\resources\example5.xml -nogui
+        ./lems.bat src\test\resources\example6.xml -nogui
+        ./lems.bat src\test\resources\example7.xml -nogui
+        ./lems.bat src\test\resources\example8.xml -nogui
+        ./lems.bat src\test\resources\bounce-conditional.xml -nogui
+        ./lems.bat src\test\resources\bounce.xml -nogui
+        ./lems.bat src\test\resources\ex-flat.xml -nogui
+        ./lems.bat src\test\resources\test_regime_iaf.xml -nogui
+        ./lems.bat src\test\resources\ex-properties.xml -nogui
