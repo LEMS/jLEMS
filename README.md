@@ -31,8 +31,4 @@ Run an example:
     ./lems src/test/resources/example1.xml        (Linux/Mac)
     lems.bat src\test\resources\example1.xml      (Windows)
 
-[![DOI](https://www.zenodo.org/badge/4614078.svg)](https://www.zenodo.org/badge/latestdoi/4614078)
-
-
-
 This software is distributed under the terms of the MIT License.
