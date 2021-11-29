@@ -1,5 +1,7 @@
 jLEMS
 =====
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3550993.svg)](https://doi.org/10.5281/zenodo.3550993)
 [![Java CI with Maven](https://github.com/LEMS/jLEMS/actions/workflows/ci.yml/badge.svg)](https://github.com/LEMS/jLEMS/actions/workflows/ci.yml)
 
 Java Interpreter for the Low Entropy Model Specification language.
