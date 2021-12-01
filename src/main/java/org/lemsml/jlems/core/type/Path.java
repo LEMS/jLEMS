@@ -9,6 +9,8 @@ public class Path implements Named  {
 	@ModelProperty(info="")
 	public String name;
 
+    public String description;
+
     public Path() {
     	// TODO - only one
     }

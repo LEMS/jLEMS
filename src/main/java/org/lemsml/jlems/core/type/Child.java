@@ -20,6 +20,8 @@ public class Child implements Named {
 	
     public String substitute;
     
+    public String description;
+    
 
     public Child() {
     }
