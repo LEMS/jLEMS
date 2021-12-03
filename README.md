@@ -6,7 +6,7 @@ jLEMS
 
 Java Interpreter for the Low Entropy Model Specification language.
 
-See http://lems.github.com/LEMS
+See https://docs.neuroml.org/Userdocs/Software/jLEMS.html.
 
 For more details on LEMS see: 
 
