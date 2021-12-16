@@ -17,6 +17,7 @@ public class ComponentReference implements Named  {
 
 	@ModelProperty(info="Target type")
 	public String type;
+    public String description;
 	public ComponentType r_type;
 	
 	public String root;

@@ -1,5 +1,5 @@
 package org.lemsml.jlems.io;
- 
+
 import java.io.File;
 import java.util.HashMap;
 
@@ -15,66 +15,66 @@ import org.lemsml.jlems.core.sim.Sim;
 import org.lemsml.jlems.core.type.BuildException;
 import org.lemsml.jlems.core.xml.XMLException;
 import org.lemsml.jlems.io.reader.FileInclusionReader;
- 
+
 
 public final class Main {
 
-	 public static final String VERSION = "0.10.4";
-	 
+	 public static final String VERSION = "0.10.6";
+
 	 static String usage = "USAGE: java -jar target/jlems-"+VERSION+".jar [-cp folderpaths] model-file [-nogui]\n";
-     
-	 
+
+
 	 private Main() {
-		 
+
 	 }
-	 
-	 
+
+
 	 public static void showUsage() {
 		 E.info(usage);
 	 }
-	 
-	 
-	
-    public static void main(String[] argv) throws ConnectionError, ContentError, RuntimeError, ParseError, ParseException, BuildException, XMLException {    
-        
+
+
+
+    public static void main(String[] argv) throws ConnectionError, ContentError, RuntimeError, ParseError, ParseException, BuildException, XMLException {
+
         //MinimalMessageHandler.setVeryMinimal(true);
         //E.setDebug(false);
-        
+
         if (argv.length == 0) {
             System.err.println("No model file specified!");
             showUsage();
             System.exit(1);
-        }        
-        
+        }
+
         if (argv.length == 1 && (argv[0].equals("-h") || argv[0].equals("-help") || argv[0].equals("-?"))) {
             showUsage();
             System.exit(0);
         }
-        
+
         HashMap<String, String> argMap = parseArguments(argv);
-        
+
         String typePath = null;
         String modelName = null;
         //boolean verbose = true;
         boolean verbose = false;
-        
+
         if (argMap.containsKey("-cp")) {
         	typePath = argMap.get("-cp");
         	argMap.remove("-cp");
         }
-        
+
         if (argMap.containsKey("0")) {
         	modelName = argMap.get("0");
         	argMap.remove("0");
         }
-        
+
         if (modelName == null) {
         	showUsage();
         	System.exit(1);
         }
-        
+
         File simFile = new File(modelName);
- 
+
         if (!simFile.exists()) {
         	E.error("No such file: " + simFile.getAbsolutePath());
         	System.exit(1);
@@ -85,15 +85,15 @@ public final class Main {
         	fir.addSearchPaths(typePath);
         }
         Sim sim = new Sim(fir.read());
-            
+
         sim.readModel();
         sim.build();
-        
+
         sim.getLems().setAllIncludedFiles(fir.getAllIncludedFiles());
-        
+
         StateInstance si = sim.getCurrentRootState();
         StateType st = sim.getTargetBehavior();
-        
+
         if (verbose) {
 
             System.out.println("Pre run StateType: \n");
@@ -102,24 +102,24 @@ public final class Main {
             System.out.println("Pre run: \n");
             System.out.println(si.getSummary("  ", "| ")+"\n");
         }
-        
-            
+
+
         boolean doRun = true;
-            
+
         if (doRun) {
         	sim.run();
         	E.info("Finished reading, building, running and displaying the LEMS model");
-        }    
-        
+        }
+
         IOUtil.saveReportAndTimesFile(sim, simFile);
-        
+
     }
-    
-    
-     
+
+
+
     public static HashMap<String, String> parseArguments(String[] argv) {
     	HashMap<String, String> ret = new HashMap<String, String>();
-    	
+
     	int iarg = 0;
     	int ifree = 0;
     	while (true) {
@@ -141,5 +141,5 @@ public final class Main {
     	}
     	return ret;
     }
-    
+
 }

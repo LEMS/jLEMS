@@ -1,9 +1,12 @@
 jLEMS
 =====
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3550993.svg)](https://doi.org/10.5281/zenodo.3550993)
+[![Java CI with Maven](https://github.com/LEMS/jLEMS/actions/workflows/ci.yml/badge.svg)](https://github.com/LEMS/jLEMS/actions/workflows/ci.yml)
+
 Java Interpreter for the Low Entropy Model Specification language.
 
-See https://docs.neuroml.org/Userdocs/Software/jLEMS.html
+See https://docs.neuroml.org/Userdocs/Software/jLEMS.html.
 
 For more details on LEMS see: 
 
@@ -27,10 +30,5 @@ Run an example:
 
     ./lems src/test/resources/example1.xml        (Linux/Mac)
     lems.bat src\test\resources\example1.xml      (Windows)
-
-[![Build Status](https://travis-ci.com/LEMS/jLEMS.png?branch=master)](https://travis-ci.com/LEMS/jLEMS)
-[![DOI](https://www.zenodo.org/badge/4614078.svg)](https://www.zenodo.org/badge/latestdoi/4614078)
-
-
 
 This software is distributed under the terms of the MIT License.

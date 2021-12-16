@@ -1,0 +1,71 @@
+# This workflow will build a Java project with Maven
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Java CI with Maven
+
+on:
+  push:
+    branches:  [ master, development, experimental, osb* ]
+  pull_request:
+    branches:  [ master, development, experimental, osb* ]
+
+jobs:
+  build_and_test:
+
+    runs-on: ${{ matrix.runs-on }}
+    strategy:
+      fail-fast: false
+      matrix:
+        java: [ '8', '11', '16', '17' ]
+        runs-on: [ubuntu-latest, macos-11, windows-latest]
+
+    name: Test on Java ${{ matrix.Java }} on ${{ matrix.runs-on }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK ${{ matrix.Java }}
+      uses: actions/setup-java@v2
+      with:
+        java-version: ${{ matrix.Java }}
+        distribution: 'adopt'
+    - name: Test with Maven
+      run: mvn install
+    - name: Further tests, non Win
+      if: ${{ matrix.runs-on != 'windows-latest' }}
+      run: |
+        pwd
+        ls -alt
+        mvn dependency:tree
+        ./lems src/test/resources/example1.xml -nogui
+        ./lems src/test/resources/example2.xml -nogui
+        ./lems src/test/resources/example3.xml -nogui
+        ./lems src/test/resources/example4.xml -nogui
+        ./lems src/test/resources/example5.xml -nogui
+        ./lems src/test/resources/example6.xml -nogui
+        ./lems src/test/resources/example7.xml -nogui
+        ./lems src/test/resources/example8.xml -nogui
+        ./lems src/test/resources/bounce-conditional.xml -nogui
+        ./lems src/test/resources/bounce.xml -nogui
+        ./lems src/test/resources/ex-flat.xml -nogui
+        ./lems src/test/resources/test_regime_iaf.xml -nogui
+        ./lems src/test/resources/ex-properties.xml -nogui
+        
+    - name: Further tests, Windows
+      if: ${{ matrix.runs-on == 'windows-latest' }}
+      run: |
+        pwd
+        dir
+        mvn dependency:tree
+        
+        ./lems.bat src\test\resources\example1.xml -nogui
+        ./lems.bat src\test\resources\eexample2.xml -nogui
+        ./lems.bat src\test\resources\example3.xml -nogui
+        ./lems.bat src\test\resources\example4.xml -nogui
+        ./lems.bat src\test\resources\example5.xml -nogui
+        ./lems.bat src\test\resources\example6.xml -nogui
+        ./lems.bat src\test\resources\example7.xml -nogui
+        ./lems.bat src\test\resources\example8.xml -nogui
+        ./lems.bat src\test\resources\bounce-conditional.xml -nogui
+        ./lems.bat src\test\resources\bounce.xml -nogui
+        ./lems.bat src\test\resources\ex-flat.xml -nogui
+        ./lems.bat src\test\resources\test_regime_iaf.xml -nogui
+        ./lems.bat src\test\resources\ex-properties.xml -nogui

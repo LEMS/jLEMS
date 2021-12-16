@@ -626,6 +626,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.name = parseString(xv);
             } else if (xn.equals("dimension")) {
                 ret.dimension = parseString(xv);
+            } else if (xn.equals("description")) {
+                ret.description = parseString(xv);
             } else if (xn.equals("select")) {
                 ret.select = parseString(xv);
             } else if (xn.equals("value")) {
@@ -762,6 +764,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.name = parseString(xv);
             } else if (xn.equals("type")) {
                 ret.type = parseString(xv);
+            } else if (xn.equals("description")) {
+                ret.description = parseString(xv);
             } else if (xn.equals("substitute")) {
                 ret.substitute = parseString(xv);
             } else {
@@ -837,6 +841,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.name = parseString(xv);
             } else if (xn.equals("type")) {
                 ret.type = parseString(xv);
+            } else if (xn.equals("description")) {
+                ret.description = parseString(xv);
             } else if (xn.equals("root")) {
                 ret.root = parseString(xv);
             } else if (xn.equals("isAny")) {
@@ -946,6 +952,8 @@ public class LemsFactory extends AbstractLemsFactory {
             if (xn.equals("UNUSED")) {
             } else if (xn.equals("name")) {
                 ret.name = parseString(xv);
+            } else if (xn.equals("description")) {
+                ret.description = parseString(xv);
             } else {
                 E.warning("Unrecognized attribute " + xa + " " + xv);
             }
@@ -965,6 +973,8 @@ public class LemsFactory extends AbstractLemsFactory {
             if (xn.equals("UNUSED")) {
             } else if (xn.equals("name")) {
                 ret.name = parseString(xv);
+            } else if (xn.equals("description")) {
+                ret.description = parseString(xv);
             } else {
                 E.warning("Unrecognized attribute " + xa + " " + xv);
             }

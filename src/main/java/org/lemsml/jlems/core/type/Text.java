@@ -10,6 +10,7 @@ public class Text implements Named  {
 	@ModelProperty(info="")
 	public String name;
 
+    public String description;
     
 	public Text() {
 		// empty
