@@ -17,6 +17,7 @@ public class DerivedParameter extends ExpressionValued implements Named {
 
 	public String name;
 	public String dimension;
+	public String description;
 	public Dimension r_dimension;
 	
 	@ModelProperty(info="Path to the parameter that supplies the value. Exactly one of 'select' and 'value' is required.")
