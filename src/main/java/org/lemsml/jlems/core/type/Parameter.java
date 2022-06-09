@@ -8,17 +8,17 @@ import org.lemsml.jlems.core.sim.ContentError;
 @ModelElement(info = "Sets the name an dimensionality of a parameter that must be supplied when a component is defined "
 + "curresponding to the enclosing ComponentType")
 public class Parameter implements Named {
-    
-	@ModelProperty(info="The name of the parameter. This isthe attibute name when the parameter is supplied in a component definition")
+
+	@ModelProperty(info="The name of the parameter. This is the attibute name when the parameter is supplied in a component definition")
 	public String name;
-	
-	@ModelProperty(info="The dimension, or 'none'. This should be the ID of a deminsion element defined elsewhere")
+
+	@ModelProperty(info="The dimension, or 'none'. This should be the ID of a dimension element defined elsewhere")
 	public String dimension;
-	
+
 	public Dimension r_dimension;
- 
+
     public String description;
-    
+
     public String exposure;
 
 
@@ -35,10 +35,10 @@ public class Parameter implements Named {
         this.dimension = dimension.getName();
         this.r_dimension = dimension;
     }
-  
+
 
     public void resolve(LemsCollection<Dimension> dimensions) throws ContentError {
-    
+
         if (dimension == null) {
             E.warning("no dimension for " + name);
         } else if (dimension.equals("*")) {
@@ -53,7 +53,7 @@ public class Parameter implements Named {
             }
         }
     }
-    
+
     @Override
     public String toString() {
         return "Parameter{" + "name=" + name + ", dimension=" + dimension + ", r_dimension=" + r_dimension + '}';
@@ -77,5 +77,5 @@ public class Parameter implements Named {
 	protected void setDimension(String sd) {
 		dimension = sd;
 	}
-     
+
 }
