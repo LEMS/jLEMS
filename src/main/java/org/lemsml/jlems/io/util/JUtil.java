@@ -205,6 +205,9 @@ public final class JUtil {
       while (en.hasMoreElements()) {
          JarEntry je = en.nextElement();
          java.io.File f = new File(fout,  je.getName());
+							if (!f.toPath().normalize().startsWith(fout.toPath().normalize())) {
+								throw new RuntimeException("Bad zip entry");
+							}
          if (je.isDirectory()) {
             f.mkdirs();
             continue;
