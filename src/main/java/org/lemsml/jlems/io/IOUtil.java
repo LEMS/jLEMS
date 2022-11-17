@@ -52,17 +52,17 @@ public class IOUtil {
         Lems lems = sim.getLems();
         
         Target t = lems.getTarget();
-	    
-	    if (t.reportFile != null) {
-	    	reportFile = new File(t.reportFile);
-	    } else {
-        	//E.info("No reportFile specified in Target element");
-	    }
-	    if (t.timesFile != null) {
-	    	timesFile = new File(t.timesFile);
-	    }
         
-	    StringBuilder info = new StringBuilder("# Report of running simulation with jLEMS v" + org.lemsml.jlems.io.Main.VERSION + "\n");
+        if (t.reportFile != null) {
+            reportFile = new File(getCompleteReportFileName(t.reportFile, "jLEMS"));
+        } else {
+            //E.info("No reportFile specified in Target element");
+        }
+        if (t.timesFile != null) {
+            timesFile = new File(t.timesFile);
+        }
+        
+        StringBuilder info = new StringBuilder("# Report of running simulation with jLEMS v" + org.lemsml.jlems.io.Main.VERSION + "\n");
         StringBuilder times = new StringBuilder();
 
         if (reportFile != null) {
@@ -70,7 +70,7 @@ public class IOUtil {
         }
 
         for(double time: sim.times) {
-        	times.append((float)time+"\n");
+            times.append((float)time+"\n");
         }
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
@@ -98,10 +98,10 @@ public class IOUtil {
     
     public static void main(String[] argv) throws LEMSException {
         
-		File f = new File("src/test/resources/example1.xml");
+        File f = new File("src/test/resources/example1.xml");
 
-    	FileInclusionReader fir = new FileInclusionReader(f);
-    	Sim sim = new Sim(fir.read());
+        FileInclusionReader fir = new FileInclusionReader(f);
+        Sim sim = new Sim(fir.read());
 
         sim.readModel();
         
