@@ -22,20 +22,42 @@ public class IOUtil {
     /**
      * Get complete report file name after replacing sentinels __SIMULATOR__ and __TIMESTAMP__.
      *
-     * The simulator name has to be passed in, otherwise it is empty. The time stamp is calculated.
+     * The time stamp is calculated, the simulator name is to be provided by the user.
      *
          * @param reportFile report file name with its placeholders
-         * @param simulator name of simulator
+         * @param simulator name of simulator; "" is used if this parameter is null.
+         * @param timestampFormat format of timestamp: "yyyyMMddHHmmss" if null.
+         *                        Please see the documentation of java.time.format.DateTimeFormatter
+         *                        for valid formats.
+         *
+     *
+         * @throws RuntimeError   If an invalid pattern is provided for timestampFormat
      *
          * @return complete report file name with placeholders replaced
      **/
-    public static String getCompleteReportFileName(String reportFile, String simulator) {
+    public static String getCompleteReportFileName(String reportFile, String simulator, String timestampFormat) throws RuntimeError {
         if (simulator == null) {
             simulator = new String("");
         }
         String completeReportFile = reportFile.replace("__SIMULATOR__", simulator);
 
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        DateTimeFormatter dtf = null;
+        try {
+            if (timestampFormat == null)
+            {
+                dtf = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+            }
+            else
+            {
+                dtf = DateTimeFormatter.ofPattern(timestampFormat);
+            }
+        }
+        catch (IllegalArgumentException ex)
+        {
+            throw new RuntimeError("Problem generating report file name", ex);
+
+        }
+
         LocalDateTime timenow = LocalDateTime.now();
         String timestamp = dtf.format(timenow);
         completeReportFile = completeReportFile.replace("__TIMESTAMP__", timestamp);
@@ -54,7 +76,7 @@ public class IOUtil {
         Target t = lems.getTarget();
         
         if (t.reportFile != null) {
-            reportFile = new File(getCompleteReportFileName(t.reportFile, "jLEMS"));
+            reportFile = new File(getCompleteReportFileName(t.reportFile, "jLEMS", null));
         } else {
             //E.info("No reportFile specified in Target element");
         }
