@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.run.RuntimeError;
@@ -17,6 +19,29 @@ import org.lemsml.jlems.io.util.FileUtil;
 
 public class IOUtil {
 
+    /**
+     * Get complete report file name after replacing sentinels __SIMULATOR__ and __TIMESTAMP__.
+     *
+     * The simulator name has to be passed in, otherwise it is empty. The time stamp is calculated.
+     *
+         * @param reportFile report file name with its placeholders
+         * @param simulator name of simulator
+     *
+         * @return complete report file name with placeholders replaced
+     **/
+    public static String getCompleteReportFileName(String reportFile, String simulator) {
+        if (simulator == null) {
+            simulator = new String("");
+        }
+        String completeReportFile = reportFile.replace("__SIMULATOR__", simulator);
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        LocalDateTime timenow = LocalDateTime.now();
+        String timestamp = dtf.format(timenow);
+        completeReportFile = completeReportFile.replace("__TIMESTAMP__", timestamp);
+
+        return completeReportFile;
+    }
 
     public static void saveReportAndTimesFile(Sim sim, File lemsFile) throws ContentError, RuntimeError
     {
