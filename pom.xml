@@ -4,7 +4,10 @@
 	<groupId>org.lemsml</groupId>
 	<artifactId>jlems</artifactId>
 	<version>0.10.7</version>
-	<packaging>bundle</packaging>
+	<packaging>bundle</packaging>  
+	<properties>
+    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
