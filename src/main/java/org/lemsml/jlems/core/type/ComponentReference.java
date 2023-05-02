@@ -12,11 +12,12 @@ import org.lemsml.jlems.core.sim.ContentError;
 		"same way as a child component, but can be defined independently")
 public class ComponentReference implements Named  {
 
-	@ModelProperty(info="")
+	@ModelProperty(info="A name for the ComponentReference")
 	public String name;
 
-	@ModelProperty(info="Target type")
+	@ModelProperty(info="The type of the target Component")
 	public String type;
+	@ModelProperty(info="An optional description of the ComponentReference")
     public String description;
 	public ComponentType r_type;
 	
