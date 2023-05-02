@@ -19,10 +19,11 @@ public class Requirement implements Named {
     @ModelProperty(info = "name")
     public String name;
     
-    @ModelProperty(info = "reference to a dimension")
+	@ModelProperty(info="The dimension, or 'none'. This should be the name of an already defined dimension element")
     public String dimension;
     public Dimension r_dimension;
     
+	@ModelProperty(info="An optional description of the requirement")
     public String description;
  
 
