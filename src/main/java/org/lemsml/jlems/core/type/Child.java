@@ -11,7 +11,7 @@ import org.lemsml.jlems.core.sim.ContentError;
 		"children of the same type but with different roles, such as the forward and reverse transition rates in a channel.")
 public class Child implements Named {
 
-	@ModelProperty(info="")
+	@ModelProperty(info="Name of the child")
     public String name;
     
 	@ModelProperty(info="Reference to a component class, the value should be the name of the target class.")
@@ -20,6 +20,7 @@ public class Child implements Named {
 	
     public String substitute;
     
+	@ModelProperty(info="An optional description of the child")
     public String description;
     
 
