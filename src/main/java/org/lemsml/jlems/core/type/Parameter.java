@@ -5,18 +5,19 @@ import org.lemsml.jlems.core.annotation.ModelProperty;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 
-@ModelElement(info = "Sets the name an dimensionality of a parameter that must be supplied when a component is defined "
-+ "curresponding to the enclosing ComponentType")
+@ModelElement(info = "A quantity, defined by name and dimension, that must be supplied when a Component of the "
++ "enclosing ComponentType is defined")
 public class Parameter implements Named {
 
-	@ModelProperty(info="The name of the parameter. This is the attibute name when the parameter is supplied in a component definition")
+	@ModelProperty(info="The name of the parameter. This is the name of the attribute to be used when the parameter is supplied in a component definition")
 	public String name;
 
-	@ModelProperty(info="The dimension, or 'none'. This should be the ID of a dimension element defined elsewhere")
+	@ModelProperty(info="The dimension, or 'none'. This should be the name of an already defined dimension element")
 	public String dimension;
 
 	public Dimension r_dimension;
 
+	@ModelProperty(info="An optional description of the parameter")
     public String description;
 
     public String exposure;
