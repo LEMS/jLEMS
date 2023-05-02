@@ -4,7 +4,7 @@ import org.lemsml.jlems.core.annotation.ModelElement;
 import org.lemsml.jlems.core.type.Dimension;
 
  
-@ModelElement(info="Has a variable and a value. The value is the rate of change of the variable.")
+@ModelElement(info="First order differential equations, functions of StateVariables and Parameters, for how StateVariables change with time. Has a variable and a value. The value is the rate of change of the variable.")
 public class TimeDerivative extends AbstractStateChange {
 
 	 
