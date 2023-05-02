@@ -12,7 +12,7 @@ import org.lemsml.jlems.core.sim.ContentError;
 		"child components")
 public class Children implements Named  {
 
-	@ModelProperty(info="")
+	@ModelProperty(info="Name of the children")
     public String name;
     
 	@ModelProperty(info="The class of component allowed as children.")
