@@ -2,10 +2,13 @@ package org.lemsml.jlems.core.type.dynamics;
 
 import org.lemsml.jlems.core.expression.ParseTree;
 import org.lemsml.jlems.core.sim.ContentError;
+import org.lemsml.jlems.core.annotation.ModelProperty;
 
 public class ExpressionValued implements IVisitable {
 	
+	@ModelProperty(info="A string defining the value of the element")
 	public String value = null;
+
 	public MathInline mathInline;
 	public ParseTree parseTree;
 	

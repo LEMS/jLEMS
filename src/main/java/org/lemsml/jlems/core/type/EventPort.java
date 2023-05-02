@@ -5,14 +5,15 @@ import org.lemsml.jlems.core.annotation.ModelProperty;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 
-@ModelElement(info = "A port on a component that can send or receive events, depending on the direction speicfied.")
+@ModelElement(info = "A port on a component that can send or receive events, depending on the direction specified")
 
 public class EventPort implements Named {
 
-    @ModelProperty(info = "")
+    @ModelProperty(info = "Name of the EventPort")
     public String name;
     @ModelProperty(info = "'IN' or 'OUT'")
     public String direction;
+	@ModelProperty(info="An optional description of the EventPort")
     public String description;
     
     public Dimension r_dimension;

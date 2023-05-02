@@ -11,9 +11,11 @@ import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.Dimension;
 import org.lemsml.jlems.core.type.LemsCollection;
+import org.lemsml.jlems.core.annotation.ModelProperty;
 
 public abstract class AbstractStateChange extends ExpressionValued {
 
+	@ModelProperty(info="The name of the variable")
 	public String variable;
 	
 	private StateVariable r_variable;

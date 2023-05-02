@@ -26,11 +26,19 @@ import org.lemsml.jlems.core.type.LemsCollection;
 import org.lemsml.jlems.core.type.Named;
 import org.lemsml.jlems.core.type.ParamValue;
 import org.lemsml.jlems.core.type.Requirement;
+import org.lemsml.jlems.core.annotation.ModelElement;
+import org.lemsml.jlems.core.annotation.ModelProperty;
 
+@ModelElement(info = "Allows the dynamics of a ComponentType to be expressed via a finite state machine. " + 
+"Each regime has its internal dynamics, and conditions on which transitions between regimes occur are specified " +
+"using the OnCondition element"
+)
 public class Regime implements Named {
 	
+	@ModelProperty(info="The name of the regime")
 	public String name;
 	
+	@ModelProperty(info="'True' if this is the initial regime of the system")
 	public String initial;
 	public boolean b_initial;
 	

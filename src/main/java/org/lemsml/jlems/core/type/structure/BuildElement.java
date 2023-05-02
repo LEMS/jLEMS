@@ -7,7 +7,9 @@ import org.lemsml.jlems.core.type.Component;
 import org.lemsml.jlems.core.type.ComponentType;
 import org.lemsml.jlems.core.type.Lems;
 import org.lemsml.jlems.core.type.LemsCollection;
+import org.lemsml.jlems.core.annotation.ModelElement;
 
+@ModelElement(info = "Base class for elements that can be used in Structures")
 public abstract class BuildElement {
 	
 	public LemsCollection<BuildElement> buildElements = new LemsCollection<BuildElement>();

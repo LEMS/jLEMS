@@ -7,9 +7,10 @@ import org.lemsml.jlems.core.sim.ContentError;
 @ModelElement(info="Holds textual information that does not change the model but is needed for other purposes such as " +
 		"labelling graphs.")
 public class Text implements Named  {
-	@ModelProperty(info="")
+	@ModelProperty(info="The textual content")
 	public String name;
 
+	@ModelProperty(info="An optional description of the element")
     public String description;
     
 	public Text() {

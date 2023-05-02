@@ -34,7 +34,11 @@ import org.lemsml.jlems.core.type.ParamValue;
 import org.lemsml.jlems.core.type.Requirement;
 
 
-@ModelElement(info="Specifies the dynamical behavior of components build from this ComponentType. ")
+@ModelElement(info="Specifies the dynamical behavior of components build from this ComponentType. "
++ "Note that all variables in a Dynamics "
++ "definition are private. If other components need access to them, then the definition should explicitly link them "
++ "to an Exposure defined in the component class"
+)
 public class Dynamics  {
 
 	public String name;

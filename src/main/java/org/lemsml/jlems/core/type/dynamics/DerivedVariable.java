@@ -18,21 +18,22 @@ import org.lemsml.jlems.core.type.Lems;
 import org.lemsml.jlems.core.type.LemsCollection;
  
 @ModelElement(info="A quantity that depends algebraically on other quantities in the model. The 'value' field can be " +
-		"set to a mathematical expression, or the select field to a path expression. If the path expression " +
+		"set to a mathematical expression, or the 'select' field to a path expression. If the path expression " +
 		"produces multiple matches, then the 'reduce' field says how these are reduced to a single value by " +
 		"taking the sum or product. ")
 public class DerivedVariable extends ExpressionValued implements Valued {
 
-	@ModelProperty(info="")
+	@ModelProperty(info="Name of the derived variable")
 	public String name;
 
-	@ModelProperty(info="")
+	@ModelProperty(info="A path to the variable that supplies the value. Note that to select a variable from another component, the variable must be marked as an Exposure. Exactly one of 'select' and 'value' is required")
 	public String select;
 	 	
-	@ModelProperty(info="")
+	@ModelProperty(info="The dimension, or 'none'. This should be the name of an already defined dimension element")
 	public String dimension;
 	public Dimension r_dimension;
 
+	@ModelProperty(info="An optional description of the derived variable")
     public String description;
 
 	@ModelProperty(info="Either 'add' or 'multiply'. This applies if ther are multiple " +

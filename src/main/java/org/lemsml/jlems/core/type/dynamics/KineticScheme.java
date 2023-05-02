@@ -14,13 +14,16 @@ import org.lemsml.jlems.core.type.ComponentReference;
 import org.lemsml.jlems.core.type.ComponentType;
  
 
-@ModelElement(info="A kinetic scheme does not itself introduce any new elements or state variables. " +
+@ModelElement(info="Allows the specification of systems that can be in one of a small number of states at " +
+        "any time with probabilistic transitions between states. This includes continuous time Markov processes " +
+        "as are used for stochastic models of ion channels. " +
+        "A kinetic scheme does not itself introduce any new elements or state variables. " +
 		"It is rather a way of connecting quantities in existing components by saying that " +
 		"quantities in the edge elements should be interpreted as transition rates among " +
 		"quantities in the node elements. ")
 public class KineticScheme {
 
-	@ModelProperty(info="")
+	@ModelProperty(info="Name of kinetic scheme")
 	public String name;
 	 
 	@ModelProperty(info="Source of notes for scheme")
