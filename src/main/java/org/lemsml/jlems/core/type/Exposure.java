@@ -5,15 +5,16 @@ import org.lemsml.jlems.core.annotation.ModelProperty;
 import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 
-@ModelElement(info = "A quantity that is made available to other component in the simulation. All variables in a Dynamics "
-+ "definition are private. If other components need access to them then the definition has to explicitly link them "
+@ModelElement(info = "A quantity that is made available to other components in the simulation. Note that all variables in a Dynamics "
++ "definition are private. If other components need access to them, then the definition should explicitly link them "
 + "to an exposure defined in the component class")
 public class Exposure implements Named {
 
-    @ModelProperty(info = "name")
+    @ModelProperty(info = "Name of the exposure element")
     public String name;
-    @ModelProperty(info = "Reference to a dimension")
+	@ModelProperty(info="The dimension, or 'none'. This should be the name of an already defined dimension element")
     public String dimension;
+	@ModelProperty(info="An optional description of the element")
     public String description;
     public Dimension r_dimension;
 
