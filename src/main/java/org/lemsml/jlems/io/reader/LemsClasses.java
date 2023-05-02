@@ -74,6 +74,7 @@ import org.lemsml.jlems.core.type.simulation.Run;
 import org.lemsml.jlems.core.type.simulation.Simulation;
 import org.lemsml.jlems.core.type.structure.Apply;
 import org.lemsml.jlems.core.type.structure.Assign;
+import org.lemsml.jlems.core.type.structure.BuildElement;
 import org.lemsml.jlems.core.type.structure.ChildInstance;
 import org.lemsml.jlems.core.type.structure.Choose;
 import org.lemsml.jlems.core.type.structure.CoInstantiate;
@@ -174,6 +175,7 @@ public final class LemsClasses {
 		ArrayList<LemsClass> ret =  new ArrayList<LemsClass>();
 		String section = "structure";
 		ret.add(new LemsClass(Structure.class, section));
+		ret.add(new LemsClass(BuildElement.class, section));
 		ret.add(new LemsClass(MultiInstantiate.class, section));
 		ret.add(new LemsClass(CoInstantiate.class, section));
 		ret.add(new LemsClass(Assign.class, section));
