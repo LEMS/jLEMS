@@ -137,7 +137,6 @@ public final class LemsClasses {
 		ret.add(new LemsClass(Dimension.class, section));
 		ret.add(new LemsClass(Unit.class, section));
 		ret.add(new LemsClass(Assertion.class, section));
-		ret.add(new LemsClass(Component.class, section));
 		
 		return ret;
 	}
