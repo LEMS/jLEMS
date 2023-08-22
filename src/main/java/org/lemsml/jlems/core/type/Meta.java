@@ -7,32 +7,32 @@ import org.lemsml.jlems.core.annotation.ModelElement;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.xml.XMLAttribute;
 import org.lemsml.jlems.core.xml.XMLElement;
- 
 
-// RawValued indicates that XML found inside Meta elements should be treated 
+
+// RawValued indicates that XML found inside Meta elements should be treated
 // processed into an element tree, but not interpreted as lems elements.
 // other tools can do their own thing with the content
 @ModelElement(info="Meta element to provide arbitrary metadata to LEMS simulations. Note that this is not processed by the LEMS interpreter.")
 public class Meta {
 
 	public String context;
-	
+
 	public XMLElement valueWrapper = new XMLElement("wrapper");
-	
+
 	private XMLElement p_sourceXML;
-	
+
 	public ArrayList<MetaItem> items = new ArrayList<MetaItem>();
 
-	
-	
+
+
 	public Meta() {
-		
+
 	}
-	
+
 	public void setSource(XMLElement xe) {
 		p_sourceXML = xe;
 	}
-	
+
 	public void addXMLElement(XMLElement xe) {
 		valueWrapper.add(xe);
 		// E.info("Set VW " + xe.toXMLString(""));
@@ -47,7 +47,7 @@ public class Meta {
 		}
 		return ret;
 	}
-	 
+
 
 	public void add(Object obj) throws ContentError {
 		if (obj instanceof MetaItem) {
@@ -55,7 +55,7 @@ public class Meta {
 		} else {
 			throw new ContentError("cant add " + obj);
 		}
-	} 
+	}
 
 	public MetaItem newItem(String nm) {
 		 MetaItem ret = new MetaItem(nm);
