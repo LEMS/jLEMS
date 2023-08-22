@@ -3,6 +3,7 @@ package org.lemsml.jlems.core.type;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.lemsml.jlems.core.annotation.ModelElement;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.xml.XMLAttribute;
 import org.lemsml.jlems.core.xml.XMLElement;
@@ -11,6 +12,7 @@ import org.lemsml.jlems.core.xml.XMLElement;
 // RawValued indicates that XML found inside Meta elements should be treated 
 // processed into an element tree, but not interpreted as lems elements.
 // other tools can do their own thing with the content
+@ModelElement(info="Meta element to provide arbitrary metadata to LEMS simulations. Note that this is not processed by the LEMS interpreter.")
 public class Meta {
 
 	public String context;
