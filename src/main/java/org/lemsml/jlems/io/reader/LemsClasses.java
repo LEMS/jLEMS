@@ -174,7 +174,7 @@ public final class LemsClasses {
 		ArrayList<LemsClass> ret =  new ArrayList<LemsClass>();
 		String section = "structure";
 		ret.add(new LemsClass(Structure.class, section));
-		ret.add(new LemsClass(BuildElement.class, section));
+		// ret.add(new LemsClass(BuildElement.class, section));  -> abstract
 		ret.add(new LemsClass(MultiInstantiate.class, section));
 		ret.add(new LemsClass(CoInstantiate.class, section));
 		ret.add(new LemsClass(Assign.class, section));
