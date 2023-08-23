@@ -199,6 +199,7 @@ public final class LemsClasses {
 		ArrayList<LemsClass> ret =  new ArrayList<LemsClass>();
 		
 		String section = "componenttypes";
+ 		ret.add(new LemsClass(Component.class, section));
 		ret.add(new LemsClass(ComponentType.class, section));
 		ret.add(new LemsClass(Parameter.class, section));
 		ret.add(new LemsClass(PathParameter.class, section));
