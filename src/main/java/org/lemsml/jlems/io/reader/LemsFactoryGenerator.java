@@ -25,6 +25,7 @@ public class LemsFactoryGenerator {
 		sb.append("import org.lemsml.jlems.core.type.*;\n");
 		sb.append("import org.lemsml.jlems.core.type.dynamics.*;\n");
 		sb.append("import org.lemsml.jlems.core.type.structure.*;\n");
+		sb.append("import org.lemsml.jlems.core.type.simulation.Record;\n\n"); // Record is ambiguous
 		sb.append("import org.lemsml.jlems.core.type.simulation.*;\n\n");
 		sb.append("import org.lemsml.jlems.core.type.procedure.*;\n\n");
 		sb.append("import org.lemsml.jlems.core.type.geometry.*;\n\n");
