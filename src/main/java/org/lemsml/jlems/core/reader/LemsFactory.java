@@ -4,6 +4,7 @@ import org.lemsml.jlems.core.type.*;
 import org.lemsml.jlems.core.type.dynamics.*;
 import org.lemsml.jlems.core.type.structure.*;
 import org.lemsml.jlems.core.type.simulation.Record;
+
 import org.lemsml.jlems.core.type.simulation.*;
 
 import org.lemsml.jlems.core.type.procedure.*;
@@ -764,10 +765,10 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.name = parseString(xv);
             } else if (xn.equals("type")) {
                 ret.type = parseString(xv);
-            } else if (xn.equals("description")) {
-                ret.description = parseString(xv);
             } else if (xn.equals("substitute")) {
                 ret.substitute = parseString(xv);
+            } else if (xn.equals("description")) {
+                ret.description = parseString(xv);
             } else {
                 E.warning("Unrecognized attribute " + xa + " " + xv);
             }
@@ -810,6 +811,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.name = parseString(xv);
             } else if (xn.equals("type")) {
                 ret.type = parseString(xv);
+            } else if (xn.equals("description")) {
+                ret.description = parseString(xv);
             } else if (xn.equals("root")) {
                 ret.root = parseString(xv);
             } else if (xn.equals("isAny")) {
@@ -2423,6 +2426,8 @@ public class LemsFactory extends AbstractLemsFactory {
                 ret.dataWriters.add((DataWriter)obj);
             } else if (obj instanceof EventWriter) {
                 ret.eventWriters.add((EventWriter)obj);
+            } else if (obj instanceof Meta) {
+                ret.metas.add((Meta)obj);
             } else {
                 E.warning("Unrecognized element ("+xn+"): " + cel);
             }

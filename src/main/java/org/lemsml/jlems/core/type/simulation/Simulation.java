@@ -11,6 +11,7 @@ import org.lemsml.jlems.core.type.Component;
 import org.lemsml.jlems.core.type.ComponentType;
 import org.lemsml.jlems.core.type.Lems;
 import org.lemsml.jlems.core.type.LemsCollection;
+import org.lemsml.jlems.core.type.Meta;
  
 
 
@@ -28,6 +29,8 @@ public class Simulation {
 	public transient LemsCollection <DataWriter> dataWriters = new LemsCollection<DataWriter>();
 
 	public transient LemsCollection <EventWriter> eventWriters = new LemsCollection<EventWriter>();
+
+	public transient LemsCollection <Meta> metas = new LemsCollection<Meta>();
 
 	
 	public static int idCounter = 0;
