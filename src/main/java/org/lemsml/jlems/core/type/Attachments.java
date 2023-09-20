@@ -11,9 +11,9 @@ import org.lemsml.jlems.core.sim.ContentError;
 		"and access purposes they are like child components. The cannonical use of attachments is in " +
 		"adding synapses to a cell when a network connection is made.")
 public class Attachments implements Named {
-	@ModelProperty(info="")
+	@ModelProperty(info="A name for the Attachments")
 	public String name;
-	@ModelProperty(info="")
+	@ModelProperty(info="The type of the Attachments")
 	public String type;
 	public ComponentType r_type;
 

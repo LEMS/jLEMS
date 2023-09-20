@@ -6,7 +6,7 @@ import org.lemsml.jlems.core.logging.E;
 import org.lemsml.jlems.core.sim.ContentError;
 import org.lemsml.jlems.core.type.dynamics.ExpressionValued;
 
-@ModelElement(info="A parameter that comes from other parameter values in the model rather than being set explicitly. Its value " +
+@ModelElement(info="A parameter that is a function of the Component's Parameters, which does not change with time. Its value " +
 		"can be supplied either with the 'value' attribute that evaluates within the scope of the definition, or with the " +
 		"'select' attribute which gives a path to 'primary' version of the parameter. For example, " +
 		" setting select='//MembranePotential[species=channel/species]/reversal' within the appropriate context allows " +
@@ -15,8 +15,13 @@ import org.lemsml.jlems.core.type.dynamics.ExpressionValued;
         
 public class DerivedParameter extends ExpressionValued implements Named {
 
+	@ModelProperty(info="The name of the derived parameter")
 	public String name;
+
+	@ModelProperty(info="The dimension, or 'none'. This should be the name of an already defined dimension element")
 	public String dimension;
+
+	@ModelProperty(info="An optional description of the derived parameter")
 	public String description;
 	public Dimension r_dimension;
 	

@@ -15,10 +15,10 @@ import org.lemsml.jlems.core.type.Named;
 
 public class StateVariable implements Valued  {
 	
-	@ModelProperty(info="")
+	@ModelProperty(info="Name of the state variable")
 	public String name;
 	
-	@ModelProperty(info="")
+	@ModelProperty(info="The dimension, or 'none'. This should be the name of an already defined dimension element")
 	public String dimension;
 	private Dimension r_dimension;
 	
@@ -27,6 +27,7 @@ public class StateVariable implements Valued  {
 	public String exposure;
 	private Exposure r_exposure;
 
+	@ModelProperty(info="An optional description of the state variable")
     public String description;
 	
     public StateVariable() {

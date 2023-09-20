@@ -22,7 +22,7 @@ import org.lemsml.jlems.core.type.simulation.Simulation;
 import org.lemsml.jlems.core.type.structure.Structure;
 import org.lemsml.jlems.core.xml.XMLElement;
 
-@ModelElement(info="Root element for defining component types.")
+@ModelElement(info="Root element for defining LEMS Component Types.")
 	 
 @SuppressWarnings("StringConcatenationInsideStringBufferAppend")
 public class ComponentType extends Base implements Named, Summaried, Inheritor {

@@ -74,6 +74,7 @@ import org.lemsml.jlems.core.type.simulation.Run;
 import org.lemsml.jlems.core.type.simulation.Simulation;
 import org.lemsml.jlems.core.type.structure.Apply;
 import org.lemsml.jlems.core.type.structure.Assign;
+import org.lemsml.jlems.core.type.structure.BuildElement;
 import org.lemsml.jlems.core.type.structure.ChildInstance;
 import org.lemsml.jlems.core.type.structure.Choose;
 import org.lemsml.jlems.core.type.structure.CoInstantiate;
@@ -136,7 +137,6 @@ public final class LemsClasses {
 		ret.add(new LemsClass(Dimension.class, section));
 		ret.add(new LemsClass(Unit.class, section));
 		ret.add(new LemsClass(Assertion.class, section));
-		ret.add(new LemsClass(Component.class, section));
 		
 		return ret;
 	}
@@ -174,6 +174,7 @@ public final class LemsClasses {
 		ArrayList<LemsClass> ret =  new ArrayList<LemsClass>();
 		String section = "structure";
 		ret.add(new LemsClass(Structure.class, section));
+		// ret.add(new LemsClass(BuildElement.class, section));  -> abstract
 		ret.add(new LemsClass(MultiInstantiate.class, section));
 		ret.add(new LemsClass(CoInstantiate.class, section));
 		ret.add(new LemsClass(Assign.class, section));
@@ -198,6 +199,7 @@ public final class LemsClasses {
 		ArrayList<LemsClass> ret =  new ArrayList<LemsClass>();
 		
 		String section = "componenttypes";
+ 		ret.add(new LemsClass(Component.class, section));
 		ret.add(new LemsClass(ComponentType.class, section));
 		ret.add(new LemsClass(Parameter.class, section));
 		ret.add(new LemsClass(PathParameter.class, section));
