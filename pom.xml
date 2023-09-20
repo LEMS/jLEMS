@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.lemsml</groupId>
 	<artifactId>jlems</artifactId>
-	<version>0.10.7</version>
+	<version>0.10.8</version>
 	<packaging>bundle</packaging>  
 	<properties>
     	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
