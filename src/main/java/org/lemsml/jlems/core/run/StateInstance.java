@@ -300,6 +300,9 @@ public class StateInstance implements StateRunnable, ILEMSStateInstance {
 	
 
 	public void transitionTo(String rnm) throws RuntimeError {
+		if (regimeHM == null) {
+			throw new IllegalStateException("No Regimes.");
+		}
 		activeRegime = regimeHM.get(rnm);
 		activeRegime.enter();
 	}
@@ -314,6 +317,9 @@ public class StateInstance implements StateRunnable, ILEMSStateInstance {
 
 	public void initRegime() throws RuntimeError {
 		if (activeRegime == null) {
+			if (regimeHM == null || regimeHM.isEmpty()) {
+				throw new IllegalStateException("No Regimes.");
+			}
 			activeRegime = regimeHM.get(regimeHM.keySet().iterator().next());
 			// TODO just picks random regime
 		}
