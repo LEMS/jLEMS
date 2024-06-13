@@ -525,7 +525,7 @@ public class Dynamics  {
 
 
 
-	public void checkEquations(HashMap<String, Dimensional> cdimHM) throws ContentError {
+	public void checkEquations(HashMap<String, Dimensional> cdimHM) throws ContentError{
         
 		HashMap<String, Dimensional> dimHM = new HashMap<String, Dimensional>();
 
@@ -559,7 +559,9 @@ public class Dynamics  {
 			try {
 				dimHM.put(dv.getName(), dv.getDimensionality(dimHM));
 			} catch (ContentError ce) {
-				E.error("Checking " + dv + " in " + r_type + " " + ce.getMessage());
+				String errmsg = ("Checking " + dv + " in " + r_type + " " + ce.getMessage());
+                throw new ContentError(errmsg);
+
 			}
 		}
 
@@ -567,7 +569,8 @@ public class Dynamics  {
 			try {
 				dimHM.put(cdv.getName(), cdv.getDimensionality(dimHM));
 			} catch (ContentError ce) {
-				E.error("Checking " + cdv + " in " + r_type + " " + ce.getMessage());
+				String errmsg = "Checking " + cdv + " in " + r_type + " " + ce.getMessage();
+                throw new ContentError(errmsg);
 			}
 		}
 		
