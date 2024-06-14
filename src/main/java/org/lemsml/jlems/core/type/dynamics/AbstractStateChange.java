@@ -90,9 +90,12 @@ public abstract class AbstractStateChange extends ExpressionValued {
                 if (dres.isDimensionless()) {
                     // OK
                 } else {
-                    E.oneLineError("Dimension mismatch in equation: " + variable + " = " + value + ". Residual dimension: " + dres);
-                    E.info("Dimension of " + variable + ": " + dsv + ", multiplier=" + dlf + ", left=" + dl + ", rhs=" + drhs);
-                    E.info("All:" + dimHM);
+
+					String errmsg = ("Dimension mismatch in the equation: " + variable + " = " + value + ". Residual dimension: " + dres + 
+                        "\nDimension of " + variable + ": " + dsv + ", multiplier=" + dlf + ", left=" + dl + ", rhs=" + drhs +
+                        "\nAll:" + dimHM);
+					E.info(errmsg);
+                	throw new ContentError(errmsg);
                 }
             }
        
