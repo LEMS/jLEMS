@@ -29,7 +29,7 @@ public class XMLExamplesReaderTest {
 		File fdir = new File(url.getFile());
 
 		for (File fx : fdir.listFiles()) {
-			E.info("Testing: " + fx);
+			E.info("   >>>  Testing: " + fx);
 			if (fx.isFile() && fx.getName().endsWith(".xml")) {
 				String stxt = FileUtil.readStringFromFile(fx);
 				XMLElementReader xmlReader = new XMLElementReader(stxt);
@@ -53,7 +53,7 @@ public class XMLExamplesReaderTest {
 							+ "'<Element a=\"val\"/>' and not '<Element a=\"val\"></Element>'");
 				}
 
-				assertEquals("Rewrite matches", sns.length(), tns.length());
+				assertEquals("Rewrite matches ("+fx+")", sns.length(), tns.length());
 			}
 		}
 	}
