@@ -85,6 +85,7 @@ public class ExamplesTest {
     
     public boolean executeExample(String filename) throws ContentError, ConnectionError, RuntimeError, ParseError, IOException, ParseException, BuildException,  XMLException {
 		URL url = this.getClass().getResource("/"+filename);
+        System.out.println(" - Testing: "+url);
 		File f = new File(url.getFile());
 		
     	FileInclusionReader fir = new FileInclusionReader(f);
