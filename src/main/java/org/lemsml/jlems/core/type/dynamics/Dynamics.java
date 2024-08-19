@@ -559,8 +559,8 @@ public class Dynamics  {
 			try {
 				dimHM.put(dv.getName(), dv.getDimensionality(dimHM));
 			} catch (ContentError ce) {
-				String errmsg = ("Checking " + dv + " in " + r_type + " " + ce.getMessage());
-                throw new ContentError(errmsg);
+				String errmsg = ("Checking derived variable: " + dv + " in " + r_type + "\nError here: " + ce.getMessage());
+                E.error(errmsg+"\n**************\n* Note: this may not be a serious error, in the case that the derived variables are all present, just have been specified out of order, e.g. b = f(a) is defined in the xML file before a is defined. ");
 
 			}
 		}
