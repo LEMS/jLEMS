@@ -525,7 +525,7 @@ public class Dynamics  {
 
 
 
-	public void checkEquations(HashMap<String, Dimensional> cdimHM) throws ContentError {
+	public void checkEquations(HashMap<String, Dimensional> cdimHM) throws ContentError{
         
 		HashMap<String, Dimensional> dimHM = new HashMap<String, Dimensional>();
 
@@ -559,7 +559,9 @@ public class Dynamics  {
 			try {
 				dimHM.put(dv.getName(), dv.getDimensionality(dimHM));
 			} catch (ContentError ce) {
-				E.error("Checking " + dv + " in " + r_type + " " + ce.getMessage());
+				String errmsg = ("Checking derived variable: " + dv + " in " + r_type + "\nError here: " + ce.getMessage());
+                E.error(errmsg+"\n**************\n* Note: this may not be a serious error, in the case that the derived variables are all present, just have been specified out of order, e.g. b = f(a) is defined in the xML file before a is defined. ");
+
 			}
 		}
 
@@ -567,7 +569,8 @@ public class Dynamics  {
 			try {
 				dimHM.put(cdv.getName(), cdv.getDimensionality(dimHM));
 			} catch (ContentError ce) {
-				E.error("Checking " + cdv + " in " + r_type + " " + ce.getMessage());
+				String errmsg = "Checking " + cdv + " in " + r_type + " " + ce.getMessage();
+                throw new ContentError(errmsg);
 			}
 		}
 		

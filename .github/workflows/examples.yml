@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - uses: nelonoel/branch-name@v1.0.1
 
     # https://stackoverflow.com/questions/58033366/how-to-get-current-branch-within-github-actions
@@ -20,7 +20,7 @@ jobs:
       id: extract_branch
 
     - name: Checkout lems
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         repository: LEMS/LEMS
         ref: ${{ steps.extract_branch.outputs.branch }}
