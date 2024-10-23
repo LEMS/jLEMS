@@ -14,7 +14,7 @@ import org.lemsml.jlems.core.type.Named;
  
  
 
-@ModelElement(info="Specifies a state variable that stores values that define the state of the system at a point in time. The dynamics of state variables may be defined as Ordinary Differential Equations (ODEs) in TimeDerivatives. StateVariables may be linked to exposures.")
+@ModelElement(info="Specifies a state variable that stores values that define the state of the system at a point in time. The dynamics of state variables may be defined as Ordinary Differential Equations (ODEs) using the TimeDerivative entity. They can also be discontinuously modified using elements in Dynamics such as OnStarts, OnEvents, and OnConditions. StateVariables may be linked to exposures.")
 public class StateVariable implements Valued  {
 	
 	@ModelProperty(info="Name of the state variable")
