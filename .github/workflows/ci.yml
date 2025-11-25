@@ -4,6 +4,8 @@
 name: Java CI with Maven
 
 on:
+  schedule:
+    - cron: "1 1 26 * *"
   push:
     branches:  [ master, development, experimental, osb* ]
   pull_request:
